@@ -1,4 +1,37 @@
 
+
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+
+@Entity({ name: 'Users' })
+export class Users {
+  @PrimaryGeneratedColumn('uuid')
+  userId: string;
+  @Column()
+  login: string;
+  @Column()
+  passwordHash: string;
+  @Column()
+  email: string;
+  @Column()
+  createdAt: string;
+  @Column()
+  isUserBanned: boolean;
+  @Column()
+  banDate: string | null;
+  @Column()
+  banReason: string | null;
+  @Column()
+  confirmationCode: string | null;
+  @Column({type: 'timestamptz'})
+  expirationDateOfConfirmationCode: Date | null;
+  @Column()
+  isConfirmed: boolean;
+  @Column()
+  passwordRecoveryCode: string | null;
+  @Column({type: 'timestamptz'})
+  expirationDateOfRecoveryCode: Date | null;
+}
+
 export type CommentsLikeType = {
   commentsId: string;
   createdAt: Date;
