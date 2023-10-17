@@ -90,6 +90,7 @@ import { SaDeletePostByIdFromUriUseCase } from './blogs/application/use-cases/sa
 import { Users } from './users/users.types';
 import { UserDevices } from './usersDevices/users-devices.types';
 import { Blogs } from './blogs/blogs.types';
+import { Posts } from './posts/posts.types';
 const mongoUri = process.env.MONGO_URL;
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
@@ -132,7 +133,7 @@ SetLikeStatusForCommentUseCase,]
       typeOrmConfig
     ),
     TypeOrmModule.forFeature(
-      [Users, UserDevices, Blogs]
+      [Users, UserDevices, Blogs, Posts]
     ),
     CqrsModule,
     ThrottlerModule.forRoot({
