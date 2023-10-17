@@ -1,3 +1,30 @@
+import { Users } from "../users/users.types";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm"
+
+@Entity({name: 'Blogs'})
+export class Blogs {
+    @PrimaryColumn('uuid')  
+    blogId: string;
+    @Column()
+    name: string;
+    @Column()
+    isBlogBanned: boolean;
+    @Column()
+    blogBanDate: string | null;
+    @OneToOne(() => Users )
+    @JoinColumn({ name: 'userId' })
+    Users: Users
+    @Column({type: 'uuid', nullable: true})
+    userId: string | null;
+    @Column()
+    description: string;
+    @Column()
+    websiteUrl: string;
+    @Column()
+    createdAt: string;
+    @Column()
+    isMembership: boolean;  
+}
 
 export class BlogDBType {
   constructor(

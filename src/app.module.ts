@@ -89,6 +89,7 @@ import { SaUpdatePostByIdFromBloggerControllerUseCase } from './blogs/applicatio
 import { SaDeletePostByIdFromUriUseCase } from './blogs/application/use-cases/sa-delete-post-by-id-use-case';
 import { Users } from './users/users.types';
 import { UserDevices } from './usersDevices/users-devices.types';
+import { Blogs } from './blogs/blogs.types';
 const mongoUri = process.env.MONGO_URL;
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
@@ -131,7 +132,7 @@ SetLikeStatusForCommentUseCase,]
       typeOrmConfig
     ),
     TypeOrmModule.forFeature(
-      [Users, UserDevices]
+      [Users, UserDevices, Blogs]
     ),
     CqrsModule,
     ThrottlerModule.forRoot({

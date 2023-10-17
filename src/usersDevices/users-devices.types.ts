@@ -1,15 +1,15 @@
-import { Users } from "src/users/users.types";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Users } from "../users/users.types";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'UserDevices' })
 export class UserDevices {
-    @PrimaryGeneratedColumn('uuid')
+    @PrimaryColumn('uuid')
     deviceId: string;
     @ManyToOne(() => Users )
     @JoinColumn({ name: 'userId' })
     Users: Users
-    // @Column('uuid')
-    // userId: string;
+    @Column('uuid')
+    userId: string;
     @Column()
     ip: string;
     @Column()
