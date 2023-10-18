@@ -3,7 +3,7 @@ import { Posts } from "../posts/posts.types";
 import { Users } from "../users/users.types";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity({name: 'Postlikes'})
 export class PostLikes {
     @PrimaryGeneratedColumn('uuid')
     postLikeId: string

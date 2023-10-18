@@ -186,12 +186,4 @@ export class BloggerBlogsController {
     const result: BlogActionResult = await this.commandBus.execute(new DeletePostByIdFromUriCommand(request.user.userId, blogId, postId))
     handleBlogOperationResult(result)
   }
-
-  // @Get('/comments') it for mongoose
-  // @HttpCode(200)
-  // async getAllCommentsForBlogger(@Req() request, @Query() queryParams: RequestQueryParamsModel){
-  //   const mergedQueryParams = { ...DEFAULT_QUERY_PARAMS, ...queryParams };
-
-  //   return await this.commentsQueryRepository.getAllCommentsForBlogger(mergedQueryParams, request.user.userId);
-  // }
 }
