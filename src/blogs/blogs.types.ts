@@ -9,7 +9,7 @@ export class Blogs {
     name: string;
     @Column()
     isBlogBanned: boolean;
-    @Column()
+    @Column({ nullable: true })
     blogBanDate: string | null;
     @OneToOne(() => Users )
     @JoinColumn({ name: 'userId' })

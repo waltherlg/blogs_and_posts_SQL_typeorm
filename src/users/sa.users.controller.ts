@@ -25,7 +25,7 @@ import {
 } from '../models/types';
 
 import { CheckService } from '../other.services/check.service';
-import { CustomNotFoundException, UserNotFoundException } from '../exceptions/custom.exceptions';
+import { CustomNotFoundException, EmailAlreadyExistException, LoginAlreadyExistException, UserNotFoundException } from '../exceptions/custom.exceptions';
 import { BasicAuthGuard } from '../auth/guards/auth.guards';
 import { StringTrimNotEmpty } from '../middlewares/validators';
 import { CommandBus } from '@nestjs/cqrs';
@@ -81,6 +81,12 @@ export class UsersController {
   
   @Post()
   async createUser(@Body() userCreateInputDto: CreateUserInputModelType) {
+    if (await this.checkService.isEmailExist(userCreateInputDto.email)) {
+      throw new EmailAlreadyExistException();
+    }
+    if (await this.checkService.isLoginExist(userCreateInputDto.login)) {
+      throw new LoginAlreadyExistException();
+    }
     const newUsersId = await this.commandBus.execute(new CreateUserCommand(userCreateInputDto)) 
     const user = await this.usersQueryRepository.getNewCreatedUserById(newUsersId);
     return user;

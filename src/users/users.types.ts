@@ -16,19 +16,19 @@ export class Users {
   createdAt: string;
   @Column()
   isUserBanned: boolean;
-  @Column()
+  @Column({ nullable: true })
   banDate: string | null;
-  @Column()
+  @Column({ nullable: true })
   banReason: string | null;
-  @Column()
+  @Column({ nullable: true })
   confirmationCode: string | null;
-  @Column({type: 'timestamptz'})
+  @Column({type: 'timestamptz', nullable: true })
   expirationDateOfConfirmationCode: Date | null;
   @Column()
   isConfirmed: boolean;
-  @Column()
+  @Column({ nullable: true })
   passwordRecoveryCode: string | null;
-  @Column({type: 'timestamptz'})
+  @Column({type: 'timestamptz', nullable: true })
   expirationDateOfRecoveryCode: Date | null;
 }
 

@@ -3,7 +3,7 @@ import { Posts } from "../posts/posts.types";
 import { Users } from "../users/users.types";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity({name: 'Postlikes'})
+@Entity({name: 'PostLikes'})
 export class PostLikes {
     @PrimaryGeneratedColumn('uuid')
     postLikeId: string
@@ -19,7 +19,7 @@ export class PostLikes {
     Users: Users
     @Column('uuid')
     userId: string;
-    @Column()
+    @Column({ nullable: true })
     login: string;
     @Column()
     isUserBanned: boolean;
@@ -52,7 +52,7 @@ export class CommentLikes {
     Users: Users
     @Column('uuid')
     userId: string;
-    @Column()
+    @Column({ nullable: true })
     login: string;
     @Column()
     isUserBanned: boolean;
