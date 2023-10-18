@@ -1,5 +1,6 @@
 
 
+import { Comments } from "src/comments/comments.types";
 import { UserDevices } from "src/usersDevices/users-devices.types";
 import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
@@ -33,6 +34,8 @@ export class Users {
   expirationDateOfRecoveryCode: Date | null;
   @OneToMany( ()=> UserDevices, d => d.userId)
   UserDevices: UserDevices[]
+  @OneToMany(()=> Comments, c => c.userId)
+  Comments: Comments[]
 }
 
 export type CommentsLikeType = {

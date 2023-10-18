@@ -15,7 +15,7 @@ export class Comments {
     content: string;
     @Column()
     createdAt: string;
-    @ManyToOne(() => Users )
+    @ManyToOne(() => Users, u => u.Comments )
     @JoinColumn({ name: 'userId' })
     Users: Users
     @Column('uuid')

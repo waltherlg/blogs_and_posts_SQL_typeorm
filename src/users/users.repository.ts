@@ -1,16 +1,23 @@
-import { DataSource } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { UserDBType } from './users.types';
+import { UserDBType, Users } from './users.types';
 import { PasswordRecoveryModel } from '../auth/auth.types';
-import { InjectDataSource } from '@nestjs/typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
 
 @Injectable()
 export class UsersRepository {
   constructor(
-  @InjectDataSource() protected dataSource: DataSource) {}
+  @InjectDataSource() protected dataSource: DataSource,
+  @InjectRepository(Users) private readonly usersRepository: Repository<Users>) {}
 
-  async createUser(userDTO): Promise<string> {
+  async createUser(userDTO: UserDBType){
+    const result = await this.usersRepository.save(userDTO)
+    return result.userId
+  }
+
+
+  async createUserRow(userDTO): Promise<string> {
     const query = `INSERT INTO public."Users"(
       "userId", 
       login, 
