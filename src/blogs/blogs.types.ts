@@ -11,9 +11,9 @@ export class Blogs {
     isBlogBanned: boolean;
     @Column({ nullable: true })
     blogBanDate: string | null;
-    @OneToOne(() => Users )
-    @JoinColumn({ name: 'userId' })
-    Users: Users
+    // @OneToOne(() => Users )
+    // @JoinColumn({ name: 'userId' })
+    // Users: Users
     @Column({type: 'uuid', nullable: true})
     userId: string | null;
     @Column()

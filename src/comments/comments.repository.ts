@@ -17,13 +17,17 @@ export class CommentsRepository {
       "postId",
       content,
       "createdAt",
-      "userId")
+      "userId",
+      "likesCount",
+      "dislikesCount")
     VALUES (
       $1,  
       $2, 
       $3, 
       $4,
-      $5)
+      $5,
+      $6,
+      $7)
       RETURNING "commentId" 
     `;
     const result = await this.dataSource.query(query, [
@@ -31,7 +35,9 @@ export class CommentsRepository {
       commentDTO.postId,
       commentDTO.content,
       commentDTO.createdAt,
-      commentDTO.userId
+      commentDTO.userId,
+      commentDTO.likesCount,
+      commentDTO.dislikesCount
     ])
     const commentId = result[0].commentId;
     return commentId
