@@ -91,6 +91,7 @@ import { Users } from './users/users.types';
 import { UserDevices } from './usersDevices/users-devices.types';
 import { Blogs } from './blogs/blogs.types';
 import { Posts } from './posts/posts.types';
+import { Comments } from './comments/comments.types';
 const mongoUri = process.env.MONGO_URL;
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
@@ -133,7 +134,7 @@ SetLikeStatusForCommentUseCase,]
       typeOrmConfig
     ),
     TypeOrmModule.forFeature(
-      [Users, UserDevices, Blogs, Posts]
+      [Users, UserDevices, Blogs, Posts, Comments]
     ),
     CqrsModule,
     ThrottlerModule.forRoot({
