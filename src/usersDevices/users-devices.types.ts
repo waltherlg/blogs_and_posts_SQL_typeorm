@@ -5,7 +5,7 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn, PrimaryGeneratedC
 export class UserDevices {
     @PrimaryColumn('uuid')
     deviceId: string;
-    @ManyToOne(() => Users )
+    @ManyToOne(() => Users, u => u.UserDevices )
     @JoinColumn({ name: 'userId' })
     Users: Users
     @Column('uuid')

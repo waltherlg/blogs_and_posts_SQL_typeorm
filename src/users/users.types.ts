@@ -1,6 +1,7 @@
 
 
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { UserDevices } from "src/usersDevices/users-devices.types";
+import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({ name: 'Users' })
 export class Users {
@@ -30,6 +31,8 @@ export class Users {
   passwordRecoveryCode: string | null;
   @Column({type: 'timestamptz', nullable: true })
   expirationDateOfRecoveryCode: Date | null;
+  @OneToMany( ()=> UserDevices, d => d.userId)
+  UserDevices: UserDevices[]
 }
 
 export type CommentsLikeType = {

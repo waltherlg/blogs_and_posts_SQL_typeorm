@@ -19,9 +19,6 @@ export class Posts {
     blogId: string;
     @Column()
     createdAt: string;
-    // @ManyToOne(() => Users )
-    // @JoinColumn({ name: 'userId' })
-    // Users: Users
     @Column({type: 'uuid', nullable: true})
     userId: string;
     @Column()
