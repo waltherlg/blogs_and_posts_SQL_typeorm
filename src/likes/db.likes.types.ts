@@ -1,5 +1,6 @@
-import { Posts } from "src/posts/posts.types";
-import { Users } from "src/users/users.types";
+import { Comments } from "../comments/comments.types";
+import { Posts } from "../posts/posts.types";
+import { Users } from "../users/users.types";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
@@ -35,6 +36,28 @@ export class PostLikeDbType {
         public isUserBanned: boolean,
         public status: string,
     ) {}
+}
+@Entity({name: 'CommentLikes'})
+export class CommentLikes {
+    @PrimaryGeneratedColumn('uuid')
+    commentLikeId: string;
+    @OneToOne(()=> Comments)
+    @JoinColumn({name: 'commentId'})
+    @Column()
+    commentId: string;
+    @Column()
+    addedAt: string;
+    @OneToOne(() => Users )
+    @JoinColumn({ name: 'userId' })
+    Users: Users
+    @Column('uuid')
+    userId: string;
+    @Column()
+    login: string;
+    @Column()
+    isUserBanned: boolean;
+    @Column()
+    status: string;
 }
 
 export class CommentLikeDbType {
