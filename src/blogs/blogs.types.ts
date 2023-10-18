@@ -1,5 +1,5 @@
 import { Users } from "../users/users.types";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm"
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
 
 @Entity({name: 'Blogs'})
 export class Blogs {
@@ -38,6 +38,26 @@ export class BlogDBType {
     public createdAt: string,
     public isMembership: boolean,    
   ) {}
+}
+
+@Entity({name: 'BlogBannedUsers' })
+export class BlogBannedUsers {
+  @PrimaryGeneratedColumn('uuid')
+  banId: string
+  @ManyToOne(() => Blogs)
+  @JoinColumn({ name: 'blogId'})
+  Blogs: Blogs
+  @Column('uuid')
+  blogId: string;
+  @ManyToOne(() => Users )
+  @JoinColumn({ name: 'userId' })
+  Users: Users
+  @Column({type: 'uuid', nullable: true})
+  bannedUserId: string;
+  @Column()
+  banDate: string;
+  @Column()
+  banReason: string;
 }
 
 export type BannedBlogUsersType = {

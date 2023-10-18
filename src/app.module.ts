@@ -89,7 +89,7 @@ import { SaUpdatePostByIdFromBloggerControllerUseCase } from './blogs/applicatio
 import { SaDeletePostByIdFromUriUseCase } from './blogs/application/use-cases/sa-delete-post-by-id-use-case';
 import { Users } from './users/users.types';
 import { UserDevices } from './usersDevices/users-devices.types';
-import { Blogs } from './blogs/blogs.types';
+import { BlogBannedUsers, Blogs } from './blogs/blogs.types';
 import { Posts } from './posts/posts.types';
 import { Comments } from './comments/comments.types';
 import { CommentLikes, PostLikes } from './likes/db.likes.types';
@@ -135,7 +135,7 @@ SetLikeStatusForCommentUseCase,]
       typeOrmConfig
     ),
     TypeOrmModule.forFeature(
-      [Users, UserDevices, Blogs, Posts, Comments, PostLikes, CommentLikes]
+      [Users, UserDevices, Blogs, Posts, Comments, PostLikes, CommentLikes, BlogBannedUsers]
     ),
     CqrsModule,
     ThrottlerModule.forRoot({
