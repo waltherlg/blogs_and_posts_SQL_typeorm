@@ -82,24 +82,18 @@ export class UsersRepository {
     return result.affected > 0
   }
 
-  async newPasswordSetRow(recoveryCode: string, newPasswordHash: string): Promise<boolean> {    
-    const query = `
-  UPDATE public."Users"
-  SET "passwordHash" = $2, "passwordRecoveryCode" = null, "expirationDateOfRecoveryCode" = null
-  WHERE "passwordRecoveryCode" = $1;
-  `;
-  try {
-    await this.dataSource.query(query, [
-      recoveryCode,
-      newPasswordHash
-    ]);
-    return true;
-  } catch (error) {
-    return false;
-  }
+  async confirmUser(confirmationCode: string): Promise<boolean>{
+    const result = await this.usersRepository.update(
+      {confirmationCode: confirmationCode},
+      {confirmationCode: null,
+      expirationDateOfConfirmationCode: null,
+      isConfirmed: true}
+    )
+    return result.affected > 0
+
   }
 
-  async confirmUser(confirmationCode: string): Promise<boolean>{
+  async confirmUserRow(confirmationCode: string): Promise<boolean>{
     const query = `
     UPDATE public."Users"
     SET "confirmationCode"=null, "expirationDateOfConfirmationCode"=null, "isConfirmed"=true
