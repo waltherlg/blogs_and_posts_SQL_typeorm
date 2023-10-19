@@ -108,6 +108,20 @@ export class UsersRepository {
     if (!isValidUUID(userBanDto.userId)) {
       return false;
     }
+    const result = await this.usersRepository.update(
+      {userId: userBanDto.userId},
+      {
+        isUserBanned: userBanDto.isBanned,
+        banDate: userBanDto.banDate,
+        banReason: userBanDto.banReason
+      }
+    )
+  }
+
+  async changeUserBanStatusRow(userBanDto): Promise<boolean> {
+    if (!isValidUUID(userBanDto.userId)) {
+      return false;
+    }
     const query = `
     UPDATE public."Users"
     SET "isUserBanned" = $2, "banDate" = $3, "banReason" = $4 
@@ -124,7 +138,6 @@ export class UsersRepository {
     } catch (error) {
       return false;
     }
-
   }
 
   async isEmailExists(email: string): Promise<boolean> {
