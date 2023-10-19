@@ -62,36 +62,13 @@ export class UsersRepository {
     return result.affected > 0
   }
 
-  async addPasswordRecoveryDataRow(
-    passwordRecoveryData: PasswordRecoveryModel,
-  ): Promise<boolean> {    
-    
-    const query = `
-  UPDATE public."Users"
-  SET "passwordRecoveryCode" = $2, "expirationDateOfRecoveryCode" = $3
-  WHERE "email" = $1;
-  `;
-  try {
-    await this.dataSource.query(query, [
-      passwordRecoveryData.email,
-      passwordRecoveryData.passwordRecoveryCode,
-      passwordRecoveryData.expirationDateOfRecoveryCode
-    ]);
-    return true;
-  } catch (error) {
-    return false;
-  }
-  }
-
   async isPasswordRecoveryCodeExistAndNotExpired(confirmationCode:string): Promise<boolean>{
-    const query = `
-    SELECT COUNT(*) AS count
-    FROM public."Users"
-    WHERE "passwordRecoveryCode" = $1
-    AND "expirationDateOfRecoveryCode" > NOW()
-  `;
-  const result = await this.dataSource.query(query, [confirmationCode]);
-  const count = result[0].count;
+    const count = await this.usersRepository
+    .createQueryBuilder('user')
+    .where('user.passwordRecoveryCode = :confirmationCode', { confirmationCode })
+    .andWhere('user.expirationDateOfRecoveryCode > :currentDate', { currentDate: new Date() })
+    .getCount();
+
   return count > 0;
   }
 
