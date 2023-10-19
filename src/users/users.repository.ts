@@ -5,6 +5,7 @@ import { PasswordRecoveryModel } from '../auth/auth.types';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { log } from 'console';
+import { tr } from 'date-fns/locale';
 
 @Injectable()
 export class UsersRepository {
@@ -118,41 +119,9 @@ export class UsersRepository {
     )
   }
 
-  async changeUserBanStatusRow(userBanDto): Promise<boolean> {
-    if (!isValidUUID(userBanDto.userId)) {
-      return false;
-    }
-    const query = `
-    UPDATE public."Users"
-    SET "isUserBanned" = $2, "banDate" = $3, "banReason" = $4 
-    WHERE "userId" = $1;
-    `
-    try {
-      await this.dataSource.query(query, [
-        userBanDto.userId,
-        userBanDto.isBanned,
-        userBanDto.banDate,
-        userBanDto.banReason
-      ]);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
   async isEmailExists(email: string): Promise<boolean> {
     const count = await this.usersRepository.count({ where: { email } });
     return count > 0;
-  }
-
-  async isEmailConfirmed(email: string): Promise<boolean> {
-    const query = `
-      SELECT "isConfirmed"
-      FROM public."Users"
-      WHERE email = $1
-    `;
-    const result = await this.dataSource.query(query, [email]);
-    return result;
   }
 
   async isLoginExists(login: string): Promise<boolean> {
@@ -185,21 +154,20 @@ export class UsersRepository {
   return count > 0;
   }
 
-  
-  async isEmailAlreadyCofirmed(email: string): Promise<boolean>{
-    const query = `
-    SELECT "isConfirmed"
-    FROM public."Users"
-    WHERE email=$1
-    LIMIT 1
-    `
-  const result = await this.dataSource.query(query, [email]);
-  if (result.length > 0) {
-    const isConfirmed = result[0].isConfirmed;
-    return isConfirmed;
-  }
-  return false;   
-  }
+  async isEmailAlreadyCofirmed(email: string): Promise<boolean> {
+    const result = await this.usersRepository.find(
+      {
+        select: {
+          isConfirmed: true
+        },
+        where:{ email }
+      })
+      if (result.length > 0) {
+        const isConfirmed = result[0].isConfirmed;      
+        return isConfirmed;
+      }
+      return false;   
+      }
 
   async isUserBanned(userId): Promise<boolean>{
     if (!isValidUUID(userId)) {
