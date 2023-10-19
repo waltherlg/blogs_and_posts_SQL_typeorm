@@ -54,6 +54,17 @@ export class UsersRepository {
   async addPasswordRecoveryData(
     passwordRecoveryData: PasswordRecoveryModel,
   ): Promise<boolean> {    
+    const result = await this.usersRepository.update(
+      {email: passwordRecoveryData.email},
+      {passwordRecoveryCode: passwordRecoveryData.passwordRecoveryCode,
+      expirationDateOfRecoveryCode: passwordRecoveryData.expirationDateOfRecoveryCode}
+    )
+    return result.affected > 0
+  }
+
+  async addPasswordRecoveryDataRow(
+    passwordRecoveryData: PasswordRecoveryModel,
+  ): Promise<boolean> {    
     
     const query = `
   UPDATE public."Users"
