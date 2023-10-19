@@ -72,7 +72,17 @@ export class UsersRepository {
   return count > 0;
   }
 
-  async newPasswordSet(recoveryCode: string, newPasswordHash: string): Promise<boolean> {    
+  async newPasswordSet(recoveryCode: string, newPasswordHash: string): Promise<boolean> {
+    const result = await this.usersRepository.update(
+      { passwordRecoveryCode: recoveryCode },
+      { passwordHash: newPasswordHash,
+        passwordRecoveryCode: null,
+        expirationDateOfRecoveryCode: null}
+    )   
+    return result.affected > 0
+  }
+
+  async newPasswordSetRow(recoveryCode: string, newPasswordHash: string): Promise<boolean> {    
     const query = `
   UPDATE public."Users"
   SET "passwordHash" = $2, "passwordRecoveryCode" = null, "expirationDateOfRecoveryCode" = null

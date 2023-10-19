@@ -23,7 +23,7 @@ describe('End-to-End Tests', () => {
   testSaUsersCrud()
   testSaUsersGetWithPagination()
   //testSecurityDevices()
-  //testAuthOperations()
+  testAuthOperations()
   //testAuthValidations()
   //testBloggerCrudOnlyBlogs()
   //testBanUserForBlogByBlogger()
