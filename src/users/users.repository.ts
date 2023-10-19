@@ -83,6 +83,19 @@ export class UsersRepository {
     return count > 0;
   }
 
+  async isConfirmationCodeExistAndNotExpired(confirmationCode: string) {
+    const count = await this.usersRepository
+    .createQueryBuilder('user')
+    .where('user.confirmationCode = :confirmationCode', {
+      confirmationCode,
+    })
+    .andWhere('user.expirationDateOfConfirmationCode > :currentDate', {
+      currentDate: new Date(),
+    })
+    .getCount();
+  return count > 0;
+  }
+
   async newPasswordSet(
     recoveryCode: string,
     newPasswordHash: string,
@@ -160,18 +173,6 @@ export class UsersRepository {
     const count = await this.usersRepository.count({
       where: { passwordRecoveryCode },
     });
-    return count > 0;
-  }
-
-  async isConfirmationCodeExistAndNotExpired(confirmationCode: string) {
-    const query = `
-    SELECT COUNT(*) AS count
-    FROM public."Users"
-    WHERE "confirmationCode" = $1
-    AND "expirationDateOfConfirmationCode" > NOW()
-  `;
-    const result = await this.dataSource.query(query, [confirmationCode]);
-    const count = result[0].count;
     return count > 0;
   }
 
