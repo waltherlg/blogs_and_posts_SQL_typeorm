@@ -31,13 +31,14 @@ export class UsersRepository {
     if (!isValidUUID(userId)) {
       return false;
     }
-    
-    const query = `
-    DELETE FROM public."Users"
-    WHERE "userId" = $1
-    `
-    const result = await this.dataSource.query(query, [userId]);
-    return result[1] > 0;   
+    const result = await this.usersRepository
+    .createQueryBuilder()
+    .delete()
+    .from(Users)
+    .where('userId = :userId', { userId })
+    .execute();  
+
+    return result.affected > 0
   }
 
   async getUserDBTypeById(userId): Promise<UserDBType | null> {
@@ -47,7 +48,7 @@ export class UsersRepository {
     const result = await this.usersRepository.findOne({
       where: [{ userId: userId }],
     });
-    return result[0];
+    return result
   }
 
   async addPasswordRecoveryData(
