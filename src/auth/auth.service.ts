@@ -46,6 +46,6 @@ export class AuthService {
     if (!isPasswordValid) {
       return null;
     }
-    return user.id;
+    return user.userId;
   }
 }

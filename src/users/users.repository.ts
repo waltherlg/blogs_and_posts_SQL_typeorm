@@ -4,6 +4,7 @@ import { UserDBType, Users } from './users.types';
 import { PasswordRecoveryModel } from '../auth/auth.types';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
+import { log } from 'console';
 
 @Injectable()
 export class UsersRepository {
@@ -16,15 +17,14 @@ export class UsersRepository {
     return result.userId
   }
 
-  async getUserForLoginByLoginOrEmail(loginOrEmail: string){
-    const query = `
-    SELECT "userId" AS id, "isConfirmed", "isUserBanned", "passwordHash"
-    FROM public."Users"
-    WHERE email = $1 OR login = $1
-    LIMIT 1
-  `;
-  const result = await this.dataSource.query(query, [loginOrEmail]); 
-  return result[0];
+  async getUserForLoginByLoginOrEmail(loginOrEmail: string): Promise<UserDBType | null | undefined>{
+    const result = await this.usersRepository.find({
+      where: [
+        {login: loginOrEmail},
+        {email: loginOrEmail}
+      ]
+    })
+    return result[0]
   }
 
   async deleteUserById(userId: string): Promise<boolean> {
@@ -161,13 +161,7 @@ export class UsersRepository {
   }
 
   async isEmailExists(email: string): Promise<boolean> {
-    const query = `
-      SELECT COUNT(*) AS count
-      FROM public."Users"
-      WHERE email = $1
-    `;
-    const result = await this.dataSource.query(query, [email]);
-    const count = result[0].count;   
+    const count = await this.usersRepository.count({ where: { email } });
     return count > 0;
   }
 
@@ -182,13 +176,7 @@ export class UsersRepository {
   }
 
   async isLoginExists(login: string): Promise<boolean> {
-    const query = `
-      SELECT COUNT(*) AS count
-      FROM public."Users"
-      WHERE login = $1
-    `;
-    const result = await this.dataSource.query(query, [login]);
-    const count = result[0].count;
+    const count = await this.usersRepository.count({ where: { login } });
     return count > 0;
   }
 
@@ -196,24 +184,12 @@ export class UsersRepository {
     if (!isValidUUID(userId)) {
       return false;
     }
-    const query = `
-      SELECT COUNT(*) AS count
-      FROM public."Users"
-      WHERE "userId" = $1
-    `;
-    const result = await this.dataSource.query(query, [userId]);
-    const count = result[0].count;
+    const count = await this.usersRepository.count({ where: { userId } });
     return count > 0;
   }
 
   async isPasswordRecoveryCodeExist(passwordRecoveryCode: string): Promise<boolean> {
-    const query = `
-      SELECT COUNT(*) AS count
-      FROM public."Users"
-      WHERE "passwordRecoveryCode" = $1
-    `;
-    const result = await this.dataSource.query(query, [passwordRecoveryCode]);
-    const count = result[0].count;
+    const count = await this.usersRepository.count({ where: { passwordRecoveryCode } });
     return count > 0;
   }
 
