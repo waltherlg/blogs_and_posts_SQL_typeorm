@@ -145,6 +145,12 @@ export let testUserPag = {
       banReason: null
     }
   },
+  outputUserSaaaabbbccc:{
+    id: expect.any(String),
+    login: 'aaabbbccc',
+    email: 'dddddd@gemeil.com',
+    createdAt: expect.any(String),
+  },
   outputUsereeefffggg:{
     id: expect.any(String),
     login: 'eeefffggg',
@@ -155,6 +161,12 @@ export let testUserPag = {
       banDate: null,
       banReason: null
     }
+  },
+  outputUserSaeeefffggg:{
+    id: expect.any(String),
+    login: 'eeefffggg',
+    email: 'hhhhhh@gemeil.com',
+    createdAt: expect.any(String),
   },
   outputUseriiijjjkkk:{
     id: expect.any(String),
@@ -167,6 +179,12 @@ export let testUserPag = {
       banReason: null
     }
   },
+  outputUserSaiiijjjkkk:{
+    id: expect.any(String),
+    login: 'iiijjjkkk',
+    email: 'llllll@gemeil.com',
+    createdAt: expect.any(String),
+  },
   outputUsermmmnnnooo:{
     id: expect.any(String),
     login: 'mmmnnnooo',
@@ -177,6 +195,12 @@ export let testUserPag = {
       banDate: null,
       banReason: null
     }
+  },
+  outputUserSammmnnnooo:{
+    id: expect.any(String),
+    login: 'mmmnnnooo',
+    email: 'pppppp@gemeil.com',
+    createdAt: expect.any(String),
   },
   outputUserqqqrrrsss:{
     id: expect.any(String),
@@ -189,6 +213,12 @@ export let testUserPag = {
       banReason: null
     }
   },
+  outputUserSaqqqrrrsss:{
+    id: expect.any(String),
+    login: 'qqqrrrsss',
+    email: 'tttttt@gemeil.com',
+    createdAt: expect.any(String),
+  },
   outputUseraaafffkkk:{
     id: expect.any(String),
     login: 'aaafffkkk',
@@ -199,6 +229,12 @@ export let testUserPag = {
       banDate: null,
       banReason: null
     }
+  },
+  outputUserSaaaafffkkk:{
+    id: expect.any(String),
+    login: 'aaafffkkk',
+    email: 'ddhhll@gemeil.com',
+    createdAt: expect.any(String),
   },
   outputUsereeefffgggBanned:{
     id: expect.any(String),

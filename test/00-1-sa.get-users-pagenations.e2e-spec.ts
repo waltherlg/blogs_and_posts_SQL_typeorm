@@ -61,7 +61,7 @@ export function testSaUsersGetWithPagination() {
 
         const createdResponseBody = createResponse.body;
 
-        expect(createdResponseBody).toEqual(testUserPag.outputUsermmmnnnooo);
+        expect(createdResponseBody).toEqual(testUserPag.outputUserSammmnnnooo);
   });
 
   let idUsereeefffggg
@@ -76,7 +76,7 @@ export function testSaUsersGetWithPagination() {
       const createdResponseBody = createResponse.body;
       idUsereeefffggg = createdResponseBody.id
 
-      expect(createdResponseBody).toEqual(testUserPag.outputUsereeefffggg);
+      expect(createdResponseBody).toEqual(testUserPag.outputUserSaeeefffggg);
 });
 
 it('00-00 sa/users post = 201 create user aaabbbccc with return', async () => {
@@ -88,7 +88,7 @@ it('00-00 sa/users post = 201 create user aaabbbccc with return', async () => {
 
     const createdResponseBody = createResponse.body;
 
-    expect(createdResponseBody).toEqual(testUserPag.outputUseraaabbbccc);
+    expect(createdResponseBody).toEqual(testUserPag.outputUserSaaaabbbccc);
 });
 
     it('00-00 sa/users post = 201 create user qqqrrrsss with return', async () => {
@@ -100,7 +100,7 @@ it('00-00 sa/users post = 201 create user aaabbbccc with return', async () => {
   
         const createdResponseBody = createResponse.body;
   
-        expect(createdResponseBody).toEqual(testUserPag.outputUserqqqrrrsss);
+        expect(createdResponseBody).toEqual(testUserPag.outputUserSaqqqrrrsss);
   });
 
   let idUseriiijjjkkk
@@ -115,7 +115,7 @@ it('00-00 sa/users post = 201 create user aaabbbccc with return', async () => {
           const createdResponseBody = createResponse.body;
           idUseriiijjjkkk = createdResponseBody.id
   
-          expect(createdResponseBody).toEqual(testUserPag.outputUseriiijjjkkk);
+          expect(createdResponseBody).toEqual(testUserPag.outputUserSaiiijjjkkk);
     });
 
     it('00-00 sa/users post = 201 create user aaafffkkk with return', async () => {
@@ -127,7 +127,7 @@ it('00-00 sa/users post = 201 create user aaabbbccc with return', async () => {
 
         const createdResponseBody = createResponse.body;
 
-        expect(createdResponseBody).toEqual(testUserPag.outputUseraaafffkkk);
+        expect(createdResponseBody).toEqual(testUserPag.outputUserSaaaafffkkk);
   });
 
 it('01-01 sa/users GET = 200 return array with 5 users by createdAt desc', async () => {

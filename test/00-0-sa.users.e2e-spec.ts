@@ -64,7 +64,7 @@ export function testSaUsersCrud() {
         const createdResponseBody = createResponse.body;
         userId1 = createdResponseBody.id
 
-        expect(createdResponseBody).toEqual(testUser.outputUser1);
+        expect(createdResponseBody).toEqual(testUser.outputUser1Sa);
     });
 
     it('01-01 sa/users GET = 200 return array with user1', async () => {
