@@ -16,58 +16,6 @@ export class UsersRepository {
     return result.userId
   }
 
-
-  async createUserRow(userDTO): Promise<string> {
-    const query = `INSERT INTO public."Users"(
-      "userId", 
-      login, 
-      "passwordHash", 
-      email, 
-      "createdAt", 
-      "isUserBanned", 
-      "banDate", 
-      "banReason", 
-      "confirmationCode", 
-      "expirationDateOfConfirmationCode", 
-      "isConfirmed", 
-      "passwordRecoveryCode", 
-      "expirationDateOfRecoveryCode")
-      VALUES (
-      $1, 
-      $2, 
-      $3, 
-      $4, 
-      $5, 
-      $6,
-      $7,
-      $8,
-      $9,
-      $10,
-      $11,
-      $12,
-      $13)
-      RETURNING "userId"`;
-
-    const result = await this.dataSource.query(query, [
-      userDTO.userId,
-      userDTO.login,
-      userDTO.passwordHash,
-      userDTO.email,
-      userDTO.createdAt,
-      userDTO.isUserBanned,
-      userDTO.banDate,
-      userDTO.banReason,
-      userDTO.confirmationCode,
-      userDTO.expirationDateOfConfirmationCode,
-      userDTO.isConfirmed,
-      userDTO.passwordRecoveryCode,
-      userDTO.expirationDateOfRecoveryCode
-    ])
-
-    const userId = result[0].userId;
-    return userId;
-  }
-
   async getUserForLoginByLoginOrEmail(loginOrEmail: string){
     const query = `
     SELECT "userId" AS id, "isConfirmed", "isUserBanned", "passwordHash"
@@ -96,13 +44,9 @@ export class UsersRepository {
     if (!isValidUUID(userId)) {
       return null;
     }
-    const query = `
-    SELECT * FROM public."Users"
-    WHERE "userId" = $1
-    `
-    const result = await this.dataSource.query(query, [
-      userId
-    ]); 
+    const result = await this.usersRepository.findOne({
+      where: [{ userId: userId }],
+    });
     return result[0];
   }
 
