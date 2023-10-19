@@ -93,40 +93,15 @@ export class UsersRepository {
 
   }
 
-  async confirmUserRow(confirmationCode: string): Promise<boolean>{
-    const query = `
-    UPDATE public."Users"
-    SET "confirmationCode"=null, "expirationDateOfConfirmationCode"=null, "isConfirmed"=true
-    WHERE "confirmationCode" = $1;
-    `;
-    try {
-      await this.dataSource.query(query, [
-        confirmationCode
-      ]);
-  
-      return true;
-    } catch (error) {
-      return false;
-    }
-  }
-
   async refreshConfirmationData(refreshConfirmationData){
-    const query = `
-    UPDATE public."Users"
-    SET "confirmationCode"=$1, "expirationDateOfConfirmationCode"=$2
-    WHERE email = $3;
-    `
-    try {
-      await this.dataSource.query(query, [
-        refreshConfirmationData.confirmationCode,
-        refreshConfirmationData.expirationDateOfConfirmationCode,
-        refreshConfirmationData.email
-      ]);
-  
-      return true;
-    } catch (error) {
-      return false;
-    }
+    const result = await this.usersRepository.update(
+      {email: refreshConfirmationData.email},
+      {
+        confirmationCode: refreshConfirmationData.confirmationCode,
+        expirationDateOfConfirmationCode: refreshConfirmationData.expirationDateOfConfirmationCode
+      }
+    )
+    return result.affected > 0
   }
 
   async changeUserBanStatus(userBanDto): Promise<boolean> {
