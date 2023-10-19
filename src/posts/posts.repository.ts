@@ -6,8 +6,7 @@ import { validate as isValidUUID } from 'uuid';
 
 @Injectable()
 export class PostsRepository {
-  constructor(
-  @InjectDataSource() protected dataSource: DataSource) {}
+  constructor(@InjectDataSource() protected dataSource: DataSource) {}
 
   async createPost(postDTO: PostDBType): Promise<string> {
     const query = `
@@ -43,9 +42,9 @@ export class PostsRepository {
       postDTO.userId,
       postDTO.likesCount,
       postDTO.dislikesCount,
-    ])
+    ]);
     const postId = result[0].postId;
-    
+
     return postId;
   }
 
@@ -56,8 +55,8 @@ export class PostsRepository {
     const query = `
     DELETE FROM  public."Posts"
     WHERE "postId" = $1
-    `
-    const result = await this.dataSource.query(query,[postId]);
+    `;
+    const result = await this.dataSource.query(query, [postId]);
     return result[1] > 0;
   }
 
@@ -68,12 +67,17 @@ export class PostsRepository {
     const query = `
     SELECT * FROM public."Posts"
     WHERE "postId" = $1
-    `
-    const result = await this.dataSource.query(query, [postId]);    
+    `;
+    const result = await this.dataSource.query(query, [postId]);
     return result[0];
   }
 
-  async updatePostById(postId:string, title:string, shortDescription:string, content:string): Promise<boolean>{
+  async updatePostById(
+    postId: string,
+    title: string,
+    shortDescription: string,
+    content: string,
+  ): Promise<boolean> {
     if (!isValidUUID(postId)) {
       return false;
     }
@@ -82,22 +86,27 @@ export class PostsRepository {
     SET title = $2, "shortDescription" = $3, "content" = $4
     WHERE "postId" = $1
     `;
-    const result = await this.dataSource.query(query, [postId, title, shortDescription, content])
+    const result = await this.dataSource.query(query, [
+      postId,
+      title,
+      shortDescription,
+      content,
+    ]);
     const count = result[1];
-    return count === 1
+    return count === 1;
   }
 
- async isPostExist(postId: string): Promise<boolean> {
-  if (!isValidUUID(postId)) {
-    return false;
-  }
-  const query = `
+  async isPostExist(postId: string): Promise<boolean> {
+    if (!isValidUUID(postId)) {
+      return false;
+    }
+    const query = `
     SELECT COUNT(*) AS count
     FROM public."Posts"
     WHERE "postId" = $1
   `;
-  const result = await this.dataSource.query(query, [postId]);
-  const count = result[0].count;
-  return count > 0;
+    const result = await this.dataSource.query(query, [postId]);
+    const count = result[0].count;
+    return count > 0;
   }
 }

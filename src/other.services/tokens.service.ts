@@ -1,18 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { JwtService } from "@nestjs/jwt";
+import { JwtService } from '@nestjs/jwt';
 import { randomUUID } from 'crypto';
 import * as process from 'process';
 
 @Injectable()
 export class TokensService {
-    constructor(private readonly jwtService: JwtService){}
-    
+  constructor(private readonly jwtService: JwtService) {}
+
   async createTokens(userId: string, deviceId: string) {
     const accessToken = await this.jwtService.signAsync(
       { userId: userId },
       { expiresIn: process.env.ACCESS_TOKEN_EXPIRES },
     );
-    
+
     const refreshTokenPayload = { userId, deviceId, salt: randomUUID() };
     const refreshToken = await this.jwtService.signAsync(refreshTokenPayload, {
       expiresIn: process.env.REFRESH_TOKEN_EXPIRES,

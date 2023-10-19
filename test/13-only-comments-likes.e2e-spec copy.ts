@@ -4,7 +4,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 export function onlyCommentLikesCrud13() {
-  describe('Post Likes Crud CRUD operation \"if all is ok\" (e2e). ', () => {
+  describe('Post Likes Crud CRUD operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
@@ -17,7 +17,6 @@ export function onlyCommentLikesCrud13() {
     let accessTokenUser3: any;
     let accessTokenUser4: any;
     let accessTokenUser5: any;
-    
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({

@@ -11,12 +11,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import { RequestQueryParamsModel, DEFAULT_QUERY_PARAMS } from '../../models/types';
 import {
-  Length,
-  Validate,
-  MaxLength,
-} from 'class-validator';
+  RequestQueryParamsModel,
+  DEFAULT_QUERY_PARAMS,
+} from '../../models/types';
+import { Length, Validate, MaxLength } from 'class-validator';
 import { CheckService } from '../../other.services/check.service';
 import { PostsQueryRepository } from '../posts.query.repository';
 
@@ -34,7 +33,7 @@ import {
 } from '../../middlewares/validators';
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateCommentForSpecificPostCommand } from '../use-cases/create-comment-for-specific-post-use-case';
-import { SetLikeStatusForPostCommand } from '../use-cases/set-like-status-for-post-use-case'; 
+import { SetLikeStatusForPostCommand } from '../use-cases/set-like-status-for-post-use-case';
 import { handlePostActionResult } from '../helpers/post.enum.action.result';
 
 export class CreatePostInputModelType {
@@ -113,7 +112,7 @@ export class PostController {
       request.user.userId,
     );
   }
-  
+
   @UseGuards(JwtAuthGuard)
   @Post(':id/comments')
   async createCommentByPostId(
@@ -121,12 +120,20 @@ export class PostController {
     @Param('id') postId: string,
     @Body() content: CreateCommentInputModelType,
   ) {
-    const resultOrCommentId = await this.commandBus.execute(new CreateCommentForSpecificPostCommand(request.user.userId, postId, content.content))
-    handlePostActionResult(resultOrCommentId)
-    const createdComment = await this.commentsQueryRepository.getCommentById(resultOrCommentId)
-    return createdComment
+    const resultOrCommentId = await this.commandBus.execute(
+      new CreateCommentForSpecificPostCommand(
+        request.user.userId,
+        postId,
+        content.content,
+      ),
+    );
+    handlePostActionResult(resultOrCommentId);
+    const createdComment = await this.commentsQueryRepository.getCommentById(
+      resultOrCommentId,
+    );
+    return createdComment;
   }
-  
+
   @UseGuards(OptionalJwtAuthGuard)
   @Get(':id/comments')
   async getAllCommentsByPostId(
@@ -153,11 +160,13 @@ export class PostController {
     @Body()
     likeStatus: SetLikeStatusForPostInputModel,
   ) {
-    const result = await this.commandBus.execute(new SetLikeStatusForPostCommand(
-      request.user.userId,
-      postId,
-      likeStatus.likeStatus,
-    ))
-    handlePostActionResult(result)
+    const result = await this.commandBus.execute(
+      new SetLikeStatusForPostCommand(
+        request.user.userId,
+        postId,
+        likeStatus.likeStatus,
+      ),
+    );
+    handlePostActionResult(result);
   }
 }

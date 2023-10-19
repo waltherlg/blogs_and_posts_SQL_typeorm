@@ -100,43 +100,50 @@ if (!emailUser || !emailPassword) {
   throw new Error('password or user for emailAdapter not found');
 }
 
-const useCases = [CreateBlogUseCase, 
+const useCases = [
+  CreateBlogUseCase,
   UpdateBlogByIdFromUriUseCase,
   BindBlogWithUserUseCase,
   SaCreatePostFromBloggerControllerUseCase,
-UpdatePostByIdFromBloggerControllerUseCase,
-SaUpdatePostByIdFromBloggerControllerUseCase,
-SaUpdatePostByIdUseCase,
-SaUpdateBlogByIdFromUriUseCase,
-DeleteBlogByIdFromUriUseCase,
-SaDeleteBlogByIdFromUriUseCase,
-SaDeletePostByIdFromUriUseCase,
-DeletePostByIdFromUriUseCase,
-CreateCommentForSpecificPostUseCase,
-UserBanStatusChangeUseCase,
-BanUserForSpecificBlogUseCase,
-SaBanBlogUseCase,
-SaCreateBlogUseCase,
-RegisterUserUseCase,
-RegisterationEmailResendingUseCase,
-RegisterationConfirmaitonUseCase,
-LoginUseCase,
-PasswordRecoveryEmailUseCase,
-NewPasswordSetUseCase,
-RefreshTokenUseCase,
-LogoutUseCase,
-CreateUserUseCase,
-SetLikeStatusForPostUseCase,
-SetLikeStatusForCommentUseCase,]
+  UpdatePostByIdFromBloggerControllerUseCase,
+  SaUpdatePostByIdFromBloggerControllerUseCase,
+  SaUpdatePostByIdUseCase,
+  SaUpdateBlogByIdFromUriUseCase,
+  DeleteBlogByIdFromUriUseCase,
+  SaDeleteBlogByIdFromUriUseCase,
+  SaDeletePostByIdFromUriUseCase,
+  DeletePostByIdFromUriUseCase,
+  CreateCommentForSpecificPostUseCase,
+  UserBanStatusChangeUseCase,
+  BanUserForSpecificBlogUseCase,
+  SaBanBlogUseCase,
+  SaCreateBlogUseCase,
+  RegisterUserUseCase,
+  RegisterationEmailResendingUseCase,
+  RegisterationConfirmaitonUseCase,
+  LoginUseCase,
+  PasswordRecoveryEmailUseCase,
+  NewPasswordSetUseCase,
+  RefreshTokenUseCase,
+  LogoutUseCase,
+  CreateUserUseCase,
+  SetLikeStatusForPostUseCase,
+  SetLikeStatusForCommentUseCase,
+];
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot(
-      typeOrmConfig
-    ),
-    TypeOrmModule.forFeature(
-      [Users, UserDevices, Blogs, Posts, Comments, PostLikes, CommentLikes, BlogBannedUsers]
-    ),
+    TypeOrmModule.forRoot(typeOrmConfig),
+    TypeOrmModule.forFeature([
+      Users,
+      UserDevices,
+      Blogs,
+      Posts,
+      Comments,
+      PostLikes,
+      CommentLikes,
+      BlogBannedUsers,
+    ]),
     CqrsModule,
     ThrottlerModule.forRoot({
       ttl: 600,

@@ -1,29 +1,37 @@
-import { Users } from "../users/users.types";
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm"
+import { Users } from '../users/users.types';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-@Entity({name: 'Blogs'})
+@Entity({ name: 'Blogs' })
 export class Blogs {
-    @PrimaryColumn('uuid')  
-    blogId: string;
-    @Column()
-    name: string;
-    @Column()
-    isBlogBanned: boolean;
-    @Column({ nullable: true })
-    blogBanDate: string | null;
-    // @OneToOne(() => Users )
-    // @JoinColumn({ name: 'userId' })
-    // Users: Users
-    @Column({type: 'uuid', nullable: true})
-    userId: string | null;
-    @Column()
-    description: string;
-    @Column()
-    websiteUrl: string;
-    @Column()
-    createdAt: string;
-    @Column()
-    isMembership: boolean;  
+  @PrimaryColumn('uuid')
+  blogId: string;
+  @Column()
+  name: string;
+  @Column()
+  isBlogBanned: boolean;
+  @Column({ nullable: true })
+  blogBanDate: string | null;
+  // @OneToOne(() => Users )
+  // @JoinColumn({ name: 'userId' })
+  // Users: Users
+  @Column({ type: 'uuid', nullable: true })
+  userId: string | null;
+  @Column()
+  description: string;
+  @Column()
+  websiteUrl: string;
+  @Column()
+  createdAt: string;
+  @Column()
+  isMembership: boolean;
 }
 
 export class BlogDBType {
@@ -36,23 +44,23 @@ export class BlogDBType {
     public description: string,
     public websiteUrl: string,
     public createdAt: string,
-    public isMembership: boolean,    
+    public isMembership: boolean,
   ) {}
 }
 
-@Entity({name: 'BlogBannedUsers' })
+@Entity({ name: 'BlogBannedUsers' })
 export class BlogBannedUsers {
   @PrimaryGeneratedColumn('uuid')
-  banId: string
+  banId: string;
   @ManyToOne(() => Blogs)
-  @JoinColumn({ name: 'blogId'})
-  Blogs: Blogs
+  @JoinColumn({ name: 'blogId' })
+  Blogs: Blogs;
   @Column('uuid')
   blogId: string;
-  @ManyToOne(() => Users )
+  @ManyToOne(() => Users)
   @JoinColumn({ name: 'userId' })
-  Users: Users
-  @Column({type: 'uuid', nullable: true})
+  Users: Users;
+  @Column({ type: 'uuid', nullable: true })
   bannedUserId: string;
   @Column()
   banDate: string;
@@ -61,11 +69,11 @@ export class BlogBannedUsers {
 }
 
 export type BannedBlogUsersType = {
-  blogId: string,
-  bannedUserId: string,
+  blogId: string;
+  bannedUserId: string;
   banDate: string;
   banReason: string;
-}
+};
 
 export type BlogTypeOutput = {
   id: string;
@@ -88,12 +96,10 @@ export type blogSaTypeOutput = {
 };
 
 type blogOwnerInfoType = {
-  userId: string,
-  userLogin: string,
+  userId: string;
+  userLogin: string;
 };
 type blogBanInfoType = {
-  isBanned: string,
-  banDate: string,
-}
-
-
+  isBanned: string;
+  banDate: string;
+};

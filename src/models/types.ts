@@ -1,4 +1,3 @@
-
 export type RequestQueryParamsModel = {
   sortBy: string;
   sortDirection: string;
@@ -27,17 +26,16 @@ export const DEFAULT_BLOGS_QUERY_PARAMS: RequestBlogsQueryModel = {
 
 export type RequestBannedUsersQueryModel = RequestQueryParamsModel & {
   searchLoginTerm: string;
-}
+};
 export const DEFAULT_BANNED_USERS_QUERY_PARAMS: RequestBannedUsersQueryModel = {
   sortBy: 'createdAt',
   sortDirection: 'desc',
   pageNumber: '1',
   pageSize: '10',
-  searchLoginTerm: ''
+  searchLoginTerm: '',
 };
 
 export type RequestUsersQueryModel = RequestQueryParamsModel & {
-  
   searchLoginTerm: string;
   searchEmailTerm: string;
   banStatus: string;
@@ -50,7 +48,7 @@ export const DEFAULT_USERS_QUERY_PARAMS: RequestUsersQueryModel = {
   pageSize: '10',
   searchLoginTerm: '',
   searchEmailTerm: '',
-  banStatus: 'all'
+  banStatus: 'all',
 };
 
 export type PaginationOutputModel<T> = {

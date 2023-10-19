@@ -1,8 +1,12 @@
-
-
-import { Comments } from "src/comments/comments.types";
-import { UserDevices } from "src/usersDevices/users-devices.types";
-import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Comments } from 'src/comments/comments.types';
+import { UserDevices } from 'src/usersDevices/users-devices.types';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'Users' })
 export class Users {
@@ -24,18 +28,18 @@ export class Users {
   banReason: string | null;
   @Column({ nullable: true })
   confirmationCode: string | null;
-  @Column({type: 'timestamptz', nullable: true })
+  @Column({ type: 'timestamptz', nullable: true })
   expirationDateOfConfirmationCode: Date | null;
   @Column()
   isConfirmed: boolean;
   @Column({ nullable: true })
   passwordRecoveryCode: string | null;
-  @Column({type: 'timestamptz', nullable: true })
+  @Column({ type: 'timestamptz', nullable: true })
   expirationDateOfRecoveryCode: Date | null;
-  @OneToMany( ()=> UserDevices, d => d.userId)
-  UserDevices: UserDevices[]
-  @OneToMany(()=> Comments, c => c.userId)
-  Comments: Comments[]
+  @OneToMany(() => UserDevices, (d) => d.userId)
+  UserDevices: UserDevices[];
+  @OneToMany(() => Comments, (c) => c.userId)
+  Comments: Comments[];
 }
 
 export type CommentsLikeType = {

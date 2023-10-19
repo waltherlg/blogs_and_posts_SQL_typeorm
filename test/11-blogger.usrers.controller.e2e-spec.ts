@@ -17,7 +17,6 @@ export function bloggerUsersControllers() {
     let accessTokenUser3: any;
     let accessTokenUser4: any;
     let accessTokenUser5: any;
-    
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -35,11 +34,11 @@ export function bloggerUsersControllers() {
     let PostId1User1: string;
     let createdCommentId: string;
 
-    let userId1: string
-    let userId2: string
-    let userId3: string
-    let userId4: string
-    let userId5: string
+    let userId1: string;
+    let userId2: string;
+    let userId3: string;
+    let userId4: string;
+    let userId5: string;
 
     it('00-00 testing/all-data DELETE = 204 removeAllData', async () => {
       await request(app.getHttpServer())
@@ -57,8 +56,8 @@ export function bloggerUsersControllers() {
           email: 'ruslan@gmail-1.com',
         })
         .expect(201);
-        const createdResponse = createResponse.body;
-        userId1 = createdResponse.id; 
+      const createdResponse = createResponse.body;
+      userId1 = createdResponse.id;
     });
 
     it('00-00 login user1 = 204 login user1', async () => {
@@ -78,16 +77,16 @@ export function bloggerUsersControllers() {
 
     it('00-00 auth/registration = 204 register user2', async () => {
       const createResponse = await request(app.getHttpServer())
-      .post(`${endpoints.saUsers}`)
-      .set('Authorization', `Basic ${basicAuthRight}`)
+        .post(`${endpoints.saUsers}`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
         .send({
           login: 'user2',
           password: 'qwerty',
           email: 'ruslan@gmail-2.com',
         })
         .expect(201);
-        const createdResponse = createResponse.body;
-        userId2 = createdResponse.id; 
+      const createdResponse = createResponse.body;
+      userId2 = createdResponse.id;
     });
 
     it('00-00 login user2 = 204 login user2', async () => {
@@ -107,16 +106,16 @@ export function bloggerUsersControllers() {
 
     it('00-00 auth/registration = 204 register user3', async () => {
       const createResponse = await request(app.getHttpServer())
-      .post(`${endpoints.saUsers}`)
-      .set('Authorization', `Basic ${basicAuthRight}`)
+        .post(`${endpoints.saUsers}`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
         .send({
           login: 'user3',
           password: 'qwerty',
           email: 'ruslan@gmail-3.com',
         })
-        .expect(201)
-        const createdResponse = createResponse.body;
-        userId3 = createdResponse.id; ;
+        .expect(201);
+      const createdResponse = createResponse.body;
+      userId3 = createdResponse.id;
     });
 
     it('00-00 login user3 = 204 login user3', async () => {
@@ -134,19 +133,18 @@ export function bloggerUsersControllers() {
       });
     });
 
-
     it('00-00 auth/registration = 204 register user4', async () => {
       const createResponse = await request(app.getHttpServer())
-      .post(`${endpoints.saUsers}`)
-      .set('Authorization', `Basic ${basicAuthRight}`)
+        .post(`${endpoints.saUsers}`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
         .send({
           login: 'user4',
           password: 'qwerty',
           email: 'ruslan@gmail-4.com',
         })
         .expect(201);
-        const createdResponse = createResponse.body;
-        userId4 = createdResponse.id; 
+      const createdResponse = createResponse.body;
+      userId4 = createdResponse.id;
     });
 
     it('00-00 login user4 = 204 login user4', async () => {
@@ -164,19 +162,18 @@ export function bloggerUsersControllers() {
       });
     });
 
-    
     it('00-00 auth/registration = 204 register user5', async () => {
       const createResponse = await request(app.getHttpServer())
-      .post(`${endpoints.saUsers}`)
-      .set('Authorization', `Basic ${basicAuthRight}`)
+        .post(`${endpoints.saUsers}`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
         .send({
           login: 'user5',
           password: 'qwerty',
           email: 'ruslan@gmail-5.com',
         })
         .expect(201);
-        const createdResponse = createResponse.body;
-        userId5 = createdResponse.id; 
+      const createdResponse = createResponse.body;
+      userId5 = createdResponse.id;
     });
 
     it('00-00 login user5 = 204 login user5', async () => {
@@ -206,7 +203,7 @@ export function bloggerUsersControllers() {
         .expect(201);
 
       const createdResponseOfFirstBlog = testsResponse.body;
-      
+
       BlogId1User1 = createdResponseOfFirstBlog.id;
 
       expect(createdResponseOfFirstBlog).toEqual({
@@ -252,30 +249,30 @@ export function bloggerUsersControllers() {
     });
 
     it('01-02 blogger/users/userId/ban PUT = 204 user2 banned for blog1', async () => {
-         let testResp1 = await request(app.getHttpServer())
+      const testResp1 = await request(app.getHttpServer())
         .put(`${endpoints.bloggerUsers}/${userId2}/ban`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .send({
           isBanned: true,
-          banReason: "banReasonbanReasonbanReasonbanReason",
-          blogId: BlogId1User1
+          banReason: 'banReasonbanReasonbanReasonbanReason',
+          blogId: BlogId1User1,
         })
-        .expect(204)            
-    })
-    
+        .expect(204);
+    });
+
     it('01-02 blogger/users/userId/ban PUT = 204 user3 banned for blog1', async () => {
       const testsResponse = await request(app.getHttpServer())
         .put(`${endpoints.bloggerUsers}/${userId3}/ban`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .send({
           isBanned: true,
-          banReason: "banReasonbanReasonbanReasonbanReason",
-          blogId: BlogId1User1
+          banReason: 'banReasonbanReasonbanReasonbanReason',
+          blogId: BlogId1User1,
         })
         .expect(204);
-    })
+    });
 
-    it('01-02 posts/postId/comments POST = 403 banned user2 should\,t create comment', async () => {
+    it('01-02 posts/postId/comments POST = 403 banned user2 should,t create comment', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(`${endpoints.posts}/${PostId1User1}/comments`)
         .set('Authorization', `Bearer ${accessTokenUser2}`)
@@ -292,10 +289,7 @@ export function bloggerUsersControllers() {
         .expect(200);
     });
 
-
-
-
-/*
+    /*
     it('01-02 posts/postId/comments POST = 201 user1 create new comment', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(`${endpoints.posts}/${PostId1User1}/comments`)
@@ -587,7 +581,5 @@ export function bloggerUsersControllers() {
       });
     });
     */
-
-
   });
 }

@@ -23,12 +23,10 @@ export class TestingController {
   ) {}
 
   @Get('sql')
-  getSomethingFromSql(){
+  getSomethingFromSql() {
     return this.dataSource.query(`SELECT *
-    FROM public."Users";`)
+    FROM public."Users";`);
   }
-
-
 
   @Delete('all-data')
   @HttpCode(204)

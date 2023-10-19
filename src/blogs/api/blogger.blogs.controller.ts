@@ -25,11 +25,20 @@ import {
   UnableException,
 } from '../../exceptions/custom.exceptions';
 import { IsCustomUrl, StringTrimNotEmpty } from '../../middlewares/validators';
-import { CreateBlogCommand, CreateBlogUseCase } from '../application/use-cases/blogger-create-blog-use-case';
-import { UpdateBlogByIdFromUriCommand, UpdateBlogByIdFromUriUseCase } from '../application/use-cases/blogger-upadate-blog-using-id-from-uri-use-case';
+import {
+  CreateBlogCommand,
+  CreateBlogUseCase,
+} from '../application/use-cases/blogger-create-blog-use-case';
+import {
+  UpdateBlogByIdFromUriCommand,
+  UpdateBlogByIdFromUriUseCase,
+} from '../application/use-cases/blogger-upadate-blog-using-id-from-uri-use-case';
 import { CommandBus } from '@nestjs/cqrs';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { BlogActionResult, handleBlogOperationResult } from '../helpers/blogs.enum.action.result';
+import {
+  BlogActionResult,
+  handleBlogOperationResult,
+} from '../helpers/blogs.enum.action.result';
 import { UpdatePostByIdFromBloggerControllerCommand } from '../application/use-cases/blogger-upadate-post-by-id-from-blogs-controller-use-case';
 import { DeleteBlogByIdFromUriCommand } from '../application/use-cases/blogger-delete-blog-by-id-use-case';
 import { CreatePostFromBloggerControllerCommand } from '../application/use-cases/blogger-create-post-from-blogs-controller-use-case';
@@ -111,27 +120,35 @@ export class BloggerBlogsController {
     @Req() request,
     @Param('id') blogId: string,
     @Body() blogUpdateInputModel: UpdateBlogInputModelType,
-  ) {  
-    const result: BlogActionResult = await this.commandBus.execute(new UpdateBlogByIdFromUriCommand(
-      blogId,
-      request.user.userId,
-      blogUpdateInputModel,
-    ));
-    handleBlogOperationResult(result)
+  ) {
+    const result: BlogActionResult = await this.commandBus.execute(
+      new UpdateBlogByIdFromUriCommand(
+        blogId,
+        request.user.userId,
+        blogUpdateInputModel,
+      ),
+    );
+    handleBlogOperationResult(result);
   }
   //ready
   @Delete(':id')
   @HttpCode(204)
   async deleteBlogById(@Req() request, @Param('id') blogId: string) {
-    const result = await this.commandBus.execute(new DeleteBlogByIdFromUriCommand(blogId, request.user.userId));
-    handleBlogOperationResult(result)
+    const result = await this.commandBus.execute(
+      new DeleteBlogByIdFromUriCommand(blogId, request.user.userId),
+    );
+    handleBlogOperationResult(result);
   }
   //ready
 
   @Post()
-  async createBlog(@Req() request, @Body() blogCreateInputModel: CreateBlogInputModelType) {
-    
-    const newBlogsId = await this.commandBus.execute(new CreateBlogCommand(request.user.userId, blogCreateInputModel));
+  async createBlog(
+    @Req() request,
+    @Body() blogCreateInputModel: CreateBlogInputModelType,
+  ) {
+    const newBlogsId = await this.commandBus.execute(
+      new CreateBlogCommand(request.user.userId, blogCreateInputModel),
+    );
     const newBlog = await this.blogsQueryRepository.getBlogById(newBlogsId);
     if (!newBlog) {
       throw new UnableException('blog creating');
@@ -141,9 +158,15 @@ export class BloggerBlogsController {
 
   //ready
   @Get()
-  async getAllBlogsForCurrentUser(@Query() queryParams: RequestBlogsQueryModel, @Req() request) {
+  async getAllBlogsForCurrentUser(
+    @Query() queryParams: RequestBlogsQueryModel,
+    @Req() request,
+  ) {
     const mergedQueryParams = { ...DEFAULT_BLOGS_QUERY_PARAMS, ...queryParams };
-    return await this.blogsQueryRepository.getAllBlogsForCurrentUser(mergedQueryParams, request.user.userId);
+    return await this.blogsQueryRepository.getAllBlogsForCurrentUser(
+      mergedQueryParams,
+      request.user.userId,
+    );
   }
 
   @Post(':id/posts')
@@ -152,8 +175,14 @@ export class BloggerBlogsController {
     @Param('id') blogId: string,
     @Body() postCreateDto: CreatePostByBlogsIdInputModelType,
   ) {
-    const result = await this.commandBus.execute(new CreatePostFromBloggerControllerCommand(request.user.userId, blogId, postCreateDto))
-    handleBlogOperationResult(result) 
+    const result = await this.commandBus.execute(
+      new CreatePostFromBloggerControllerCommand(
+        request.user.userId,
+        blogId,
+        postCreateDto,
+      ),
+    );
+    handleBlogOperationResult(result);
     const newPost = await this.postsQueryRepository.getPostById(result);
     if (!newPost) {
       throw new UnableException('post creating');
@@ -164,26 +193,39 @@ export class BloggerBlogsController {
   //ready?
   @Put(':blogId/posts/:postId') // FIX:
   @HttpCode(204)
-  async updatePost(@Req() request, 
-  @Param('blogId') blogId: string, 
-  @Param('postId') postId: string,
-  @Body() postUpdateDto: UpdatePostByBlogsIdInputModelType){
-    if(!await this.checkService.isBlogExist(blogId)){
-      throw new CustomNotFoundException('blog')
+  async updatePost(
+    @Req() request,
+    @Param('blogId') blogId: string,
+    @Param('postId') postId: string,
+    @Body() postUpdateDto: UpdatePostByBlogsIdInputModelType,
+  ) {
+    if (!(await this.checkService.isBlogExist(blogId))) {
+      throw new CustomNotFoundException('blog');
     }
-    const result: BlogActionResult = await this.commandBus.execute(new UpdatePostByIdFromBloggerControllerCommand(request.user.userId, blogId, postId, postUpdateDto))
-    handleBlogOperationResult(result)
+    const result: BlogActionResult = await this.commandBus.execute(
+      new UpdatePostByIdFromBloggerControllerCommand(
+        request.user.userId,
+        blogId,
+        postId,
+        postUpdateDto,
+      ),
+    );
+    handleBlogOperationResult(result);
   }
 
-  @Delete(':blogId/posts/:postId') // FIX: 
+  @Delete(':blogId/posts/:postId') // FIX:
   @HttpCode(204)
-  async deletePost(@Req() request,
-  @Param('blogId') blogId: string,
-  @Param('postId') postId: string,){
-    if(!await this.checkService.isBlogExist(blogId)){
-      throw new CustomNotFoundException('blog')
+  async deletePost(
+    @Req() request,
+    @Param('blogId') blogId: string,
+    @Param('postId') postId: string,
+  ) {
+    if (!(await this.checkService.isBlogExist(blogId))) {
+      throw new CustomNotFoundException('blog');
     }
-    const result: BlogActionResult = await this.commandBus.execute(new DeletePostByIdFromUriCommand(request.user.userId, blogId, postId))
-    handleBlogOperationResult(result)
+    const result: BlogActionResult = await this.commandBus.execute(
+      new DeletePostByIdFromUriCommand(request.user.userId, blogId, postId),
+    );
+    handleBlogOperationResult(result);
   }
 }

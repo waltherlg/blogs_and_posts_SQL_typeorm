@@ -11,12 +11,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import {
-  IsEmail,
-  Length,
-  Matches,
-  IsBoolean,
-} from 'class-validator';
+import { IsEmail, Length, Matches, IsBoolean } from 'class-validator';
 import { UsersQueryRepository } from './users.query.repository';
 import {
   DEFAULT_QUERY_PARAMS,
@@ -25,7 +20,12 @@ import {
 } from '../models/types';
 
 import { CheckService } from '../other.services/check.service';
-import { CustomNotFoundException, EmailAlreadyExistException, LoginAlreadyExistException, UserNotFoundException } from '../exceptions/custom.exceptions';
+import {
+  CustomNotFoundException,
+  EmailAlreadyExistException,
+  LoginAlreadyExistException,
+  UserNotFoundException,
+} from '../exceptions/custom.exceptions';
 import { BasicAuthGuard } from '../auth/guards/auth.guards';
 import { StringTrimNotEmpty } from '../middlewares/validators';
 import { CommandBus } from '@nestjs/cqrs';
@@ -64,21 +64,25 @@ export class UsersController {
 
   @Put(':userId/ban')
   @HttpCode(204)
-  async changeBanStatus(@Param('userId') userId: string, @Body()banDTO: BanUserInputModel){ 
-    if(!await this.checkService.isUserIdExist(userId)){
-      throw new CustomNotFoundException('user')
+  async changeBanStatus(
+    @Param('userId') userId: string,
+    @Body() banDTO: BanUserInputModel,
+  ) {
+    if (!(await this.checkService.isUserIdExist(userId))) {
+      throw new CustomNotFoundException('user');
     }
-    await this.commandBus.execute(new UserBanStatusChangeCommand(userId, banDTO))
+    await this.commandBus.execute(
+      new UserBanStatusChangeCommand(userId, banDTO),
+    );
   }
 
-    //add all, banned, not banned in query params
+  //add all, banned, not banned in query params
   @Get()
   async getAllUsers(@Query() queryParams: RequestUsersQueryModel) {
-    
     const mergedQueryParams = { ...DEFAULT_USERS_QUERY_PARAMS, ...queryParams };
     return await this.usersQueryRepository.getAllUsers(mergedQueryParams);
   }
-  
+
   @Post()
   async createUser(@Body() userCreateInputDto: CreateUserInputModelType) {
     if (await this.checkService.isEmailExist(userCreateInputDto.email)) {
@@ -87,8 +91,12 @@ export class UsersController {
     if (await this.checkService.isLoginExist(userCreateInputDto.login)) {
       throw new LoginAlreadyExistException();
     }
-    const newUsersId = await this.commandBus.execute(new CreateUserCommand(userCreateInputDto)) 
-    const user = await this.usersQueryRepository.getNewCreatedUserById(newUsersId);
+    const newUsersId = await this.commandBus.execute(
+      new CreateUserCommand(userCreateInputDto),
+    );
+    const user = await this.usersQueryRepository.getNewCreatedUserById(
+      newUsersId,
+    );
     return user;
   }
 

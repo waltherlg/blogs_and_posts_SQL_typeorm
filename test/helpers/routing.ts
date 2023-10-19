@@ -1,8 +1,8 @@
 export const endpoints = {
   wipeAllData: '/testing/all-data',
-// 
-//  bloggerBlogs: '/blogger/blogs',
-//  bloggerUsers: '/blogger/users',
+  //
+  //  bloggerBlogs: '/blogger/blogs',
+  //  bloggerUsers: '/blogger/users',
   bloggerBlogs: '/sa/blogs',
   bloggerUsers: '/sa/users',
 
@@ -18,7 +18,7 @@ export const endpoints = {
 export const delayFunction = async (ms: number) => {
   return new Promise<void>((resolve, reject) => {
     setTimeout(() => {
-      resolve()
-    }, ms)
-  })
-}
+      resolve();
+    }, ms);
+  });
+};

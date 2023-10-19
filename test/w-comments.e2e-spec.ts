@@ -25,8 +25,6 @@ export function testCommentsCrud() {
       await app.close();
     });
 
-    
-
     let firstCreatedBlogId: string;
     let createdPostId: string;
 

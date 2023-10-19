@@ -12,12 +12,12 @@ import { testUserDevice } from './helpers/inputAndOutputObjects/userDevicesObjec
 const delay = async (ms: number) => {
   return new Promise<void>((resolve, reject) => {
     setTimeout(() => {
-      resolve()
-    }, ms)
-  })
-}
+      resolve();
+    }, ms);
+  });
+};
 export function testSecurityDevices() {
-    describe('test Security Devices (e2e)', () => {
+  describe('test Security Devices (e2e)', () => {
     let usersRepository: UsersRepository;
     let app: INestApplication;
 
@@ -25,9 +25,9 @@ export function testSecurityDevices() {
     const basicAuthWrongPassword =
       Buffer.from('admin:12345').toString('base64');
     const basicAuthWrongLogin = Buffer.from('12345:qwerty').toString('base64');
-    let accessToken
-    let refreshTokenCookie
-    let userDeviceId1
+    let accessToken;
+    let refreshTokenCookie;
+    let userDeviceId1;
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -37,12 +37,12 @@ export function testSecurityDevices() {
       usersRepository = moduleFixture.get<UsersRepository>(UsersRepository);
 
       app = moduleFixture.createNestApplication();
-      app = addAppSettings(app)
+      app = addAppSettings(app);
       await app.init();
     });
     afterAll(async () => {
       await app.close();
-    });    
+    });
 
     it('00-00 testing/all-data DELETE = 204 removeAllData', async () => {
       await request(app.getHttpServer())
@@ -57,9 +57,9 @@ export function testSecurityDevices() {
         .send(testUser.inputUser1)
         .expect(201);
 
-        const createdResponseBody = createResponse.body;
+      const createdResponseBody = createResponse.body;
 
-        expect(createdResponseBody).toEqual(testUser.outputUser1);
+      expect(createdResponseBody).toEqual(testUser.outputUser1);
     });
 
     it('00-00 login = 204 1 login user', async () => {
@@ -73,9 +73,10 @@ export function testSecurityDevices() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      refreshTokenCookie = createResponse.headers['set-cookie']
-        .find((cookie) => cookie.startsWith('refreshToken='));
-    
+      refreshTokenCookie = createResponse.headers['set-cookie'].find((cookie) =>
+        cookie.startsWith('refreshToken='),
+      );
+
       expect(refreshTokenCookie).toBeDefined();
       expect(refreshTokenCookie).toContain('HttpOnly');
       expect(refreshTokenCookie).toContain('Secure');
@@ -92,9 +93,10 @@ export function testSecurityDevices() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      const refreshTokenCookie = createResponse.headers['set-cookie']
-        .find((cookie) => cookie.startsWith('refreshToken='));
-    
+      const refreshTokenCookie = createResponse.headers['set-cookie'].find(
+        (cookie) => cookie.startsWith('refreshToken='),
+      );
+
       expect(refreshTokenCookie).toBeDefined();
       expect(refreshTokenCookie).toContain('HttpOnly');
       expect(refreshTokenCookie).toContain('Secure');
@@ -111,9 +113,10 @@ export function testSecurityDevices() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      const refreshTokenCookie = createResponse.headers['set-cookie']
-        .find((cookie) => cookie.startsWith('refreshToken='));
-    
+      const refreshTokenCookie = createResponse.headers['set-cookie'].find(
+        (cookie) => cookie.startsWith('refreshToken='),
+      );
+
       expect(refreshTokenCookie).toBeDefined();
       expect(refreshTokenCookie).toContain('HttpOnly');
       expect(refreshTokenCookie).toContain('Secure');
@@ -130,9 +133,10 @@ export function testSecurityDevices() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      refreshTokenCookie = createResponse.headers['set-cookie']
-        .find((cookie) => cookie.startsWith('refreshToken='));
-    
+      refreshTokenCookie = createResponse.headers['set-cookie'].find((cookie) =>
+        cookie.startsWith('refreshToken='),
+      );
+
       expect(refreshTokenCookie).toBeDefined();
       expect(refreshTokenCookie).toContain('HttpOnly');
       expect(refreshTokenCookie).toContain('Secure');
@@ -145,7 +149,7 @@ export function testSecurityDevices() {
         .expect(200);
       const responseBody = response.body;
 
-      userDeviceId1 = responseBody[0].deviceId
+      userDeviceId1 = responseBody[0].deviceId;
 
       expect(responseBody).toEqual([
         testUserDevice.anyOutputDevice,
@@ -169,7 +173,7 @@ export function testSecurityDevices() {
         .expect(200);
       const responseBody = response.body;
 
-      userDeviceId1 = responseBody[0].deviceId
+      userDeviceId1 = responseBody[0].deviceId;
 
       expect(responseBody).toEqual([
         testUserDevice.anyOutputDevice,
@@ -192,12 +196,7 @@ export function testSecurityDevices() {
         .expect(200);
       const responseBody = response.body;
 
-      expect(responseBody).toEqual([
-        testUserDevice.anyOutputDevice,
-      ]);
+      expect(responseBody).toEqual([testUserDevice.anyOutputDevice]);
     });
-
-
   });
 }
-

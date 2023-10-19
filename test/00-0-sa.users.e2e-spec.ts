@@ -4,7 +4,10 @@ import request from 'supertest';
 //import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
-import { testUser, testUserPag } from './helpers/inputAndOutputObjects/usersObjects';
+import {
+  testUser,
+  testUserPag,
+} from './helpers/inputAndOutputObjects/usersObjects';
 import { log } from 'console';
 
 export function testSaUsersCrud() {
@@ -16,7 +19,7 @@ export function testSaUsersCrud() {
       Buffer.from('admin:12345').toString('base64');
     const basicAuthWrongLogin = Buffer.from('12345:qwerty').toString('base64');
 
-    let userId1: string
+    let userId1: string;
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -61,10 +64,10 @@ export function testSaUsersCrud() {
         .send(testUser.inputUser1)
         .expect(201);
 
-        const createdResponseBody = createResponse.body;
-        userId1 = createdResponseBody.id
+      const createdResponseBody = createResponse.body;
+      userId1 = createdResponseBody.id;
 
-        expect(createdResponseBody).toEqual(testUser.outputUser1Sa);
+      expect(createdResponseBody).toEqual(testUser.outputUser1Sa);
     });
 
     it('01-01 sa/users GET = 200 return array with user1', async () => {
@@ -79,9 +82,7 @@ export function testSaUsersCrud() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [
-          testUser.outputUser1
-        ],
+        items: [testUser.outputUser1],
       });
     });
 
@@ -91,7 +92,7 @@ export function testSaUsersCrud() {
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send(testUser.inputBanUser)
         .expect(204);
-    })
+    });
 
     it('01-01 sa/users GET = 200 return array with banned user1', async () => {
       const createResponse = await request(app.getHttpServer())
@@ -105,9 +106,7 @@ export function testSaUsersCrud() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [
-          testUser.outputUser1Banned
-        ],
+        items: [testUser.outputUser1Banned],
       });
     });
 
@@ -117,7 +116,7 @@ export function testSaUsersCrud() {
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send(testUser.inputUnbanUser)
         .expect(204);
-    })
+    });
 
     it('01-01 sa/users GET = 200 return array with unbanned user1', async () => {
       const createResponse = await request(app.getHttpServer())
@@ -131,9 +130,7 @@ export function testSaUsersCrud() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [
-          testUser.outputUser1
-        ],
+        items: [testUser.outputUser1],
       });
     });
 
@@ -142,7 +139,7 @@ export function testSaUsersCrud() {
         .delete(`${endpoints.saUsers}/${userId1}`)
         .set('Authorization', `Basic ${basicAuthRight}`)
         .expect(204);
-    })
+    });
 
     it('01-01 sa/users GET = 200 return empty array after deleting user1', async () => {
       const createResponse = await request(app.getHttpServer())
@@ -158,7 +155,6 @@ export function testSaUsersCrud() {
         totalCount: 0,
         items: [],
       });
-    });  
-
+    });
   });
 }

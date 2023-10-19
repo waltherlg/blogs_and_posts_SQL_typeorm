@@ -85,8 +85,8 @@ export class AuthController {
     if (await this.checkService.isLoginExist(userCreateInputModel.login)) {
       throw new LoginAlreadyExistException();
     }
-    const newUsersId = await this.commandBus.execute(new RegisterUserCommand(
-      userCreateInputModel,)
+    const newUsersId = await this.commandBus.execute(
+      new RegisterUserCommand(userCreateInputModel),
     );
     const user = await this.usersQueryRepository.getUserById(newUsersId);
     if (!user) {
@@ -102,10 +102,14 @@ export class AuthController {
     if (!(await this.checkService.isEmailExist(refreshConfirmationDto.email))) {
       throw new CustomisableException('email', 'email not exist', 400);
     }
-    if (await this.checkService.isEmailConfirmed(refreshConfirmationDto.email)) {
+    if (
+      await this.checkService.isEmailConfirmed(refreshConfirmationDto.email)
+    ) {
       throw new CustomisableException('email', 'email already confirmed', 400);
     }
-    const result = await this.commandBus.execute(new RegisterationEmailResendingCommand(refreshConfirmationDto.email))
+    const result = await this.commandBus.execute(
+      new RegisterationEmailResendingCommand(refreshConfirmationDto.email),
+    );
     if (!result) {
       throw new CustomisableException(
         'email',
@@ -119,34 +123,41 @@ export class AuthController {
   async registrationConfirmation(
     @Body() registrationConfirmationDto: RegistrationConfirmationCodeInput,
   ) {
-    if(!await this.checkService.isConfirmationCodeExistAndNotExpired(registrationConfirmationDto.code)){
+    if (
+      !(await this.checkService.isConfirmationCodeExistAndNotExpired(
+        registrationConfirmationDto.code,
+      ))
+    ) {
       throw new CustomisableException(
         'code',
         ' confirmation code is incorrect, expired or already been applied',
         400,
       );
     }
-    const result = await this.commandBus.execute(new RegisterationConfirmaitonCommand(registrationConfirmationDto.code))
-    if(!result){
+    const result = await this.commandBus.execute(
+      new RegisterationConfirmaitonCommand(registrationConfirmationDto.code),
+    );
+    if (!result) {
       throw new CustomisableException(
         'code',
         'the application failed to confirm user',
         400,
-      ); 
+      );
     }
   }
   //@Throttle(5, 10)
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() request, @Res({ passthrough: true }) response) {
-    
-    const { accessToken, refreshToken } = await this.commandBus.execute(new LoginCommand(
-      request.user.userId,
-      request.ip,
-      request.headers['user-agent'] || 'nestApi',
-    ));
-    if(!{accessToken, refreshToken}){
-      throw new UnableException("login", 'Unable login')
+    const { accessToken, refreshToken } = await this.commandBus.execute(
+      new LoginCommand(
+        request.user.userId,
+        request.ip,
+        request.headers['user-agent'] || 'nestApi',
+      ),
+    );
+    if (!{ accessToken, refreshToken }) {
+      throw new UnableException('login', 'Unable login');
     }
     response
       .status(200)
@@ -170,11 +181,9 @@ export class AuthController {
   @UseGuards(RefreshTokenGuard)
   @Post('refresh-token')
   async refreshToken(@Req() request, @Res({ passthrough: true }) response) {
-    const { accessToken, refreshToken } =
-      await this.commandBus.execute(new RefreshTokenCommand(
-        request.user.userId,
-        request.user.deviceId,
-      ));
+    const { accessToken, refreshToken } = await this.commandBus.execute(
+      new RefreshTokenCommand(request.user.userId, request.user.deviceId),
+    );
     response
       .status(200)
       .cookie('refreshToken', refreshToken, { httpOnly: true, secure: true })
@@ -183,11 +192,15 @@ export class AuthController {
 
   @Post('password-recovery')
   @HttpCode(204)
-  async passwordRecovery(@Body() passwordRecoveryDto: PasswordRecoveryEmailInput) {
+  async passwordRecovery(
+    @Body() passwordRecoveryDto: PasswordRecoveryEmailInput,
+  ) {
     if (!(await this.checkService.isEmailExist(passwordRecoveryDto.email))) {
       throw new CustomNotFoundException('email');
     }
-    const result = await this.commandBus.execute(new PasswordRecoveryViaEmailCommand(passwordRecoveryDto));
+    const result = await this.commandBus.execute(
+      new PasswordRecoveryViaEmailCommand(passwordRecoveryDto),
+    );
     if (!result) {
       throw new UnableException('password recovery');
     }
@@ -207,8 +220,10 @@ export class AuthController {
         400,
       );
     }
-    const result: boolean = await this.commandBus.execute(new NewPasswordSetCommand(newPasswordDTO));
-       if (!result) {
+    const result: boolean = await this.commandBus.execute(
+      new NewPasswordSetCommand(newPasswordDTO),
+    );
+    if (!result) {
       throw new UnableException('password change');
     }
   }
@@ -217,11 +232,13 @@ export class AuthController {
   @Post('logout')
   //@HttpCode(204)
   async logout(@Req() request, @Res() response: Response) {
-    const isLogout = await this.commandBus.execute(new LogoutCommand(request.user));
+    const isLogout = await this.commandBus.execute(
+      new LogoutCommand(request.user),
+    );
     if (isLogout) {
-        return response.cookie('refreshToken', '').status(204).send()
+      return response.cookie('refreshToken', '').status(204).send();
     } else {
       throw new CustomisableException('logout', 'logout error', 400);
-    }    
+    }
   }
 }

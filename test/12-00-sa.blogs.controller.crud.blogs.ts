@@ -5,7 +5,7 @@ import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testUser } from './helpers/inputAndOutputObjects/usersObjects';
 export function testSaCrudOnlyBlogs() {
-  describe('SA CRUD operation \"if all is ok\" (e2e). SA creating blogs', () => {
+  describe('SA CRUD operation "if all is ok" (e2e). SA creating blogs', () => {
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
@@ -15,7 +15,6 @@ export function testSaCrudOnlyBlogs() {
 
     let accessTokenUser1: any;
     let accessTokenUser2: any;
-
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -31,7 +30,7 @@ export function testSaCrudOnlyBlogs() {
 
     let firstCreatedBlogId: string;
     let createdPostId: string;
-    let userId1: string
+    let userId1: string;
 
     it('00-00 testing/all-data DELETE = 204 removeAllData', async () => {
       await request(app.getHttpServer())
@@ -63,7 +62,7 @@ export function testSaCrudOnlyBlogs() {
       });
     });
 
-    let blogIdUser2: any
+    let blogIdUser2: any;
 
     it('01-06 blogger/blogs POST = 201 user2 create new blog', async () => {
       const testsResponse = await request(app.getHttpServer())
@@ -95,7 +94,7 @@ export function testSaCrudOnlyBlogs() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
       const createdResponse = createResponse.body;
-      
+
       expect(createdResponse).toEqual({
         pagesCount: 1,
         page: 1,
@@ -120,7 +119,7 @@ export function testSaCrudOnlyBlogs() {
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(200);
       const createdResponse = createResponse.body;
-      
+
       expect(createdResponse).toEqual({
         pagesCount: 1,
         page: 1,
@@ -189,7 +188,7 @@ export function testSaCrudOnlyBlogs() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
       const createdResponse = createResponse.body;
-      
+
       expect(createdResponse).toEqual({
         pagesCount: 1,
         page: 1,
@@ -210,7 +209,9 @@ export function testSaCrudOnlyBlogs() {
 
     it('01-12 blogger/blogs/blogsId/posts/postId UPDATE = 204 user1 update post', async () => {
       const createResponse = await request(app.getHttpServer())
-        .put(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}`)
+        .put(
+          `${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}`,
+        )
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .send({
           title: 'updatedTitle',
@@ -222,7 +223,9 @@ export function testSaCrudOnlyBlogs() {
 
     it('01-13 blogger/blogs/blogsId/posts/postId DELETE = 204 user1 delete post', async () => {
       const createResponse = await request(app.getHttpServer())
-        .delete(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}`)
+        .delete(
+          `${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}`,
+        )
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(204);
     });
@@ -240,7 +243,7 @@ export function testSaCrudOnlyBlogs() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
       const createdResponse = createResponse.body;
-      
+
       expect(createdResponse).toEqual({
         pagesCount: 0,
         page: 1,
@@ -273,6 +276,5 @@ export function testSaCrudOnlyBlogs() {
         isMembership: false,
       });
     });
-
   });
 }

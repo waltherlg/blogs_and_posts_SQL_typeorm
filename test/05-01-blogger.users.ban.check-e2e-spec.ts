@@ -4,18 +4,23 @@ import request from 'supertest';
 //import * as request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
-import { testUser, testUserPag } from './helpers/inputAndOutputObjects/usersObjects';
+import {
+  testUser,
+  testUserPag,
+} from './helpers/inputAndOutputObjects/usersObjects';
 import { log } from 'console';
-import { testInputBlogBody, testOutputBlogBody } from './helpers/inputAndOutputObjects/blogsObjects';
+import {
+  testInputBlogBody,
+  testOutputBlogBody,
+} from './helpers/inputAndOutputObjects/blogsObjects';
 import { testBloggerBanBody } from './helpers/inputAndOutputObjects/usersObjects';
 
 export function testBanUserForBlogByBlogger() {
-
-  let accessTokenUser1
-  let accessTokenUser2
-  let blogId1
-  let userId1
-  let userId2
+  let accessTokenUser1;
+  let accessTokenUser2;
+  let blogId1;
+  let userId1;
+  let userId2;
 
   describe('test Ban User For Blog By Blogger (e2e)', () => {
     let app: INestApplication;
@@ -57,7 +62,7 @@ export function testBanUserForBlogByBlogger() {
         totalCount: 0,
         items: [],
       });
-    });  
+    });
 
     it('00-00 sa/users post = 201 create user1 with return', async () => {
       const createResponse = await request(app.getHttpServer())
@@ -66,10 +71,10 @@ export function testBanUserForBlogByBlogger() {
         .send(testUser.inputUser1)
         .expect(201);
 
-        const createdResponseBody = createResponse.body;
-        userId1 = createdResponseBody.id
+      const createdResponseBody = createResponse.body;
+      userId1 = createdResponseBody.id;
 
-        expect(createdResponseBody).toEqual(testUser.outputUser1);
+      expect(createdResponseBody).toEqual(testUser.outputUser1);
     });
 
     it('00-00 sa/users post = 201 create user2 with return', async () => {
@@ -79,10 +84,10 @@ export function testBanUserForBlogByBlogger() {
         .send(testUser.inputUser2)
         .expect(201);
 
-        const createdResponseBody = createResponse.body;
-        userId2 = createdResponseBody.id
+      const createdResponseBody = createResponse.body;
+      userId2 = createdResponseBody.id;
 
-        expect(createdResponseBody).toEqual(testUser.outputUser2);
+      expect(createdResponseBody).toEqual(testUser.outputUser2);
     });
 
     it('00-00 login = 204 login user1', async () => {
@@ -96,9 +101,10 @@ export function testBanUserForBlogByBlogger() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      const refreshTokenCookie = createResponse.headers['set-cookie']
-        .find((cookie) => cookie.startsWith('refreshToken='));
-    
+      const refreshTokenCookie = createResponse.headers['set-cookie'].find(
+        (cookie) => cookie.startsWith('refreshToken='),
+      );
+
       expect(refreshTokenCookie).toBeDefined();
       expect(refreshTokenCookie).toContain('HttpOnly');
       expect(refreshTokenCookie).toContain('Secure');
@@ -115,9 +121,10 @@ export function testBanUserForBlogByBlogger() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      const refreshTokenCookie = createResponse.headers['set-cookie']
-        .find((cookie) => cookie.startsWith('refreshToken='));
-    
+      const refreshTokenCookie = createResponse.headers['set-cookie'].find(
+        (cookie) => cookie.startsWith('refreshToken='),
+      );
+
       expect(refreshTokenCookie).toBeDefined();
       expect(refreshTokenCookie).toContain('HttpOnly');
       expect(refreshTokenCookie).toContain('Secure');
@@ -129,7 +136,7 @@ export function testBanUserForBlogByBlogger() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .send(testInputBlogBody.blog1)
         .expect(201);
-      const createdResponseBody = createResponse.body;     
+      const createdResponseBody = createResponse.body;
       blogId1 = createdResponseBody.id;
       expect(createdResponseBody).toEqual(testOutputBlogBody.blog1);
     });
@@ -139,10 +146,10 @@ export function testBanUserForBlogByBlogger() {
         .put(`${endpoints.bloggerUsers}/${userId2}/ban`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .send({
-            isBanned: true,
-            banReason: "some reason for ban user for this blog",
-            blogId: blogId1
-          })
+          isBanned: true,
+          banReason: 'some reason for ban user for this blog',
+          blogId: blogId1,
+        })
         .expect(204);
     });
 
@@ -151,19 +158,14 @@ export function testBanUserForBlogByBlogger() {
         .get(`${endpoints.bloggerUsers}/blog/${blogId1}`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
-      const createdResponseBody = createResponse.body; 
+      const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual({
         pagesCount: 1,
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [
-          testBloggerBanBody.bannedUser2ForBlogOutput
-        ],
+        items: [testBloggerBanBody.bannedUser2ForBlogOutput],
       });
     });
-
-
-
   });
 }

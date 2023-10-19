@@ -4,10 +4,8 @@ import { DataSource } from 'typeorm';
 
 @Injectable()
 export class TestRepository {
-  constructor(
-    @InjectDataSource() protected dataSource: DataSource,
-  ) {}
-  
+  constructor(@InjectDataSource() protected dataSource: DataSource) {}
+
   async deleteAllData() {
     await this.dataSource.query(`
     DELETE FROM public."CommentLikes";
@@ -17,7 +15,7 @@ export class TestRepository {
     DELETE FROM public."Blogs";
     DELETE FROM public."UserDevices";
     DELETE FROM public."Users";
-     `)
+     `);
     return true;
   }
 }

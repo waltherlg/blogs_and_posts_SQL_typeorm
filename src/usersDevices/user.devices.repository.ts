@@ -5,9 +5,7 @@ import { validate as isValidUUID } from 'uuid';
 
 @Injectable()
 export class UsersDevicesRepository {
-  constructor(
-    @InjectDataSource() protected dataSource: DataSource,
-  ) {}
+  constructor(@InjectDataSource() protected dataSource: DataSource) {}
   async addDeviceInfo(deviceInfoDTO): Promise<boolean> {
     const query = `INSERT INTO public."UserDevices"(
       "deviceId",
@@ -26,13 +24,13 @@ export class UsersDevicesRepository {
 
     const result = await this.dataSource.query(query, [
       deviceInfoDTO.deviceId,
-      deviceInfoDTO.userId, 
-      deviceInfoDTO.ip, 
-      deviceInfoDTO.title, 
-      deviceInfoDTO.lastActiveDate, 
+      deviceInfoDTO.userId,
+      deviceInfoDTO.ip,
+      deviceInfoDTO.title,
+      deviceInfoDTO.lastActiveDate,
       deviceInfoDTO.expirationDate,
-    ])
-    return result.rowCount > 0
+    ]);
+    return result.rowCount > 0;
   }
 
   async getDeviceByUsersAndDeviceId(userId: string, deviceId: string) {
@@ -42,11 +40,8 @@ export class UsersDevicesRepository {
     const query = `SELECT * FROM public."UserDevices"
     WHERE "userId" = $1 AND "deviceId" = $2
     LIMIT 1`;
-    const result = await this.dataSource.query(query, [
-      userId,
-      deviceId,    
-    ])
-    return result[0]
+    const result = await this.dataSource.query(query, [userId, deviceId]);
+    return result[0];
   }
   async refreshDeviceInfo(
     deviceId,
@@ -58,15 +53,14 @@ export class UsersDevicesRepository {
     }
     const query = `UPDATE public."UserDevices"
     SET "lastActiveDate" = $2, "expirationDate" = $3
-    WHERE "deviceId" = $1 `
-    
+    WHERE "deviceId" = $1 `;
+
     const result = await this.dataSource.query(query, [
-        deviceId,
-        lastActiveDate,
-        expirationDate
-      ]);
-    return (result[1] > 0)
-    
+      deviceId,
+      lastActiveDate,
+      expirationDate,
+    ]);
+    return result[1] > 0;
   }
 
   async deleteDeviceByUserAndDeviceId(userId, deviceId): Promise<boolean> {
@@ -76,9 +70,9 @@ export class UsersDevicesRepository {
     const query = `
     DELETE FROM public."UserDevices"
     WHERE "userId" = $1 AND "deviceId" = $2
-    `
+    `;
     const result = await this.dataSource.query(query, [userId, deviceId]);
-    return result[1]
+    return result[1];
   }
 
   async deleteAllUserDevicesExceptCurrent(userId, deviceId): Promise<boolean> {
@@ -88,9 +82,9 @@ export class UsersDevicesRepository {
     const query = `
     DELETE FROM public."UserDevices"
     WHERE "userId" = $1 AND "deviceId" <> $2;
-    `
+    `;
     const result = await this.dataSource.query(query, [userId, deviceId]);
-    return (result[1] > 0)
+    return result[1] > 0;
   }
 
   async isUserDeviceExist(deviceId): Promise<boolean> {
@@ -102,9 +96,9 @@ export class UsersDevicesRepository {
     FROM public."UserDevices"
     WHERE "deviceId" = $1
   `;
-  const result = await this.dataSource.query(query, [deviceId]);
-  const count = result[0].count;
-  return count > 0;   
+    const result = await this.dataSource.query(query, [deviceId]);
+    const count = result[0].count;
+    return count > 0;
   }
 
   async deleteAllUserDevicesById(userId: string): Promise<boolean> {
@@ -114,8 +108,8 @@ export class UsersDevicesRepository {
     const query = `   
     DELETE FROM public."UserDevices"
     WHERE "userId" = $1
-    `
+    `;
     const result = await this.dataSource.query(query, [userId]);
-    return result.rowCount > 0; 
+    return result.rowCount > 0;
   }
 }

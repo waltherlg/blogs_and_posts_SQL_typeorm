@@ -4,7 +4,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { delayFunction, endpoints } from './helpers/routing';
 export function testPostLikesCrud08() {
-  describe('Post Likes Crud CRUD operation \"if all is ok\" (e2e). ', () => {
+  describe('Post Likes Crud CRUD operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
@@ -17,7 +17,6 @@ export function testPostLikesCrud08() {
     let accessTokenUser3: any;
     let accessTokenUser4: any;
     let accessTokenUser5: any;
-    
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -118,7 +117,6 @@ export function testPostLikesCrud08() {
       });
     });
 
-    
     it('00-00 auth/registration = 204 register user4', async () => {
       await request(app.getHttpServer())
         .post(`${endpoints.auth}/registration`)
@@ -145,7 +143,6 @@ export function testPostLikesCrud08() {
       });
     });
 
-    
     it('00-00 auth/registration = 204 register user5', async () => {
       await request(app.getHttpServer())
         .post(`${endpoints.auth}/registration`)
@@ -171,7 +168,6 @@ export function testPostLikesCrud08() {
         accessToken: expect.any(String),
       });
     });
-
 
     it('01-02 blogger/blogs POST = 201 user1 create new blog', async () => {
       const testsResponse = await request(app.getHttpServer())
@@ -380,35 +376,35 @@ export function testPostLikesCrud08() {
         items: [
           {
             id: createdPostId,
-          title: 'newCreatedPost',
-          shortDescription: 'newPostsShortDescription',
-          content: 'some content',
-          blogId: expect.any(String),
-          blogName: 'BlogForPosts',
-          createdAt: expect.any(String),
-          extendedLikesInfo: {
-          likesCount: 4,
-          dislikesCount: 0,
-          myStatus: 'Like',
-          newestLikes: [
-            {
-              addedAt: expect.any(String),
-              login: 'user5',
-              userId: expect.any(String),
+            title: 'newCreatedPost',
+            shortDescription: 'newPostsShortDescription',
+            content: 'some content',
+            blogId: expect.any(String),
+            blogName: 'BlogForPosts',
+            createdAt: expect.any(String),
+            extendedLikesInfo: {
+              likesCount: 4,
+              dislikesCount: 0,
+              myStatus: 'Like',
+              newestLikes: [
+                {
+                  addedAt: expect.any(String),
+                  login: 'user5',
+                  userId: expect.any(String),
+                },
+                {
+                  addedAt: expect.any(String),
+                  login: 'user4',
+                  userId: expect.any(String),
+                },
+                {
+                  addedAt: expect.any(String),
+                  login: 'user3',
+                  userId: expect.any(String),
+                },
+              ],
             },
-            {
-              addedAt: expect.any(String),
-              login: 'user4',
-              userId: expect.any(String),
-            },
-            {
-              addedAt: expect.any(String),
-              login: 'user3',
-              userId: expect.any(String),
-            },
-          ],
-        },
-          }
+          },
         ],
       });
     });
@@ -434,7 +430,7 @@ export function testPostLikesCrud08() {
     });
 
     it('01-07 /posts/{postId} GET = 200 return post for auth user5 with 2 like and 1 dislike, 2 last liked users, and my status Dislike', async () => {
-      await delayFunction(1000)
+      await delayFunction(1000);
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.posts}/${createdPostId}`)
         .set('Authorization', `Bearer ${accessTokenUser5}`)
@@ -461,7 +457,7 @@ export function testPostLikesCrud08() {
             },
             {
               addedAt: expect.any(String),
-              login: 'user3',  
+              login: 'user3',
               userId: expect.any(String),
             },
           ],
@@ -506,7 +502,7 @@ export function testPostLikesCrud08() {
                 },
               ],
             },
-          }
+          },
         ],
       });
     });
@@ -530,7 +526,5 @@ export function testPostLikesCrud08() {
         })
         .expect(204);
     });
-
-
   });
 }

@@ -8,12 +8,11 @@ import { PostLikeDbType } from '../likes/db.likes.types';
 
 @Injectable()
 export class PostsQueryRepository {
-  constructor(
-  @InjectDataSource() protected dataSource: DataSource) {}
+  constructor(@InjectDataSource() protected dataSource: DataSource) {}
 
   async getPostById(postId, userId?): Promise<PostTypeOutput | null> {
     if (!isValidUUID(postId)) {
-      return null; 
+      return null;
     }
     // const query = `
     //   SELECT "Posts".*, "Blogs".name AS "blogName", "Blogs"."isBlogBanned", "Users"."isUserBanned"
@@ -23,7 +22,7 @@ export class PostsQueryRepository {
     //   WHERE "postId" = $1 AND "Users"."isUserBanned" = false AND "Blogs"."isBlogBanned" = false;
     // `;
 
-    //query without UsersTable 
+    //query without UsersTable
     // this query dont check is user (blogger) banned, because all blogs made by SA
     const query = `
     SELECT "Posts".*, "Blogs".name AS "blogName", "Blogs"."isBlogBanned"
@@ -38,22 +37,22 @@ export class PostsQueryRepository {
     WHERE "postId" = $1 AND "status" = 'Like' AND "isUserBanned" = false
     ORDER BY "addedAt" DESC
     LIMIT 3;
-    `
-    const newestLikes = await this.dataSource.query(newestLikesQuery, [postId])
+    `;
+    const newestLikes = await this.dataSource.query(newestLikesQuery, [postId]);
 
-    let myStatus = "None"
-    if(userId){
-      const usersLike = await this.getPostLikeObject(userId, postId)
-      if(usersLike){
-        myStatus = usersLike.status
+    let myStatus = 'None';
+    if (userId) {
+      const usersLike = await this.getPostLikeObject(userId, postId);
+      if (usersLike) {
+        myStatus = usersLike.status;
       }
     }
-  
-    const result = await this.dataSource.query(query, [postId])
-    
+
+    const result = await this.dataSource.query(query, [postId]);
+
     const post = result[0];
-    if (!post){
-      return null
+    if (!post) {
+      return null;
     }
     return {
       id: post.postId,
@@ -64,23 +63,23 @@ export class PostsQueryRepository {
       blogName: post.blogName,
       createdAt: post.createdAt,
       extendedLikesInfo: {
-          likesCount: parseInt(post.likesCount),
-          dislikesCount: parseInt(post.dislikesCount),
-          myStatus: myStatus,
-          newestLikes: newestLikes
+        likesCount: parseInt(post.likesCount),
+        dislikesCount: parseInt(post.dislikesCount),
+        myStatus: myStatus,
+        newestLikes: newestLikes,
       },
-    }
+    };
   }
 
   async getAllPosts(mergedQueryParams, userId?) {
-    const sortBy = mergedQueryParams.sortBy;   
+    const sortBy = mergedQueryParams.sortBy;
     const sortDirection = mergedQueryParams.sortDirection;
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
-    const skipPage = (pageNumber - 1) * pageSize
+    const skipPage = (pageNumber - 1) * pageSize;
 
     const queryParams = [
-      sortBy,    
+      sortBy,
       sortDirection.toUpperCase(),
       pageNumber,
       pageSize,
@@ -93,7 +92,7 @@ export class PostsQueryRepository {
     INNER JOIN "Blogs" ON "Posts"."blogId" = "Blogs"."blogId"
     WHERE "Blogs"."isBlogBanned" = false
     `;
-    let countQuery = `
+    const countQuery = `
     SELECT COUNT(*)
     FROM public."Posts"
     INNER JOIN "Blogs" ON "Posts"."blogId" = "Blogs"."blogId"
@@ -105,35 +104,46 @@ export class PostsQueryRepository {
     `;
 
     const postCountArr = await this.dataSource.query(countQuery);
-    const postCount = parseInt(postCountArr[0].count);    
+    const postCount = parseInt(postCountArr[0].count);
 
     const posts = await this.dataSource.query(query);
-    
+
     const postLikesObjectQuery = `
     SELECT * FROM public."PostLikes"
     ORDER BY "addedAt" DESC;
-    `
-    const postLikesObjectArray = await this.dataSource.query(postLikesObjectQuery)
-    
-    const onlyLikeObjects = postLikesObjectArray.filter(likeObject => likeObject.status === "Like" && likeObject.isUserBanned === false)
+    `;
+    const postLikesObjectArray = await this.dataSource.query(
+      postLikesObjectQuery,
+    );
+
+    const onlyLikeObjects = postLikesObjectArray.filter(
+      (likeObject) =>
+        likeObject.status === 'Like' && likeObject.isUserBanned === false,
+    );
     console.log('onlyLikeObjects ', onlyLikeObjects);
-    
-  
-    const postsForOutput = posts.map(post => {
 
-      const thisPostLikes = onlyLikeObjects.filter(likeObj => likeObj.postId === post.postId)
+    const postsForOutput = posts.map((post) => {
+      const thisPostLikes = onlyLikeObjects.filter(
+        (likeObj) => likeObj.postId === post.postId,
+      );
 
-      const newestLikes = thisPostLikes.slice(0, 3).map(like => {return{
-        addedAt: like.addedAt,
-        userId: like.userId,
-        login: like.login
-      }})
-    
-      let myStatus = "None"
-      if(userId){
-        const foundLike = postLikesObjectArray.find(postLikeObject => postLikeObject.postId === post.postId && postLikeObject.userId === userId)
-        if(foundLike){
-          myStatus = foundLike.status
+      const newestLikes = thisPostLikes.slice(0, 3).map((like) => {
+        return {
+          addedAt: like.addedAt,
+          userId: like.userId,
+          login: like.login,
+        };
+      });
+
+      let myStatus = 'None';
+      if (userId) {
+        const foundLike = postLikesObjectArray.find(
+          (postLikeObject) =>
+            postLikeObject.postId === post.postId &&
+            postLikeObject.userId === userId,
+        );
+        if (foundLike) {
+          myStatus = foundLike.status;
         }
       }
       return {
@@ -145,13 +155,13 @@ export class PostsQueryRepository {
         blogName: post.blogName,
         createdAt: post.createdAt,
         extendedLikesInfo: {
-            likesCount: parseInt(post.likesCount),
-            dislikesCount: parseInt(post.dislikesCount),
-            myStatus: myStatus,
-            newestLikes: newestLikes
+          likesCount: parseInt(post.likesCount),
+          dislikesCount: parseInt(post.dislikesCount),
+          myStatus: myStatus,
+          newestLikes: newestLikes,
         },
-      }
-    })
+      };
+    });
 
     const pageCount = Math.ceil(postCount / pageSize);
 
@@ -160,7 +170,7 @@ export class PostsQueryRepository {
       page: +pageNumber,
       pageSize: +pageSize,
       totalCount: postCount,
-      items: postsForOutput
+      items: postsForOutput,
     };
     return outputPosts;
   }
@@ -170,19 +180,19 @@ export class PostsQueryRepository {
     blogId,
     userId?,
   ): Promise<PaginationOutputModel<PostTypeOutput>> {
-    const sortBy = mergedQueryParams.sortBy;   
+    const sortBy = mergedQueryParams.sortBy;
     const sortDirection = mergedQueryParams.sortDirection;
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
-    const skipPage = (pageNumber - 1) * pageSize
+    const skipPage = (pageNumber - 1) * pageSize;
 
     const queryParams = [
-      sortBy,    
+      sortBy,
       sortDirection.toUpperCase(),
       pageNumber,
       pageSize,
       skipPage,
-      blogId
+      blogId,
     ];
 
     let query = `
@@ -191,7 +201,7 @@ export class PostsQueryRepository {
     INNER JOIN "Blogs" ON "Posts"."blogId" = "Blogs"."blogId"
     WHERE "Posts"."blogId" = '${queryParams[5]}' AND "Blogs"."isBlogBanned" = false
     `;
-    let countQuery = `
+    const countQuery = `
     SELECT COUNT(*) as "count"
     FROM public."Posts"
     INNER JOIN "Blogs" ON "Posts"."blogId" = "Blogs"."blogId"
@@ -210,29 +220,42 @@ export class PostsQueryRepository {
     WHERE "Blogs"."blogId" = '${queryParams[5]}' AND "PostLikes"."isUserBanned" = false
     ORDER BY "PostLikes"."addedAt" DESC;
 `;
-    const postLikesObjectArray = await this.dataSource.query(postLikesObjectQuery)
-  
-    const onlyLikeObjects = postLikesObjectArray.filter(likeObject => likeObject.status === "Like" && likeObject.isUserBanned === false)
+    const postLikesObjectArray = await this.dataSource.query(
+      postLikesObjectQuery,
+    );
+
+    const onlyLikeObjects = postLikesObjectArray.filter(
+      (likeObject) =>
+        likeObject.status === 'Like' && likeObject.isUserBanned === false,
+    );
 
     const postCountArr = await this.dataSource.query(countQuery);
     const postCount = parseInt(postCountArr[0].count);
 
     const posts = await this.dataSource.query(query);
 
-    const postsForOutput = posts.map(post => {
-      const thisPostLikes = onlyLikeObjects.filter(likeObj => likeObj.postId === post.postId)
-    
-      const newestLikes = thisPostLikes.slice(0, 3).map(like => {return{
-        addedAt: like.addedAt,
-        userId: like.userId,
-        login: like.login
-      }})
+    const postsForOutput = posts.map((post) => {
+      const thisPostLikes = onlyLikeObjects.filter(
+        (likeObj) => likeObj.postId === post.postId,
+      );
 
-      let myStatus = "None"
-      if(userId){
-        const foundLike = postLikesObjectArray.find(postLikeObject => postLikeObject.postId === post.postId && postLikeObject.userId === userId)
-        if(foundLike){
-          myStatus = foundLike.status
+      const newestLikes = thisPostLikes.slice(0, 3).map((like) => {
+        return {
+          addedAt: like.addedAt,
+          userId: like.userId,
+          login: like.login,
+        };
+      });
+
+      let myStatus = 'None';
+      if (userId) {
+        const foundLike = postLikesObjectArray.find(
+          (postLikeObject) =>
+            postLikeObject.postId === post.postId &&
+            postLikeObject.userId === userId,
+        );
+        if (foundLike) {
+          myStatus = foundLike.status;
         }
       }
       return {
@@ -246,11 +269,11 @@ export class PostsQueryRepository {
         extendedLikesInfo: {
           likesCount: parseInt(post.likesCount),
           dislikesCount: parseInt(post.dislikesCount),
-            myStatus: myStatus,
-            newestLikes: newestLikes
+          myStatus: myStatus,
+          newestLikes: newestLikes,
         },
-      }
-    })
+      };
+    });
 
     const pageCount = Math.ceil(postCount / pageSize);
 
@@ -259,17 +282,20 @@ export class PostsQueryRepository {
       page: +pageNumber,
       pageSize: +pageSize,
       totalCount: postCount,
-      items: postsForOutput
+      items: postsForOutput,
     };
     return outputPosts;
   }
 
-  private async getPostLikeObject(userId, postId): Promise<PostLikeDbType | null>{
+  private async getPostLikeObject(
+    userId,
+    postId,
+  ): Promise<PostLikeDbType | null> {
     const query = `
     SELECT * FROM public."PostLikes"
     WHERE "userId" = $1 AND "postId" = $2    
-    ;`
-    const result = await this.dataSource.query(query, [userId, postId])
-    return result[0]    
-}
+    ;`;
+    const result = await this.dataSource.query(query, [userId, postId]);
+    return result[0];
+  }
 }

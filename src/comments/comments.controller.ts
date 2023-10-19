@@ -57,7 +57,8 @@ export class CommentsControllers {
   ) {}
   @UseGuards(OptionalJwtAuthGuard)
   @Get(':id')
-  async getCommentById(@Req() request, @Param('id') commentId: string) { // TODO: findout status 500
+  async getCommentById(@Req() request, @Param('id') commentId: string) {
+    // TODO: findout status 500
     const comment = await this.commentsQueryRepository.getCommentById(
       commentId,
       request.user.userId, //user = userId
@@ -76,7 +77,10 @@ export class CommentsControllers {
       throw new CustomNotFoundException('comment');
     }
     if (
-      !(await this.checkService.isUserOwnerOfComment(request.user.userId, commentId))
+      !(await this.checkService.isUserOwnerOfComment(
+        request.user.userId,
+        commentId,
+      ))
     ) {
       throw new CustomisableException(
         'user is not owner',
@@ -103,7 +107,10 @@ export class CommentsControllers {
       throw new CustomNotFoundException('comment');
     }
     if (
-      !(await this.checkService.isUserOwnerOfComment(request.user.userId, commentId))
+      !(await this.checkService.isUserOwnerOfComment(
+        request.user.userId,
+        commentId,
+      ))
     ) {
       throw new CustomisableException(
         'user is not owner',
@@ -123,14 +130,20 @@ export class CommentsControllers {
   @UseGuards(JwtAuthGuard)
   @Put(':id/like-status')
   @HttpCode(204)
-  async setLikeStatusForComment( // TODO: if :id from uri param not found need status 404, not 400... need check
+  async setLikeStatusForComment(
+    // TODO: if :id from uri param not found need status 404, not 400... need check
     @Req() request,
     @Param('id') commentId: string,
     @Body(new ValidationPipe({ transform: true }))
     likeStatus: SetLikeStatusForCommentInputModel,
   ) {
-    
-    const result = await this.commandBus.execute(new SetLikeStatusForCommentCommand(request.user.userId, commentId, likeStatus.likeStatus))
-    handleCommentActionResult(result)
+    const result = await this.commandBus.execute(
+      new SetLikeStatusForCommentCommand(
+        request.user.userId,
+        commentId,
+        likeStatus.likeStatus,
+      ),
+    );
+    handleCommentActionResult(result);
   }
 }

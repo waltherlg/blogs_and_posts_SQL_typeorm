@@ -29,12 +29,15 @@ export class CheckService {
   }
 
   async isConfirmationCodeExistAndNotExpired(code: string): Promise<boolean> {
-    const isValid = await this.usersRepository.isConfirmationCodeExistAndNotExpired(code);
+    const isValid =
+      await this.usersRepository.isConfirmationCodeExistAndNotExpired(code);
     return !!isValid;
   }
 
   async isEmailConfirmed(email: string): Promise<boolean> {
-    const isConfirmed = await this.usersRepository.isEmailAlreadyCofirmed(email);
+    const isConfirmed = await this.usersRepository.isEmailAlreadyCofirmed(
+      email,
+    );
     return isConfirmed;
   }
 
@@ -45,24 +48,23 @@ export class CheckService {
 
   async isLoginExist(login: string): Promise<boolean> {
     const isLoginExist = await this.usersRepository.isLoginExists(login);
-   
+
     return isLoginExist;
   }
 
-  async isPasswordRecoveryCodeExistAndNotExpired(code: string): Promise<boolean> {
-    const isExist = await this.usersRepository.isPasswordRecoveryCodeExistAndNotExpired(
-      code,
-    );
+  async isPasswordRecoveryCodeExistAndNotExpired(
+    code: string,
+  ): Promise<boolean> {
+    const isExist =
+      await this.usersRepository.isPasswordRecoveryCodeExistAndNotExpired(code);
     return !!isExist;
   }
 
   async isCommentExist(commentId): Promise<boolean> {
-    const isExist = await this.commentsRepository.isCommentExist(
-      commentId,
-    );
+    const isExist = await this.commentsRepository.isCommentExist(commentId);
     return !!isExist;
   }
-  
+
   async isUserOwnerOfComment(userId, commentId): Promise<boolean> {
     const comment = await this.commentsRepository.getCommentDbTypeById(
       commentId,
@@ -87,22 +89,25 @@ export class CheckService {
     return !!userDevice;
   }
 
-  async isUserOwnerOfBlog(userId, blogId): Promise<boolean>{
-    const blog = await this.blogsRepository.getBlogDBTypeById(blogId)
+  async isUserOwnerOfBlog(userId, blogId): Promise<boolean> {
+    const blog = await this.blogsRepository.getBlogDBTypeById(blogId);
     if (!blog || blog.userId !== userId) {
-      return false 
+      return false;
     } else {
-      return true
+      return true;
     }
   }
 
-  async isUserBanned(userId: string): Promise<boolean>{
-    const isUserBanned = await this.usersRepository.isUserBanned(userId)
-    return isUserBanned
+  async isUserBanned(userId: string): Promise<boolean> {
+    const isUserBanned = await this.usersRepository.isUserBanned(userId);
+    return isUserBanned;
   }
 
-  async isUserBannedForBlog(blogId, userId){
-    const isUserBanned = await this.blogsRepository.isUserBannedForBlog(blogId, userId)
-    return isUserBanned
+  async isUserBannedForBlog(blogId, userId) {
+    const isUserBanned = await this.blogsRepository.isUserBannedForBlog(
+      blogId,
+      userId,
+    );
+    return isUserBanned;
   }
 }

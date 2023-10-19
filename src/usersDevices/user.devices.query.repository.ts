@@ -5,9 +5,7 @@ import { validate as isValidUUID } from 'uuid';
 
 @Injectable()
 export class UserDevicesQueryRepository {
-  constructor(
-    @InjectDataSource() protected dataSource: DataSource,
-  ) {}
+  constructor(@InjectDataSource() protected dataSource: DataSource) {}
 
   async getActiveUserDevices(userId: string) {
     if (!isValidUUID(userId)) {
@@ -16,13 +14,8 @@ export class UserDevicesQueryRepository {
     const query = `
     SELECT ip, title, "lastActiveDate", "deviceId"
     FROM public."UserDevices"
-    WHERE "userId" = $1`
-    const result = await this.dataSource.query(query, [
-      userId
-    ]);
-    return result
-  } 
-
-
+    WHERE "userId" = $1`;
+    const result = await this.dataSource.query(query, [userId]);
+    return result;
+  }
 }
-

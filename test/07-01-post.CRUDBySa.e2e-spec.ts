@@ -4,17 +4,20 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testUser } from './helpers/inputAndOutputObjects/usersObjects';
-import { testInputBlogBody, testOutputBlogBody } from './helpers/inputAndOutputObjects/blogsObjects';
+import {
+  testInputBlogBody,
+  testOutputBlogBody,
+} from './helpers/inputAndOutputObjects/blogsObjects';
 import { testPosts } from './helpers/inputAndOutputObjects/postsObjects';
 export function postCrudOperationsBySa07() {
   describe('post CRUD operation (e2e)', () => {
-    let accessTokenUser1
-    let accessTokenUser2
-    let blogId1
-    let blogId2
-    let userId1
-    let userId2
-    let postId1
+    let accessTokenUser1;
+    let accessTokenUser2;
+    let blogId1;
+    let blogId2;
+    let userId1;
+    let userId2;
+    let postId1;
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
@@ -32,7 +35,7 @@ export function postCrudOperationsBySa07() {
     });
     afterAll(async () => {
       await app.close();
-    });    
+    });
 
     let firstCreatedBlogId: string;
     let createdPostId: string;
@@ -43,7 +46,6 @@ export function postCrudOperationsBySa07() {
         .expect(204);
     });
 
- 
     it('00-01 sa/users post = 201 create user1 with return', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(endpoints.saUsers)
@@ -51,10 +53,10 @@ export function postCrudOperationsBySa07() {
         .send(testUser.inputUser1)
         .expect(201);
 
-        const createdResponseBody = createResponse.body;
-        userId1 = createdResponseBody.id
+      const createdResponseBody = createResponse.body;
+      userId1 = createdResponseBody.id;
 
-        expect(createdResponseBody).toEqual(testUser.outputUser1Sa);
+      expect(createdResponseBody).toEqual(testUser.outputUser1Sa);
     });
 
     it('00-02 sa/users post = 201 create user2 with return', async () => {
@@ -64,10 +66,10 @@ export function postCrudOperationsBySa07() {
         .send(testUser.inputUser2)
         .expect(201);
 
-        const createdResponseBody = createResponse.body;
-        userId2 = createdResponseBody.id
+      const createdResponseBody = createResponse.body;
+      userId2 = createdResponseBody.id;
 
-        expect(createdResponseBody).toEqual(testUser.outputUser2Sa);
+      expect(createdResponseBody).toEqual(testUser.outputUser2Sa);
     });
 
     it('00-03 login = 204 login user1', async () => {
@@ -101,7 +103,7 @@ export function postCrudOperationsBySa07() {
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send(testPosts.inputBodyBlog1)
         .expect(201);
-      const createdResponseBody = createResponse.body;     
+      const createdResponseBody = createResponse.body;
       blogId1 = createdResponseBody.id;
       expect(createdResponseBody).toEqual(testPosts.outputBodyBlog1);
     });
@@ -112,7 +114,7 @@ export function postCrudOperationsBySa07() {
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send(testPosts.inputBodyPost1forBlog1)
         .expect(201);
-      const createdResponseBody = createResponse.body;     
+      const createdResponseBody = createResponse.body;
       postId1 = createdResponseBody.id;
       expect(createdResponseBody).toEqual(testPosts.outputPost1forBlog1);
     });
@@ -129,8 +131,8 @@ export function postCrudOperationsBySa07() {
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.posts}/${postId1}`)
         .expect(200);
-        const createdResponseBody = createResponse.body;     
-        expect(createdResponseBody).toEqual(testPosts.outputPost2forBlog1);
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testPosts.outputPost2forBlog1);
     });
 
     it('00-10 /posts GET = 200 return post1 with pagination', async () => {
@@ -144,9 +146,7 @@ export function postCrudOperationsBySa07() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [
-          testPosts.outputPost2forBlog1
-        ],
+        items: [testPosts.outputPost2forBlog1],
       });
     });
 
@@ -163,7 +163,5 @@ export function postCrudOperationsBySa07() {
         .get(`${endpoints.posts}/${postId1}`)
         .expect(404);
     });
-
-
   });
 }

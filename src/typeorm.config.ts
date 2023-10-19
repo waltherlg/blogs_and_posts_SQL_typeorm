@@ -1,12 +1,12 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-const userName = process.env.PGUSER
-const dataBaseName = process.env.PGDATABASE
-const password = process.env.PGPASSWORD
-const port = process.env.PGPORT
+const userName = process.env.PGUSER;
+const dataBaseName = process.env.PGDATABASE;
+const password = process.env.PGPASSWORD;
+const port = process.env.PGPORT;
 //const dataBaseUrl = process.env.SQL_URPGUSERL
-const hostName = process.env.PGHOST
+const hostName = process.env.PGHOST;
 
 const typeOrmConfig: TypeOrmModuleOptions = {
   type: 'postgres',

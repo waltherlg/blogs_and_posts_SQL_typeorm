@@ -35,7 +35,6 @@ export class RefreshTokenStrategy extends PassportStrategy(
   }
   async validate(request: Request, payload: any) {
     if (!payload) {
-      
       throw new UnauthorizedException();
     }
     const userId = payload.userId;
@@ -60,8 +59,11 @@ export class RefreshTokenStrategy extends PassportStrategy(
     }
 
     const lastActiveRefreshToken = new Date(payload.iat * 1000);
-    
-    if (lastActiveRefreshToken.toISOString() !== currentDevise.lastActiveDate.toISOString()) {
+
+    if (
+      lastActiveRefreshToken.toISOString() !==
+      currentDevise.lastActiveDate.toISOString()
+    ) {
       throw new CustomisableException(
         'no access',
         'the last active dates do not match',

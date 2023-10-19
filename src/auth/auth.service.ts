@@ -1,8 +1,5 @@
 import { UsersRepository } from '../users/users.repository';
-import {
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { BcryptService } from '../other.services/bcrypt.service';
 
 @Injectable()
@@ -34,7 +31,7 @@ export class AuthService {
     const user = await this.usersRepository.getUserForLoginByLoginOrEmail(
       loginOrEmail,
     );
-    
+
     if (!user || user.isUserBanned === true) {
       return null;
     }

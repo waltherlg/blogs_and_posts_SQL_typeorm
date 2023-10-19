@@ -4,7 +4,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 export function testCommentLikesCrud() {
-  describe('Post Likes Crud CRUD operation \"if all is ok\" (e2e). ', () => {
+  describe('Post Likes Crud CRUD operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
@@ -17,7 +17,6 @@ export function testCommentLikesCrud() {
     let accessTokenUser3: any;
     let accessTokenUser4: any;
     let accessTokenUser5: any;
-    
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -119,7 +118,6 @@ export function testCommentLikesCrud() {
       });
     });
 
-    
     it('00-00 auth/registration = 204 register user4', async () => {
       await request(app.getHttpServer())
         .post(`${endpoints.auth}/registration`)
@@ -146,7 +144,6 @@ export function testCommentLikesCrud() {
       });
     });
 
-    
     it('00-00 auth/registration = 204 register user5', async () => {
       await request(app.getHttpServer())
         .post(`${endpoints.auth}/registration`)
@@ -172,7 +169,6 @@ export function testCommentLikesCrud() {
         accessToken: expect.any(String),
       });
     });
-
 
     it('01-02 blogger/blogs POST = 201 SA create new blog', async () => {
       const testsResponse = await request(app.getHttpServer())
@@ -420,20 +416,22 @@ export function testCommentLikesCrud() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [{
-          id: expect.any(String),
-        content: 'some comment for post1',
-        commentatorInfo: {
-          userId: expect.any(String),
-          userLogin: 'user1',
-        },
-        createdAt: expect.any(String),
-        likesInfo: {
-          likesCount: 2,
-          dislikesCount: 1,
-          myStatus: 'Dislike',
-        },
-        }]
+        items: [
+          {
+            id: expect.any(String),
+            content: 'some comment for post1',
+            commentatorInfo: {
+              userId: expect.any(String),
+              userLogin: 'user1',
+            },
+            createdAt: expect.any(String),
+            likesInfo: {
+              likesCount: 2,
+              dislikesCount: 1,
+              myStatus: 'Dislike',
+            },
+          },
+        ],
       });
     });
 
@@ -449,20 +447,22 @@ export function testCommentLikesCrud() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [{
-          id: expect.any(String),
-        content: 'some comment for post1',
-        commentatorInfo: {
-          userId: expect.any(String),
-          userLogin: 'user1',
-        },
-        createdAt: expect.any(String),
-        likesInfo: {
-          likesCount: 2,
-          dislikesCount: 1,
-          myStatus: 'Like',
-        },
-        }]
+        items: [
+          {
+            id: expect.any(String),
+            content: 'some comment for post1',
+            commentatorInfo: {
+              userId: expect.any(String),
+              userLogin: 'user1',
+            },
+            createdAt: expect.any(String),
+            likesInfo: {
+              likesCount: 2,
+              dislikesCount: 1,
+              myStatus: 'Like',
+            },
+          },
+        ],
       });
     });
 
@@ -478,23 +478,23 @@ export function testCommentLikesCrud() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [{
-          id: expect.any(String),
-        content: 'some comment for post1',
-        commentatorInfo: {
-          userId: expect.any(String),
-          userLogin: 'user1',
-        },
-        createdAt: expect.any(String),
-        likesInfo: {
-          likesCount: 2,
-          dislikesCount: 1,
-          myStatus: 'None',
-        },
-        }]
+        items: [
+          {
+            id: expect.any(String),
+            content: 'some comment for post1',
+            commentatorInfo: {
+              userId: expect.any(String),
+              userLogin: 'user1',
+            },
+            createdAt: expect.any(String),
+            likesInfo: {
+              likesCount: 2,
+              dislikesCount: 1,
+              myStatus: 'None',
+            },
+          },
+        ],
       });
     });
-
-
   });
 }

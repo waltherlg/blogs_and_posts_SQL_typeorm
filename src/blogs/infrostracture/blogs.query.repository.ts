@@ -18,21 +18,21 @@ export class BlogsQueryRepository {
     WHERE "blogId" = $1 AND "isBlogBanned" = false
     LIMIT 1
     `;
-    const result = await this.dataSource.query(query, [blogId]); 
+    const result = await this.dataSource.query(query, [blogId]);
     return result[0];
   }
 
   async getAllBlogs(mergedQueryParams) {
     const searchNameTerm = mergedQueryParams.searchNameTerm;
-    const sortBy = mergedQueryParams.sortBy;   
+    const sortBy = mergedQueryParams.sortBy;
     const sortDirection = mergedQueryParams.sortDirection;
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
-    const skipPage = (pageNumber - 1) * pageSize
+    const skipPage = (pageNumber - 1) * pageSize;
 
     const queryParams = [
       `%${searchNameTerm}%`,
-      sortBy,    
+      sortBy,
       sortDirection.toUpperCase(),
       pageNumber,
       pageSize,
@@ -48,13 +48,13 @@ export class BlogsQueryRepository {
     FROM public."Blogs"
     `;
 
-    if (searchNameTerm !== ''){
-      query += `WHERE name ILIKE '${queryParams[0]}' AND "isBlogBanned" = false`
+    if (searchNameTerm !== '') {
+      query += `WHERE name ILIKE '${queryParams[0]}' AND "isBlogBanned" = false`;
       countQuery += `WHERE name ILIKE '${queryParams[0]}' AND "isBlogBanned" = false`;
     }
 
-    if (searchNameTerm === ''){
-      query += `WHERE "isBlogBanned" = false`
+    if (searchNameTerm === '') {
+      query += `WHERE "isBlogBanned" = false`;
       countQuery += `WHERE "isBlogBanned" = false`;
     }
 
@@ -66,16 +66,16 @@ export class BlogsQueryRepository {
     const blogsCount = parseInt(blogsCountArr[0].count);
 
     const blogs = await this.dataSource.query(query);
-    const blogsForOutput = blogs.map(blog => {
+    const blogsForOutput = blogs.map((blog) => {
       return {
-          id: blog.blogId, 
-          name: blog.name,
-          description: blog.description,
-          websiteUrl: blog.websiteUrl,
-          createdAt: blog.createdAt,
-          isMembership: blog.isMembership,
-      }
-    })
+        id: blog.blogId,
+        name: blog.name,
+        description: blog.description,
+        websiteUrl: blog.websiteUrl,
+        createdAt: blog.createdAt,
+        isMembership: blog.isMembership,
+      };
+    });
 
     const pageCount = Math.ceil(blogsCount / pageSize);
 
@@ -84,23 +84,22 @@ export class BlogsQueryRepository {
       page: +pageNumber,
       pageSize: +pageSize,
       totalCount: blogsCount,
-      items: blogsForOutput
+      items: blogsForOutput,
     };
     return outputBlogs;
   }
 
-  
   async getAllBlogsForSa(mergedQueryParams) {
     const searchNameTerm = mergedQueryParams.searchNameTerm;
-    const sortBy = mergedQueryParams.sortBy;   
+    const sortBy = mergedQueryParams.sortBy;
     const sortDirection = mergedQueryParams.sortDirection;
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
-    const skipPage = (pageNumber - 1) * pageSize
+    const skipPage = (pageNumber - 1) * pageSize;
 
     const queryParams = [
       `%${searchNameTerm}%`,
-      sortBy,    
+      sortBy,
       sortDirection.toUpperCase(),
       pageNumber,
       pageSize,
@@ -118,8 +117,8 @@ export class BlogsQueryRepository {
     FROM public."Blogs"
     `;
 
-    if (searchNameTerm !== ''){
-      query += `WHERE name ILIKE '${queryParams[0]}'`
+    if (searchNameTerm !== '') {
+      query += `WHERE name ILIKE '${queryParams[0]}'`;
       countQuery += `WHERE name ILIKE '${queryParams[0]}'`;
     }
 
@@ -131,25 +130,24 @@ export class BlogsQueryRepository {
     const blogsCount = parseInt(blogsCountArr[0].count);
 
     const blogs = await this.dataSource.query(query);
-    const blogsForOutput = blogs.map(blog => {
+    const blogsForOutput = blogs.map((blog) => {
       return {
-          id: blog.blogId, 
-          name: blog.name,
-          description: blog.description,
-          websiteUrl: blog.websiteUrl,
-          createdAt: blog.createdAt,
-          isMembership: blog.isMembership,
-          blogOwnerInfo:{
-            userId: blog.userId,
-            userLogin: blog.login,
-          },
-          banInfo: {
-            isBanned: blog.isBlogBanned,
-            banDate: blog.blogBanDate,
-          }
-
-      }
-    })
+        id: blog.blogId,
+        name: blog.name,
+        description: blog.description,
+        websiteUrl: blog.websiteUrl,
+        createdAt: blog.createdAt,
+        isMembership: blog.isMembership,
+        blogOwnerInfo: {
+          userId: blog.userId,
+          userLogin: blog.login,
+        },
+        banInfo: {
+          isBanned: blog.isBlogBanned,
+          banDate: blog.blogBanDate,
+        },
+      };
+    });
 
     const pageCount = Math.ceil(blogsCount / pageSize);
 
@@ -158,27 +156,27 @@ export class BlogsQueryRepository {
       page: +pageNumber,
       pageSize: +pageSize,
       totalCount: blogsCount,
-      items: blogsForOutput
+      items: blogsForOutput,
     };
     return outputBlogs;
   }
 
   async getAllBlogsForCurrentUser(mergedQueryParams, userId) {
     const searchNameTerm = mergedQueryParams.searchNameTerm;
-    const sortBy = mergedQueryParams.sortBy;   
+    const sortBy = mergedQueryParams.sortBy;
     const sortDirection = mergedQueryParams.sortDirection;
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
-    const skipPage = (pageNumber - 1) * pageSize
+    const skipPage = (pageNumber - 1) * pageSize;
 
     const queryParams = [
       `%${searchNameTerm}%`,
-      sortBy,    
+      sortBy,
       sortDirection.toUpperCase(),
       pageNumber,
       pageSize,
       skipPage,
-      userId
+      userId,
     ];
 
     let query = `
@@ -193,8 +191,8 @@ export class BlogsQueryRepository {
     WHERE "userId" = '${queryParams[6]}' AND "isBlogBanned" = false
     `;
 
-    if (searchNameTerm !== ''){
-      query += `AND name ILIKE '${queryParams[0]}'`
+    if (searchNameTerm !== '') {
+      query += `AND name ILIKE '${queryParams[0]}'`;
       countQuery += `AND name ILIKE '${queryParams[0]}'`;
     }
 
@@ -214,7 +212,7 @@ export class BlogsQueryRepository {
       page: +pageNumber,
       pageSize: +pageSize,
       totalCount: blogsCount,
-      items: blogs
+      items: blogs,
     };
     return outputBlogs;
   }

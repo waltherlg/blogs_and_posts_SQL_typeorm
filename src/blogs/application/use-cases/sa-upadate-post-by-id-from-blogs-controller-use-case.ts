@@ -5,29 +5,39 @@ import { UpdatePostByBlogsIdInputModelType } from '../../../blogs/api/blogger.bl
 import { PostsRepository } from '../../../posts/posts.repository';
 
 export class SaUpdatePostByIdFromBloggerControllerCommand {
-  constructor(public blogsId: string, public postId: string, 
-    public postUpdateDto: UpdatePostByBlogsIdInputModelType){}
+  constructor(
+    public blogsId: string,
+    public postId: string,
+    public postUpdateDto: UpdatePostByBlogsIdInputModelType,
+  ) {}
 }
 
 @CommandHandler(SaUpdatePostByIdFromBloggerControllerCommand)
-export class SaUpdatePostByIdFromBloggerControllerUseCase implements ICommandHandler<SaUpdatePostByIdFromBloggerControllerCommand> {
+export class SaUpdatePostByIdFromBloggerControllerUseCase
+  implements ICommandHandler<SaUpdatePostByIdFromBloggerControllerCommand>
+{
   constructor(private readonly postsRepository: PostsRepository) {}
 
   async execute(
     command: SaUpdatePostByIdFromBloggerControllerCommand,
   ): Promise<BlogActionResult> {
-    const postId = command.postId
-    const post = await this.postsRepository.getPostDBTypeById(postId)
-    if(!post) return BlogActionResult.PostNotFound
-    const title = command.postUpdateDto.title
-    const shortDescription = command.postUpdateDto.shortDescription
-    const content = command.postUpdateDto.content
+    const postId = command.postId;
+    const post = await this.postsRepository.getPostDBTypeById(postId);
+    if (!post) return BlogActionResult.PostNotFound;
+    const title = command.postUpdateDto.title;
+    const shortDescription = command.postUpdateDto.shortDescription;
+    const content = command.postUpdateDto.content;
 
-    const result = await this.postsRepository.updatePostById(postId, title, shortDescription, content)
-    if(result) {
-      return BlogActionResult.Success
-    } else { 
-      return BlogActionResult.NotSaved
+    const result = await this.postsRepository.updatePostById(
+      postId,
+      title,
+      shortDescription,
+      content,
+    );
+    if (result) {
+      return BlogActionResult.Success;
+    } else {
+      return BlogActionResult.NotSaved;
     }
   }
 }

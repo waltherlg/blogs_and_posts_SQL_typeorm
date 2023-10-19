@@ -6,9 +6,7 @@ import { validate as isValidUUID } from 'uuid';
 
 @Injectable()
 export class CommentsRepository {
-  constructor(
-    @InjectDataSource() protected dataSource: DataSource
-  ) {}
+  constructor(@InjectDataSource() protected dataSource: DataSource) {}
 
   async createComment(commentDTO: CommentDBType): Promise<string> {
     const query = `
@@ -37,10 +35,10 @@ export class CommentsRepository {
       commentDTO.createdAt,
       commentDTO.userId,
       commentDTO.likesCount,
-      commentDTO.dislikesCount
-    ])
+      commentDTO.dislikesCount,
+    ]);
     const commentId = result[0].commentId;
-    return commentId
+    return commentId;
   }
 
   async isCommentExist(commentId): Promise<boolean> {
@@ -52,9 +50,9 @@ export class CommentsRepository {
     FROM public."Comments"
     WHERE "commentId" = $1
   `;
-  const result = await this.dataSource.query(query, [commentId]);
-  const count = result[0].count;
-  return count > 0;   
+    const result = await this.dataSource.query(query, [commentId]);
+    const count = result[0].count;
+    return count > 0;
   }
 
   async getCommentDbTypeById(commentId) {
@@ -64,15 +62,15 @@ export class CommentsRepository {
     const query = `
     SELECT * FROM public."Comments"
     WHERE "commentId" = $1
-    `
-    const result = await this.dataSource.query(query, [commentId])
+    `;
+    const result = await this.dataSource.query(query, [commentId]);
     const comment = result[0];
-    if(!comment){
-      return null
+    if (!comment) {
+      return null;
     }
     return comment;
   }
-  
+
   async deleteCommentById(commentId): Promise<boolean> {
     if (!isValidUUID(commentId)) {
       return false;
@@ -80,8 +78,8 @@ export class CommentsRepository {
     const query = `
     DELETE FROM  public."Comments"
     WHERE "commentId" = $1
-    `
-    const result = await this.dataSource.query(query,[commentId]);
+    `;
+    const result = await this.dataSource.query(query, [commentId]);
     return result[1] > 0;
   }
 
@@ -90,9 +88,9 @@ export class CommentsRepository {
     UPDATE public."Comments"
     SET "content" = $2
     WHERE "commentId" = $1
-    `
-    const result = await this.dataSource.query(query, [commentId, content])
+    `;
+    const result = await this.dataSource.query(query, [commentId, content]);
     const count = result[1];
-    return count === 1
+    return count === 1;
   }
 }

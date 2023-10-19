@@ -4,15 +4,18 @@ import request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testUser } from './helpers/inputAndOutputObjects/usersObjects';
-import { testInputBlogBody, testOutputBlogBody } from './helpers/inputAndOutputObjects/blogsObjects';
+import {
+  testInputBlogBody,
+  testOutputBlogBody,
+} from './helpers/inputAndOutputObjects/blogsObjects';
 export function saBlogsControllerCrudAndBan() {
   describe('andpoints of SA blogs.controller (e2e)', () => {
-    let accessTokenUser1
-    let accessTokenUser2
-    let blogId1
-    let blogId2
-    let userId1
-    let userId2
+    let accessTokenUser1;
+    let accessTokenUser2;
+    let blogId1;
+    let blogId2;
+    let userId1;
+    let userId2;
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
@@ -30,7 +33,7 @@ export function saBlogsControllerCrudAndBan() {
     });
     afterAll(async () => {
       await app.close();
-    });    
+    });
 
     let firstCreatedBlogId: string;
     let createdPostId: string;
@@ -41,7 +44,6 @@ export function saBlogsControllerCrudAndBan() {
         .expect(204);
     });
 
- 
     it('00-00 sa/users post = 201 create user1 with return', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(endpoints.saUsers)
@@ -49,10 +51,10 @@ export function saBlogsControllerCrudAndBan() {
         .send(testUser.inputUser1)
         .expect(201);
 
-        const createdResponseBody = createResponse.body;
-        userId1 = createdResponseBody.id
+      const createdResponseBody = createResponse.body;
+      userId1 = createdResponseBody.id;
 
-        expect(createdResponseBody).toEqual(testUser.outputUser1);
+      expect(createdResponseBody).toEqual(testUser.outputUser1);
     });
 
     it('00-00 sa/users post = 201 create user2 with return', async () => {
@@ -62,10 +64,10 @@ export function saBlogsControllerCrudAndBan() {
         .send(testUser.inputUser2)
         .expect(201);
 
-        const createdResponseBody = createResponse.body;
-        userId2 = createdResponseBody.id
+      const createdResponseBody = createResponse.body;
+      userId2 = createdResponseBody.id;
 
-        expect(createdResponseBody).toEqual(testUser.outputUser2);
+      expect(createdResponseBody).toEqual(testUser.outputUser2);
     });
 
     it('00-00 login = 204 login user1', async () => {
@@ -99,7 +101,7 @@ export function saBlogsControllerCrudAndBan() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .send(testInputBlogBody.blog1)
         .expect(201);
-      const createdResponseBody = createResponse.body;     
+      const createdResponseBody = createResponse.body;
       blogId1 = createdResponseBody.id;
       expect(createdResponseBody).toEqual(testOutputBlogBody.blog1);
     });
@@ -110,7 +112,7 @@ export function saBlogsControllerCrudAndBan() {
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .send(testInputBlogBody.blog2)
         .expect(201);
-      const createdResponseBody = createResponse.body;     
+      const createdResponseBody = createResponse.body;
       blogId2 = createdResponseBody.id;
       expect(createdResponseBody).toEqual(testOutputBlogBody.blog2);
     });
@@ -119,24 +121,21 @@ export function saBlogsControllerCrudAndBan() {
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.blogs}`)
         .expect(200);
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody).toEqual({
-          pagesCount: 1,
-          page: 1,
-          pageSize: 10,
-          totalCount: 2,
-          items: [
-            testOutputBlogBody.blog2,
-            testOutputBlogBody.blog1],
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 2,
+        items: [testOutputBlogBody.blog2, testOutputBlogBody.blog1],
       });
     });
-    
 
     it('00-00 sa/blogs PUT = 204 sa ban blog1', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.saBlogs}/${blogId1}/ban`)
         .set('Authorization', `Basic ${basicAuthRight}`)
-        .send({isBanned: true})
+        .send({ isBanned: true })
         .expect(204);
     });
 
@@ -144,14 +143,13 @@ export function saBlogsControllerCrudAndBan() {
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.blogs}`)
         .expect(200);
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody).toEqual({
-          pagesCount: 1,
-          page: 1,
-          pageSize: 10,
-          totalCount: 1,
-          items: [
-            testOutputBlogBody.blog2],
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 1,
+        items: [testOutputBlogBody.blog2],
       });
     });
 
@@ -159,7 +157,7 @@ export function saBlogsControllerCrudAndBan() {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.saBlogs}/${blogId1}/ban`)
         .set('Authorization', `Basic ${basicAuthRight}`)
-        .send({isBanned: false})
+        .send({ isBanned: false })
         .expect(204);
     });
 
@@ -167,17 +165,14 @@ export function saBlogsControllerCrudAndBan() {
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.blogs}`)
         .expect(200);
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody).toEqual({
-          pagesCount: 1,
-          page: 1,
-          pageSize: 10,
-          totalCount: 2,
-          items: [
-            testOutputBlogBody.blog2,
-            testOutputBlogBody.blog1],
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 2,
+        items: [testOutputBlogBody.blog2, testOutputBlogBody.blog1],
       });
     });
-
   });
 }

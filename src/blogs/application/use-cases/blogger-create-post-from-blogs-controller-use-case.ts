@@ -9,21 +9,27 @@ import { v4 as uuidv4 } from 'uuid';
 
 export class CreatePostFromBloggerControllerCommand {
   constructor(
-    public userId: string, 
-    public blogId: string, 
-    public postCreateDto: CreatePostByBlogsIdInputModelType){}
+    public userId: string,
+    public blogId: string,
+    public postCreateDto: CreatePostByBlogsIdInputModelType,
+  ) {}
 }
 
 @CommandHandler(CreatePostFromBloggerControllerCommand)
-export class CreatePostFromBloggerControllerUseCase implements ICommandHandler<CreatePostFromBloggerControllerCommand> {
-  constructor(private readonly postsRepository: PostsRepository, private readonly blogsRepository: BlogsRepository) {}
+export class CreatePostFromBloggerControllerUseCase
+  implements ICommandHandler<CreatePostFromBloggerControllerCommand>
+{
+  constructor(
+    private readonly postsRepository: PostsRepository,
+    private readonly blogsRepository: BlogsRepository,
+  ) {}
 
   async execute(
     command: CreatePostFromBloggerControllerCommand,
   ): Promise<BlogActionResult | string> {
-    const blog = await this.blogsRepository.getBlogDBTypeById(command.blogId)
-    if(!blog) return BlogActionResult.BlogNotFound
-    if(blog.userId !== command.userId) return BlogActionResult.NotOwner
+    const blog = await this.blogsRepository.getBlogDBTypeById(command.blogId);
+    if (!blog) return BlogActionResult.BlogNotFound;
+    if (blog.userId !== command.userId) return BlogActionResult.NotOwner;
     const postDto = new PostDBType(
       uuidv4(),
       command.postCreateDto.title,
@@ -34,9 +40,9 @@ export class CreatePostFromBloggerControllerUseCase implements ICommandHandler<C
       blog.userId,
       0,
       0,
-    )
-    const newPostId = await this.postsRepository.createPost(postDto)
-    if(!newPostId) return BlogActionResult.NotCreated
-    return newPostId
+    );
+    const newPostId = await this.postsRepository.createPost(postDto);
+    if (!newPostId) return BlogActionResult.NotCreated;
+    return newPostId;
   }
 }

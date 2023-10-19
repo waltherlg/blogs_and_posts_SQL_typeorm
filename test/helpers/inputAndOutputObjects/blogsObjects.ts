@@ -1,28 +1,27 @@
-
-export let testInputBlogBody = {
-blog1: {
+export const testInputBlogBody = {
+  blog1: {
     name: 'Blog1',
     description: 'Description1',
     websiteUrl: 'https://www.someweb.com',
   },
-blog2: {
+  blog2: {
     name: 'Blog2',
     description: 'Description2',
     websiteUrl: 'https://www.someweb.com',
   },
-blog3: {
+  blog3: {
     name: 'Blog3',
     description: 'Description3',
     websiteUrl: 'https://www.someweb.com',
   },
-blog4: {
+  blog4: {
     name: 'Blog4',
     description: 'Description4',
     websiteUrl: 'https://www.someweb.com',
   },
-}
+};
 
-export let testOutputBlogBody = {
+export const testOutputBlogBody = {
   blog1: {
     id: expect.any(String),
     name: 'Blog1',
@@ -55,25 +54,4 @@ export let testOutputBlogBody = {
     createdAt: expect.any(String),
     isMembership: false,
   },
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+};

@@ -5,7 +5,7 @@ import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testUser } from './helpers/inputAndOutputObjects/usersObjects';
 export function testBloggerCrudOnlyBlogs() {
-  describe('Blogger CRUD operation \"if all is ok\" (e2e). ', () => {
+  describe('Blogger CRUD operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
@@ -15,7 +15,6 @@ export function testBloggerCrudOnlyBlogs() {
 
     let accessTokenUser1: any;
     let accessTokenUser2: any;
-
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -31,7 +30,7 @@ export function testBloggerCrudOnlyBlogs() {
 
     let firstCreatedBlogId: string;
     let createdPostId: string;
-    let userId1: string
+    let userId1: string;
 
     it('00-00 testing/all-data DELETE = 204 removeAllData', async () => {
       await request(app.getHttpServer())
@@ -46,53 +45,52 @@ export function testBloggerCrudOnlyBlogs() {
         .send(testUser.inputUser1)
         .expect(201);
 
-        const createdResponseBody = createResponse.body;
-        userId1 = createdResponseBody.id
+      const createdResponseBody = createResponse.body;
+      userId1 = createdResponseBody.id;
 
-        expect(createdResponseBody).toEqual(testUser.outputUser1);
+      expect(createdResponseBody).toEqual(testUser.outputUser1);
     });
 
-      it('00-02 auth/registration = 204 register user2', async () => {
-        await request(app.getHttpServer())
-          .post(`${endpoints.auth}/registration`)
-          .send({
-            login: 'user2',
-            password: 'qwerty',
-            email: 'ruslan@gmail-2.com',
-          })
-          .expect(204);
-      });
-  
-      it('00-03 login user1 = 204 login user1', async () => {
-        const createResponse = await request(app.getHttpServer())
-          .post(`${endpoints.auth}/login`)
-          .send({
-            loginOrEmail: 'user1',
-            password: 'qwerty',
-          })
-          .expect(200);
-        const createdResponse = createResponse.body;
-        accessTokenUser1 = createdResponse.accessToken;
-        expect(createdResponse).toEqual({
-          accessToken: expect.any(String),
-        });
-      });
+    it('00-02 auth/registration = 204 register user2', async () => {
+      await request(app.getHttpServer())
+        .post(`${endpoints.auth}/registration`)
+        .send({
+          login: 'user2',
+          password: 'qwerty',
+          email: 'ruslan@gmail-2.com',
+        })
+        .expect(204);
+    });
 
-      it('00-04 login user2 = 204 login user2', async () => {
-        const createResponse = await request(app.getHttpServer())
-          .post(`${endpoints.auth}/login`)
-          .send({
-            loginOrEmail: 'user2',
-            password: 'qwerty',
-          })
-          .expect(200);
-        const createdResponse = createResponse.body;
-        accessTokenUser2 = createdResponse.accessToken;
-        expect(createdResponse).toEqual({
-          accessToken: expect.any(String),
-        });
+    it('00-03 login user1 = 204 login user1', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.auth}/login`)
+        .send({
+          loginOrEmail: 'user1',
+          password: 'qwerty',
+        })
+        .expect(200);
+      const createdResponse = createResponse.body;
+      accessTokenUser1 = createdResponse.accessToken;
+      expect(createdResponse).toEqual({
+        accessToken: expect.any(String),
       });
+    });
 
+    it('00-04 login user2 = 204 login user2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.auth}/login`)
+        .send({
+          loginOrEmail: 'user2',
+          password: 'qwerty',
+        })
+        .expect(200);
+      const createdResponse = createResponse.body;
+      accessTokenUser2 = createdResponse.accessToken;
+      expect(createdResponse).toEqual({
+        accessToken: expect.any(String),
+      });
+    });
 
     it('01-05 blogger/blogs POST = 201 user1 create new blog', async () => {
       const testsResponse = await request(app.getHttpServer())
@@ -118,7 +116,7 @@ export function testBloggerCrudOnlyBlogs() {
       });
     });
 
-    let blogIdUser2: any
+    let blogIdUser2: any;
 
     it('01-06 blogger/blogs POST = 201 user2 create new blog', async () => {
       const testsResponse = await request(app.getHttpServer())
@@ -150,7 +148,7 @@ export function testBloggerCrudOnlyBlogs() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
       const createdResponse = createResponse.body;
-      
+
       expect(createdResponse).toEqual({
         pagesCount: 1,
         page: 1,
@@ -175,7 +173,7 @@ export function testBloggerCrudOnlyBlogs() {
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(200);
       const createdResponse = createResponse.body;
-      
+
       expect(createdResponse).toEqual({
         pagesCount: 1,
         page: 1,
@@ -244,7 +242,7 @@ export function testBloggerCrudOnlyBlogs() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
       const createdResponse = createResponse.body;
-      
+
       expect(createdResponse).toEqual({
         pagesCount: 1,
         page: 1,
@@ -265,7 +263,9 @@ export function testBloggerCrudOnlyBlogs() {
 
     it('01-12 blogger/blogs/blogsId/posts/postId UPDATE = 204 user1 update post', async () => {
       const createResponse = await request(app.getHttpServer())
-        .put(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}`)
+        .put(
+          `${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}`,
+        )
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .send({
           title: 'updatedTitle',
@@ -277,7 +277,9 @@ export function testBloggerCrudOnlyBlogs() {
 
     it('01-13 blogger/blogs/blogsId/posts/postId DELETE = 204 user1 delete post', async () => {
       const createResponse = await request(app.getHttpServer())
-        .delete(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}`)
+        .delete(
+          `${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}`,
+        )
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(204);
     });
@@ -295,7 +297,7 @@ export function testBloggerCrudOnlyBlogs() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
       const createdResponse = createResponse.body;
-      
+
       expect(createdResponse).toEqual({
         pagesCount: 0,
         page: 1,
@@ -328,6 +330,5 @@ export function testBloggerCrudOnlyBlogs() {
         isMembership: false,
       });
     });
-
   });
 }

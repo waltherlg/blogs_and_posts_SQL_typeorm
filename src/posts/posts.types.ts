@@ -1,30 +1,30 @@
-import { Blogs } from "src/blogs/blogs.types";
-import { Users } from "src/users/users.types";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { Blogs } from 'src/blogs/blogs.types';
+import { Users } from 'src/users/users.types';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
-@Entity({ name: 'Posts'})
+@Entity({ name: 'Posts' })
 export class Posts {
-    @PrimaryColumn('uuid')  
-    postId: string;
-    @Column()
-    title: string;
-    @Column()
-    shortDescription: string;
-    @Column()
-    content: string;
-    @ManyToOne(() => Blogs)
-    @JoinColumn({ name: 'blogId'})
-    Blogs: Blogs
-    @Column('uuid')
-    blogId: string;
-    @Column()
-    createdAt: string;
-    @Column({type: 'uuid', nullable: true})
-    userId: string;
-    @Column()
-    likesCount: number;
-    @Column()
-    dislikesCount: number;
+  @PrimaryColumn('uuid')
+  postId: string;
+  @Column()
+  title: string;
+  @Column()
+  shortDescription: string;
+  @Column()
+  content: string;
+  @ManyToOne(() => Blogs)
+  @JoinColumn({ name: 'blogId' })
+  Blogs: Blogs;
+  @Column('uuid')
+  blogId: string;
+  @Column()
+  createdAt: string;
+  @Column({ type: 'uuid', nullable: true })
+  userId: string;
+  @Column()
+  likesCount: number;
+  @Column()
+  dislikesCount: number;
 }
 
 export class PostDBType {
@@ -37,7 +37,7 @@ export class PostDBType {
     public createdAt: string,
     public userId: string,
     public likesCount: number,
-    public dislikesCount: number
+    public dislikesCount: number,
   ) {}
 }
 
