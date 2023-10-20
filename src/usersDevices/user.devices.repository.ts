@@ -25,21 +25,14 @@ async addDeviceInfo(deviceInfoDTO): Promise<boolean> {
   async refreshDeviceInfo(
     deviceId,
     lastActiveDate,
-    expirationDate,
-  ): Promise<boolean> {
-    if (!isValidUUID(deviceId)) {
-      return false;
-    }
-    const query = `UPDATE public."UserDevices"
-    SET "lastActiveDate" = $2, "expirationDate" = $3
-    WHERE "deviceId" = $1 `;
-
-    const result = await this.dataSource.query(query, [
-      deviceId,
-      lastActiveDate,
-      expirationDate,
-    ]);
-    return result[1] > 0;
+    expirationDate): Promise<boolean>{
+      if (!isValidUUID(deviceId)) {
+        return false;
+      }
+      const result = await this.userDevicesRepository.update(
+        {deviceId},
+        {lastActiveDate, expirationDate})
+        return result.affected > 0;
   }
 
   async deleteDeviceByUserAndDeviceId(userId, deviceId): Promise<boolean> {
