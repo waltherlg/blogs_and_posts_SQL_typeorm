@@ -18,12 +18,10 @@ async addDeviceInfo(deviceInfoDTO): Promise<boolean> {
     if (!isValidUUID(userId) || !isValidUUID(deviceId)) {
       return null;
     }
-    const query = `SELECT * FROM public."UserDevices"
-    WHERE "userId" = $1 AND "deviceId" = $2
-    LIMIT 1`;
-    const result = await this.dataSource.query(query, [userId, deviceId]);
-    return result[0];
+    const device = await this.userDevicesRepository.findOne({ where: {userId, deviceId}  });
+    return device;
   }
+
   async refreshDeviceInfo(
     deviceId,
     lastActiveDate,
