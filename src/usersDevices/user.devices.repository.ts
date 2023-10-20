@@ -1,11 +1,16 @@
 import { Injectable, Query } from '@nestjs/common';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
+import { UserDevices } from './users-devices.types';
 
 @Injectable()
 export class UsersDevicesRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource) {}
+  constructor(@InjectDataSource() protected dataSource: DataSource,
+              @InjectRepository(UserDevices) private readonly userDevicesRepository: Repository<UserDevices>, ) {}
+
+
+
   async addDeviceInfo(deviceInfoDTO): Promise<boolean> {
     const query = `INSERT INTO public."UserDevices"(
       "deviceId",
