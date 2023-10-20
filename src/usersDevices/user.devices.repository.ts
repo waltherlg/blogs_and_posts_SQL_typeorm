@@ -9,34 +9,10 @@ export class UsersDevicesRepository {
   constructor(@InjectDataSource() protected dataSource: DataSource,
               @InjectRepository(UserDevices) private readonly userDevicesRepository: Repository<UserDevices>, ) {}
 
-
-
-  async addDeviceInfo(deviceInfoDTO): Promise<boolean> {
-    const query = `INSERT INTO public."UserDevices"(
-      "deviceId",
-      "userId", 
-      ip, 
-      title, 
-      "lastActiveDate", 
-      "expirationDate")
-      VALUES (
-      $1, 
-      $2, 
-      $3, 
-      $4, 
-      $5, 
-      $6)`;
-
-    const result = await this.dataSource.query(query, [
-      deviceInfoDTO.deviceId,
-      deviceInfoDTO.userId,
-      deviceInfoDTO.ip,
-      deviceInfoDTO.title,
-      deviceInfoDTO.lastActiveDate,
-      deviceInfoDTO.expirationDate,
-    ]);
-    return result.rowCount > 0;
-  }
+async addDeviceInfo(deviceInfoDTO): Promise<boolean> {
+  const result = await this.userDevicesRepository.save(deviceInfoDTO)
+  return result.deviceId
+}
 
   async getDeviceByUsersAndDeviceId(userId: string, deviceId: string) {
     if (!isValidUUID(userId) || !isValidUUID(deviceId)) {
