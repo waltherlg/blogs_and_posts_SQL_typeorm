@@ -85,15 +85,15 @@ export class UsersRepository {
 
   async isConfirmationCodeExistAndNotExpired(confirmationCode: string) {
     const count = await this.usersRepository
-    .createQueryBuilder('user')
-    .where('user.confirmationCode = :confirmationCode', {
-      confirmationCode,
-    })
-    .andWhere('user.expirationDateOfConfirmationCode > :currentDate', {
-      currentDate: new Date(),
-    })
-    .getCount();
-  return count > 0;
+      .createQueryBuilder('user')
+      .where('user.confirmationCode = :confirmationCode', {
+        confirmationCode,
+      })
+      .andWhere('user.expirationDateOfConfirmationCode > :currentDate', {
+        currentDate: new Date(),
+      })
+      .getCount();
+    return count > 0;
   }
 
   async newPasswordSet(

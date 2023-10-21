@@ -6,33 +6,40 @@ import { UserDevices } from './users-devices.types';
 
 @Injectable()
 export class UsersDevicesRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource,
-              @InjectRepository(UserDevices) private readonly userDevicesRepository: Repository<UserDevices>, ) {}
+  constructor(
+    @InjectDataSource() protected dataSource: DataSource,
+    @InjectRepository(UserDevices)
+    private readonly userDevicesRepository: Repository<UserDevices>,
+  ) {}
 
-async addDeviceInfo(deviceInfoDTO): Promise<boolean> {
-  const result = await this.userDevicesRepository.save(deviceInfoDTO)
-  return result.deviceId
-}
+  async addDeviceInfo(deviceInfoDTO): Promise<boolean> {
+    const result = await this.userDevicesRepository.save(deviceInfoDTO);
+    return result.deviceId;
+  }
 
   async getDeviceByUsersAndDeviceId(userId: string, deviceId: string) {
     if (!isValidUUID(userId) || !isValidUUID(deviceId)) {
       return null;
     }
-    const device = await this.userDevicesRepository.findOne({ where: {userId, deviceId}  });
+    const device = await this.userDevicesRepository.findOne({
+      where: { userId, deviceId },
+    });
     return device;
   }
 
   async refreshDeviceInfo(
     deviceId,
     lastActiveDate,
-    expirationDate): Promise<boolean>{
-      if (!isValidUUID(deviceId)) {
-        return false;
-      }
-      const result = await this.userDevicesRepository.update(
-        {deviceId},
-        {lastActiveDate, expirationDate})
-        return result.affected > 0;
+    expirationDate,
+  ): Promise<boolean> {
+    if (!isValidUUID(deviceId)) {
+      return false;
+    }
+    const result = await this.userDevicesRepository.update(
+      { deviceId },
+      { lastActiveDate, expirationDate },
+    );
+    return result.affected > 0;
   }
 
   async deleteDeviceByUserAndDeviceId(userId, deviceId): Promise<boolean> {
@@ -40,12 +47,12 @@ async addDeviceInfo(deviceInfoDTO): Promise<boolean> {
       return false;
     }
     const result = await this.userDevicesRepository
-    .createQueryBuilder()
-    .delete()
-    .from(UserDevices)
-    .where('userId = :userId AND deviceId = :deviceId', {userId, deviceId})
-    .execute()
-    return result.affected > 0
+      .createQueryBuilder()
+      .delete()
+      .from(UserDevices)
+      .where('userId = :userId AND deviceId = :deviceId', { userId, deviceId })
+      .execute();
+    return result.affected > 0;
   }
 
   async deleteAllUserDevicesExceptCurrent(userId, deviceId): Promise<boolean> {
