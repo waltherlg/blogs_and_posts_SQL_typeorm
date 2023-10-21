@@ -1,5 +1,5 @@
-import { Comments } from 'src/comments/comments.types';
-import { UserDevices } from 'src/usersDevices/users-devices.types';
+import { Comments } from '../comments/comments.types';
+import { UserDevices } from '../usersDevices/users-devices.types';
 import {
   Column,
   Entity,

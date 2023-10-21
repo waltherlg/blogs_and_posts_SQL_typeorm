@@ -8,7 +8,7 @@ import { AuthService } from '../auth.service';
 import { CustomisableException } from '../../exceptions/custom.exceptions';
 import { CheckService } from '../../other.services/check.service';
 import { UsersDeviceService } from '../../usersDevices/users-devices.service';
-import { TokensService } from 'src/other.services/tokens.service';
+import { TokensService } from '../../other.services/tokens.service';
 
 @Injectable()
 export class RefreshTokenStrategy extends PassportStrategy(

@@ -1,5 +1,5 @@
-import { Blogs } from 'src/blogs/blogs.types';
-import { Users } from 'src/users/users.types';
+import { Blogs } from '../blogs/blogs.types';
+import { Users } from '../users/users.types';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'Posts' })
