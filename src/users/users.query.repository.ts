@@ -1,31 +1,64 @@
 import { Injectable } from '@nestjs/common';
-import { NewCreatedUserTypeOutput, UserTypeOutput } from './users.types';
+import { NewCreatedUserTypeOutput, UserTypeOutput, Users } from './users.types';
 import {
   PaginationOutputModel,
   RequestBannedUsersQueryModel,
 } from '../models/types';
-import { DataSource } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UsersQueryRepository {
-  constructor(private dataSource: DataSource) {}
+  constructor(@InjectDataSource() protected dataSource: DataSource,
+    @InjectRepository(Users)
+    private readonly usersRepository: Repository<Users>,) {}
 
   async getCurrentUserInfo(userId: string) {
     if (!isValidUUID(userId)) {
-      return false;
+      return null;
     }
-    const query = `
-    SELECT email, login, "userId" 
-    FROM public."Users"
-    WHERE "userId"=$1
-    LIMIT 1
-    `;
-    const user = await this.dataSource.query(query, [userId]);
-    return user[0];
+    const result = await this.usersRepository.find({
+      select: {
+        email: true,
+        login: true,
+        userId: true
+      }
+    })
+    return result[0]
   }
 
+  
   async getUserById(userId): Promise<UserTypeOutput | null> {
+    if (!isValidUUID(userId)) {
+      return null;
+    }
+    const result = await this.usersRepository.find({
+      select: {
+        userId: true,
+        login: true,
+        email: true,
+        createdAt: true,
+        isUserBanned: true,
+        banDate: true,
+        banReason: true,
+      }
+    })
+    const user = result[0]
+    return {
+      id: user.userId,
+      login: user.login,
+      email: user.email,
+      createdAt: user.createdAt,
+      banInfo: {
+        isBanned: user.isUserBanned,
+        banDate: user.banDate,
+        banReason: user.banReason,
+      },
+    };
+  }
+
+  async getUserByIdRow(userId): Promise<UserTypeOutput | null> {
     if (!isValidUUID(userId)) {
       return null;
     }
