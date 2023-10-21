@@ -39,12 +39,13 @@ async addDeviceInfo(deviceInfoDTO): Promise<boolean> {
     if (!isValidUUID(userId) || !isValidUUID(deviceId)) {
       return false;
     }
-    const query = `
-    DELETE FROM public."UserDevices"
-    WHERE "userId" = $1 AND "deviceId" = $2
-    `;
-    const result = await this.dataSource.query(query, [userId, deviceId]);
-    return result[1];
+    const result = await this.userDevicesRepository
+    .createQueryBuilder()
+    .delete()
+    .from(UserDevices)
+    .where('userId = :userId AND deviceId = :deviceId', {userId, deviceId})
+    .execute()
+    return result.affected > 0
   }
 
   async deleteAllUserDevicesExceptCurrent(userId, deviceId): Promise<boolean> {
