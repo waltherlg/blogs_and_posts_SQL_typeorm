@@ -3,6 +3,7 @@ import { CommentsRepository } from '../../../comments/comments.repository';
 import { LikesRepository } from '../../../likes/likes.repository';
 import { CommentLikeDbType } from '../../../likes/db.likes.types';
 import { CommentActionResult } from '../../../comments/helpers/comment.enum.action.result';
+import { UsersRepository } from '../../../users/users.repository';
 
 export class SetLikeStatusForCommentCommand {
   constructor(
@@ -19,6 +20,7 @@ export class SetLikeStatusForCommentUseCase
   constructor(
     private readonly commentRepository: CommentsRepository,
     private readonly likesRepository: LikesRepository,
+    private readonly usersRepository: UsersRepository
   ) {}
 
   async execute(
@@ -43,11 +45,15 @@ export class SetLikeStatusForCommentUseCase
     //if user never set likestatus, create it
 
     if (!commentLikeObject) {
+      const likerLogin = await this.usersRepository.getUserLoginById(userId)
+      if (!likerLogin){
+        return CommentActionResult.UserNotFound
+      }
       const commentLikeDto = new CommentLikeDbType(
         commentId,
         new Date().toISOString(),
         userId,
-        null,
+        likerLogin,
         false,
         status,
       );

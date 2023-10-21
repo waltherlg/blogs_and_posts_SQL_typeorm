@@ -207,6 +207,20 @@ export class UsersRepository {
     return false;
   }
 
+  async getUserLoginById(userId): Promise<string | null> {
+    const result = await this.usersRepository.find({
+      select: {
+        login: true
+      },
+      where: { userId }
+    })
+    if (result.length > 0) {
+      const login = result[0].login
+      return login
+    }
+    return null
+  }
+
   async getConfirmationCodeOfLastCreatedUser() {
     const result = await this.dataSource.query(`SELECT "confirmationCode"
 FROM "Users"
