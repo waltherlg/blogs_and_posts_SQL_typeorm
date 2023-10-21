@@ -23,7 +23,8 @@ export class UsersQueryRepository {
         email: true,
         login: true,
         userId: true
-      }
+      },
+      where: {userId}
     })
     return result[0]
   }
@@ -42,34 +43,10 @@ export class UsersQueryRepository {
         isUserBanned: true,
         banDate: true,
         banReason: true,
-      }
+      },
+      where: {userId}
     })
     const user = result[0]
-    return {
-      id: user.userId,
-      login: user.login,
-      email: user.email,
-      createdAt: user.createdAt,
-      banInfo: {
-        isBanned: user.isUserBanned,
-        banDate: user.banDate,
-        banReason: user.banReason,
-      },
-    };
-  }
-
-  async getUserByIdRow(userId): Promise<UserTypeOutput | null> {
-    if (!isValidUUID(userId)) {
-      return null;
-    }
-    const query = `
-    SELECT "userId", login, email, "createdAt", "isUserBanned", "banDate", "banReason"
-    FROM public."Users"
-    WHERE "userId"=$1
-    LIMIT 1
-    `;
-    const userArr = await this.dataSource.query(query, [userId]);
-    const user = userArr[0];
     return {
       id: user.userId,
       login: user.login,
@@ -89,14 +66,16 @@ export class UsersQueryRepository {
     if (!isValidUUID(userId)) {
       return null;
     }
-    const query = `
-    SELECT "userId", login, email, "createdAt"
-    FROM public."Users"
-    WHERE "userId"=$1
-    LIMIT 1
-    `;
-    const userArr = await this.dataSource.query(query, [userId]);
-    const user = userArr[0];
+    const result = await this.usersRepository.find({
+      select: {
+        userId: true, 
+        login: true,
+        email: true,
+        createdAt: true
+      },
+      where: {userId}
+    })
+    const user = result[0];
     return {
       id: user.userId,
       login: user.login,
