@@ -5,6 +5,7 @@ import { PostActionResult } from '../helpers/post.enum.action.result';
 import { CheckService } from '../../other.services/check.service';
 import { LikesRepository } from '../../likes/likes.repository';
 import { PostLikeDbType } from '../../likes/db.likes.types';
+import { UsersRepository } from '../../users/users.repository';
 
 export class SetLikeStatusForPostCommand {
   constructor(
@@ -21,6 +22,7 @@ export class SetLikeStatusForPostUseCase
   constructor(
     private readonly blogRepository: BlogsRepository,
     private readonly postRepository: PostsRepository,
+    private readonly usersRepository: UsersRepository,
     private readonly likesRepository: LikesRepository,
     private readonly checkService: CheckService,
   ) {}
@@ -58,11 +60,15 @@ export class SetLikeStatusForPostUseCase
 
     //if user never set likestatus, create it
     if (!likeObject) {
+      const likerLogin = await this.usersRepository.getUserLoginById(userId)
+      if (!likerLogin){
+        return PostActionResult.UserNotFound
+      }
       const postLikeDto = new PostLikeDbType(
         postId,
         new Date().toISOString(),
         userId,
-        null,
+        likerLogin,
         false,
         status,
       );

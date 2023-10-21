@@ -1,44 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { CommentDBType } from './comments.types';
-import { DataSource } from 'typeorm';
-import { InjectDataSource } from '@nestjs/typeorm';
+import { CommentDBType, Comments } from './comments.types';
+import { DataSource, Repository } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
 
 @Injectable()
 export class CommentsRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource) {}
+  constructor(@InjectDataSource() protected dataSource: DataSource,
+              @InjectRepository(Comments) private readonly commentsRepository: Repository<Comments>) {}
 
   async createComment(commentDTO: CommentDBType): Promise<string> {
-    const query = `
-    INSERT INTO public."Comments"(
-      "commentId",
-      "postId",
-      content,
-      "createdAt",
-      "userId",
-      "likesCount",
-      "dislikesCount")
-    VALUES (
-      $1,  
-      $2, 
-      $3, 
-      $4,
-      $5,
-      $6,
-      $7)
-      RETURNING "commentId" 
-    `;
-    const result = await this.dataSource.query(query, [
-      commentDTO.commentId,
-      commentDTO.postId,
-      commentDTO.content,
-      commentDTO.createdAt,
-      commentDTO.userId,
-      commentDTO.likesCount,
-      commentDTO.dislikesCount,
-    ]);
-    const commentId = result[0].commentId;
-    return commentId;
+    const result = await this.commentsRepository.save(commentDTO)
+    return result.commentId
   }
 
   async isCommentExist(commentId): Promise<boolean> {
