@@ -5,6 +5,7 @@ import { validate as isValidUUID } from 'uuid';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { PostLikeDbType } from '../likes/db.likes.types';
+import { sortDirectionFixer } from 'src/helpers/helpers.functions';
 
 @Injectable()
 export class PostsQueryRepository {
@@ -14,16 +15,6 @@ export class PostsQueryRepository {
     if (!isValidUUID(postId)) {
       return null;
     }
-    // const query = `
-    //   SELECT "Posts".*, "Blogs".name AS "blogName", "Blogs"."isBlogBanned", "Users"."isUserBanned"
-    //   FROM public."Posts"
-    //   INNER JOIN "Blogs" ON "Posts"."blogId" = "Blogs"."blogId"
-    //   INNER JOIN "Users" ON "Blogs"."userId" = "Users"."userId"
-    //   WHERE "postId" = $1 AND "Users"."isUserBanned" = false AND "Blogs"."isBlogBanned" = false;
-    // `;
-
-    //query without UsersTable
-    // this query dont check is user (blogger) banned, because all blogs made by SA
     const query = `
     SELECT "Posts".*, "Blogs".name AS "blogName", "Blogs"."isBlogBanned"
     FROM public."Posts"
@@ -73,14 +64,14 @@ export class PostsQueryRepository {
 
   async getAllPosts(mergedQueryParams, userId?) {
     const sortBy = mergedQueryParams.sortBy;
-    const sortDirection = mergedQueryParams.sortDirection;
+    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
 
     const queryParams = [
       sortBy,
-      sortDirection.toUpperCase(),
+      sortDirection,
       pageNumber,
       pageSize,
       skipPage,
@@ -181,14 +172,14 @@ export class PostsQueryRepository {
     userId?,
   ): Promise<PaginationOutputModel<PostTypeOutput>> {
     const sortBy = mergedQueryParams.sortBy;
-    const sortDirection = mergedQueryParams.sortDirection;
+    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
 
     const queryParams = [
       sortBy,
-      sortDirection.toUpperCase(),
+      sortDirection,
       pageNumber,
       pageSize,
       skipPage,

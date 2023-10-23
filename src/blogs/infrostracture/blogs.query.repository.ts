@@ -3,6 +3,7 @@ import { BlogTypeOutput, blogSaTypeOutput } from '../blogs.types';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
+import { sortDirectionFixer } from 'src/helpers/helpers.functions';
 
 @Injectable()
 export class BlogsQueryRepository {
@@ -25,7 +26,7 @@ export class BlogsQueryRepository {
   async getAllBlogs(mergedQueryParams) {
     const searchNameTerm = mergedQueryParams.searchNameTerm;
     const sortBy = mergedQueryParams.sortBy;
-    const sortDirection = mergedQueryParams.sortDirection;
+    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection) ;
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
@@ -33,7 +34,7 @@ export class BlogsQueryRepository {
     const queryParams = [
       `%${searchNameTerm}%`,
       sortBy,
-      sortDirection.toUpperCase(),
+      sortDirection,
       pageNumber,
       pageSize,
       skipPage,
@@ -92,7 +93,7 @@ export class BlogsQueryRepository {
   async getAllBlogsForSa(mergedQueryParams) {
     const searchNameTerm = mergedQueryParams.searchNameTerm;
     const sortBy = mergedQueryParams.sortBy;
-    const sortDirection = mergedQueryParams.sortDirection;
+    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
@@ -100,7 +101,7 @@ export class BlogsQueryRepository {
     const queryParams = [
       `%${searchNameTerm}%`,
       sortBy,
-      sortDirection.toUpperCase(),
+      sortDirection,
       pageNumber,
       pageSize,
       skipPage,
@@ -164,7 +165,7 @@ export class BlogsQueryRepository {
   async getAllBlogsForCurrentUser(mergedQueryParams, userId) {
     const searchNameTerm = mergedQueryParams.searchNameTerm;
     const sortBy = mergedQueryParams.sortBy;
-    const sortDirection = mergedQueryParams.sortDirection;
+    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
@@ -172,7 +173,7 @@ export class BlogsQueryRepository {
     const queryParams = [
       `%${searchNameTerm}%`,
       sortBy,
-      sortDirection.toUpperCase(),
+      sortDirection,
       pageNumber,
       pageSize,
       skipPage,

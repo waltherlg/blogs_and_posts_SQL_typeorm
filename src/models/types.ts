@@ -7,7 +7,7 @@ export type RequestQueryParamsModel = {
 
 export const DEFAULT_QUERY_PARAMS: RequestQueryParamsModel = {
   sortBy: 'createdAt',
-  sortDirection: 'desc',
+  sortDirection: 'DESC',
   pageNumber: '1',
   pageSize: '10',
 };
@@ -19,7 +19,7 @@ export type RequestBlogsQueryModel = {
 export const DEFAULT_BLOGS_QUERY_PARAMS: RequestBlogsQueryModel = {
   searchNameTerm: '',
   sortBy: 'createdAt',
-  sortDirection: 'desc',
+  sortDirection: 'DESC',
   pageNumber: '1',
   pageSize: '10',
 };
@@ -29,7 +29,7 @@ export type RequestBannedUsersQueryModel = RequestQueryParamsModel & {
 };
 export const DEFAULT_BANNED_USERS_QUERY_PARAMS: RequestBannedUsersQueryModel = {
   sortBy: 'createdAt',
-  sortDirection: 'desc',
+  sortDirection: 'DESC',
   pageNumber: '1',
   pageSize: '10',
   searchLoginTerm: '',

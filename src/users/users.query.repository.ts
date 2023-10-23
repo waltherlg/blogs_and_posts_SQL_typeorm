@@ -173,7 +173,7 @@ export class UsersQueryRepository {
     const searchEmailTerm = `%${mergedQueryParams.searchEmailTerm}%`;
     const banStatus = mergedQueryParams.banStatus;
     const sortBy = mergedQueryParams.sortBy;
-    const sortDirection = mergedQueryParams.sortDirection.toUpperCase();
+    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
@@ -241,7 +241,7 @@ export class UsersQueryRepository {
     const banStatus = mergedQueryParams.banStatus;
     const sortBy = mergedQueryParams.sortBy;
 
-    const sortDirection = mergedQueryParams.sortDirection;
+    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
@@ -250,7 +250,7 @@ export class UsersQueryRepository {
       `%${searchLoginTerm}%`,
       `%${searchEmailTerm}%`,
       sortBy,
-      sortDirection.toUpperCase(),
+      sortDirection,
       pageNumber,
       pageSize,
       skipPage,
@@ -352,7 +352,7 @@ LIMIT ${queryParams[5]} OFFSET ${queryParams[6]};
   ) {
     const searchLoginTerm = mergedQueryParams.searchLoginTerm;
     const sortBy = mergedQueryParams.sortBy;
-    const sortDirection = mergedQueryParams.sortDirection;
+    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
@@ -360,7 +360,7 @@ LIMIT ${queryParams[5]} OFFSET ${queryParams[6]};
     const queryParams = [
       `%${searchLoginTerm}%`,
       sortBy,
-      sortDirection.toUpperCase(),
+      sortDirection,
       pageNumber,
       pageSize,
       skipPage,

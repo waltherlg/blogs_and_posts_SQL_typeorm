@@ -4,6 +4,7 @@ import { DataSource } from 'typeorm';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { CommentLikeDbType } from '../likes/db.likes.types';
+import { sortDirectionFixer } from 'src/helpers/helpers.functions';
 @Injectable()
 export class CommentsQueryRepository {
   constructor(@InjectDataSource() protected dataSource: DataSource) {}
@@ -61,14 +62,14 @@ export class CommentsQueryRepository {
 
   async getAllCommentsByPostId(postId: string, mergedQueryParams, userId?) {
     const sortBy = mergedQueryParams.sortBy;
-    const sortDirection = mergedQueryParams.sortDirection;
+    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
     const pageNumber = mergedQueryParams.pageNumber;
     const pageSize = mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
 
     const queryParams = [
       sortBy,
-      sortDirection.toUpperCase(),
+      sortDirection,
       pageNumber,
       pageSize,
       skipPage,
