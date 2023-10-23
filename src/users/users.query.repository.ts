@@ -7,6 +7,7 @@ import {
 import { DataSource, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { sortDirectionFixer } from 'src/helpers/helpers.functions';
 
 @Injectable()
 export class UsersQueryRepository {
@@ -88,8 +89,8 @@ export class UsersQueryRepository {
     const searchLoginTerm = mergedQueryParams.searchLoginTerm;
     const searchEmailTerm = mergedQueryParams.searchEmailTerm;
     const banStatus = mergedQueryParams.banStatus;
-    const sortBy = mergedQueryParams.sortBy;
-    const sortDirection = mergedQueryParams.sortDirection.toUpperCase();    
+    const sortBy = mergedQueryParams.sortBy ;
+    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection) ;    
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;

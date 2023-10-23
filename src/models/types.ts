@@ -43,7 +43,7 @@ export type RequestUsersQueryModel = RequestQueryParamsModel & {
 
 export const DEFAULT_USERS_QUERY_PARAMS: RequestUsersQueryModel = {
   sortBy: 'createdAt',
-  sortDirection: 'desc',
+  sortDirection: 'DESC',
   pageNumber: '1',
   pageSize: '10',
   searchLoginTerm: '',
