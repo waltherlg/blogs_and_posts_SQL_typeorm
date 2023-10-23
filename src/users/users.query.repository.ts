@@ -84,7 +84,155 @@ export class UsersQueryRepository {
     };
   }
 
-  async getAllUsers(
+   async getAllUsers(mergedQueryParams): Promise<PaginationOutputModel<UserTypeOutput>> {
+    const searchLoginTerm = mergedQueryParams.searchLoginTerm;
+    const searchEmailTerm = mergedQueryParams.searchEmailTerm;
+    const banStatus = mergedQueryParams.banStatus;
+    const sortBy = mergedQueryParams.sortBy;
+    const sortDirection = mergedQueryParams.sortDirection.toUpperCase();    
+    const pageNumber = +mergedQueryParams.pageNumber;
+    const pageSize = +mergedQueryParams.pageSize;
+    const skipPage = (pageNumber - 1) * pageSize;
+
+    const queryBuilder = this.usersRepository.createQueryBuilder('user');
+    queryBuilder
+      .select([
+        'user.userId',
+        'user.login',
+        'user.email',
+        'user.createdAt',
+        'user.isUserBanned',
+        'user.banDate',
+        'user.banReason',
+      ])
+
+      
+      if (searchLoginTerm !== '' || searchEmailTerm !== '') {
+        if(searchLoginTerm !== ''){
+          queryBuilder.where(`user.login ILIKE :searchLoginTerm`, { searchLoginTerm: `%${searchLoginTerm}%` })
+        }      
+        if(searchEmailTerm !== ''){
+          queryBuilder.where(`user.email ILIKE :searchEmailTerm`, { searchEmailTerm: `%${searchEmailTerm}%` })
+        }
+      }
+
+      if ((searchLoginTerm !== '' || searchEmailTerm !== '') && banStatus !== 'all'){
+        if(banStatus === 'banned'){
+          queryBuilder.andWhere(`user.isUserBanned = true`)
+        }
+        if(banStatus === 'notBanned'){
+          queryBuilder.andWhere(`user.isUserBanned = false`)
+        }
+      }
+
+      if (searchLoginTerm === '' && searchEmailTerm === '' && banStatus !== 'all'){
+        if(banStatus === 'banned'){
+          queryBuilder.where(`user.isUserBanned = true`)
+        }
+        if(banStatus === 'notBanned'){
+          queryBuilder.where(`user.isUserBanned = false`)
+        }
+      }
+
+      const usersCount = await queryBuilder.getCount();
+      const users = await queryBuilder      
+      .orderBy(`user.${sortBy}`, sortDirection)
+      .skip(skipPage)
+      .take(pageSize)
+      .getMany();
+      const outUsers = users.map((user) => {
+        return {
+          id: user.userId,
+          login: user.login,
+          email: user.email,
+          createdAt: user.createdAt,
+          banInfo: {
+            isBanned: user.isUserBanned,
+            banDate: user.banDate,
+            banReason: user.banReason,
+          },
+        };
+      });
+  
+      const pageCount = Math.ceil(usersCount / pageSize);
+  
+      const outputUsers: PaginationOutputModel<UserTypeOutput> = {
+        pagesCount: pageCount,
+        page: pageNumber,
+        pageSize: pageSize,
+        totalCount: usersCount,
+        items: outUsers,
+      };
+  
+      return outputUsers;
+    }
+
+  async getAllUsersWrong(mergedQueryParams): Promise<PaginationOutputModel<UserTypeOutput>> {
+    const searchLoginTerm = `%${mergedQueryParams.searchLoginTerm}%`;
+    const searchEmailTerm = `%${mergedQueryParams.searchEmailTerm}%`;
+    const banStatus = mergedQueryParams.banStatus;
+    const sortBy = mergedQueryParams.sortBy;
+    const sortDirection = mergedQueryParams.sortDirection.toUpperCase();
+    const pageNumber = +mergedQueryParams.pageNumber;
+    const pageSize = +mergedQueryParams.pageSize;
+    const skipPage = (pageNumber - 1) * pageSize;
+
+    const queryBuilder = this.usersRepository.createQueryBuilder('user');
+    queryBuilder
+      .select([
+        'user.userId',
+        'user.login',
+        'user.email',
+        'user.createdAt',
+        'user.isUserBanned',
+        'user.banDate',
+        'user.banReason',
+      ])
+      .orderBy(`user.${sortBy}`, sortDirection)
+      .skip(skipPage)
+      .take(pageSize);
+
+    if (searchLoginTerm !== '' || searchEmailTerm !== '') {
+      queryBuilder.where(`user.login ILIKE :searchLoginTerm OR user.email ILIKE :searchEmailTerm`, { searchLoginTerm, searchEmailTerm });
+    }
+
+    if (banStatus !== 'all') {
+      queryBuilder.andWhere(`user.isUserBanned = :isUserBanned`, { isUserBanned: banStatus === 'banned' });
+    }
+
+    const [users, usersCount] = await Promise.all([
+      queryBuilder.getMany(),
+      queryBuilder.getCount(),
+    ]);
+
+    const outUsers = users.map((user) => {
+      return {
+        id: user.userId,
+        login: user.login,
+        email: user.email,
+        createdAt: user.createdAt,
+        banInfo: {
+          isBanned: user.isUserBanned,
+          banDate: user.banDate,
+          banReason: user.banReason,
+        },
+      };
+    });
+
+    const pageCount = Math.ceil(usersCount / pageSize);
+
+    const outputUsers: PaginationOutputModel<UserTypeOutput> = {
+      pagesCount: pageCount,
+      page: pageNumber,
+      pageSize: pageSize,
+      totalCount: usersCount,
+      items: outUsers,
+    };
+
+    return outputUsers;
+  }
+
+  async getAllUsersRow(
     mergedQueryParams,
   ): Promise<PaginationOutputModel<UserTypeOutput>> {
     const searchLoginTerm = mergedQueryParams.searchLoginTerm;
