@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { addAppSettings } from './helpers/helpers';
+import { addAppSettings } from './helpers/settings';
 
 async function bootstrap() {
   const rawApp = await NestFactory.create(AppModule);

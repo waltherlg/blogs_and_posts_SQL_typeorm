@@ -6,7 +6,7 @@ import { endpoints } from './helpers/routing';
 import { testUser } from './helpers/inputAndOutputObjects/usersObjects';
 import { UsersRepository } from 'src/users/users.repository';
 import { UserDBType } from 'src/users/users.types';
-import { addAppSettings } from 'src/helpers/helpers';
+import { addAppSettings } from 'src/helpers/settings';
 import { testUserDevice } from './helpers/inputAndOutputObjects/userDevicesObjects';
 
 const delay = async (ms: number) => {
