@@ -105,6 +105,7 @@ const useCases = [
   UpdateBlogByIdFromUriUseCase,
   BindBlogWithUserUseCase,
   SaCreatePostFromBloggerControllerUseCase,
+  CreatePostFromBloggerControllerUseCase,
   UpdatePostByIdFromBloggerControllerUseCase,
   SaUpdatePostByIdFromBloggerControllerUseCase,
   SaUpdatePostByIdUseCase,

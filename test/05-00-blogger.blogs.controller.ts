@@ -48,7 +48,7 @@ export function testBloggerCrudOnlyBlogs() {
       const createdResponseBody = createResponse.body;
       userId1 = createdResponseBody.id;
 
-      expect(createdResponseBody).toEqual(testUser.outputUser1);
+      expect(createdResponseBody).toEqual(testUser.outputUser1Sa);
     });
 
     it('00-02 auth/registration = 204 register user2', async () => {

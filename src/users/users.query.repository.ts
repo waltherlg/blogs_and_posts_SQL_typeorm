@@ -233,120 +233,17 @@ export class UsersQueryRepository {
     return outputUsers;
   }
 
-  async getAllUsersRow(
-    mergedQueryParams,
-  ): Promise<PaginationOutputModel<UserTypeOutput>> {
-    const searchLoginTerm = mergedQueryParams.searchLoginTerm;
-    const searchEmailTerm = mergedQueryParams.searchEmailTerm;
-    const banStatus = mergedQueryParams.banStatus;
-    const sortBy = mergedQueryParams.sortBy;
-
-    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
-    const pageNumber = +mergedQueryParams.pageNumber;
-    const pageSize = +mergedQueryParams.pageSize;
-    const skipPage = (pageNumber - 1) * pageSize;
-
-    const queryParams = [
-      `%${searchLoginTerm}%`,
-      `%${searchEmailTerm}%`,
-      sortBy,
-      sortDirection,
-      pageNumber,
-      pageSize,
-      skipPage,
-    ];
-
-    let query = `
-SELECT "userId", login, email, "createdAt", "isUserBanned", "banDate", "banReason"
-FROM public."Users"
-`;
-
-    let countQuery = `
-SELECT COUNT(*)
-FROM public."Users"
-`;
-
-    if (searchLoginTerm !== '' || searchEmailTerm !== '') {
-      query += `WHERE`;
-      countQuery += `WHERE`;
+  async getBannedUsersForCurrentBlog(blogId: string,
+    mergedQueryParams: RequestBannedUsersQueryModel){
+      const searchLoginTerm = mergedQueryParams.searchLoginTerm;
+      const sortBy = mergedQueryParams.sortBy;
+      const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
+      const pageNumber = +mergedQueryParams.pageNumber;
+      const pageSize = +mergedQueryParams.pageSize;
+      const skipPage = (pageNumber - 1) * pageSize;
     }
 
-    if (searchLoginTerm !== '') {
-      query += ` "login" ILIKE '${queryParams[0]}'`;
-      countQuery += ` "login" ILIKE '${queryParams[0]}'`;
-    }
-
-    if (searchEmailTerm !== '') {
-      query +=
-        searchLoginTerm !== ''
-          ? ` OR "email" ILIKE '${queryParams[1]}'`
-          : ` "email" ILIKE '${queryParams[1]}'`;
-      countQuery +=
-        searchLoginTerm !== ''
-          ? ` OR "email" ILIKE '${queryParams[1]}'`
-          : ` "email" ILIKE '${queryParams[1]}'`;
-    }
-
-    if (
-      (searchLoginTerm !== '' || searchEmailTerm !== '') &&
-      banStatus !== 'all'
-    ) {
-      query += `AND`;
-      countQuery += `AND`;
-    }
-
-    if (banStatus !== 'all') {
-      query += `WHERE`;
-      countQuery += `WHERE`;
-    }
-
-    if (banStatus === 'banned') {
-      query += `"isUserBanned" = true`;
-      countQuery += `"isUserBanned" = true`;
-    }
-
-    if (banStatus === 'notBanned') {
-      query += `"isUserBanned" = false`;
-      countQuery += `"isUserBanned" = false`;
-    }
-
-    query += ` ORDER BY "${queryParams[2]}" ${queryParams[3]}
-LIMIT ${queryParams[5]} OFFSET ${queryParams[6]};
-`;
-
-    const usersCountArr = await this.dataSource.query(countQuery);
-    const usersCount = parseInt(usersCountArr[0].count);
-
-    const users = await this.dataSource.query(query);
-
-    const outUsers = users.map((user) => {
-      return {
-        id: user.userId,
-        login: user.login,
-        email: user.email,
-        createdAt: user.createdAt,
-        banInfo: {
-          isBanned: user.isUserBanned,
-          banDate: user.banDate,
-          banReason: user.banReason,
-        },
-      };
-    });
-
-    const pageCount = Math.ceil(usersCount / pageSize);
-
-    const outputUsers: PaginationOutputModel<UserTypeOutput> = {
-      pagesCount: pageCount,
-      page: pageNumber,
-      pageSize: pageSize,
-      totalCount: usersCount,
-      items: outUsers,
-    };
-
-    return outputUsers;
-  }
-
-  async getBannedUsersForCurrentBlog(
+  async getBannedUsersForCurrentBlogRow(
     blogId: string,
     mergedQueryParams: RequestBannedUsersQueryModel,
   ) {
