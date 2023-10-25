@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
   BannedBlogUsersType,
+  BlogBannedUsers,
   BlogDBType,
   BlogTypeOutput,
   Blogs,
@@ -12,7 +13,8 @@ import { validate as isValidUUID } from 'uuid';
 @Injectable()
 export class BlogsRepository {
   constructor(@InjectDataSource() protected dataSource: DataSource,
-  @InjectRepository(Blogs) private readonly blogsRepository: Repository<Blogs>) {}
+  @InjectRepository(Blogs) private readonly blogsRepository: Repository<Blogs>,
+  @InjectRepository(BlogBannedUsers) private readonly blogBannedUsersRepository: Repository<BlogBannedUsers>) {}
 
   async deleteBlogById(blogId: string): Promise<boolean> {
     if (!isValidUUID(blogId)) {
