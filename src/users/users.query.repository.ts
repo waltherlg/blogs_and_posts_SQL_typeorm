@@ -8,12 +8,14 @@ import { DataSource, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { sortDirectionFixer } from 'src/helpers/helpers.functions';
+import { BlogBannedUsers } from 'src/blogs/blogs.types';
 
 @Injectable()
 export class UsersQueryRepository {
   constructor(@InjectDataSource() protected dataSource: DataSource,
     @InjectRepository(Users)
-    private readonly usersRepository: Repository<Users>,) {}
+    private readonly usersRepository: Repository<Users>,
+    @InjectRepository(BlogBannedUsers) private readonly blogBannedUsersRepository: Repository<BlogBannedUsers>) {}
 
   async getCurrentUserInfo(userId: string) {
     if (!isValidUUID(userId)) {
@@ -168,71 +170,6 @@ export class UsersQueryRepository {
       return outputUsers;
     }
 
-  async getAllUsersWrong(mergedQueryParams): Promise<PaginationOutputModel<UserTypeOutput>> {
-    const searchLoginTerm = `%${mergedQueryParams.searchLoginTerm}%`;
-    const searchEmailTerm = `%${mergedQueryParams.searchEmailTerm}%`;
-    const banStatus = mergedQueryParams.banStatus;
-    const sortBy = mergedQueryParams.sortBy;
-    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
-    const pageNumber = +mergedQueryParams.pageNumber;
-    const pageSize = +mergedQueryParams.pageSize;
-    const skipPage = (pageNumber - 1) * pageSize;
-
-    const queryBuilder = this.usersRepository.createQueryBuilder('user');
-    queryBuilder
-      .select([
-        'user.userId',
-        'user.login',
-        'user.email',
-        'user.createdAt',
-        'user.isUserBanned',
-        'user.banDate',
-        'user.banReason',
-      ])
-      .orderBy(`user.${sortBy}`, sortDirection)
-      .skip(skipPage)
-      .take(pageSize);
-
-    if (searchLoginTerm !== '' || searchEmailTerm !== '') {
-      queryBuilder.where(`user.login ILIKE :searchLoginTerm OR user.email ILIKE :searchEmailTerm`, { searchLoginTerm, searchEmailTerm });
-    }
-
-    if (banStatus !== 'all') {
-      queryBuilder.andWhere(`user.isUserBanned = :isUserBanned`, { isUserBanned: banStatus === 'banned' });
-    }
-
-    const [users, usersCount] = await Promise.all([
-      queryBuilder.getMany(),
-      queryBuilder.getCount(),
-    ]);
-
-    const outUsers = users.map((user) => {
-      return {
-        id: user.userId,
-        login: user.login,
-        email: user.email,
-        createdAt: user.createdAt,
-        banInfo: {
-          isBanned: user.isUserBanned,
-          banDate: user.banDate,
-          banReason: user.banReason,
-        },
-      };
-    });
-
-    const pageCount = Math.ceil(usersCount / pageSize);
-
-    const outputUsers: PaginationOutputModel<UserTypeOutput> = {
-      pagesCount: pageCount,
-      page: pageNumber,
-      pageSize: pageSize,
-      totalCount: usersCount,
-      items: outUsers,
-    };
-
-    return outputUsers;
-  }
-
   async getBannedUsersForCurrentBlog(blogId: string,
     mergedQueryParams: RequestBannedUsersQueryModel){
       const searchLoginTerm = mergedQueryParams.searchLoginTerm;
@@ -241,6 +178,8 @@ export class UsersQueryRepository {
       const pageNumber = +mergedQueryParams.pageNumber;
       const pageSize = +mergedQueryParams.pageSize;
       const skipPage = (pageNumber - 1) * pageSize;
+
+      const queryBuilder = this.bannedUse
     }
 
   async getBannedUsersForCurrentBlogRow(
