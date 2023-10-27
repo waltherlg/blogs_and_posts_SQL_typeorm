@@ -1,16 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import {
   BannedBlogUsersType,
+  BlogBannedUsers,
   BlogDBType,
   BlogTypeOutput,
+  Blogs,
 } from '../blogs.types';
-import { DataSource } from 'typeorm';
-import { InjectDataSource } from '@nestjs/typeorm';
+import { DataSource, Repository } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
 
 @Injectable()
 export class BlogsRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource) {}
+  constructor(@InjectDataSource() protected dataSource: DataSource,
+  @InjectRepository(Blogs) private readonly blogsRepository: Repository<Blogs>,
+  @InjectRepository(BlogBannedUsers) private readonly blogBannedUsersRepository: Repository<BlogBannedUsers>) {}
 
   async deleteBlogById(blogId: string): Promise<boolean> {
     if (!isValidUUID(blogId)) {
@@ -25,44 +29,8 @@ export class BlogsRepository {
   }
 
   async createBlog(blogDTO: BlogDBType): Promise<string> {
-    const query = `
-    INSERT INTO public."Blogs"(
-      "blogId",
-      "name",
-      "isBlogBanned",
-      "blogBanDate",
-      "userId",
-      description,
-      "websiteUrl",
-      "createdAt",
-      "isMembership")
-      VALUES (
-      $1,  
-      $2, 
-      $3, 
-      $4, 
-      $5, 
-      $6,
-      $7,
-      $8,
-      $9
-      )
-      RETURNING "blogId"
-    `;
-    const result = await this.dataSource.query(query, [
-      blogDTO.blogId,
-      blogDTO.name,
-      blogDTO.isBlogBanned,
-      blogDTO.blogBanDate,
-      blogDTO.userId,
-      blogDTO.description,
-      blogDTO.websiteUrl,
-      blogDTO.createdAt,
-      blogDTO.isMembership,
-    ]);
-
-    const blogId = result[0].blogId;
-    return blogId;
+    const result = await this.blogsRepository.save(blogDTO)
+    return result.blogId
   }
 
   async getBlogDBTypeById(blogId): Promise<BlogDBType | null> {

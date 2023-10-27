@@ -8,12 +8,14 @@ import { DataSource, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { sortDirectionFixer } from 'src/helpers/helpers.functions';
+import { BlogBannedUsers } from 'src/blogs/blogs.types';
 
 @Injectable()
 export class UsersQueryRepository {
   constructor(@InjectDataSource() protected dataSource: DataSource,
     @InjectRepository(Users)
-    private readonly usersRepository: Repository<Users>,) {}
+    private readonly usersRepository: Repository<Users>,
+    @InjectRepository(BlogBannedUsers) private readonly blogBannedUsersRepository: Repository<BlogBannedUsers>) {}
 
   async getCurrentUserInfo(userId: string) {
     if (!isValidUUID(userId)) {
@@ -168,7 +170,19 @@ export class UsersQueryRepository {
       return outputUsers;
     }
 
-  async getBannedUsersForCurrentBlogRow(
+  // async getBannedUsersForCurrentBlog(blogId: string, //TODO: need finish
+  //   mergedQueryParams: RequestBannedUsersQueryModel){
+  //     const searchLoginTerm = mergedQueryParams.searchLoginTerm;
+  //     const sortBy = mergedQueryParams.sortBy;
+  //     const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
+  //     const pageNumber = +mergedQueryParams.pageNumber;
+  //     const pageSize = +mergedQueryParams.pageSize;
+  //     const skipPage = (pageNumber - 1) * pageSize;
+
+  //     const queryBuilder = this.bannedUse
+  //   }
+
+  async getBannedUsersForCurrentBlog(
     blogId: string,
     mergedQueryParams: RequestBannedUsersQueryModel,
   ) {
