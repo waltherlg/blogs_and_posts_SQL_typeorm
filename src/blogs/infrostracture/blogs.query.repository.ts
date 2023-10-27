@@ -144,7 +144,28 @@ export class BlogsQueryRepository {
     return outputBlogs;
   }
 
-  async getAllBlogsForCurrentUser(mergedQueryParams, userId) {
+  async getAllBlogsForCurrentUser(mergedQueryParams, userId) { // TODO: in progress
+    const searchNameTerm = mergedQueryParams.searchNameTerm;
+    const sortBy = mergedQueryParams.sortBy;
+    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
+    const pageNumber = +mergedQueryParams.pageNumber;
+    const pageSize = +mergedQueryParams.pageSize;
+    const skipPage = (pageNumber - 1) * pageSize;
+
+    const queryBuilder = this.blogsRepository.createQueryBuilder('blog');
+    queryBuilder.select([
+      "blogId", 
+      "name", 
+      "description", 
+      "websiteUrl", 
+      "createdAt", 
+      "isMembership"
+    ])
+    .where( "user.userId = :userId AND blog.isBlogBanned = false", {userId: userId})
+
+  }
+
+  async getAllBlogsForCurrentUserRow(mergedQueryParams, userId) {
     const searchNameTerm = mergedQueryParams.searchNameTerm;
     const sortBy = mergedQueryParams.sortBy;
     const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
