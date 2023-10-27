@@ -154,14 +154,45 @@ export class BlogsQueryRepository {
 
     const queryBuilder = this.blogsRepository.createQueryBuilder('blog');
     queryBuilder.select([
-      "blogId", 
-      "name", 
+      "blog.blogId", 
+      "blog.name", 
       "description", 
-      "websiteUrl", 
-      "createdAt", 
-      "isMembership"
+      "blog.websiteUrl", 
+      "blog.createdAt", 
+      "blog.isMembership"
     ])
-    .where( "user.userId = :userId AND blog.isBlogBanned = false", {userId: userId})
+    .where( "blog.userId = :userId AND blog.isBlogBanned = false", {userId: userId})
+      if (searchNameTerm !== '') {
+          queryBuilder.andWhere(`blog.name ILIKE :searchNameTerm`, { searchNameTerm: `%${searchNameTerm}%` })
+    }
+    const blogsCount = await queryBuilder.getCount()
+    
+    const blogs = await queryBuilder
+    .orderBy(`blog.${sortBy}`, sortDirection)
+    .skip(skipPage)
+    .take(pageSize)
+    .getRawMany();
+    const pageCount = Math.ceil(blogsCount / pageSize);
+
+    const blogsForOutput = blogs.map((blog) => {
+      return {
+        id: blog.blogId,
+        name: blog.name,
+        description: blog.description,
+        websiteUrl: blog.websiteUrl,
+        createdAt: blog.createdAt,
+        isMembership: blog.isMembership
+      }
+    })
+
+    const outputBlogs = {
+      pagesCount: pageCount,
+      page: +pageNumber,
+      pageSize: +pageSize,
+      totalCount: blogsCount,
+      items: blogsForOutput,
+    };
+    return outputBlogs;
 
   }
 
