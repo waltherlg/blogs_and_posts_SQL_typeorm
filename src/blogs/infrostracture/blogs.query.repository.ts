@@ -47,42 +47,24 @@ export class BlogsQueryRepository {
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
 
-    const queryParams = [
-      `%${searchNameTerm}%`,
-      sortBy,
-      sortDirection,
-      pageNumber,
-      pageSize,
-      skipPage,
-    ];
-
-    let query = `
-    SELECT "Blogs".*
-    FROM public."Blogs"
-    `;
-    let countQuery = `
-    SELECT COUNT(*)
-    FROM public."Blogs"
-    `;
+    const queryBuilder = this.blogsRepository.createQueryBuilder('blog');
+    queryBuilder.select()
 
     if (searchNameTerm !== '') {
-      query += `WHERE name ILIKE '${queryParams[0]}' AND "isBlogBanned" = false`;
-      countQuery += `WHERE name ILIKE '${queryParams[0]}' AND "isBlogBanned" = false`;
+      queryBuilder.where(`blog.name ILIKE :searchNameTerm`, { searchNameTerm: `%${searchNameTerm}%` })
+      .andWhere(`blog.isBlogBanned = false`)
     }
 
     if (searchNameTerm === '') {
-      query += `WHERE "isBlogBanned" = false`;
-      countQuery += `WHERE "isBlogBanned" = false`;
+      queryBuilder.where(`blog.isBlogBanned = false`)
     }
 
-    query += ` ORDER BY "${queryParams[1]}" ${queryParams[2]}
-    LIMIT ${queryParams[4]} OFFSET ${queryParams[5]};
-    `;
-
-    const blogsCountArr = await this.dataSource.query(countQuery);
-    const blogsCount = parseInt(blogsCountArr[0].count);
-
-    const blogs = await this.dataSource.query(query);
+    const blogsCount = await queryBuilder.getCount();
+    const blogs = await queryBuilder
+    .orderBy(`blog.${sortBy}`, sortDirection)
+    .skip(skipPage)
+    .take(pageSize)
+    .getMany();
     const blogsForOutput = blogs.map((blog) => {
       return {
         id: blog.blogId,
