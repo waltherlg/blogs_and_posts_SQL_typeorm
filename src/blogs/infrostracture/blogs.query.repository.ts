@@ -96,39 +96,23 @@ export class BlogsQueryRepository {
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
 
-    const queryParams = [
-      `%${searchNameTerm}%`,
-      sortBy,
-      sortDirection,
-      pageNumber,
-      pageSize,
-      skipPage,
-    ];
-
-    let query = `
-    SELECT "Blogs".*, "Users".login
-    FROM public."Blogs"
-    INNER JOIN "Users"
-    ON "Blogs"."userId" = "Users"."userId"
-    `;
-    let countQuery = `
-    SELECT COUNT(*)
-    FROM public."Blogs"
-    `;
+    const queryBuilder = this.blogsRepository.createQueryBuilder("blog");
+    queryBuilder.select("blog.*")
+    .addSelect("user.login")
+    .innerJoin("Users", "user", "blog.userId = user.userId")
 
     if (searchNameTerm !== '') {
-      query += `WHERE name ILIKE '${queryParams[0]}'`;
-      countQuery += `WHERE name ILIKE '${queryParams[0]}'`;
+      queryBuilder.where(`blog.name ILIKE :searchNameTerm`, { searchNameTerm: `%${searchNameTerm}%` })
     }
 
-    query += ` ORDER BY "${queryParams[1]}" ${queryParams[2]}
-    LIMIT ${queryParams[4]} OFFSET ${queryParams[5]};
-    `;
+    const blogsCount = await queryBuilder.getCount()
 
-    const blogsCountArr = await this.dataSource.query(countQuery);
-    const blogsCount = parseInt(blogsCountArr[0].count);
+    const blogs = await queryBuilder
+    .orderBy(`blog.${sortBy}`, sortDirection)
+    .skip(skipPage)
+    .take(pageSize)
+    .getRawMany();
 
-    const blogs = await this.dataSource.query(query);
     const blogsForOutput = blogs.map((blog) => {
       return {
         id: blog.blogId,
