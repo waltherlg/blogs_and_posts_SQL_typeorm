@@ -1,27 +1,43 @@
 import { Injectable } from '@nestjs/common';
-import { BlogTypeOutput, blogSaTypeOutput } from '../blogs.types';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { BlogTypeOutput, Blogs, blogSaTypeOutput } from '../blogs.types';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { sortDirectionFixer } from 'src/helpers/helpers.functions';
 
 @Injectable()
 export class BlogsQueryRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource) {}
+  constructor(@InjectDataSource() protected dataSource: DataSource,
+  @InjectRepository(Blogs) private readonly blogsRepository: Repository<Blogs>) {}
 
   async getBlogById(blogId): Promise<BlogTypeOutput | null> {
     if (!isValidUUID(blogId)) {
       return null;
     }
-    const query = `
-    SELECT "blogId" AS id, name, description, "websiteUrl", "createdAt", "isMembership"
-    FROM public."Blogs"
-    WHERE "blogId" = $1 AND "isBlogBanned" = false
-    LIMIT 1
-    `;
-    const result = await this.dataSource.query(query, [blogId]);
-    return result[0];
-  }
+    const result = await this.blogsRepository.find({
+      select: {
+        blogId: true, 
+        name: true,
+        description: true,
+        websiteUrl: true,
+        createdAt: true,
+        isMembership: true,
+      },
+      where: { blogId, isBlogBanned: false }
+    })
+    if(result.length > 0){
+      const blog = result[0]
+      return {
+        id: blog.blogId,
+        name: blog.name,
+        description: blog.description,
+        websiteUrl: blog.websiteUrl,
+        createdAt: blog.createdAt,
+        isMembership: blog.isMembership
+      }
+    } 
+    return null
+  } 
 
   async getAllBlogs(mergedQueryParams) {
     const searchNameTerm = mergedQueryParams.searchNameTerm;

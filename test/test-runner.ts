@@ -20,19 +20,19 @@ import { commentPaginationTest14 } from './14-00-comments.pagination.e2e-spec';
 import { postCrudOperationsBySa07 } from './07-01-post.CRUDBySa.e2e-spec';
 
 describe('End-to-End Tests', () => {
-  //..testSaUsersCrud();
-  //..testSaUsersGetWithPagination();
+  testSaUsersCrud();
+  testSaUsersGetWithPagination();
   //testSecurityDevices()
-  //..testAuthOperations();
+  testAuthOperations();
   //testAuthValidations()
-  //..testBloggerCrudOnlyBlogs()
+  testBloggerCrudOnlyBlogs()
   testBanUserForBlogByBlogger()
   //saBlogsControllerCrudAndBan()
   //postCrudOperationsByBlogger07()
   //postCrudOperationsBySa07()
   //testPostLikesCrud08()
   //commentCrudOperations() // this comment CRUD if blog create blogger
-  //..saCommentCrudOperations();
+  saCommentCrudOperations();
 
   //testCommentLikesCrud()
 

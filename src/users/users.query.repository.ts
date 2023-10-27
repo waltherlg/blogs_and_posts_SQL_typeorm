@@ -170,19 +170,19 @@ export class UsersQueryRepository {
       return outputUsers;
     }
 
-  async getBannedUsersForCurrentBlog(blogId: string,
-    mergedQueryParams: RequestBannedUsersQueryModel){
-      const searchLoginTerm = mergedQueryParams.searchLoginTerm;
-      const sortBy = mergedQueryParams.sortBy;
-      const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
-      const pageNumber = +mergedQueryParams.pageNumber;
-      const pageSize = +mergedQueryParams.pageSize;
-      const skipPage = (pageNumber - 1) * pageSize;
+  // async getBannedUsersForCurrentBlog(blogId: string, //TODO: need finish
+  //   mergedQueryParams: RequestBannedUsersQueryModel){
+  //     const searchLoginTerm = mergedQueryParams.searchLoginTerm;
+  //     const sortBy = mergedQueryParams.sortBy;
+  //     const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
+  //     const pageNumber = +mergedQueryParams.pageNumber;
+  //     const pageSize = +mergedQueryParams.pageSize;
+  //     const skipPage = (pageNumber - 1) * pageSize;
 
-      const queryBuilder = this.bannedUse
-    }
+  //     const queryBuilder = this.bannedUse
+  //   }
 
-  async getBannedUsersForCurrentBlogRow(
+  async getBannedUsersForCurrentBlog(
     blogId: string,
     mergedQueryParams: RequestBannedUsersQueryModel,
   ) {
