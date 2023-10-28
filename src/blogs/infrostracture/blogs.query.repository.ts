@@ -152,11 +152,11 @@ export class BlogsQueryRepository {
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
 
-    const queryBuilder = this.blogsRepository.createQueryBuilder('blog');
+    const queryBuilder = this.blogsRepository.createQueryBuilder('blog'); // TODO: разобраться с тем как выглядит документ, выходящий из бд
     queryBuilder.select([
       "blog.blogId", 
       "blog.name", 
-      "description", 
+      "blog.description", 
       "blog.websiteUrl", 
       "blog.createdAt", 
       "blog.isMembership"
@@ -176,12 +176,12 @@ export class BlogsQueryRepository {
 
     const blogsForOutput = blogs.map((blog) => {
       return {
-        id: blog.blogId,
-        name: blog.name,
-        description: blog.description,
-        websiteUrl: blog.websiteUrl,
-        createdAt: blog.createdAt,
-        isMembership: blog.isMembership
+        id: blog.blog_blogId,
+        name: blog.blog_name,
+        description: blog.blog_description,
+        websiteUrl: blog.blog_websiteUrl,
+        createdAt: blog.blog_createdAt,
+        isMembership: blog.blog_isMembership
       }
     })
 
