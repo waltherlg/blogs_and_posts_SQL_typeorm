@@ -4,6 +4,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
@@ -32,6 +33,8 @@ export class Blogs {
   createdAt: string;
   @Column()
   isMembership: boolean;
+  @OneToMany(() => BlogBannedUsers, (b) => b.blogId)
+  BlogBannedUsers: BlogBannedUsers[]
 }
 
 export class BlogDBType {
@@ -52,7 +55,7 @@ export class BlogDBType {
 export class BlogBannedUsers {
   @PrimaryGeneratedColumn('uuid')
   banId: string;
-  @ManyToOne(() => Blogs)
+  @ManyToOne(() => Blogs, (u) => u.BlogBannedUsers)
   @JoinColumn({ name: 'blogId' })
   Blogs: Blogs;
   @Column('uuid')
