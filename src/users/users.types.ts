@@ -1,8 +1,10 @@
+import { BlogBannedUsers } from 'src/blogs/blogs.types';
 import { Comments } from '../comments/comments.types';
 import { UserDevices } from '../usersDevices/users-devices.types';
 import {
   Column,
   Entity,
+  ManyToMany,
   OneToMany,
   PrimaryColumn,
   PrimaryGeneratedColumn,
@@ -40,6 +42,8 @@ export class Users {
   UserDevices: UserDevices[];
   @OneToMany(() => Comments, (c) => c.userId)
   Comments: Comments[];
+  // @OneToMany(() => BlogBannedUsers, (b) => b.bannedUserId)
+  // BlogBannedUsers: BlogBannedUsers[];
 }
 
 export type CommentsLikeType = {

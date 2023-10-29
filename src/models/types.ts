@@ -28,7 +28,7 @@ export type RequestBannedUsersQueryModel = RequestQueryParamsModel & {
   searchLoginTerm: string;
 };
 export const DEFAULT_BANNED_USERS_QUERY_PARAMS: RequestBannedUsersQueryModel = {
-  sortBy: 'createdAt',
+  sortBy: 'banDate',
   sortDirection: 'DESC',
   pageNumber: '1',
   pageSize: '10',

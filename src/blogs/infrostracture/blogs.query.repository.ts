@@ -88,7 +88,7 @@ export class BlogsQueryRepository {
     return outputBlogs;
   }
 
-  async getAllBlogsForSa(mergedQueryParams) {
+  async getAllBlogsForSa(mergedQueryParams) { //TODO: нужно проверить на работоспособность
     const searchNameTerm = mergedQueryParams.searchNameTerm;
     const sortBy = mergedQueryParams.sortBy;
     const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
@@ -171,17 +171,17 @@ export class BlogsQueryRepository {
     .orderBy(`blog.${sortBy}`, sortDirection)
     .skip(skipPage)
     .take(pageSize)
-    .getRawMany();
+    .getMany();
     const pageCount = Math.ceil(blogsCount / pageSize);
 
     const blogsForOutput = blogs.map((blog) => {
       return {
-        id: blog.blog_blogId,
-        name: blog.blog_name,
-        description: blog.blog_description,
-        websiteUrl: blog.blog_websiteUrl,
-        createdAt: blog.blog_createdAt,
-        isMembership: blog.blog_isMembership
+        id: blog.blogId,
+        name: blog.name,
+        description: blog.description,
+        websiteUrl: blog.websiteUrl,
+        createdAt: blog.createdAt,
+        isMembership: blog.isMembership
       }
     })
 

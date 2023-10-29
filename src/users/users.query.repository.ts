@@ -15,7 +15,8 @@ export class UsersQueryRepository {
   constructor(@InjectDataSource() protected dataSource: DataSource,
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
-    @InjectRepository(BlogBannedUsers) private readonly blogBannedUsersRepository: Repository<BlogBannedUsers>) {}
+    @InjectRepository(BlogBannedUsers) 
+    private readonly blogBannedUsersRepository: Repository<BlogBannedUsers>) {}
 
   async getCurrentUserInfo(userId: string) {
     if (!isValidUUID(userId)) {
@@ -143,6 +144,8 @@ export class UsersQueryRepository {
       .skip(skipPage)
       .take(pageSize)
       .getMany();
+      console.log(users);
+      
       const outUsers = users.map((user) => {
         return {
           id: user.userId,
@@ -179,7 +182,49 @@ export class UsersQueryRepository {
       const pageSize = +mergedQueryParams.pageSize;
       const skipPage = (pageNumber - 1) * pageSize;
 
-      const queryBuilder = this.blogBannedUsersRepository.
+      const queryBuilder = this.blogBannedUsersRepository.createQueryBuilder("blogBannedUsers");
+      queryBuilder  .select([
+        'blogBannedUsers.*', // Выбрать все столбцы из BlogBannedUsers
+        'users.login',      // Выбрать столбец login из Users
+      ])
+      .innerJoin('blogBannedUsers.Users', 'users') // Присоединение к таблице Users
+      .where('blogBannedUsers.bannedUserId = users.userId') // Условие соответствия bannedUserId и userId
+      .getRawMany();
+      if (searchLoginTerm !== '') {
+        queryBuilder.andWhere(`users.login ILEKE :searchLoginTerm`, {searchLoginTerm: `%${searchLoginTerm}%`})
+      }
+      const bannedUsersCount = await queryBuilder.getCount();
+      const bannedUsers = await queryBuilder
+    .orderBy(`blogBannedUsers.${sortBy}`, sortDirection)
+    .skip(skipPage)
+    .take(pageSize)
+    .printSql()
+    .getMany();
+
+    console.log(bannedUsers);
+    
+    const pageCount = Math.ceil(bannedUsersCount / pageSize);
+
+    const bannedUsersForOutput = bannedUsers.map((bannedUser) => {
+      return {
+        id: bannedUser.bannedUserId,
+        //login: bannedUser.login,
+        banInfo: {
+          isBanned: true,
+          banDate: bannedUser.banDate,
+          banReason: bannedUser.banReason,
+        },
+      };
+    });
+
+    const outputBannedUsers = {
+      pagesCount: pageCount,
+      page: +pageNumber,
+      pageSize: +pageSize,
+      totalCount: bannedUsersCount,
+      items: bannedUsers//ForOutput,
+    };
+    return outputBannedUsers;
     }
 
   async getBannedUsersForCurrentBlogRow(

@@ -3,6 +3,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -57,10 +58,10 @@ export class BlogBannedUsers {
   banId: string;
   @ManyToOne(() => Blogs, (u) => u.BlogBannedUsers)
   @JoinColumn({ name: 'blogId' })
-  Blogs: Blogs;
+  Blogs: Blogs[];
   @Column('uuid')
   blogId: string;
-  @ManyToOne(() => Users)
+  @OneToOne(() => Users, (u) => u.userId)
   @JoinColumn({ name: 'userId' })
   Users: Users;
   @Column({ type: 'uuid', nullable: true })
