@@ -61,11 +61,11 @@ export class BlogBannedUsers {
   Blogs: Blogs[];
   @Column('uuid')
   blogId: string;
-  @OneToOne(() => Users, (u) => u.userId)
+  @ManyToOne(() => Users, (u) => u.BlogBannedUsers)
   @JoinColumn({ name: 'userId' })
   Users: Users;
   @Column({ type: 'uuid', nullable: true })
-  bannedUserId: string;
+  userId: string;
   @Column()
   banDate: string;
   @Column()
@@ -74,7 +74,7 @@ export class BlogBannedUsers {
 
 export type BannedBlogUsersType = {
   blogId: string;
-  bannedUserId: string;
+  userId: string;
   banDate: string;
   banReason: string;
 };

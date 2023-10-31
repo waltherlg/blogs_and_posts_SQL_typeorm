@@ -34,21 +34,26 @@ export class BloggerUsersController {
     private readonly usersQueryRepository: UsersQueryRepository,
   ) {}
 
-  @Put(':bannedUserId/ban')
+  @Put(':userId/ban')
   @HttpCode(204)
   async banUserForBlog(
     @Req() request,
-    @Param('bannedUserId') bannedUserId: string,
+    @Param('userId') userId: string,
     @Body() banUserDto: BanUserForBlogInputModelType,
   ) {
-    const result = await this.commandBus.execute(
+    try {
+        const result = await this.commandBus.execute(
       new BanUserForSpecificBlogCommand(
         request.user.userId,
-        bannedUserId,
+        userId,
         banUserDto,
       ),
     );
-    handleBlogOperationResult(result);
+    handleBlogOperationResult(result);  
+    } catch (error) {
+      console.log(error);  
+    }
+
   }
 
   @Get('blog/:blogId')

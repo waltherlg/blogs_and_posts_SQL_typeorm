@@ -173,8 +173,9 @@ export class UsersQueryRepository {
       return outputUsers;
     }
 
-  async getBannedUsersForCurrentBlog(blogId: string, //TODO: need finish
+    async getBannedUsersForCurrentBlog(blogId: string,
     mergedQueryParams: RequestBannedUsersQueryModel){
+
       const searchLoginTerm = mergedQueryParams.searchLoginTerm;
       const sortBy = mergedQueryParams.sortBy;
       const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
@@ -183,32 +184,31 @@ export class UsersQueryRepository {
       const skipPage = (pageNumber - 1) * pageSize;
 
       const queryBuilder = this.blogBannedUsersRepository.createQueryBuilder("blogBannedUsers");
-      queryBuilder  .select([
-        'blogBannedUsers.*', // Выбрать все столбцы из BlogBannedUsers
-        'users.login',      // Выбрать столбец login из Users
-      ])
-      .innerJoin('blogBannedUsers.Users', 'users') // Присоединение к таблице Users
-      .where('blogBannedUsers.bannedUserId = users.userId') // Условие соответствия bannedUserId и userId
-      .getRawMany();
-      if (searchLoginTerm !== '') {
-        queryBuilder.andWhere(`users.login ILEKE :searchLoginTerm`, {searchLoginTerm: `%${searchLoginTerm}%`})
-      }
-      const bannedUsersCount = await queryBuilder.getCount();
-      const bannedUsers = await queryBuilder
-    .orderBy(`blogBannedUsers.${sortBy}`, sortDirection)
-    .skip(skipPage)
-    .take(pageSize)
-    .printSql()
-    .getMany();
+      queryBuilder
+      .leftJoin("blogBannedUsers.Users", "user")
+      .select("blogBannedUsers.userId", "userId")
+      .addSelect("user.login", "login")
+      .addSelect("blogBannedUsers.banDate", "banDate")
+      .addSelect("blogBannedUsers.banReason", "banReason")
+      .where("blogBannedUsers.blogId = :blogId", {blogId: blogId})
 
-    console.log(bannedUsers);
-    
-    const pageCount = Math.ceil(bannedUsersCount / pageSize);
+      if (searchLoginTerm !== '') {
+        queryBuilder.andWhere("user.login ILIKE :searchLoginTerm", {searchLoginTerm: `%${searchLoginTerm}%`})
+      }
+
+      const bannedUsersCount = await queryBuilder.getCount();
+
+      const bannedUsers = await queryBuilder.orderBy(`"${sortBy}"`, sortDirection)
+    // .take(pageSize) 
+    // .skip(skipPage)
+    .limit(pageSize) 
+    .offset(skipPage)
+    .getRawMany()
 
     const bannedUsersForOutput = bannedUsers.map((bannedUser) => {
       return {
-        id: bannedUser.bannedUserId,
-        //login: bannedUser.login,
+        id: bannedUser.userId,
+        login: bannedUser.login,
         banInfo: {
           isBanned: true,
           banDate: bannedUser.banDate,
@@ -217,79 +217,8 @@ export class UsersQueryRepository {
       };
     });
 
-    const outputBannedUsers = {
-      pagesCount: pageCount,
-      page: +pageNumber,
-      pageSize: +pageSize,
-      totalCount: bannedUsersCount,
-      items: bannedUsers//ForOutput,
-    };
-    return outputBannedUsers;
-    }
-
-  async getBannedUsersForCurrentBlogRow(
-    blogId: string,
-    mergedQueryParams: RequestBannedUsersQueryModel,
-  ) {
-    const searchLoginTerm = mergedQueryParams.searchLoginTerm;
-    const sortBy = mergedQueryParams.sortBy;
-    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
-    const pageNumber = +mergedQueryParams.pageNumber;
-    const pageSize = +mergedQueryParams.pageSize;
-    const skipPage = (pageNumber - 1) * pageSize;
-
-    const queryParams = [
-      `%${searchLoginTerm}%`,
-      sortBy,
-      sortDirection,
-      pageNumber,
-      pageSize,
-      skipPage,
-      blogId,
-    ];
-
-    let query = `
-    SELECT "BlogBannedUsers".*, "Users".login
-    FROM public."BlogBannedUsers"
-    INNER JOIN "Users"
-    ON "BlogBannedUsers"."bannedUserId" = "Users"."userId"
-    WHERE "blogId" = '${queryParams[6]}'
-    `;
-    let countQuery = `
-    SELECT COUNT(*)
-    FROM public."BlogBannedUsers"
-    INNER JOIN "Users"
-    ON "BlogBannedUsers"."bannedUserId" = "Users"."userId"
-    WHERE "blogId" = '${queryParams[6]}'
-    `;
-    if (searchLoginTerm !== '') {
-      query += `AND login ILIKE '${queryParams[0]}'`;
-      countQuery += `AND login ILIKE '${queryParams[0]}'`;
-    }
-
-    query += ` ORDER BY "${queryParams[1]}" ${queryParams[2]}
-    LIMIT ${queryParams[4]} OFFSET ${queryParams[5]};
-    `;
-
-    const bannedUsersCountArr = await this.dataSource.query(countQuery);
-    const bannedUsersCount = parseInt(bannedUsersCountArr[0].count);
-
-    const bannedUsers = await this.dataSource.query(query);
-
-    const bannedUsersForOutput = bannedUsers.map((user) => {
-      return {
-        id: user.bannedUserId,
-        login: user.login,
-        banInfo: {
-          isBanned: true,
-          banDate: user.banDate,
-          banReason: user.banReason,
-        },
-      };
-    });
-
     const pageCount = Math.ceil(bannedUsersCount / pageSize);
-
+      
     const outputBannedUsers = {
       pagesCount: pageCount,
       page: +pageNumber,
@@ -298,5 +227,6 @@ export class UsersQueryRepository {
       items: bannedUsersForOutput,
     };
     return outputBannedUsers;
+
+    }
   }
-}

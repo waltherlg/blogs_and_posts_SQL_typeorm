@@ -142,7 +142,7 @@ export class BlogsRepository {
     const query = `
     SELECT COUNT(*) AS count
     FROM public."BlogBannedUsers"
-    WHERE "blogId" = $1 AND "bannedUserId" = $2
+    WHERE "blogId" = $1 AND "userId" = $2
     `;
     const result = await this.dataSource.query(query, [blogId, userId]);
     const count = result[0].count;
@@ -155,7 +155,7 @@ export class BlogsRepository {
     const query = `
     INSERT INTO public."BlogBannedUsers"(
       "blogId",
-      "bannedUserId",
+      "userId",
       "banDate",
       "banReason")
       VALUES (
@@ -168,7 +168,7 @@ export class BlogsRepository {
     `;
     const result = await this.dataSource.query(query, [
       banUserInfo.blogId,
-      banUserInfo.bannedUserId,
+      banUserInfo.userId,
       banUserInfo.banDate,
       banUserInfo.banReason,
     ]);
@@ -186,7 +186,7 @@ export class BlogsRepository {
     }
     const query = `
     DELETE FROM public."BlogBannedUsers"
-    WHERE "blogId" = $1 AND "bannedUserId" = $2
+    WHERE "blogId" = $1 AND "userId" = $2
     `;
     const result = await this.dataSource.query(query, [blogId, userId]);
     return result[1] > 0;

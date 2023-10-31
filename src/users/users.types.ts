@@ -5,7 +5,9 @@ import {
   Column,
   Entity,
   ManyToMany,
+  ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -42,8 +44,8 @@ export class Users {
   UserDevices: UserDevices[];
   @OneToMany(() => Comments, (c) => c.userId)
   Comments: Comments[];
-  // @OneToMany(() => BlogBannedUsers, (b) => b.bannedUserId)
-  // BlogBannedUsers: BlogBannedUsers[];
+  @OneToMany(() => BlogBannedUsers, (b) => b.Users)
+  BlogBannedUsers: BlogBannedUsers[];
 }
 
 export type CommentsLikeType = {

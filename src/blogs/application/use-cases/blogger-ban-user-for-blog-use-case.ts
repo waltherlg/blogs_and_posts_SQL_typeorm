@@ -10,7 +10,7 @@ import { CheckService } from '../../../other.services/check.service';
 export class BanUserForSpecificBlogCommand {
   constructor(
     public bloggerId: string,
-    public bannedUserId: string,
+    public userId: string,
     public banUserDto: BanUserForBlogInputModelType,
   ) {}
 }
@@ -29,7 +29,7 @@ export class BanUserForSpecificBlogUseCase
     command: BanUserForSpecificBlogCommand,
   ): Promise<BlogActionResult> {
     const bloggerId = command.bloggerId;
-    const bannedUserId = command.bannedUserId;
+    const userId = command.userId;
     const banStatus = command.banUserDto.isBanned;
     const banReason = command.banUserDto.banReason;
     const blogId = command.banUserDto.blogId;
@@ -40,19 +40,19 @@ export class BanUserForSpecificBlogUseCase
 
     if (blog.userId !== bloggerId) return BlogActionResult.NotOwner;
 
-    const user = await this.usersRepository.getUserDBTypeById(bannedUserId);
+    const user = await this.usersRepository.getUserDBTypeById(userId);
     if (!user) {
       return BlogActionResult.UserNotFound;
     }
 
     if (banStatus === true) {
-      if (await this.checkService.isUserBannedForBlog(blogId, bannedUserId)) {
+      if (await this.checkService.isUserBannedForBlog(blogId, userId)) {
         return BlogActionResult.UserAlreadyBanned;
       }
 
       const banUserInfo: BannedBlogUsersType = {
         blogId: blogId,
-        bannedUserId: bannedUserId,
+        userId: userId,
         banDate: new Date().toISOString(),
         banReason: banReason,
       };
@@ -69,13 +69,13 @@ export class BanUserForSpecificBlogUseCase
 
     if (banStatus === false) {
       if (
-        !(await this.checkService.isUserBannedForBlog(blogId, bannedUserId))
+        !(await this.checkService.isUserBannedForBlog(blogId, userId))
       ) {
         return BlogActionResult.UserNotBanned;
       }
       const result = await this.blogsRepository.removeUserFromBlogBanList(
         blogId,
-        bannedUserId,
+        userId,
       );
       if (result) {
         return BlogActionResult.Success;

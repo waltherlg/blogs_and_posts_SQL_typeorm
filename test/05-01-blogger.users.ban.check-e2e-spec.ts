@@ -19,8 +19,10 @@ export function testBanUserForBlogByBlogger() {
   let accessTokenUser1;
   let accessTokenUser2;
   let blogId1;
+  let blogId2;
   let userId1;
   let userId2;
+  let userId3;
 
   describe('test Ban User For Blog By Blogger (e2e)', () => {
     let app: INestApplication;
@@ -130,6 +132,19 @@ export function testBanUserForBlogByBlogger() {
       expect(refreshTokenCookie).toContain('Secure');
     });
 
+    it('00-00 sa/users post = 201 create user3 with return', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(endpoints.saUsers)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testUser.inputUser3)
+        .expect(201);
+
+      const createdResponseBody = createResponse.body;
+      userId3 = createdResponseBody.id;
+
+      expect(createdResponseBody).toEqual(testUser.outputUser3Sa);
+    });
+
     it('00-00 blogger/blogs POST = 201 user1 create blog1', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.bloggerBlogs}`)
@@ -141,9 +156,44 @@ export function testBanUserForBlogByBlogger() {
       expect(createdResponseBody).toEqual(testOutputBlogBody.blog1);
     });
 
+    it('00-00 blogger/blogs POST = 201 user1 create blog2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.bloggerBlogs}`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .send(testInputBlogBody.blog2)
+        .expect(201);
+      const createdResponseBody = createResponse.body;
+      blogId2 = createdResponseBody.id;
+      expect(createdResponseBody).toEqual(testOutputBlogBody.blog2);
+    });
+
     it('00-00 blogger/users/:userId/ban PUT = 204 user1 ban user2 for blog1', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.bloggerUsers}/${userId2}/ban`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .send({
+          isBanned: true,
+          banReason: 'some reason for ban user for this blog',
+          blogId: blogId1,
+        })
+        .expect(204);
+    });
+
+    it('00-00 blogger/users/:userId/ban PUT = 204 user1 ban user2 for blog2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.bloggerUsers}/${userId2}/ban`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .send({
+          isBanned: true,
+          banReason: 'some reason for ban user for this blog2',
+          blogId: blogId2,
+        })
+        .expect(204);
+    });
+
+    it('00-00 blogger/users/:userId/ban PUT = 204 user1 ban user3 for blog1', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.bloggerUsers}/${userId3}/ban`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .send({
           isBanned: true,
@@ -163,8 +213,11 @@ export function testBanUserForBlogByBlogger() {
         pagesCount: 1,
         page: 1,
         pageSize: 10,
-        totalCount: 1,
-        items: [testBloggerBanBody.bannedUser2ForBlogOutput],
+        totalCount: 2,
+        items: [
+          testBloggerBanBody.bannedUser3ForBlogOutput,
+          testBloggerBanBody.bannedUser2ForBlogOutput,
+          ],
       });
     });
   });
