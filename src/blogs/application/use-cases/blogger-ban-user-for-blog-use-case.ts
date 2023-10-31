@@ -68,9 +68,7 @@ export class BanUserForSpecificBlogUseCase
     }
 
     if (banStatus === false) {
-      if (
-        !(await this.checkService.isUserBannedForBlog(blogId, userId))
-      ) {
+      if (!(await this.checkService.isUserBannedForBlog(blogId, userId))) {
         return BlogActionResult.UserNotBanned;
       }
       const result = await this.blogsRepository.removeUserFromBlogBanList(

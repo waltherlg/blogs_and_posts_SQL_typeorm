@@ -69,13 +69,7 @@ export class PostsQueryRepository {
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
 
-    const queryParams = [
-      sortBy,
-      sortDirection,
-      pageNumber,
-      pageSize,
-      skipPage,
-    ];
+    const queryParams = [sortBy, sortDirection, pageNumber, pageSize, skipPage];
 
     let query = `
     SELECT "Posts".*, "Blogs".name AS "blogName", "Blogs"."isBlogBanned"

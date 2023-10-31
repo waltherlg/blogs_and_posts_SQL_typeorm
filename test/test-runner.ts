@@ -25,9 +25,9 @@ describe('End-to-End Tests', () => {
   //testSecurityDevices()
   testAuthOperations();
   //testAuthValidations()
-  testBloggerCrudOnlyBlogs()
-  testBanUserForBlogByBlogger()
-  saBlogsControllerCrudAndBan()
+  testBloggerCrudOnlyBlogs();
+  testBanUserForBlogByBlogger();
+  saBlogsControllerCrudAndBan();
   //postCrudOperationsByBlogger07()
   //postCrudOperationsBySa07()
   //testPostLikesCrud08()

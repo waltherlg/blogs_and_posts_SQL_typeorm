@@ -12,36 +12,40 @@ import { validate as isValidUUID } from 'uuid';
 
 @Injectable()
 export class BlogsRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource,
-  @InjectRepository(Blogs) private readonly blogsRepository: Repository<Blogs>,
-  @InjectRepository(BlogBannedUsers) private readonly blogBannedUsersRepository: Repository<BlogBannedUsers>) {}
+  constructor(
+    @InjectDataSource() protected dataSource: DataSource,
+    @InjectRepository(Blogs)
+    private readonly blogsRepository: Repository<Blogs>,
+    @InjectRepository(BlogBannedUsers)
+    private readonly blogBannedUsersRepository: Repository<BlogBannedUsers>,
+  ) {}
 
   async deleteBlogById(blogId: string): Promise<boolean> {
     if (!isValidUUID(blogId)) {
       return false;
     }
     const result = await this.blogsRepository
-    .createQueryBuilder()
-    .delete()
-    .from(Blogs)
-    .where('blogId = :blogId', { blogId })
-    .execute();  
+      .createQueryBuilder()
+      .delete()
+      .from(Blogs)
+      .where('blogId = :blogId', { blogId })
+      .execute();
 
     return result.affected > 0;
   }
 
   async createBlog(blogDTO: BlogDBType): Promise<string> {
-    const result = await this.blogsRepository.save(blogDTO)
-    return result.blogId
+    const result = await this.blogsRepository.save(blogDTO);
+    return result.blogId;
   }
 
   async getBlogDBTypeById(blogId): Promise<BlogDBType | null> {
     if (!isValidUUID(blogId)) {
       return null;
     }
-const result = await this.blogsRepository.findOne({
-  where: [{blogId: blogId}]
-})
+    const result = await this.blogsRepository.findOne({
+      where: [{ blogId: blogId }],
+    });
 
     return result;
   }

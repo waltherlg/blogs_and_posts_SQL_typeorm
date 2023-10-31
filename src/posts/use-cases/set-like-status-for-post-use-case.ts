@@ -60,9 +60,9 @@ export class SetLikeStatusForPostUseCase
 
     //if user never set likestatus, create it
     if (!likeObject) {
-      const likerLogin = await this.usersRepository.getUserLoginById(userId)
-      if (!likerLogin){
-        return PostActionResult.UserNotFound
+      const likerLogin = await this.usersRepository.getUserLoginById(userId);
+      if (!likerLogin) {
+        return PostActionResult.UserNotFound;
       }
       const postLikeDto = new PostLikeDbType(
         postId,

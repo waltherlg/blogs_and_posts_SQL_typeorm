@@ -20,7 +20,7 @@ export class SetLikeStatusForCommentUseCase
   constructor(
     private readonly commentRepository: CommentsRepository,
     private readonly likesRepository: LikesRepository,
-    private readonly usersRepository: UsersRepository
+    private readonly usersRepository: UsersRepository,
   ) {}
 
   async execute(
@@ -45,9 +45,9 @@ export class SetLikeStatusForCommentUseCase
     //if user never set likestatus, create it
 
     if (!commentLikeObject) {
-      const likerLogin = await this.usersRepository.getUserLoginById(userId)
-      if (!likerLogin){
-        return CommentActionResult.UserNotFound
+      const likerLogin = await this.usersRepository.getUserLoginById(userId);
+      if (!likerLogin) {
+        return CommentActionResult.UserNotFound;
       }
       const commentLikeDto = new CommentLikeDbType(
         commentId,

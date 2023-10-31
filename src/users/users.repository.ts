@@ -44,7 +44,7 @@ export class UsersRepository {
       .delete()
       .from(Users)
       .where('userId = :userId', { userId })
-      .execute();  
+      .execute();
 
     return result.affected > 0;
   }
@@ -216,15 +216,15 @@ export class UsersRepository {
   async getUserLoginById(userId): Promise<string | null> {
     const result = await this.usersRepository.find({
       select: {
-        login: true
+        login: true,
       },
-      where: { userId }
-    })
+      where: { userId },
+    });
     if (result.length > 0) {
-      const login = result[0].login
-      return login
+      const login = result[0].login;
+      return login;
     }
-    return null
+    return null;
   }
 
   async getConfirmationCodeOfLastCreatedUser() {

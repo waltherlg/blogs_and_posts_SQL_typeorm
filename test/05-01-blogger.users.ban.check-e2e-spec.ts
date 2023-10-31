@@ -217,7 +217,7 @@ export function testBanUserForBlogByBlogger() {
         items: [
           testBloggerBanBody.bannedUser3ForBlogOutput,
           testBloggerBanBody.bannedUser2ForBlogOutput,
-          ],
+        ],
       });
     });
   });

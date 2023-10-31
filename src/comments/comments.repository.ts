@@ -6,12 +6,15 @@ import { validate as isValidUUID } from 'uuid';
 
 @Injectable()
 export class CommentsRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource,
-              @InjectRepository(Comments) private readonly commentsRepository: Repository<Comments>) {}
+  constructor(
+    @InjectDataSource() protected dataSource: DataSource,
+    @InjectRepository(Comments)
+    private readonly commentsRepository: Repository<Comments>,
+  ) {}
 
   async createComment(commentDTO: CommentDBType): Promise<string> {
-    const result = await this.commentsRepository.save(commentDTO)
-    return result.commentId
+    const result = await this.commentsRepository.save(commentDTO);
+    return result.commentId;
   }
 
   async isCommentExist(commentId): Promise<boolean> {

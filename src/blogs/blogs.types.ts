@@ -35,7 +35,7 @@ export class Blogs {
   @Column()
   isMembership: boolean;
   @OneToMany(() => BlogBannedUsers, (b) => b.blogId)
-  BlogBannedUsers: BlogBannedUsers[]
+  BlogBannedUsers: BlogBannedUsers[];
 }
 
 export class BlogDBType {

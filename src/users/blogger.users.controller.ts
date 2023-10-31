@@ -42,18 +42,17 @@ export class BloggerUsersController {
     @Body() banUserDto: BanUserForBlogInputModelType,
   ) {
     try {
-        const result = await this.commandBus.execute(
-      new BanUserForSpecificBlogCommand(
-        request.user.userId,
-        userId,
-        banUserDto,
-      ),
-    );
-    handleBlogOperationResult(result);  
+      const result = await this.commandBus.execute(
+        new BanUserForSpecificBlogCommand(
+          request.user.userId,
+          userId,
+          banUserDto,
+        ),
+      );
+      handleBlogOperationResult(result);
     } catch (error) {
-      console.log(error);  
+      console.log(error);
     }
-
   }
 
   @Get('blog/:blogId')
