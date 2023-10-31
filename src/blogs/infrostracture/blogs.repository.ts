@@ -39,13 +39,11 @@ export class BlogsRepository {
     if (!isValidUUID(blogId)) {
       return null;
     }
-    const query = `
-    SELECT * FROM public."Blogs"
-    WHERE "blogId" = $1
-    `;
-    const result = await this.dataSource.query(query, [blogId]);
+const result = await this.blogsRepository.findOne({
+  where: [{blogId: blogId}]
+})
 
-    return result[0];
+    return result;
   }
 
   async updateBlogById(
