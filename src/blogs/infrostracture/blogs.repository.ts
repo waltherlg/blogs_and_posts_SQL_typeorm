@@ -20,12 +20,14 @@ export class BlogsRepository {
     if (!isValidUUID(blogId)) {
       return false;
     }
-    const query = `
-    DELETE FROM  public."Blogs"
-    WHERE "blogId" = $1
-    `;
-    const result = await this.dataSource.query(query, [blogId]);
-    return result[1] > 0;
+    const result = await this.blogsRepository
+    .createQueryBuilder()
+    .delete()
+    .from(Blogs)
+    .where('blogId = :blogId', { blogId })
+    .execute();  
+
+    return result.affected > 0;
   }
 
   async createBlog(blogDTO: BlogDBType): Promise<string> {
