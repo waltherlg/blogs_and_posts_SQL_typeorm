@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import { PostDBType } from './posts.types';
-import { DataSource } from 'typeorm';
-import { InjectDataSource } from '@nestjs/typeorm';
+import { PostDBType, Posts } from './posts.types';
+import { DataSource, Repository } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
 
 @Injectable()
 export class PostsRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource) {}
+  constructor(@InjectDataSource() protected dataSource: DataSource,
+              @InjectRepository(Posts) private readonly postsRepository: Repository<Posts> ) {}
 
   async createPost(postDTO: PostDBType): Promise<string> {
     const query = `
