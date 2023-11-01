@@ -25,10 +25,10 @@ describe('End-to-End Tests', () => {
   //testSecurityDevices()
   //..testAuthOperations();
   //testAuthValidations()
-  testBloggerCrudOnlyBlogs();
-  //..testBanUserForBlogByBlogger();
+  //..testBloggerCrudOnlyBlogs();
+  testBanUserForBlogByBlogger();
   //..saBlogsControllerCrudAndBan();
-  //postCrudOperationsByBlogger07()
+  //..postCrudOperationsByBlogger07()
   //postCrudOperationsBySa07()
   //testPostLikesCrud08()
   //commentCrudOperations() // this comment CRUD if blog create blogger
