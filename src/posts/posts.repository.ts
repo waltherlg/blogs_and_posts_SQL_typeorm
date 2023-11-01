@@ -39,19 +39,15 @@ export class PostsRepository {
     if (!isValidUUID(postId)) {
       return false;
     }
-    const query = `
-    UPDATE public."Posts"
-    SET title = $2, "shortDescription" = $3, "content" = $4
-    WHERE "postId" = $1
-    `;
-    const result = await this.dataSource.query(query, [
-      postId,
-      title,
-      shortDescription,
-      content,
-    ]);
-    const count = result[1];
-    return count === 1;
+    const result = await this.postsRepository.update(
+      { postId },
+      {
+        title,
+        shortDescription,
+        content,
+      }
+    )
+    return result.affected > 0;
   }
 
   async isPostExist(postId: string): Promise<boolean> {
