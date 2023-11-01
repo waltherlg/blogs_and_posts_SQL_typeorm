@@ -156,7 +156,6 @@ export class BloggerBlogsController {
     return newBlog;
   }
 
-  //ready
   @Get()
   async getAllBlogsForCurrentUser(
     @Query() queryParams: RequestBlogsQueryModel,
@@ -190,8 +189,7 @@ export class BloggerBlogsController {
     return newPost;
   }
 
-  //ready?
-  @Put(':blogId/posts/:postId') // FIX:
+  @Put(':blogId/posts/:postId')
   @HttpCode(204)
   async updatePost(
     @Req() request,

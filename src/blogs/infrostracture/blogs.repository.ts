@@ -59,19 +59,15 @@ export class BlogsRepository {
     if (!isValidUUID(blogId)) {
       return false;
     }
-    const query = `
-    UPDATE public."Blogs"
-    SET name = $2, description = $3, "websiteUrl" = $4
-    WHERE "blogId" = $1
-    `;
-    const result = await this.dataSource.query(query, [
-      blogId,
-      name,
-      description,
-      websiteUrl,
-    ]);
-    const count = result[1];
-    return count === 1;
+    const result = await this.blogsRepository.update(
+      {blogId: blogId},
+      {
+        name: name,
+        description: description, 
+        websiteUrl: websiteUrl
+      }
+    );
+    return result.affected > 0;
   }
 
   async bindBlogWithUser(blogId, userId) {
@@ -122,20 +118,6 @@ export class BlogsRepository {
     ]);
     const count = result[1];
     return count === 1;
-  }
-
-  //get list of users, banned for that blog
-  async getBlogBannedUsers(blogId) {
-    if (!isValidUUID(blogId)) {
-      return null;
-    }
-    const query = `
-    SELECT * FROM public."BlogBannedUsers"
-    WHERE "blogId" = $1
-    `;
-    const result = await this.dataSource.query(query, [blogId]);
-
-    return result;
   }
 
   // check is user banned for that blog or not
