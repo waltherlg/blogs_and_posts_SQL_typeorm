@@ -128,22 +128,16 @@ export class BlogsRepository {
     }
   }
 
-  // async removeUserFromBlogBanListin(blogId, userId): Promise<boolean> {
-  //   if (!isValidUUID(blogId) || !isValidUUID(userId)) {
-  //     return false;
-  //   }
-  //   const result = await this.blogBannedUsersRepository.delete()
-  // }
-
   async removeUserFromBlogBanList(blogId, userId): Promise<boolean> {
     if (!isValidUUID(blogId) || !isValidUUID(userId)) {
       return false;
     }
-    const query = `
-    DELETE FROM public."BlogBannedUsers"
-    WHERE "blogId" = $1 AND "userId" = $2
-    `;
-    const result = await this.dataSource.query(query, [blogId, userId]);
-    return result[1] > 0;
+    const result = await this.blogBannedUsersRepository
+  .createQueryBuilder()
+  .delete()
+  .where('userId = :userId', { userId: userId })
+  .andWhere('blogId = :blogId', { blogId: blogId })
+  .execute();
+  return result.affected > 0;
   }
 }

@@ -31,12 +31,6 @@ export class UsersRepository {
     if (!isValidUUID(userId)) {
       return false;
     }
-    // const result = await this.usersRepository
-    //   .createQueryBuilder()
-    //   .delete()
-    //   .from(Users)
-    //   .where('userId = :userId', { userId })
-    //   .execute();
     const result = await this.usersRepository.delete(userId)
     return result.affected > 0;
   }

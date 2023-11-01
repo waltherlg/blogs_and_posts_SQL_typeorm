@@ -220,5 +220,34 @@ export function testBanUserForBlogByBlogger() {
         ],
       });
     });
+
+    it('00-00 blogger/users/:userId/ban PUT = 204 user1 UNban user3 for blog1', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.bloggerUsers}/${userId3}/ban`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .send({
+          isBanned: false,
+          banReason: 'some reason for ban user for this blog',
+          blogId: blogId1,
+        })
+        .expect(204);
+    });
+
+    it('00-00 blogger/users/blog/:blogId GET = 200 array of banned users for blog1 after unban user3', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.bloggerUsers}/blog/${blogId1}`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 1,
+        items: [
+          testBloggerBanBody.bannedUser2ForBlogOutput,
+        ],
+      });
+    });
   });
 }
