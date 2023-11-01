@@ -10,43 +10,8 @@ export class PostsRepository {
               @InjectRepository(Posts) private readonly postsRepository: Repository<Posts> ) {}
 
   async createPost(postDTO: PostDBType): Promise<string> {
-    const query = `
-    INSERT INTO public."Posts"(
-      "postId",
-      title,
-      "shortDescription",
-      content,
-      "blogId",
-      "createdAt",
-      "userId",
-      "likesCount",
-      "dislikesCount")
-      VALUES (
-        $1,  
-        $2, 
-        $3, 
-        $4, 
-        $5, 
-        $6,
-        $7,
-        $8,
-        $9)
-      RETURNING "postId";
-    `;
-    const result = await this.dataSource.query(query, [
-      postDTO.postId,
-      postDTO.title,
-      postDTO.shortDescription,
-      postDTO.content,
-      postDTO.blogId,
-      postDTO.createdAt,
-      postDTO.userId,
-      postDTO.likesCount,
-      postDTO.dislikesCount,
-    ]);
-    const postId = result[0].postId;
-
-    return postId;
+    const result = await this.postsRepository.save(postDTO);
+    return result.postId
   }
 
   async deletePostById(postId: string): Promise<boolean> {
