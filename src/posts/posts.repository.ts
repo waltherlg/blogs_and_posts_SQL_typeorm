@@ -15,15 +15,11 @@ export class PostsRepository {
   }
 
   async deletePostById(postId: string): Promise<boolean> {
-    if (!isValidUUID(postId)) {
+        if (!isValidUUID(postId)) {
       return false;
     }
-    const query = `
-    DELETE FROM  public."Posts"
-    WHERE "postId" = $1
-    `;
-    const result = await this.dataSource.query(query, [postId]);
-    return result[1] > 0;
+    const result = await this.postsRepository.delete(postId)
+    return result.affected > 0;
   }
 
   async getPostDBTypeById(postId): Promise<PostDBType | null> {
