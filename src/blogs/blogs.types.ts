@@ -1,3 +1,4 @@
+
 import { Users } from '../users/users.types';
 import {
   Column,
@@ -10,6 +11,7 @@ import {
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Posts } from 'src/posts/posts.types';
 
 @Entity({ name: 'Blogs' })
 export class Blogs {
@@ -22,7 +24,6 @@ export class Blogs {
   @Column({ nullable: true })
   blogBanDate: string | null;
   // @OneToOne(() => Users )
-  // @JoinColumn({ name: 'userId' })
   // Users: Users
   @Column({ type: 'uuid', nullable: true })
   userId: string | null;
@@ -34,8 +35,10 @@ export class Blogs {
   createdAt: string;
   @Column()
   isMembership: boolean;
-  @OneToMany(() => BlogBannedUsers, (b) => b.blogId)
+  @OneToMany(() => BlogBannedUsers, (b) => b.Blogs)
   BlogBannedUsers: BlogBannedUsers[];
+  @OneToMany(() => Posts, (p) => p.Blogs, { cascade: ['remove'] })
+  Posts: Posts[]
 }
 
 export class BlogDBType {
@@ -56,13 +59,11 @@ export class BlogDBType {
 export class BlogBannedUsers {
   @PrimaryGeneratedColumn('uuid')
   banId: string;
-  @ManyToOne(() => Blogs, (u) => u.BlogBannedUsers)
-  @JoinColumn({ name: 'blogId' })
-  Blogs: Blogs[];
+  @ManyToOne(() => Blogs, (b) => b.BlogBannedUsers)
+  Blogs: Blogs;
   @Column('uuid')
   blogId: string;
   @ManyToOne(() => Users, (u) => u.BlogBannedUsers)
-  @JoinColumn({ name: 'userId' })
   Users: Users;
   @Column({ type: 'uuid', nullable: true })
   userId: string;

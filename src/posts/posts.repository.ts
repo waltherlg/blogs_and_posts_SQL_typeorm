@@ -26,7 +26,7 @@ export class PostsRepository {
     if (!isValidUUID(postId)) {
       return null;
     }
-    const result = await this.postsRepository.findOne(postId)
+    const result = await this.postsRepository.findOne({where: [{postId: postId}]})
     return result;
   }
 
@@ -40,11 +40,11 @@ export class PostsRepository {
       return false;
     }
     const result = await this.postsRepository.update(
-      { postId },
+      { postId: postId },
       {
-        title,
-        shortDescription,
-        content,
+        title: title,
+        shortDescription: shortDescription,
+        content: content,
       }
     )
     return result.affected > 0;
