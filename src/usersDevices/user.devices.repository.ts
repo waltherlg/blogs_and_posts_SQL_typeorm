@@ -71,25 +71,15 @@ export class UsersDevicesRepository {
     if (!isValidUUID(deviceId)) {
       return false;
     }
-    const query = `
-    SELECT COUNT(*) AS count
-    FROM public."UserDevices"
-    WHERE "deviceId" = $1
-  `;
-    const result = await this.dataSource.query(query, [deviceId]);
-    const count = result[0].count;
-    return count > 0;
+    const result = await this.userDevicesRepository.count({ where: {deviceId}})
+    return result > 0
   }
 
   async deleteAllUserDevicesById(userId: string): Promise<boolean> {
     if (!isValidUUID(userId)) {
       return false;
     }
-    const query = `   
-    DELETE FROM public."UserDevices"
-    WHERE "userId" = $1
-    `;
-    const result = await this.dataSource.query(query, [userId]);
-    return result.rowCount > 0;
+    const result = await this.userDevicesRepository.delete({userId})
+    return result.affected > 0;
   }
 }
