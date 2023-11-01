@@ -74,14 +74,11 @@ export class BlogsRepository {
     if (!isValidUUID(blogId) || !isValidUUID(userId)) {
       return false;
     }
-    const query = `
-    UPDATE public."Blogs"
-    SET "userId" = $2
-    WHERE "blogId" = $1
-    `;
-    const result = await this.dataSource.query(query, [blogId, userId]);
-    const count = result[1];
-    return count === 1;
+    const result = await this.blogsRepository.update(
+      { blogId: blogId },
+      { userId: userId }
+    )
+    return result.affected > 0;
   }
 
   async isBlogExist(blogId): Promise<boolean> {
