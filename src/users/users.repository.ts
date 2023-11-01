@@ -153,6 +153,8 @@ export class UsersRepository {
         banReason: userBanDto.banReason,
       },
     );
+    return result.affected > 0;
+
   }
 
   async isEmailExists(email: string): Promise<boolean> {

@@ -156,7 +156,6 @@ export class UsersQueryRepository {
       .skip(skipPage)
       .take(pageSize)
       .getMany();
-    console.log(users);
 
     const outUsers = users.map((user) => {
       return {

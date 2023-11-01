@@ -85,51 +85,36 @@ export class BlogsRepository {
     if (!isValidUUID(blogId)) {
       return false;
     }
-    const query = `
-    SELECT COUNT(*) AS count
-    FROM public."Blogs"
-    WHERE "blogId" = $1
-    `;
-    const result = await this.dataSource.query(query, [blogId]);
-    const count = result[0].count;
-    return count > 0;
+    const result = await this.blogsRepository.count({where: { blogId }})
+    return result > 0;
   }
 
   async newBanStatus(
     blogId,
-    newBanStatus: boolean,
+    newBanStatus,
     newBanDate,
-  ): Promise<boolean> {
+  ): Promise<boolean>{
     if (!isValidUUID(blogId)) {
       return false;
     }
-    const query = `
-    UPDATE public."Blogs"
-    SET "isBlogBanned" = $2, "blogBanDate" = $3
-    WHERE "blogId" = $1
-    `;
-    const result = await this.dataSource.query(query, [
-      blogId,
-      newBanStatus,
-      newBanDate,
-    ]);
-    const count = result[1];
-    return count === 1;
+    const result = await this.blogsRepository.update(
+      {blogId: blogId},
+      {
+        isBlogBanned: newBanStatus,
+        blogBanDate: newBanDate
+      }
+    )
+    return result.affected > 0;
   }
 
-  // check is user banned for that blog or not
   async isUserBannedForBlog(blogId, userId) {
     if (!isValidUUID(blogId) || !isValidUUID(userId)) {
       return false;
     }
-    const query = `
-    SELECT COUNT(*) AS count
-    FROM public."BlogBannedUsers"
-    WHERE "blogId" = $1 AND "userId" = $2
-    `;
-    const result = await this.dataSource.query(query, [blogId, userId]);
-    const count = result[0].count;
-    return count > 0;
+    const result = await this.blogBannedUsersRepository.count({
+      where: {blogId, userId}
+    })
+    return result > 0;
   }
 
   async addUserToBlogBanList(
