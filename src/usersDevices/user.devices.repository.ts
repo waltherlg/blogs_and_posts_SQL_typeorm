@@ -59,12 +59,22 @@ export class UsersDevicesRepository {
     if (!isValidUUID(userId) || !isValidUUID(deviceId)) {
       return false;
     }
-    const query = `
-    DELETE FROM public."UserDevices"
-    WHERE "userId" = $1 AND "deviceId" <> $2;
-    `;
-    const result = await this.dataSource.query(query, [userId, deviceId]);
-    return result[1] > 0;
+    const result = await this.userDevicesRepository
+    .createQueryBuilder()
+  }
+
+  async deleteAllUserDevicesExceptCurrentRow(userId, deviceId): Promise<boolean> {
+    if (!isValidUUID(userId) || !isValidUUID(deviceId)) {
+      return false;
+    }
+    const result = await this.userDevicesRepository
+    .createQueryBuilder()
+    .delete()
+    .where('userId = :userId', { userId })
+    .andWhere('deviceId <> :deviceId', { deviceId })
+    .execute();
+
+  return result.affected > 0;
   }
 
   async isUserDeviceExist(deviceId): Promise<boolean> {
