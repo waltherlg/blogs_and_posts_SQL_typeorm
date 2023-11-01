@@ -60,10 +60,12 @@ export class BlogBannedUsers {
   @PrimaryGeneratedColumn('uuid')
   banId: string;
   @ManyToOne(() => Blogs, (b) => b.BlogBannedUsers)
+  @JoinColumn({ name: 'blogId' })
   Blogs: Blogs;
   @Column('uuid')
   blogId: string;
   @ManyToOne(() => Users, (u) => u.BlogBannedUsers)
+  @JoinColumn({ name: 'userId' })
   Users: Users;
   @Column({ type: 'uuid', nullable: true })
   userId: string;

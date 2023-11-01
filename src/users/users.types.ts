@@ -42,10 +42,13 @@ export class Users {
   @Column({ type: 'timestamptz', nullable: true })
   expirationDateOfRecoveryCode: Date | null;
   @OneToMany(() => UserDevices, (d) => d.Users, { cascade: ['remove'] })
+  @JoinColumn({ name: 'userId' })
   UserDevices: UserDevices[];
   @OneToMany(() => Comments, (c) => c.Users, { cascade: ['remove'] })
+  @JoinColumn({ name: 'userId' })
   Comments: Comments[];
   @OneToMany(() => BlogBannedUsers, (b) => b.Users, { cascade: ['remove'] })
+  @JoinColumn({ name: 'userId' })
   BlogBannedUsers: BlogBannedUsers[];
 }
 

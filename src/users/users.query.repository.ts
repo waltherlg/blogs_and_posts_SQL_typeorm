@@ -221,6 +221,9 @@ export class UsersQueryRepository {
       .offset(skipPage)
       .getRawMany();
 
+      console.log(bannedUsers);
+      
+
     const bannedUsersForOutput = bannedUsers.map((bannedUser) => {
       return {
         id: bannedUser.userId,

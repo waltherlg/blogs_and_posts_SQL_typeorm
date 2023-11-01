@@ -1,6 +1,7 @@
+import { Comments } from 'src/comments/comments.types';
 import { Blogs } from '../blogs/blogs.types';
 import { Users } from '../users/users.types';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'Posts' })
 export class Posts {
@@ -24,6 +25,9 @@ export class Posts {
   likesCount: number;
   @Column()
   dislikesCount: number;
+  @OneToMany(() => Comments, (c) => c.Posts)
+  @JoinColumn({name: 'postId'})
+  Comments: Comments[]
 }
 
 export class PostDBType {
