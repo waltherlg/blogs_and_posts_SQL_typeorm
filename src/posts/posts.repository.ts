@@ -26,12 +26,8 @@ export class PostsRepository {
     if (!isValidUUID(postId)) {
       return null;
     }
-    const query = `
-    SELECT * FROM public."Posts"
-    WHERE "postId" = $1
-    `;
-    const result = await this.dataSource.query(query, [postId]);
-    return result[0];
+    const result = await this.postsRepository.findOne(postId)
+    return result;
   }
 
   async updatePostById(
