@@ -4,8 +4,6 @@ import { UserDBType, Users } from './users.types';
 import { PasswordRecoveryModel } from '../auth/auth.types';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
-import { log } from 'console';
-import { tr } from 'date-fns/locale';
 
 @Injectable()
 export class UsersRepository {
@@ -39,13 +37,7 @@ export class UsersRepository {
     //   .from(Users)
     //   .where('userId = :userId', { userId })
     //   .execute();
-    const result = await this.usersRepository
-      .createQueryBuilder()
-      .delete()
-      .from(Users)
-      .where('userId = :userId', { userId })
-      .execute();
-
+    const result = await this.usersRepository.delete(userId)
     return result.affected > 0;
   }
 

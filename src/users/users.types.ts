@@ -40,11 +40,11 @@ export class Users {
   passwordRecoveryCode: string | null;
   @Column({ type: 'timestamptz', nullable: true })
   expirationDateOfRecoveryCode: Date | null;
-  @OneToMany(() => UserDevices, (d) => d.userId)
+  @OneToMany(() => UserDevices, (d) => d.Users, { cascade: ['remove'] })
   UserDevices: UserDevices[];
-  @OneToMany(() => Comments, (c) => c.userId)
+  @OneToMany(() => Comments, (c) => c.Users, { cascade: ['remove'] })
   Comments: Comments[];
-  @OneToMany(() => BlogBannedUsers, (b) => b.Users)
+  @OneToMany(() => BlogBannedUsers, (b) => b.Users, { cascade: ['remove'] })
   BlogBannedUsers: BlogBannedUsers[];
 }
 

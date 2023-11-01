@@ -120,33 +120,20 @@ export class BlogsRepository {
   async addUserToBlogBanList(
     banUserInfo: BannedBlogUsersType,
   ): Promise<boolean> {
-    const query = `
-    INSERT INTO public."BlogBannedUsers"(
-      "blogId",
-      "userId",
-      "banDate",
-      "banReason")
-      VALUES (
-      $1,  
-      $2, 
-      $3, 
-      $4
-      )
-      RETURNING 'User added to ban list.' as confirmation;
-    `;
-    const result = await this.dataSource.query(query, [
-      banUserInfo.blogId,
-      banUserInfo.userId,
-      banUserInfo.banDate,
-      banUserInfo.banReason,
-    ]);
-    const confirmationMessage = result[0].confirmation;
-    if (confirmationMessage) {
-      return true;
+    const result = await this.blogBannedUsersRepository.save(banUserInfo);
+    if(result.userId){
+      return true
     } else {
-      return false;
+      return false
     }
   }
+
+  // async removeUserFromBlogBanListin(blogId, userId): Promise<boolean> {
+  //   if (!isValidUUID(blogId) || !isValidUUID(userId)) {
+  //     return false;
+  //   }
+  //   const result = await this.blogBannedUsersRepository.delete()
+  // }
 
   async removeUserFromBlogBanList(blogId, userId): Promise<boolean> {
     if (!isValidUUID(blogId) || !isValidUUID(userId)) {
