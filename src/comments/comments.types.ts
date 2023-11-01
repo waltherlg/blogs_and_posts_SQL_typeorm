@@ -7,7 +7,6 @@ export class Comments {
   @PrimaryColumn()
   commentId: string;
   @ManyToOne(() => Posts)
-  @JoinColumn({ name: 'postId' })
   Posts: Posts;
   @Column('uuid')
   postId: string;
@@ -16,7 +15,6 @@ export class Comments {
   @Column()
   createdAt: string;
   @ManyToOne(() => Users, (u) => u.Comments)
-  @JoinColumn({ name: 'userId' })
   Users: Users;
   @Column('uuid')
   userId: string;

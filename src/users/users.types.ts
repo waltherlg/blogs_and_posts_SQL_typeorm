@@ -4,6 +4,7 @@ import { UserDevices } from '../usersDevices/users-devices.types';
 import {
   Column,
   Entity,
+  JoinColumn,
   ManyToMany,
   ManyToOne,
   OneToMany,

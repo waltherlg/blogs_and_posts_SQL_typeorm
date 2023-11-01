@@ -13,7 +13,6 @@ export class UserDevices {
   @PrimaryColumn('uuid')
   deviceId: string;
   @ManyToOne(() => Users, (u) => u.UserDevices)
-  @JoinColumn({ name: 'userId' })
   Users: Users;
   @Column('uuid')
   userId: string;
