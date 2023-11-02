@@ -14,6 +14,7 @@ export class Posts {
   @Column()
   content: string;
   @ManyToOne(() => Blogs, (b) => b.Posts)
+  @JoinColumn({name: 'blogId'})
   Blogs: Blogs;
   @Column('uuid')
   blogId: string;

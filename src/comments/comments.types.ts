@@ -7,6 +7,7 @@ export class Comments {
   @PrimaryColumn()
   commentId: string;
   @ManyToOne(() => Posts, (p) => p.Comments)
+  @JoinColumn({ name: 'postId' })
   Posts: Posts;
   @Column('uuid')
   postId: string;
