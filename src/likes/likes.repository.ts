@@ -42,7 +42,7 @@ export class LikesRepository {
       postLikeDto.postId,
       postLikeDto.addedAt,
       postLikeDto.userId,
-      -postLikeDto.login,
+      postLikeDto.login,
       postLikeDto.isUserBanned,
       postLikeDto.status,
     ]);

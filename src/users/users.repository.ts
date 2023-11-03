@@ -202,17 +202,18 @@ export class UsersRepository {
   }
 
   async getUserLoginById(userId): Promise<string | null> {
-    const result = await this.usersRepository.find({
+    const user = await this.usersRepository.findOne({
       select: {
         login: true,
       },
       where: { userId },
     });
-    if (result.length > 0) {
-      const login = result[0].login;
-      return login;
+    console.log(user.login)
+    if(user){
+      return user.login
+    } else {
+      return null
     }
-    return null;
   }
 
   async getConfirmationCodeOfLastCreatedUser() {

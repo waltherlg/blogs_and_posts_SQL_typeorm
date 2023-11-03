@@ -72,6 +72,7 @@ export class SetLikeStatusForPostUseCase
         false,
         status,
       );
+      
       const isLikeAdded = await this.likesRepository.addPostLikeStatus(
         postLikeDto,
       );
