@@ -22,12 +22,12 @@ export class PostLikes {
   postId: string;
   @Column()
   addedAt: string;
-  @OneToOne(() => Users)
+  @ManyToOne(() => Users)
   @JoinColumn({ name: 'userId' })
   Users: Users;
   @Column('uuid')
   userId: string;
-  @Column({ nullable: true })
+  @Column()
   login: string;
   @Column()
   isUserBanned: boolean;

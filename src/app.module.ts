@@ -93,6 +93,7 @@ import { BlogBannedUsers, Blogs } from './blogs/blogs.types';
 import { Posts } from './posts/posts.types';
 import { Comments } from './comments/comments.types';
 import { CommentLikes, PostLikes } from './likes/db.likes.types';
+import { UsersSubscriber } from './users/users.listeners';
 const mongoUri = process.env.MONGO_URL;
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
@@ -132,6 +133,10 @@ const useCases = [
   SetLikeStatusForCommentUseCase,
 ];
 
+const listeners = [
+  UsersSubscriber
+];
+
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
@@ -144,6 +149,7 @@ const useCases = [
       PostLikes,
       CommentLikes,
       BlogBannedUsers,
+      UsersSubscriber,
     ]),
     CqrsModule,
     ThrottlerModule.forRoot({
@@ -216,6 +222,7 @@ const useCases = [
     CustomBlogIdValidator,
     TrimNotEmptyValidator,
     ...useCases,
+    ...listeners,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,

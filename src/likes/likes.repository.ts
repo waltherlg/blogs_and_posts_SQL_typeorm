@@ -157,4 +157,10 @@ export class LikesRepository {
     return isLikesCountSet.affected > 0;
   }
 
+  async multiplecountAndSetPostLikesAndDislikesForPosts(postIdArray){
+    const promises = postIdArray.map(postId => this.countAndSetPostLikesAndDislikesForSpecificPost(postId));
+    const results = await Promise.all(promises);
+    return results;
+  }
+
 }
