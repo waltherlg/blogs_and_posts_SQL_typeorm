@@ -2,6 +2,7 @@ import { Comments } from 'src/comments/comments.types';
 import { Blogs } from '../blogs/blogs.types';
 import { Users } from '../users/users.types';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import { PostLikes } from 'src/likes/db.likes.types';
 
 @Entity({ name: 'Posts' })
 export class Posts {
@@ -29,6 +30,9 @@ export class Posts {
   @OneToMany(() => Comments, (c) => c.Posts)
   @JoinColumn({name: 'postId'})
   Comments: Comments[]
+  @OneToMany(() => PostLikes, (pl) => pl.Posts )
+  @JoinColumn({name: 'postId'})
+  PostLikes: PostLikes[]
 }
 
 export class PostDBType {

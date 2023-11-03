@@ -91,7 +91,10 @@ export class SetLikeStatusForPostUseCase
       userId,
       status,
     );
-    if (islikeUpdated) {
+
+    const isLikesCountSet = await this.likesRepository.countAndSetPostLikesAndDislikesForSpecificPost(postId)
+
+    if (islikeUpdated && isLikesCountSet) {
       return PostActionResult.Success;
     } else {
       return PostActionResult.NotSaved;

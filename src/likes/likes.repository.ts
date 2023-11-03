@@ -1,12 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
-import { CommentLikeDbType, PostLikeDbType } from './db.likes.types';
+import { CommentLikeDbType, PostLikeDbType, PostLikes } from './db.likes.types';
+import { Posts } from 'src/posts/posts.types';
 
 @Injectable()
 export class LikesRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource) {}
+  constructor(@InjectDataSource() protected dataSource: DataSource,
+              @InjectRepository(PostLikes) private readonly postLikesRepository: Repository<PostLikes>,
+              @InjectRepository(Posts) private readonly postsRepository: Repository<Posts>) {}
 
   async getPostLikeObject(userId, postId): Promise<PostLikeDbType | null> {
     const query = `
@@ -122,4 +125,36 @@ export class LikesRepository {
     const result = await this.dataSource.query(query, [userId, commentId]);
     return result[0];
   }
+
+  async countAndSetPostLikesAndDislikesForSpecificPost(postId){
+    const postLikesCount = await this.postLikesRepository
+    .createQueryBuilder('postLike')
+    .where("postLike.postId = :postId", {postId: postId})
+    .andWhere("postLike.isUserBanned = false")
+    .andWhere("postLike.status = 'Like'")
+    .getCount();
+    console.log(postLikesCount);
+    
+
+    const postDislikesikeCount = await this.postLikesRepository
+    .createQueryBuilder('postLike')
+    .where("postLike.postId = :postId", {postId: postId})
+    .andWhere("postLike.isUserBanned = false")
+    .andWhere("postLike.status = 'Dislike'")
+    .getCount();
+    console.log(postDislikesikeCount);
+    
+
+    const isLikesCountSet = await this.postsRepository.update(
+      {postId: postId},
+      {
+        likesCount: postLikesCount,
+        dislikesCount: postDislikesikeCount
+      }
+    )
+    console.log(isLikesCountSet);
+    
+    return isLikesCountSet.affected > 0;
+  }
+
 }

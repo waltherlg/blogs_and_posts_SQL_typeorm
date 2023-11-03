@@ -5,6 +5,7 @@ import {
   Column,
   Entity,
   JoinColumn,
+  ManyToOne,
   OneToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
@@ -14,7 +15,7 @@ import {
 export class PostLikes {
   @PrimaryGeneratedColumn('uuid')
   postLikeId: string;
-  @OneToOne(() => Posts)
+  @ManyToOne(() => Posts) //, (p) => p.PostLikes)
   @JoinColumn({ name: 'postId' })
   Posts: Posts;
   @Column('uuid')
