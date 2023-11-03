@@ -87,7 +87,7 @@ export class LikesRepository {
       commentLikeDto.commentId,
       commentLikeDto.addedAt,
       commentLikeDto.userId,
-      -commentLikeDto.login,
+      commentLikeDto.login,
       commentLikeDto.isUserBanned,
       commentLikeDto.status,
     ]);

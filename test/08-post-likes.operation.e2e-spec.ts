@@ -3,6 +3,15 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { delayFunction, endpoints } from './helpers/routing';
+
+const delay = async (ms: number) => {
+  return new Promise<void>((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
+};
+
 export function testPostLikesCrud08() {
   describe('Post Likes Crud CRUD operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
@@ -267,7 +276,10 @@ export function testPostLikesCrud08() {
         .expect(204);
     });
 
+
+
     it('01-07 /posts/:postId GET = 200 return post for unauth user with 2 like and 2 dislike', async () => {
+      //await delay(1000);
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.posts}/${createdPostId}`)
         .expect(200);

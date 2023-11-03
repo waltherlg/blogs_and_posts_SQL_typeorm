@@ -76,7 +76,10 @@ export class SetLikeStatusForPostUseCase
       const isLikeAdded = await this.likesRepository.addPostLikeStatus(
         postLikeDto,
       );
-      if (isLikeAdded) {
+
+      const isLikesCountSet = await this.likesRepository.countAndSetPostLikesAndDislikesForSpecificPost(postId)
+
+      if (isLikeAdded && isLikesCountSet) {
         return PostActionResult.Success;
       } else {
         return PostActionResult.NotSaved;

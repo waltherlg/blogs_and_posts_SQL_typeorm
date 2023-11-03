@@ -15,6 +15,7 @@ const delay = async (ms: number) => {
     }, ms);
   });
 };
+
 export function testAuthOperations() {
   describe('andpoints of auth.controller (e2e)', () => {
     let usersRepository: UsersRepository;
