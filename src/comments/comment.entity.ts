@@ -1,5 +1,5 @@
-import { Posts } from '../posts/posts.types';
-import { Users } from '../users/users.types';
+import { Posts } from '../posts/post.entity';
+import { Users } from '../users/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 

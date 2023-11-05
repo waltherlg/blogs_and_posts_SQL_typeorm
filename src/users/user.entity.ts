@@ -1,6 +1,6 @@
-import { BlogBannedUsers } from 'src/blogs/blogs.types';
-import { Comments } from '../comments/comments.types';
-import { UserDevices } from '../usersDevices/users-devices.types';
+import { BlogBannedUsers } from 'src/blogs/blog.entity';
+import { Comments } from '../comments/comment.entity';
+import { UserDevices } from '../usersDevices/user.device.entity';
 import {
   Column,
   Entity,

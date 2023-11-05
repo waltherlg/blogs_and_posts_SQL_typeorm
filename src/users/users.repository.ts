@@ -1,9 +1,10 @@
 import { DataSource, Repository } from 'typeorm';
 import { Injectable } from '@nestjs/common';
-import { UserDBType, Users } from './users.types';
+import { UserDBType } from './users.types';
 import { PasswordRecoveryModel } from '../auth/auth.types';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
+import { Users } from './user.entity';
 
 @Injectable()
 export class UsersRepository {

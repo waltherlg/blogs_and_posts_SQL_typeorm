@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { PostDBType, Posts } from './posts.types';
+import { PostDBType } from './posts.types';
+
 import { DataSource, Repository } from 'typeorm';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
+import { Posts } from './post.entity';
 
 @Injectable()
 export class PostsRepository {

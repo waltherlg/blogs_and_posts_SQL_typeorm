@@ -1,3 +1,15 @@
+import { Comments } from '../comments/comment.entity';
+import { Posts } from '../posts/post.entity';
+import { Users } from '../users/user.entity';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToOne,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'PostLikes' })
 export class PostLikes {
@@ -45,16 +57,3 @@ export class CommentLikes {
   @Column()
   status: string;
 }
-
-import { Comments } from '../comments/comments.types';
-import { Posts } from '../posts/posts.types';
-import { Users } from '../users/users.types';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm';

@@ -1,18 +1,4 @@
 
-import { Users } from '../users/users.types';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToMany,
-  ManyToOne,
-  OneToMany,
-  OneToOne,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Posts } from 'src/posts/posts.types';
-
 export class BlogDBType {
   constructor(
     public blogId: string,

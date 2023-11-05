@@ -1,6 +1,3 @@
-import { Posts } from '../posts/posts.types';
-import { Users } from '../users/users.types';
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 export class CommentDBType {
   constructor(

@@ -87,12 +87,12 @@ import { SaUpdateBlogByIdFromUriUseCase } from './blogs/application/use-cases/sa
 import { SaDeleteBlogByIdFromUriUseCase } from './blogs/application/use-cases/sa-delete-blog-by-id-use-case';
 import { SaUpdatePostByIdFromBloggerControllerUseCase } from './blogs/application/use-cases/sa-upadate-post-by-id-from-blogs-controller-use-case';
 import { SaDeletePostByIdFromUriUseCase } from './blogs/application/use-cases/sa-delete-post-by-id-use-case';
-import { Users } from './users/users.types';
-import { UserDevices } from './usersDevices/users-devices.types';
-import { BlogBannedUsers, Blogs } from './blogs/blogs.types';
-import { Posts } from './posts/posts.types';
-import { Comments } from './comments/comments.types';
-import { CommentLikes, PostLikes } from './likes/db.likes.types';
+import { Users } from './users/user.entity';
+import { UserDevices } from './usersDevices/user.device.entity';
+import { BlogBannedUsers, Blogs } from './blogs/blog.entity';
+import { Posts } from './posts/post.entity';
+import { Comments } from './comments/comment.entity';
+import { CommentLikes, PostLikes } from './likes/like.entity';
 const mongoUri = process.env.MONGO_URL;
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;

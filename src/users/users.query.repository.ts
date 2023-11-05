@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { NewCreatedUserTypeOutput, UserTypeOutput, Users } from './users.types';
+import { NewCreatedUserTypeOutput, UserTypeOutput } from './users.types';
 import {
   PaginationOutputModel,
   RequestBannedUsersQueryModel,
@@ -8,7 +8,8 @@ import { DataSource, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { sortDirectionFixer } from 'src/helpers/helpers.functions';
-import { BlogBannedUsers } from 'src/blogs/blogs.types';
+import { BlogBannedUsers } from 'src/blogs/blog.entity';
+import { Users } from './user.entity';
 
 @Injectable()
 export class UsersQueryRepository {

@@ -1,8 +1,8 @@
-import { Comments } from 'src/comments/comments.types';
-import { Blogs } from '../blogs/blogs.types';
-import { Users } from '../users/users.types';
+import { Comments } from 'src/comments/comment.entity';
+import { Blogs } from '../blogs/blog.entity';
+import { Users } from '../users/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
-import { PostLikes } from 'src/likes/db.likes.types';
+import { PostLikes } from '../likes/like.entity';
 
 @Entity({ name: 'Posts' })
 export class Posts {

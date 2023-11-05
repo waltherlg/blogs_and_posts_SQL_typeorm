@@ -1,15 +1,3 @@
-import { Comments } from '../comments/comments.types';
-import { Posts } from '../posts/posts.types';
-import { Users } from '../users/users.types';
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToOne,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
 
 export class PostLikeDbType {
   constructor(

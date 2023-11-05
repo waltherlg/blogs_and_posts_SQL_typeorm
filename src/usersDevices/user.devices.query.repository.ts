@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
-import { UserDevices } from './users-devices.types';
+import { UserDevices } from './user.device.entity';
 
 @Injectable()
 export class UserDevicesQueryRepository {
