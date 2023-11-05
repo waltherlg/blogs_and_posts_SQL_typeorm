@@ -27,10 +27,10 @@ export class PostLikes {
   Users: Users;
   @Column('uuid')
   userId: string;
-  @Column()
-  login: string;
-  @Column()
-  isUserBanned: boolean;
+  // @Column()
+  // login: string;
+  // @Column()
+  // isUserBanned: boolean;
   @Column()
   status: string;
 }
