@@ -89,7 +89,7 @@ import { SaUpdatePostByIdFromBloggerControllerUseCase } from './blogs/applicatio
 import { SaDeletePostByIdFromUriUseCase } from './blogs/application/use-cases/sa-delete-post-by-id-use-case';
 import { Users } from './users/user.entity';
 import { UserDevices } from './usersDevices/user.device.entity';
-import { BlogBannedUsers, Blogs } from './blogs/blog.entity';
+import { BlogBannedUsers, Blogs, RelationsBlogBannedUsersTable } from './blogs/blog.entity';
 import { Posts } from './posts/post.entity';
 import { Comments } from './comments/comment.entity';
 import { CommentLikes, PostLikes } from './likes/like.entity';
@@ -144,6 +144,7 @@ const useCases = [
       PostLikes,
       CommentLikes,
       BlogBannedUsers,
+      RelationsBlogBannedUsersTable,
     ]),
     CqrsModule,
     ThrottlerModule.forRoot({

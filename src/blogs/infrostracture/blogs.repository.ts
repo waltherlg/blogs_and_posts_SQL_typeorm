@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import {
   BannedBlogUsersType,
-  BlogBannedUsers,
   BlogDBType,
   BlogTypeOutput,
-  Blogs,
 } from '../blogs.types';
 import { DataSource, Repository } from 'typeorm';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
+import { BlogBannedUsers, Blogs } from '../blog.entity';
 
 @Injectable()
 export class BlogsRepository {

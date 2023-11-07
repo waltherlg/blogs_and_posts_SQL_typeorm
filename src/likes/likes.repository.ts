@@ -11,7 +11,7 @@ import { Posts } from '../posts/post.entity';
 export class LikesRepository {
   constructor(@InjectDataSource() protected dataSource: DataSource,
               @InjectRepository(PostLikes) private readonly postLikesRepository: Repository<PostLikes>,
-              @InjectRepository(Post) private readonly postsRepository: Repository<Posts>) {}
+              @InjectRepository(Posts) private readonly postsRepository: Repository<Posts>) {}
 
   async getPostLikeObject(userId, postId): Promise<PostLikeDbType | null> {
     const query = `
@@ -138,20 +138,20 @@ export class LikesRepository {
     console.log(postLikesCount);
     
 
-    const postDislikesikeCount = await this.postLikesRepository
+    const postDislikesCount = await this.postLikesRepository
     .createQueryBuilder('postLike')
     .where("postLike.postId = :postId", {postId: postId})
     .andWhere("postLike.isUserBanned = false")
     .andWhere("postLike.status = 'Dislike'")
     .getCount();
-    console.log(postDislikesikeCount);
+    console.log(postDislikesCount);
     
 
     const isLikesCountSet = await this.postsRepository.update(
       {postId: postId},
       {
         likesCount: postLikesCount,
-        dislikesCount: postDislikesikeCount
+        dislikesCount: postDislikesCount
       }
     )
     console.log(isLikesCountSet);

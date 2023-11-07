@@ -1,4 +1,4 @@
-import { Comments } from 'src/comments/comment.entity';
+import { Comments } from '../comments/comment.entity';
 import { Blogs } from '../blogs/blog.entity';
 import { Users } from '../users/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';

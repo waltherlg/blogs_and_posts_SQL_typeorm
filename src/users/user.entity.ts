@@ -1,4 +1,4 @@
-import { BlogBannedUsers } from 'src/blogs/blog.entity';
+import { BlogBannedUsers } from '../blogs/blog.entity';
 import { Comments } from '../comments/comment.entity';
 import { UserDevices } from '../usersDevices/user.device.entity';
 import {
@@ -47,7 +47,10 @@ export class Users {
   @OneToMany(() => Comments, (c) => c.Users, { cascade: ['remove'] })
   @JoinColumn({ name: 'userId' })
   Comments: Comments[];
-  @OneToMany(() => BlogBannedUsers, (b) => b.Users, { cascade: ['remove'] })
-  @JoinColumn({ name: 'userId' })
+  @ManyToMany(() => BlogBannedUsers, (b) => b.Users, { cascade: ['remove'] })
+  @JoinColumn({ name: 'RelationsBlogBannedUsersTable' })
   BlogBannedUsers: BlogBannedUsers[];
+  // @ManyToMany(() => BlogBannedUsers, (b) => b.Users, { cascade: ['remove'] })
+  // @JoinColumn({ name: 'userId' })
+  // BlogBannedUsers: BlogBannedUsers[];
 }

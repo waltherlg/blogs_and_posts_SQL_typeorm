@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { BlogTypeOutput, Blogs, blogSaTypeOutput } from '../blogs.types';
+import { BlogTypeOutput, blogSaTypeOutput } from '../blogs.types';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { sortDirectionFixer } from 'src/helpers/helpers.functions';
+import { Blogs } from '../blog.entity';
 
 @Injectable()
 export class BlogsQueryRepository {
