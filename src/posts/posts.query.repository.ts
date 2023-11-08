@@ -119,19 +119,22 @@ export class PostsQueryRepository {
 
     const posts = await this.dataSource.query(query);
 
-    const postLikesObjectQuery = `
-    SELECT * FROM public."PostLikes"
-    ORDER BY "addedAt" DESC;
-    `;
-    const postLikesObjectArray = await this.dataSource.query(
-      postLikesObjectQuery,
-    );
+    const postLikeQueryBuilder = this.postLikesRepository.createQueryBuilder('postLike')
+    const postLikesObjectArray = await postLikeQueryBuilder
+    .leftJoin('postLike.Users', 'user')
+    .select('postLike.addedAt', 'addedAt')
+    .addSelect('postLike.postId', 'postId')
+    .addSelect('postLike.userId', 'userId')
+    .addSelect('user.login', 'login')
+    .addSelect('postLike.status', 'status')
+    .addSelect('user.isUserBanned', 'isUserBanned')
+    .orderBy('postLike.addedAt', 'DESC')
+    .getRawMany()
 
     const onlyLikeObjects = postLikesObjectArray.filter(
       (likeObject) =>
         likeObject.status === 'Like' && likeObject.isUserBanned === false,
     );
-    console.log('onlyLikeObjects ', onlyLikeObjects);
 
     const postsForOutput = posts.map((post) => {
       const thisPostLikes = onlyLikeObjects.filter(
