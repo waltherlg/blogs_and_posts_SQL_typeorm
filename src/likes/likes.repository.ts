@@ -103,7 +103,9 @@ export class LikesRepository {
     const postLikesCount = await this.postLikesRepository
 
     .createQueryBuilder('postLike')
+    .leftJoin('postLike.Users', 'user')
     .where("postLike.postId = :postId", {postId: postId})
+    .andWhere("user.isUserBanned = false")
     //.andWhere("postLike.isUserBanned = false") //TODO: построить новую логику (isUserBanned больше нет в сущности)
     .andWhere("postLike.status = 'Like'")
     .getCount();
@@ -112,7 +114,9 @@ export class LikesRepository {
 
     const postDislikesCount = await this.postLikesRepository
     .createQueryBuilder('postLike')
+    .leftJoin('postLike.Users', 'user')
     .where("postLike.postId = :postId", {postId: postId})
+    .andWhere("user.isUserBanned = false")
     //.andWhere("postLike.isUserBanned = false")
     .andWhere("postLike.status = 'Dislike'")
     .getCount();

@@ -220,10 +220,7 @@ export class UsersQueryRepository {
       // .skip(skipPage)
       .limit(pageSize)
       .offset(skipPage)
-      .getRawMany();
-
-      console.log(bannedUsers);
-      
+      .getRawMany();      
 
     const bannedUsersForOutput = bannedUsers.map((bannedUser) => {
       return {

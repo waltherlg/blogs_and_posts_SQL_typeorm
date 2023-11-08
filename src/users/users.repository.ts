@@ -209,7 +209,6 @@ export class UsersRepository {
       },
       where: { userId },
     });
-    console.log(user.login)
     if(user){
       return user.login
     } else {
