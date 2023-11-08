@@ -68,8 +68,6 @@ export class SetLikeStatusForPostUseCase
         postId,
         new Date().toISOString(),
         userId,
-        likerLogin,
-        false,
         status,
       );
       

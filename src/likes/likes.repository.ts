@@ -22,38 +22,9 @@ export class LikesRepository {
     return result[0];
   }
 
-  async addPostLikeStatus(postLikeDto: PostLikeDbType) {
-    const query = `
-    INSERT INTO public."PostLikes"(
-        "postId",
-        "addedAt",
-        "userId",
-        "login",
-        "isUserBanned",
-        "status")
-        VALUES (
-            $1,  
-            $2, 
-            $3, 
-            $4, 
-            $5, 
-            $6)
-        RETURNING "postId";
-    `;
-    const result = await this.dataSource.query(query, [
-      postLikeDto.postId,
-      postLikeDto.addedAt,
-      postLikeDto.userId,
-      postLikeDto.login,
-      postLikeDto.isUserBanned,
-      postLikeDto.status,
-    ]);
-    const postId = result[0].postId;
-    if (postId) {
-      return true;
-    } else {
-      return false;
-    }
+  async addPostLikeStatus(postLikeDto: PostLikeDbType): Promise<boolean> {
+    const result = await this.postLikesRepository.save(postLikeDto)
+    return !!result.postId
   }
 
   async updatePostLike(postId, userId, status): Promise<boolean> {
