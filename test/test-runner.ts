@@ -26,11 +26,11 @@ describe('End-to-End Tests', () => {
   //..testAuthOperations();
   //testAuthValidations()
   //..testBloggerCrudOnlyBlogs();
-  testBanUserForBlogByBlogger();
+  //..testBanUserForBlogByBlogger();
   //..saBlogsControllerCrudAndBan();
   //..postCrudOperationsByBlogger07()
   //postCrudOperationsBySa07()
-  //..testPostLikesCrud08()
+  testPostLikesCrud08()
   //commentCrudOperations() // this comment CRUD if blog create blogger
   //..saCommentCrudOperations();
 

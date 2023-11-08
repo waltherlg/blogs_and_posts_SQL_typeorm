@@ -15,7 +15,7 @@ import {
 export class PostLikes {
   @PrimaryGeneratedColumn('uuid')
   postLikeId: string;
-  @ManyToOne(() => Posts) //, (p) => p.PostLikes)
+  @ManyToOne(() => Posts, (p) => p.PostLikes)
   @JoinColumn({ name: 'postId' })
   Posts: Posts;
   @Column('uuid')

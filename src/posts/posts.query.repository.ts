@@ -2,34 +2,66 @@ import { Injectable } from '@nestjs/common';
 import { PaginationOutputModel } from '../models/types';
 import { PostTypeOutput } from './posts.types';
 import { validate as isValidUUID } from 'uuid';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { PostLikeDbType } from '../likes/db.likes.types';
 import { sortDirectionFixer } from 'src/helpers/helpers.functions';
+import { Posts } from './post.entity';
+import { PostLikes } from '../likes/like.entity';
 
 @Injectable()
 export class PostsQueryRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource) {}
+  constructor(@InjectDataSource() protected dataSource: DataSource,
+              @InjectRepository(Posts) private readonly postsRepository: Repository<Posts>,
+              @InjectRepository(PostLikes) private readonly postLikesRepository: Repository<PostLikes>) {}
 
   async getPostById(postId, userId?): Promise<PostTypeOutput | null> {
     if (!isValidUUID(postId)) {
       return null;
     }
-    const query = `
-    SELECT "Posts".*, "Blogs".name AS "blogName", "Blogs"."isBlogBanned"
-    FROM public."Posts"
-    INNER JOIN "Blogs" ON "Posts"."blogId" = "Blogs"."blogId"
-    WHERE "postId" = $1 AND "Blogs"."isBlogBanned" = false;
-  `;
+    const postQueryBuilder = this.postsRepository
+    .createQueryBuilder('post');
+    postQueryBuilder
+    .leftJoin('post.Blogs', 'blog')
+    .select('post.postId', 'postId')
+    .addSelect('post.title', 'title' )
+    .addSelect('post.shortDescription', 'shortDescription' )
+    .addSelect('post.content', 'content' )
+    .addSelect('post.blogId', 'blogId' )
+    .addSelect('blog.name', 'blogName' )
+    .addSelect('post.createdAt', 'createdAt' )
+    .addSelect('post.likesCount', 'likesCount' )
+    .addSelect('post.dislikesCount', 'dislikesCount' )
+    .where('post.postId = :postId', {postId: postId})
+    .andWhere('blog.isBlogBanned = false')
+    const post = await postQueryBuilder.getRawOne()
 
-    const newestLikesQuery = `
-    SELECT "addedAt", "login", "userId" 
-    FROM public."PostLikes"
-    WHERE "postId" = $1 AND "status" = 'Like' AND "isUserBanned" = false
-    ORDER BY "addedAt" DESC
-    LIMIT 3;
-    `;
-    const newestLikes = await this.dataSource.query(newestLikesQuery, [postId]);
+    if (!post) {
+      return null;
+    }
+
+  const newestLikesQueryBuilder = this.postLikesRepository.createQueryBuilder('postLike')
+  newestLikesQueryBuilder
+  .leftJoin('postLike.Users', 'user')
+  .select('postLike.addedAt', 'addedAt')
+  .addSelect('user.login', 'login')
+  .addSelect('postLike.userId', 'userId')
+  .where('postLike.postId = :postId', {postId: postId})
+  .andWhere('postLike.status = :status', { status: 'Like' })
+  .andWhere('user.isUserBanned = false')
+  .orderBy('postLike.addedAt', 'DESC')
+  .limit(3)
+
+  const newestLikes = await newestLikesQueryBuilder.getRawMany()
+
+    // const newestLikesQuery = `
+    // SELECT "addedAt", "login", "userId" 
+    // FROM public."PostLikes"
+    // WHERE "postId" = $1 AND "status" = 'Like' AND "isUserBanned" = false
+    // ORDER BY "addedAt" DESC
+    // LIMIT 3;
+    // `;
+    // const newestLikes = await this.dataSource.query(newestLikesQuery, [postId]);
 
     let myStatus = 'None';
     if (userId) {
@@ -39,12 +71,6 @@ export class PostsQueryRepository {
       }
     }
 
-    const result = await this.dataSource.query(query, [postId]);
-
-    const post = result[0];
-    if (!post) {
-      return null;
-    }
     return {
       id: post.postId,
       title: post.title,
