@@ -3,15 +3,17 @@ import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { CommentLikeDbType, PostLikeDbType } from './db.likes.types';
-import { PostLikes } from './like.entity';
+import { CommentLikes, PostLikes } from './like.entity';
 import { Posts } from '../posts/post.entity';
+import { Comments } from '../comments/comment.entity';
 
 
 @Injectable()
 export class LikesRepository {
   constructor(@InjectDataSource() protected dataSource: DataSource,
               @InjectRepository(PostLikes) private readonly postLikesRepository: Repository<PostLikes>,
-              @InjectRepository(Posts) private readonly postsRepository: Repository<Posts>) {}
+              @InjectRepository(Posts) private readonly postsRepository: Repository<Posts>,
+              @InjectRepository(CommentLikes) private readonly commentLikesRepository: Repository<CommentLikes>) {}
 
   async getPostLikeObject(userId, postId): Promise<PostLikeDbType | null> {
     const query = `
@@ -28,14 +30,14 @@ export class LikesRepository {
   }
 
   async updatePostLike(postId, userId, status): Promise<boolean> {
-    const query = `
-    UPDATE public."PostLikes"
-    SET status = $3
-    WHERE "postId" = $1 AND "userId" = $2
-    `;
-    const result = await this.dataSource.query(query, [postId, userId, status]);
-    const count = result[1];
-    return count === 1;
+    if(!isValidUUID(postId) || !isValidUUID(userId)) {
+      return false
+    }
+    const result = await this.postLikesRepository.update(
+      { postId: postId, userId: userId },
+      { status: status }
+    )
+    return result.affected > 0
   }
 
   async addCommentLikeStatus(commentLikeDto: CommentLikeDbType) {
@@ -73,18 +75,14 @@ export class LikesRepository {
   }
 
   async updateCommentLike(commentId, userId, status): Promise<boolean> {
-    const query = `
-    UPDATE public."CommentLikes"
-    SET status = $3
-    WHERE "commentId" = $1 AND "userId" = $2
-    `;
-    const result = await this.dataSource.query(query, [
-      commentId,
-      userId,
-      status,
-    ]);
-    const count = result[1];
-    return count === 1;
+    if(!isValidUUID(commentId) || !isValidUUID(userId)) {
+      return false
+    }
+    const result = await this.commentLikesRepository.update(
+      { userId: userId, commentId: commentId},
+      { status: status }
+    )
+    return result.affected > 0
   }
 
   async getCommentLikeObject(
@@ -106,22 +104,16 @@ export class LikesRepository {
     .leftJoin('postLike.Users', 'user')
     .where("postLike.postId = :postId", {postId: postId})
     .andWhere("user.isUserBanned = false")
-    //.andWhere("postLike.isUserBanned = false") //TODO: построить новую логику (isUserBanned больше нет в сущности)
     .andWhere("postLike.status = 'Like'")
     .getCount();
-    console.log(postLikesCount);
     
-
     const postDislikesCount = await this.postLikesRepository
     .createQueryBuilder('postLike')
     .leftJoin('postLike.Users', 'user')
     .where("postLike.postId = :postId", {postId: postId})
     .andWhere("user.isUserBanned = false")
-    //.andWhere("postLike.isUserBanned = false")
     .andWhere("postLike.status = 'Dislike'")
     .getCount();
-    console.log(postDislikesCount);
-    
 
     const isLikesCountSet = await this.postsRepository.update(
       {postId: postId},
