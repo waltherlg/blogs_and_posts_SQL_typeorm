@@ -57,7 +57,7 @@ export class BlogBannedUsers {
   @JoinColumn({ name: 'userId' })
   Users: Users;
 
-  @Column({ type: 'uuid', nullable: true })
+  @Column({ type: 'uuid' })
   userId: string;
   @Column()
   banDate: string;

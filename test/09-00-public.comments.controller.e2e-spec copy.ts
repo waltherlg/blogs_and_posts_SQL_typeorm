@@ -18,6 +18,7 @@ export function commentCrudOperations() {
     let blogId2;
     let userId1;
     let userId2;
+    let userId3;
     let postId1;
     let commentId1;
     let commentId2;
@@ -60,7 +61,7 @@ export function commentCrudOperations() {
       const createdResponseBody = createResponse.body;
       userId1 = createdResponseBody.id;
 
-      expect(createdResponseBody).toEqual(testComments.outputUser1);
+      expect(createdResponseBody).toEqual(testComments.outputUser1Sa);
     });
 
     it('00-00 login = 204 login user1', async () => {
@@ -86,7 +87,7 @@ export function commentCrudOperations() {
       const createdResponseBody = createResponse.body;
       userId2 = createdResponseBody.id;
 
-      expect(createdResponseBody).toEqual(testComments.outputUser2);
+      expect(createdResponseBody).toEqual(testComments.outputUser2Sa);
     });
 
     it('00-00 login = 204 login user2', async () => {
@@ -110,9 +111,9 @@ export function commentCrudOperations() {
         .expect(201);
 
       const createdResponseBody = createResponse.body;
-      userId2 = createdResponseBody.id;
+      userId3 = createdResponseBody.id;
 
-      expect(createdResponseBody).toEqual(testComments.outputUser3);
+      expect(createdResponseBody).toEqual(testComments.outputUser3Sa);
     });
 
     it('00-00 login = 204 login user3', async () => {

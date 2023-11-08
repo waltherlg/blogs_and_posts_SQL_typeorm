@@ -39,13 +39,14 @@ export class PostLikes {
 export class CommentLikes {
   @PrimaryGeneratedColumn('uuid')
   commentLikeId: string;
-  @OneToOne(() => Comments)
+  @ManyToOne(() => Comments, (cl) => cl.CommentLikes)
   @JoinColumn({ name: 'commentId' })
-  @Column()
+  Comments: Comments
+  @Column('uuid')
   commentId: string;
   @Column()
   addedAt: string;
-  @OneToOne(() => Users)
+  @ManyToOne(() => Users)
   @JoinColumn({ name: 'userId' })
   Users: Users;
   @Column('uuid')

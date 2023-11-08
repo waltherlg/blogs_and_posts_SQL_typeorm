@@ -1,3 +1,4 @@
+import { CommentLikes } from '../likes/like.entity';
 import { Posts } from '../posts/post.entity';
 import { Users } from '../users/user.entity';
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
@@ -5,7 +6,7 @@ import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
 @Entity({ name: 'Comments' })
 export class Comments {
-  @PrimaryColumn()
+  @PrimaryColumn('uuid')
   commentId: string;
   @ManyToOne(() => Posts, (p) => p.Comments)
   @JoinColumn({ name: 'postId' })
@@ -25,4 +26,8 @@ export class Comments {
   likesCount: number;
   @Column()
   dislikesCount: number;
+  @ManyToOne(() => CommentLikes, (cl) => cl.Comments)
+  @JoinColumn({name: 'commentId'})
+  CommentLikes: CommentLikes
+
 }

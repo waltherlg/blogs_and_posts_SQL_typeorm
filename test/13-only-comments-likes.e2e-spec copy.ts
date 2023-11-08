@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
+import { testComments } from './helpers/inputAndOutputObjects/commentObjects';
 export function onlyCommentLikesCrud13() {
   describe('Post Likes Crud CRUD operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
@@ -30,9 +31,14 @@ export function onlyCommentLikesCrud13() {
       await app.close();
     });
 
+
+    let userId2
+    let userId3
+
     let BlogId1User1: string;
     let createdPostId: string;
-    let createdCommentId: string;
+    let createdCommentId1: string;
+    let createdCommentId2: string;
 
     it('00-00 testing/all-data DELETE = 204 removeAllData', async () => {
       await request(app.getHttpServer())
@@ -66,11 +72,63 @@ export function onlyCommentLikesCrud13() {
       });
     });
 
-    it('01-02 blogger/blogs POST = 201 SA create new blog', async () => {
+    it('00-00 sa/users post = 201 create user2 with return', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(endpoints.saUsers)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testComments.inputUser2)
+        .expect(201);
+
+      const createdResponseBody = createResponse.body;
+      userId2 = createdResponseBody.id;
+
+      expect(createdResponseBody).toEqual(testComments.outputUser2Sa);
+    });
+
+    it('00-00 login = 204 login user2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.auth}/login`)
+        .send(testComments.loginUser2)
+        .expect(200);
+      const createdResponse = createResponse.body;
+      accessTokenUser2 = createdResponse.accessToken;
+      expect(createdResponse).toEqual({
+        accessToken: expect.any(String),
+      });
+      expect(createResponse.headers['set-cookie']).toBeDefined();
+    });
+
+    it('00-00 sa/users post = 201 create user3 with return', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(endpoints.saUsers)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testComments.inputUser3)
+        .expect(201);
+
+      const createdResponseBody = createResponse.body;
+      userId3 = createdResponseBody.id;
+
+      expect(createdResponseBody).toEqual(testComments.outputUser3Sa);
+    });
+
+    it('00-00 login = 204 login user3', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.auth}/login`)
+        .send(testComments.loginUser3)
+        .expect(200);
+      const createdResponse = createResponse.body;
+      accessTokenUser3 = createdResponse.accessToken;
+      expect(createdResponse).toEqual({
+        accessToken: expect.any(String),
+      });
+      expect(createResponse.headers['set-cookie']).toBeDefined();
+    });
+
+    it('01-02 blogger/blogs POST = 201 user1 create new blog', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(endpoints.bloggerBlogs)
-        //.set('Authorization', `Bearer ${accessTokenUser1}`)
-        .set('Authorization', `Basic ${basicAuthRight}`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        //.set('Authorization', `Basic ${basicAuthRight}`)
         .send({
           name: 'BlogForPosts',
           description: 'description BlogForPosts',
@@ -91,12 +149,12 @@ export function onlyCommentLikesCrud13() {
       });
     });
 
-    it('01-02 blogger/blogId/posts POST = 201 sa create new post', async () => {
+    it('01-02 blogger/blogId/posts POST = 201 user1 create new post', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(`${endpoints.bloggerBlogs}/${BlogId1User1}/posts`)
         //.post(`${endpoints.posts}/${createdPostId}/comments`)
-        .set('Authorization', `Basic ${basicAuthRight}`)
-        //.set('Authorization', `Bearer ${accessTokenUser1}`)
+        //.set('Authorization', `Basic ${basicAuthRight}`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
         .send({
           title: 'newCreatedPost',
           shortDescription: 'newPostsShortDescription',
@@ -134,7 +192,7 @@ export function onlyCommentLikesCrud13() {
         .expect(201);
 
       const createdResponse = testsResponse.body;
-      createdCommentId = createdResponse.id;
+      createdCommentId1 = createdResponse.id;
 
       expect(createdResponse).toEqual({
         id: expect.any(String),
@@ -154,10 +212,30 @@ export function onlyCommentLikesCrud13() {
 
     it('01-06 /comments/commentId/like-status UPDATE = 204 like from user1', async () => {
       const createResponse = await request(app.getHttpServer())
-        .put(`${endpoints.comments}/${createdCommentId}/like-status`)
+        .put(`${endpoints.comments}/${createdCommentId1}/like-status`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .send({
           likeStatus: 'Like',
+        })
+        .expect(204);
+    });
+
+    it('01-06 /comments/commentId/like-status UPDATE = 204 like from user2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.comments}/${createdCommentId1}/like-status`)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .send({
+          likeStatus: 'Like',
+        })
+        .expect(204);
+    });
+
+    it('01-06 /comments/commentId/like-status UPDATE = 204 dislike from user3', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.comments}/${createdCommentId1}/like-status`)
+        .set('Authorization', `Bearer ${accessTokenUser3}`)
+        .send({
+          likeStatus: 'Dislike',
         })
         .expect(204);
     });
