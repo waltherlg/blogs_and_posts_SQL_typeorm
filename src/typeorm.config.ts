@@ -16,7 +16,7 @@ const typeOrmConfig: TypeOrmModuleOptions = {
   password: 'nest',
   database: 'blogs_and_posts_typeorm',
   autoLoadEntities: true,
-  synchronize: true,
+  synchronize: false,
 };
 
 // const typeOrmConfig: TypeOrmModuleOptions = {
