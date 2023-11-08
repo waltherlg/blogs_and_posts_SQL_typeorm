@@ -9,7 +9,7 @@ import { DataSource } from "typeorm";
 
 import { Users } from "../users/user.entity";
 import { UserDevices } from "../usersDevices/user.device.entity";
-import { Blogs, BlogBannedUsers, RelationsBlogBannedUsersTable } from "../blogs/blog.entity";
+import { Blogs, BlogBannedUsers } from "../blogs/blog.entity";
 import { Posts } from "../posts/post.entity";
 import { Comments } from "../comments/comment.entity";
 import { CommentLikes, PostLikes } from "../likes/like.entity";
@@ -23,7 +23,7 @@ export default new DataSource({
         database: 'blogs_and_posts_typeorm',
         synchronize: false,
         //entities: ["src/**/*.entity{.ts,.js}"],
-        entities: [Users, UserDevices, Blogs, BlogBannedUsers, Posts, Comments, CommentLikes, PostLikes, RelationsBlogBannedUsersTable],
+        entities: [Users, UserDevices, Blogs, BlogBannedUsers, Posts, Comments, CommentLikes, PostLikes ],
         //migrations: [ "src/db/migrations/*.ts" ],
         migrations: [ __dirname + '/migrations/**/*{.ts,.js}'],
         migrationsTableName: "custom_migration_table",

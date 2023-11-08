@@ -47,10 +47,7 @@ export class Users {
   @OneToMany(() => Comments, (c) => c.Users, { cascade: ['remove'] })
   @JoinColumn({ name: 'userId' })
   Comments: Comments[];
-  @ManyToMany(() => BlogBannedUsers, (b) => b.Users, { cascade: ['remove'] })
-  @JoinColumn({ name: 'RelationsBlogBannedUsersTable' })
+  @OneToMany(() => BlogBannedUsers, (b) => b.Users, { cascade: ['remove'] }) // рабочее
+  @JoinColumn({ name: 'userId' })
   BlogBannedUsers: BlogBannedUsers[];
-  // @ManyToMany(() => BlogBannedUsers, (b) => b.Users, { cascade: ['remove'] })
-  // @JoinColumn({ name: 'userId' })
-  // BlogBannedUsers: BlogBannedUsers[];
 }

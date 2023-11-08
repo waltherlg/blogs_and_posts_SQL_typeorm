@@ -93,6 +93,12 @@ export const testUser = {
     email: 'ruslan@gmail-3.com',
     createdAt: expect.any(String),
   },
+  outputUser4Sa: {
+    id: expect.any(String),
+    login: 'user4',
+    email: 'ruslan@gmail-4.com',
+    createdAt: expect.any(String),
+  },
   outputUser1Banned: {
     id: expect.any(String),
     login: 'user1',
@@ -295,6 +301,15 @@ export const testBloggerBanBody = {
   bannedUser3ForBlogOutput: {
     id: expect.any(String),
     login: testUser.inputUser3.login,
+    banInfo: {
+      isBanned: true,
+      banDate: expect.any(String),
+      banReason: expect.any(String),
+    },
+  },
+  bannedUser4ForBlogOutput: {
+    id: expect.any(String),
+    login: testUser.inputUser4.login,
     banInfo: {
       isBanned: true,
       banDate: expect.any(String),

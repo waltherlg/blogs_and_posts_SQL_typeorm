@@ -24,8 +24,6 @@ export class Blogs {
   isBlogBanned: boolean;
   @Column({ nullable: true })
   blogBanDate: string | null;
-  // @OneToOne(() => Users )
-  // Users: Users
   @Column({ type: 'uuid', nullable: true })
   userId: string | null;
   @Column()
@@ -36,7 +34,7 @@ export class Blogs {
   createdAt: string;
   @Column()
   isMembership: boolean;
-  @ManyToMany(() => BlogBannedUsers, (b) => b.Blogs)
+  @OneToMany(() => BlogBannedUsers, (b) => b.Blogs)
   @JoinColumn({name: 'blogId'})
   BlogBannedUsers: BlogBannedUsers[];
   @OneToMany(() => Posts, (p) => p.Blogs, { cascade: ['remove'] })
@@ -48,33 +46,21 @@ export class Blogs {
 export class BlogBannedUsers {
   @PrimaryGeneratedColumn('uuid')
   banId: string;
-  @ManyToMany(() => Blogs, (b) => b.BlogBannedUsers)
+
+  @ManyToOne(() => Blogs, (b) => b.BlogBannedUsers)
   @JoinColumn({ name: 'blogId' })
-  Blogs: Blogs[];
+  Blogs: Blogs;
   @Column('uuid')
   blogId: string;
-  @ManyToMany(() => Users, (u) => u.BlogBannedUsers)
-  @JoinColumn({ name: 'RelationsBlogBannedUsersTable' })
+
+  @ManyToOne(() => Users, (u) => u.BlogBannedUsers) // рабочая
+  @JoinColumn({ name: 'userId' })
   Users: Users;
-  // @ManyToMany(() => Users, (u) => u.BlogBannedUsers)
-  // @JoinColumn({ name: 'userId' })
-  // Users: Users;
+
   @Column({ type: 'uuid', nullable: true })
   userId: string;
   @Column()
   banDate: string;
   @Column()
   banReason: string;
-}
-
-@Entity({ name: 'RelationsBlogBannedUsersTable' })
-export class RelationsBlogBannedUsersTable {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
-  @ManyToOne(() => Users, (u) => u.BlogBannedUsers)
-  User: Users;
-
-  @ManyToOne(() => BlogBannedUsers, (b) => b.Users)
-  BlogBannedUsers: BlogBannedUsers;
 }
