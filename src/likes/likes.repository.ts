@@ -13,7 +13,8 @@ export class LikesRepository {
   constructor(@InjectDataSource() protected dataSource: DataSource,
               @InjectRepository(PostLikes) private readonly postLikesRepository: Repository<PostLikes>,
               @InjectRepository(Posts) private readonly postsRepository: Repository<Posts>,
-              @InjectRepository(CommentLikes) private readonly commentLikesRepository: Repository<CommentLikes>) {}
+              @InjectRepository(CommentLikes) private readonly commentLikesRepository: Repository<CommentLikes>,
+              @InjectRepository(Comments) private readonly commentsRepository: Repository<Comments>) {}
 
   async getPostLikeObject(userId, postId): Promise<PostLikeDbType | null> {
     const query = `
@@ -68,9 +69,8 @@ export class LikesRepository {
     return result[0];
   }
 
-  async countAndSetPostLikesAndDislikesForSpecificPost(postId){
+  async countAndSetPostLikesAndDislikesForSpecificPost(postId): Promise<boolean>{
     const postLikesCount = await this.postLikesRepository
-
     .createQueryBuilder('postLike')
     .leftJoin('postLike.Users', 'user')
     .where("postLike.postId = :postId", {postId: postId})
@@ -102,6 +102,33 @@ export class LikesRepository {
     const promises = postIdArray.map(postId => this.countAndSetPostLikesAndDislikesForSpecificPost(postId));
     const results = await Promise.all(promises);
     return results;
+  }
+
+  async countAndSetCommentPostLikesAndDislikesForSpecificPost(commentId): Promise<boolean>{
+    const commentLikesCount = await this.commentLikesRepository
+    .createQueryBuilder('commentLike')
+    .leftJoin('commentLike.Users', 'user')
+    .where("commentLike.commentId = :commentId", {commentId: commentId})
+    .andWhere("user.isUserBanned = false")
+    .andWhere("commentLike.status = 'Like'")
+    .getCount();
+
+    const commentDislikesCount = await this.commentLikesRepository
+    .createQueryBuilder('commentLike')
+    .leftJoin('commentLike.Users', 'user')
+    .where("commentLike.commentId = :commentId", {commentId: commentId})
+    .andWhere("user.isUserBanned = false")
+    .andWhere("commentLike.status = 'Dislike'")
+    .getCount();
+
+    const isLikesCountSet = await this.commentsRepository.update(
+      {commentId: commentId},
+      {
+        likesCount: commentLikesCount,
+        dislikesCount: commentDislikesCount
+      }
+    )    
+    return isLikesCountSet.affected > 0;
   }
 
 }

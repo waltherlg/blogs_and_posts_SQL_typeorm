@@ -182,7 +182,7 @@ export function onlyCommentLikesCrud13() {
       });
     });
 
-    it('01-02 posts/postId/comments POST = 201 user1 create new comment', async () => {
+    it('01-02 posts/postId/comments POST = 201 user1 create comment1 for post1', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(`${endpoints.posts}/${createdPostId}/comments`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
@@ -312,7 +312,7 @@ export function onlyCommentLikesCrud13() {
         },
         createdAt: expect.any(String),
         likesInfo: {
-          likesCount: 0,
+          likesCount: 1,
           dislikesCount: 1,
           myStatus: 'None',
         }},
