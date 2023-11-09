@@ -5,7 +5,7 @@ import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testComments } from './helpers/inputAndOutputObjects/commentObjects';
 export function onlyCommentLikesCrud13() {
-  describe('Post Likes Crud CRUD operation "if all is ok" (e2e). ', () => {
+  describe('COmment Likes Crud CRUD operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
@@ -210,7 +210,35 @@ export function onlyCommentLikesCrud13() {
       });
     });
 
-    it('01-06 /comments/commentId/like-status UPDATE = 204 like from user1', async () => {
+    it('01-02 posts/postId/comments POST = 201 user2 create comment2 for post1', async () => {
+      const testsResponse = await request(app.getHttpServer())
+        .post(`${endpoints.posts}/${createdPostId}/comments`)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .send({
+          content: 'some comment2 for post1 from user2',
+        })
+        .expect(201);
+
+      const createdResponse = testsResponse.body;
+      createdCommentId2 = createdResponse.id;
+
+      expect(createdResponse).toEqual({
+        id: expect.any(String),
+        content: 'some comment2 for post1 from user2',
+        commentatorInfo: {
+          userId: expect.any(String),
+          userLogin: 'user2',
+        },
+        createdAt: expect.any(String),
+        likesInfo: {
+          likesCount: 0,
+          dislikesCount: 0,
+          myStatus: 'None',
+        },
+      });
+    });
+
+    it('01-06 /comments/commentId/like-status UPDATE = 204 like for comment1 from user1', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.comments}/${createdCommentId1}/like-status`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
@@ -220,7 +248,17 @@ export function onlyCommentLikesCrud13() {
         .expect(204);
     });
 
-    it('01-06 /comments/commentId/like-status UPDATE = 204 like from user2', async () => {
+    it('01-06 /comments/commentId/like-status UPDATE = 204 like from user1 for comment2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.comments}/${createdCommentId2}/like-status`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .send({
+          likeStatus: 'Like',
+        })
+        .expect(204);
+    });
+
+    it('01-06 /comments/commentId/like-status UPDATE = 204 like for comment1 from user2', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.comments}/${createdCommentId1}/like-status`)
         .set('Authorization', `Bearer ${accessTokenUser2}`)
@@ -230,7 +268,7 @@ export function onlyCommentLikesCrud13() {
         .expect(204);
     });
 
-    it('01-06 /comments/commentId/like-status UPDATE = 204 dislike from user3', async () => {
+    it('01-06 /comments/commentId/like-status UPDATE = 204 dislike for comment1 from user3', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.comments}/${createdCommentId1}/like-status`)
         .set('Authorization', `Bearer ${accessTokenUser3}`)
@@ -239,5 +277,67 @@ export function onlyCommentLikesCrud13() {
         })
         .expect(204);
     });
+
+    it('01-06 /comments/commentId/like-status UPDATE = 204 dislike for comment2 from user3', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.comments}/${createdCommentId2}/like-status`)
+        .set('Authorization', `Bearer ${accessTokenUser3}`)
+        .send({
+          likeStatus: 'Dislike',
+        })
+        .expect(204);
+    });
+
+    it('01-06 posts/:postId/comments GET = 200 get comments for post1', async () => {
+      const testsResponse = await request(app.getHttpServer())
+        .get(`${endpoints.posts}/${createdPostId}/comments`)
+        //.set('Authorization', `Bearer ${accessTokenUser3}`)
+        .expect(200);
+
+      const createdResponse = testsResponse.body;
+      createdCommentId2 = createdResponse.id;
+
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 2,
+        items: [
+       {
+        id: expect.any(String),
+        content: 'some comment2 for post1 from user2',
+        commentatorInfo: {
+          userId: expect.any(String),
+          userLogin: 'user2',
+        },
+        createdAt: expect.any(String),
+        likesInfo: {
+          likesCount: 0,
+          dislikesCount: 1,
+          myStatus: 'None',
+        }},
+        {
+          id: expect.any(String),
+          content: 'some comment for post1',
+          commentatorInfo: {
+            userId: expect.any(String),
+            userLogin: 'user1',
+          },
+          createdAt: expect.any(String),
+          likesInfo: {
+            likesCount: 2,
+            dislikesCount: 1,
+            myStatus: 'None',
+          },
+        },
+        ]
+
+
+
+      });
+    });
+
+
+
   });
 }

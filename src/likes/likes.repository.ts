@@ -41,37 +41,8 @@ export class LikesRepository {
   }
 
   async addCommentLikeStatus(commentLikeDto: CommentLikeDbType) {
-    const query = `
-    INSERT INTO public."CommentLikes"(
-        "commentId",
-        "addedAt",
-        "userId",
-        "login",
-        "isUserBanned",
-        "status")
-        VALUES (
-            $1,  
-            $2, 
-            $3, 
-            $4, 
-            $5, 
-            $6)
-        RETURNING "commentId";
-    `;
-    const result = await this.dataSource.query(query, [
-      commentLikeDto.commentId,
-      commentLikeDto.addedAt,
-      commentLikeDto.userId,
-      commentLikeDto.login,
-      commentLikeDto.isUserBanned,
-      commentLikeDto.status,
-    ]);
-    const commentId = result[0].commentId;
-    if (commentId) {
-      return true;
-    } else {
-      return false;
-    }
+    const result = await this.commentLikesRepository.save(commentLikeDto)
+    return !!result.commentId
   }
 
   async updateCommentLike(commentId, userId, status): Promise<boolean> {
