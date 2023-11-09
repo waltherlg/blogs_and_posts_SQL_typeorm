@@ -248,16 +248,6 @@ export function onlyCommentLikesCrud13() {
         .expect(204);
     });
 
-    it('01-06 /comments/commentId/like-status UPDATE = 204 like from user1 for comment2', async () => {
-      const createResponse = await request(app.getHttpServer())
-        .put(`${endpoints.comments}/${createdCommentId2}/like-status`)
-        .set('Authorization', `Bearer ${accessTokenUser1}`)
-        .send({
-          likeStatus: 'Like',
-        })
-        .expect(204);
-    });
-
     it('01-06 /comments/commentId/like-status UPDATE = 204 like for comment1 from user2', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.comments}/${createdCommentId1}/like-status`)
@@ -274,6 +264,16 @@ export function onlyCommentLikesCrud13() {
         .set('Authorization', `Bearer ${accessTokenUser3}`)
         .send({
           likeStatus: 'Dislike',
+        })
+        .expect(204);
+    });
+    
+    it('01-06 /comments/commentId/like-status UPDATE = 204 like for comment2 from user1 ', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.comments}/${createdCommentId2}/like-status`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .send({
+          likeStatus: 'Like',
         })
         .expect(204);
     });
@@ -335,6 +335,16 @@ export function onlyCommentLikesCrud13() {
 
 
       });
+    });
+
+    it('01-06 /comments/commentId/like-status UPDATE = 204 dislike for comment1 from user1', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.comments}/${createdCommentId1}/like-status`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .send({
+          likeStatus: 'Like',
+        })
+        .expect(204);
     });
 
 

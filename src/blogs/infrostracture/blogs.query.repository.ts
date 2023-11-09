@@ -116,7 +116,7 @@ export class BlogsQueryRepository {
       });
     }
 
-    const blogsCount = await queryBuilder.getCount();
+    const blogsCount = await queryBuilder.getCount(); //TODO: getcount
 
     const blogs = await queryBuilder
       .orderBy(`blog.${sortBy}`, sortDirection)

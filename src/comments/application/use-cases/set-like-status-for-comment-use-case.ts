@@ -43,7 +43,6 @@ export class SetLikeStatusForCommentUseCase
       commentId,
     );
     //if user never set likestatus, create it
-
     if (!commentLikeObject) {
       const likerLogin = await this.usersRepository.getUserLoginById(userId);
       if (!likerLogin) {
