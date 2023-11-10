@@ -1,14 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { CommentDBType } from './comments.types';
-import { DataSource, Repository } from 'typeorm';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { Comments } from './comment.entity';
 
 @Injectable()
 export class CommentsRepository {
   constructor(
-    @InjectDataSource() protected dataSource: DataSource,
     @InjectRepository(Comments)
     private readonly commentsRepository: Repository<Comments>,
   ) {}
