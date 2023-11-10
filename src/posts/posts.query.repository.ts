@@ -3,7 +3,7 @@ import { PaginationOutputModel } from '../models/types';
 import { PostTypeOutput } from './posts.types';
 import { validate as isValidUUID } from 'uuid';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, QueryBuilder, Repository } from 'typeorm';
 import { PostLikeDbType } from '../likes/db.likes.types';
 import { sortDirectionFixer } from 'src/helpers/helpers.functions';
 import { Posts } from './post.entity';
@@ -87,27 +87,26 @@ export class PostsQueryRepository {
 
     const queryParams = [sortBy, sortDirection, pageNumber, pageSize, skipPage];
 
-    let query = `
-    SELECT "Posts".*, "Blogs".name AS "blogName", "Blogs"."isBlogBanned"
-    FROM public."Posts"
-    INNER JOIN "Blogs" ON "Posts"."blogId" = "Blogs"."blogId"
-    WHERE "Blogs"."isBlogBanned" = false
-    `;
-    const countQuery = `
-    SELECT COUNT(*)
-    FROM public."Posts"
-    INNER JOIN "Blogs" ON "Posts"."blogId" = "Blogs"."blogId"
-    WHERE "Blogs"."isBlogBanned" = false
-    ;`;
+    const queryBuilder = this.postsRepository.createQueryBuilder('post')
+    queryBuilder
+    .leftJoin('post.Blogs', 'blog')
+    .select('post.postId', 'postId')
+    .addSelect('post.title', 'title')
+    .addSelect('post.shortDescription', 'shortDescription')
+    .addSelect('post.content', 'content')
+    .addSelect('post.blogId', 'blogId')
+    .addSelect('blog.name', 'blogName')
+    .addSelect('post.createdAt', 'createdAt')
+    .addSelect('post.likesCount', 'likesCount')
+    .addSelect('post.dislikesCount', 'dislikesCount')
 
-    query += ` ORDER BY "${queryParams[0]}" ${queryParams[1]}
-    LIMIT ${queryParams[3]} OFFSET ${queryParams[4]};
-    `;
+    const postCount = await queryBuilder.getCount()
 
-    const postCountArr = await this.dataSource.query(countQuery);
-    const postCount = parseInt(postCountArr[0].count);
-
-    const posts = await this.dataSource.query(query);
+    const posts = await queryBuilder
+      .orderBy(`"${sortBy}"`, sortDirection)
+      .limit(pageSize)
+      .offset(skipPage)
+      .getRawMany()
 
     const postLikeQueryBuilder = this.postLikesRepository.createQueryBuilder('postLike')
     const postLikesObjectArray = await postLikeQueryBuilder
