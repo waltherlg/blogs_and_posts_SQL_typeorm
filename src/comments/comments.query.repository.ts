@@ -20,32 +20,37 @@ export class CommentsQueryRepository {
     if (!isValidUUID(commentId)) {
       return null;
     }
-    const query = `
-      SELECT "Comments".*, "Users"."login", "Users"."isUserBanned"
-      FROM public."Comments" 
-      INNER JOIN "Users" ON "Comments"."userId" = "Users"."userId"
-      WHERE "commentId" = $1 AND "isUserBanned" = false; 
-    `;
-    const result = await this.dataSource.query(query, [commentId]);
-    const comment = result[0];
+
+    const queryBuilder = this.commentsRepository.createQueryBuilder('comment')
+    const comment = await queryBuilder
+    .leftJoin('comment.Users', 'user')
+    .select('comment.commentId', 'commentId')
+    .addSelect('comment.postId', 'postId')
+    .addSelect('comment.content', 'content')
+    .addSelect('comment.createdAt', 'createdAt')
+    .addSelect('comment.userId', 'userId')
+    .addSelect('comment.likesCount', 'likesCount')
+    .addSelect('comment.dislikesCount', 'dislikesCount')
+    .addSelect('user.login', 'login')
+    .where('comment.commentId = :commentId', {commentId: commentId})
+    .andWhere('user.isUserBanned = false')
+    .getRawOne()
+
     if (!comment) {
       return null;
     }
+
     let myStatus = 'None';
 
     if (userId) {
-      const myStatusQuery = `
-          SELECT "status" 
-          FROM public."CommentLikes"
-          WHERE "commentId" = $1 AND "userId" = $2
-          `;
-      const result = await this.dataSource.query(myStatusQuery, [
-        commentId,
-        userId,
-      ]);
-
-      if (result[0]) {
-        myStatus = result[0].status;
+      const myLikeObject = await this.commentLikesRepository.findOne({
+        where: {
+          userId: userId,
+          commentId: commentId
+        }
+      })
+      if(myLikeObject){
+        myStatus = myLikeObject.status
       }
     }
 

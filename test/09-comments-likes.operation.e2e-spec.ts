@@ -4,7 +4,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 export function testCommentLikesCrud() {
-  describe('Post Likes Crud CRUD operation "if all is ok" (e2e). ', () => {
+  describe('Comment Likes Crud CRUD operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
@@ -170,11 +170,11 @@ export function testCommentLikesCrud() {
       });
     });
 
-    it('01-02 blogger/blogs POST = 201 SA create new blog', async () => {
+    it('01-02 blogger/blogs POST = 201 user1 create new blog', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(endpoints.bloggerBlogs)
-        //.set('Authorization', `Bearer ${accessTokenUser1}`)
-        .set('Authorization', `Basic ${basicAuthRight}`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        //.set('Authorization', `Basic ${basicAuthRight}`)
         .send({
           name: 'BlogForPosts',
           description: 'description BlogForPosts',
@@ -195,12 +195,12 @@ export function testCommentLikesCrud() {
       });
     });
 
-    it('01-02 blogger/blogId/posts POST = 201 sa create new post', async () => {
+    it('01-02 blogger/blogId/posts POST = 201 user1 create new post', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(`${endpoints.bloggerBlogs}/${BlogId1User1}/posts`)
         //.post(`${endpoints.posts}/${createdPostId}/comments`)
-        .set('Authorization', `Basic ${basicAuthRight}`)
-        //.set('Authorization', `Bearer ${accessTokenUser1}`)
+        //.set('Authorization', `Basic ${basicAuthRight}`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
         .send({
           title: 'newCreatedPost',
           shortDescription: 'newPostsShortDescription',

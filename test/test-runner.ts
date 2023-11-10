@@ -34,7 +34,7 @@ describe('End-to-End Tests', () => {
   commentCrudOperations() // this comment CRUD if blog create blogger
   saCommentCrudOperations();
 
-  //testCommentLikesCrud()
+  testCommentLikesCrud()
 
   //commentPaginationTest14()
 
