@@ -17,12 +17,13 @@ export class LikesRepository {
               @InjectRepository(Comments) private readonly commentsRepository: Repository<Comments>) {}
 
   async getPostLikeObject(userId, postId): Promise<PostLikeDbType | null> {
-    const query = `
-    SELECT * FROM public."PostLikes"
-    WHERE "userId" = $1 AND "postId" = $2    
-    ;`;
-    const result = await this.dataSource.query(query, [userId, postId]);
-    return result[0];
+    const postLikeObject = await this.postLikesRepository.findOne({
+      where:{
+        userId: userId,
+        postId: postId
+      }
+    })
+    return postLikeObject
   }
 
   async addPostLikeStatus(postLikeDto: PostLikeDbType): Promise<boolean> {
