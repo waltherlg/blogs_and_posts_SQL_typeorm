@@ -22,29 +22,15 @@ export class CommentsRepository {
     if (!isValidUUID(commentId)) {
       return false;
     }
-    const query = `
-    SELECT COUNT(*) AS count
-    FROM public."Comments"
-    WHERE "commentId" = $1
-  `;
-    const result = await this.dataSource.query(query, [commentId]);
-    const count = result[0].count;
-    return count > 0;
+    const result = await this.commentsRepository.count({where: {commentId: commentId}})
+    return result > 0
   }
 
-  async getCommentDbTypeById(commentId) {
+  async getCommentDbTypeById(commentId): Promise<CommentDBType | null> {
     if (!isValidUUID(commentId)) {
       return null;
     }
-    const query = `
-    SELECT * FROM public."Comments"
-    WHERE "commentId" = $1
-    `;
-    const result = await this.dataSource.query(query, [commentId]);
-    const comment = result[0];
-    if (!comment) {
-      return null;
-    }
+    const comment = await this.commentsRepository.findOne({where: {commentId: commentId}})
     return comment;
   }
 

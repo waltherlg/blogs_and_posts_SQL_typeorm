@@ -1,6 +1,6 @@
-import { Injectable, Post } from '@nestjs/common';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { DataSource, Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { CommentLikeDbType, PostLikeDbType } from './db.likes.types';
 import { CommentLikes, PostLikes } from './like.entity';
@@ -10,7 +10,7 @@ import { Comments } from '../comments/comment.entity';
 
 @Injectable()
 export class LikesRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource,
+  constructor(
               @InjectRepository(PostLikes) private readonly postLikesRepository: Repository<PostLikes>,
               @InjectRepository(Posts) private readonly postsRepository: Repository<Posts>,
               @InjectRepository(CommentLikes) private readonly commentLikesRepository: Repository<CommentLikes>,
