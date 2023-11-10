@@ -182,13 +182,21 @@ export class BlogsQueryRepository {
         searchNameTerm: `%${searchNameTerm}%`,
       });
     }
-    const blogsCount = await queryBuilder.getCount();
 
-    const blogs = await queryBuilder
-      .orderBy(`blog.${sortBy}`, sortDirection)
-      .skip(skipPage)
-      .take(pageSize)
-      .getMany();
+    // const blogsCount = await queryBuilder.getCount();
+    // const blogs = await queryBuilder
+    //   .orderBy(`blog.${sortBy}`, sortDirection)
+    //   .skip(skipPage)
+    //   .take(pageSize)
+    //   .getMany();
+
+  const [blogs, blogsCount] = await queryBuilder
+  .orderBy(`blog.${sortBy}`, sortDirection)
+  .skip(skipPage)
+  .take(pageSize)
+  .getManyAndCount();
+
+
     const pageCount = Math.ceil(blogsCount / pageSize);
 
     const blogsForOutput = blogs.map((blog) => {

@@ -151,12 +151,18 @@ export class UsersQueryRepository {
       }
     }
 
-    const usersCount = await queryBuilder.getCount();
-    const users = await queryBuilder
-      .orderBy(`user.${sortBy}`, sortDirection)
-      .skip(skipPage)
-      .take(pageSize)
-      .getMany();
+    // const usersCount = await queryBuilder.getCount();
+    // const users = await queryBuilder
+    //   .orderBy(`user.${sortBy}`, sortDirection)
+    //   .skip(skipPage)
+    //   .take(pageSize)
+    //   .getMany();
+
+  const [users, usersCount] = await queryBuilder
+  .orderBy(`user.${sortBy}`, sortDirection)
+  .skip(skipPage)
+  .take(pageSize)
+  .getManyAndCount();
 
     const outUsers = users.map((user) => {
       return {
