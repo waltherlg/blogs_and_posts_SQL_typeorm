@@ -53,16 +53,6 @@ export class PostsQueryRepository {
   .limit(3)
 
   const newestLikes = await newestLikesQueryBuilder.getRawMany()
-
-    // const newestLikesQuery = `
-    // SELECT "addedAt", "login", "userId" 
-    // FROM public."PostLikes"
-    // WHERE "postId" = $1 AND "status" = 'Like' AND "isUserBanned" = false
-    // ORDER BY "addedAt" DESC
-    // LIMIT 3;
-    // `;
-    // const newestLikes = await this.dataSource.query(newestLikesQuery, [postId]);
-
     let myStatus = 'None';
     if (userId) {
       const usersLike = await this.getPostLikeObject(userId, postId);
