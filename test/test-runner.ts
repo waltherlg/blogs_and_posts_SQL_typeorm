@@ -30,7 +30,7 @@ describe('End-to-End Tests', () => {
   //..saBlogsControllerCrudAndBan();
   //..postCrudOperationsByBlogger07()
   //postCrudOperationsBySa07()
-  //..testPostLikesCrud08()
+  testPostLikesCrud08()
   //..commentCrudOperations() // this comment CRUD if blog create blogger
   //..saCommentCrudOperations();
 
@@ -38,7 +38,7 @@ describe('End-to-End Tests', () => {
 
   //commentPaginationTest14()
 
-  //..onlyCommentLikesCrud13() // только для проверки создания лайка для комментария
+  onlyCommentLikesCrud13() // только для проверки создания лайка для комментария
   //banCheckOperation()
 
   //bloggerUsersControllers()

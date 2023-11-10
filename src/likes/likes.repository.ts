@@ -57,16 +57,14 @@ export class LikesRepository {
     return result.affected > 0
   }
 
-  async getCommentLikeObject(
-    userId,
-    commentId,
-  ): Promise<CommentLikeDbType | null> {
-    const query = `
-    SELECT * FROM public."CommentLikes"
-    WHERE "userId" = $1 AND "commentId" = $2    
-    ;`;
-    const result = await this.dataSource.query(query, [userId, commentId]);
-    return result[0];
+  async getCommentLikeObject(userId, commentId): Promise<CommentLikeDbType | null> {
+    const commentLikeObject = await this.commentLikesRepository.findOne({
+      where: {
+        userId: userId,
+        commentId: commentId
+      }
+    })
+      return commentLikeObject
   }
 
   async countAndSetPostLikesAndDislikesForSpecificPost(postId): Promise<boolean>{
