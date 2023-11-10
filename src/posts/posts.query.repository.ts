@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { PaginationOutputModel } from '../models/types';
 import { PostTypeOutput } from './posts.types';
 import { validate as isValidUUID } from 'uuid';
-import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { DataSource, QueryBuilder, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { PostLikeDbType } from '../likes/db.likes.types';
 import { sortDirectionFixer } from 'src/helpers/helpers.functions';
 import { Posts } from './post.entity';
@@ -11,8 +11,7 @@ import { PostLikes } from '../likes/like.entity';
 
 @Injectable()
 export class PostsQueryRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource,
-              @InjectRepository(Posts) private readonly postsRepository: Repository<Posts>,
+  constructor(@InjectRepository(Posts) private readonly postsRepository: Repository<Posts>,
               @InjectRepository(PostLikes) private readonly postLikesRepository: Repository<PostLikes>) {}
 
   async getPostById(postId, userId?): Promise<PostTypeOutput | null> {
@@ -293,11 +292,12 @@ export class PostsQueryRepository {
     userId,
     postId,
   ): Promise<PostLikeDbType | null> {
-    const query = `
-    SELECT * FROM public."PostLikes"
-    WHERE "userId" = $1 AND "postId" = $2    
-    ;`;
-    const result = await this.dataSource.query(query, [userId, postId]);
-    return result[0];
+    const postLikeObject = await this.postLikesRepository.findOne({
+      where: {
+        userId: userId,
+        postId: postId
+      }
+    })
+    return postLikeObject
   }
 }
