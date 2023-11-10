@@ -20,25 +20,25 @@ import { commentPaginationTest14 } from './14-00-comments.pagination.e2e-spec';
 import { postCrudOperationsBySa07 } from './07-01-post.CRUDBySa.e2e-spec';
 
 describe('End-to-End Tests', () => {
-  //..testSaUsersCrud();
-  //..testSaUsersGetWithPagination();
+  testSaUsersCrud();
+  testSaUsersGetWithPagination();
   testSecurityDevices()
   testAuthOperations();
   //testAuthValidations()
-  //..testBloggerCrudOnlyBlogs();
-  //..testBanUserForBlogByBlogger();
-  //..saBlogsControllerCrudAndBan();
+  testBloggerCrudOnlyBlogs();
+  testBanUserForBlogByBlogger();
+  saBlogsControllerCrudAndBan();
   postCrudOperationsByBlogger07()
   //postCrudOperationsBySa07()
-  //..testPostLikesCrud08()
-  //..commentCrudOperations() // this comment CRUD if blog create blogger
-  //..saCommentCrudOperations();
+  testPostLikesCrud08()
+  commentCrudOperations() // this comment CRUD if blog create blogger
+  saCommentCrudOperations();
 
   //testCommentLikesCrud()
 
   //commentPaginationTest14()
 
-  //..onlyCommentLikesCrud13() // только для проверки создания лайка для комментария
+  onlyCommentLikesCrud13() // только для проверки создания лайка для комментария
   //banCheckOperation()
 
   //bloggerUsersControllers()

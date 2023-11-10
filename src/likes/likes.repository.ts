@@ -91,9 +91,7 @@ export class LikesRepository {
         likesCount: postLikesCount,
         dislikesCount: postDislikesCount
       }
-    )
-    console.log(isLikesCountSet);
-    
+    )    
     return isLikesCountSet.affected > 0;
   }
 

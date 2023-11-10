@@ -85,8 +85,6 @@ export class PostsQueryRepository {
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
 
-    const queryParams = [sortBy, sortDirection, pageNumber, pageSize, skipPage];
-
     const queryBuilder = this.postsRepository.createQueryBuilder('post')
     queryBuilder
     .leftJoin('post.Blogs', 'blog')
@@ -198,44 +196,45 @@ export class PostsQueryRepository {
       blogId,
     ];
 
-    let query = `
-    SELECT "Posts".*, "Blogs".name AS "blogName", "Blogs"."isBlogBanned"
-    FROM public."Posts"
-    INNER JOIN "Blogs" ON "Posts"."blogId" = "Blogs"."blogId"
-    WHERE "Posts"."blogId" = '${queryParams[5]}' AND "Blogs"."isBlogBanned" = false
-    `;
-    const countQuery = `
-    SELECT COUNT(*) as "count"
-    FROM public."Posts"
-    INNER JOIN "Blogs" ON "Posts"."blogId" = "Blogs"."blogId"
-    WHERE "Posts"."blogId" = '${queryParams[5]}' AND "Blogs"."isBlogBanned" = false
-    `;
+    const queryBuilder = this.postsRepository.createQueryBuilder('post')
+    queryBuilder
+    .leftJoin('post.Blogs', 'blog')
+    .select('post.postId', 'postId')
+    .addSelect('post.title', 'title')
+    .addSelect('post.shortDescription', 'shortDescription')
+    .addSelect('post.content', 'content')
+    .addSelect('post.blogId', 'blogId')
+    .addSelect('blog.name', 'blogName')
+    .addSelect('post.createdAt', 'createdAt')
+    .addSelect('post.likesCount', 'likesCount')
+    .addSelect('post.dislikesCount', 'dislikesCount')
+    .where('post.blogId = :blogId', {blogId: blogId})
+    .andWhere('blog.isBlogBanned = false')
 
-    query += ` ORDER BY "${queryParams[0]}" ${queryParams[1]}
-    LIMIT ${queryParams[3]} OFFSET ${queryParams[4]};
-    `;
+    const postCount = await queryBuilder.getCount()
 
-    const postLikesObjectQuery = `
-    SELECT "PostLikes".*, "Posts"."postId", "Blogs"."isBlogBanned"
-    FROM public."PostLikes"
-    INNER JOIN "Posts" ON "PostLikes"."postId" = "Posts"."postId"
-    INNER JOIN "Blogs" ON "Posts"."blogId" = "Blogs"."blogId"
-    WHERE "Blogs"."blogId" = '${queryParams[5]}' AND "PostLikes"."isUserBanned" = false
-    ORDER BY "PostLikes"."addedAt" DESC;
-`;
-    const postLikesObjectArray = await this.dataSource.query(
-      postLikesObjectQuery,
-    );
+    const posts = await queryBuilder
+      .orderBy(`"${sortBy}"`, sortDirection)
+      .limit(pageSize)
+      .offset(skipPage)
+      .getRawMany()
+
+    const postLikeQueryBuilder = this.postLikesRepository.createQueryBuilder('postLike')
+    const postLikesObjectArray = await postLikeQueryBuilder
+    .leftJoin('postLike.Users', 'user')
+    .select('postLike.addedAt', 'addedAt')
+    .addSelect('postLike.postId', 'postId')
+    .addSelect('postLike.userId', 'userId')
+    .addSelect('user.login', 'login')
+    .addSelect('postLike.status', 'status')
+    .addSelect('user.isUserBanned', 'isUserBanned')
+    .orderBy('postLike.addedAt', 'DESC')
+    .getRawMany()
 
     const onlyLikeObjects = postLikesObjectArray.filter(
       (likeObject) =>
         likeObject.status === 'Like' && likeObject.isUserBanned === false,
     );
-
-    const postCountArr = await this.dataSource.query(countQuery);
-    const postCount = parseInt(postCountArr[0].count);
-
-    const posts = await this.dataSource.query(query);
 
     const postsForOutput = posts.map((post) => {
       const thisPostLikes = onlyLikeObjects.filter(
