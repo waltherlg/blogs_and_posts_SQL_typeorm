@@ -21,9 +21,9 @@ import { postCrudOperationsBySa07 } from './07-01-post.CRUDBySa.e2e-spec';
 
 describe('End-to-End Tests', () => {
   //..testSaUsersCrud();
-  testSaUsersGetWithPagination();
-  //testSecurityDevices()
-  //..testAuthOperations();
+  //..testSaUsersGetWithPagination();
+  testSecurityDevices()
+  testAuthOperations();
   //testAuthValidations()
   //..testBloggerCrudOnlyBlogs();
   //..testBanUserForBlogByBlogger();

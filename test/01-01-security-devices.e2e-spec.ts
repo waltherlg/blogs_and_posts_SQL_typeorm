@@ -59,7 +59,7 @@ export function testSecurityDevices() {
 
       const createdResponseBody = createResponse.body;
 
-      expect(createdResponseBody).toEqual(testUser.outputUser1);
+      expect(createdResponseBody).toEqual(testUser.outputUser1Sa);
     });
 
     it('00-00 login = 204 1 login user', async () => {

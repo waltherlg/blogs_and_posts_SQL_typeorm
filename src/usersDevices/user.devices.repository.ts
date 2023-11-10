@@ -61,14 +61,6 @@ export class UsersDevicesRepository {
     }
     const result = await this.userDevicesRepository
     .createQueryBuilder()
-  }
-
-  async deleteAllUserDevicesExceptCurrentRow(userId, deviceId): Promise<boolean> {
-    if (!isValidUUID(userId) || !isValidUUID(deviceId)) {
-      return false;
-    }
-    const result = await this.userDevicesRepository
-    .createQueryBuilder()
     .delete()
     .where('userId = :userId', { userId })
     .andWhere('deviceId <> :deviceId', { deviceId })
