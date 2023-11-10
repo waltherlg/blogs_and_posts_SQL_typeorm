@@ -1,13 +1,18 @@
 import { CommentTypeOutput } from './comments.types';
 import { Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
-import { InjectDataSource } from '@nestjs/typeorm';
+import { DataSource, Repository } from 'typeorm';
+import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { CommentLikeDbType } from '../likes/db.likes.types';
 import { sortDirectionFixer } from 'src/helpers/helpers.functions';
+import { Comments } from './comment.entity';
+import { CommentLikes } from '../likes/like.entity';
 @Injectable()
 export class CommentsQueryRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource) {}
+  constructor(@InjectDataSource() protected dataSource: DataSource,
+              @InjectRepository(Comments) private readonly commentsRepository: Repository<Comments>,
+              @InjectRepository(CommentLikes) private readonly commentLikesRepository: Repository<CommentLikes>) {}
+
   async getCommentById(
     commentId: string,
     userId?: string,
@@ -169,13 +174,15 @@ export class CommentsQueryRepository {
 
   async getCommentLikeObject(
     userId,
-    postId,
+    commentId,
   ): Promise<CommentLikeDbType | null> {
-    const query = `
-    SELECT * FROM public."CommentLikes"
-    WHERE "userId" = $1 AND "commentId" = $2    
-    ;`;
-    const result = await this.dataSource.query(query, [userId, postId]);
-    return result[0];
+
+    const commentLikeObject = await this.commentLikesRepository.findOne({
+      where: { 
+        userId: userId,
+        commentId: commentId
+      }
+    })
+    return commentLikeObject
   }
 }
