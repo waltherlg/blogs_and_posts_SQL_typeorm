@@ -183,13 +183,6 @@ export class BlogsQueryRepository {
       });
     }
 
-    // const blogsCount = await queryBuilder.getCount();
-    // const blogs = await queryBuilder
-    //   .orderBy(`blog.${sortBy}`, sortDirection)
-    //   .skip(skipPage)
-    //   .take(pageSize)
-    //   .getMany();
-
   const [blogs, blogsCount] = await queryBuilder
   .orderBy(`blog.${sortBy}`, sortDirection)
   .skip(skipPage)
