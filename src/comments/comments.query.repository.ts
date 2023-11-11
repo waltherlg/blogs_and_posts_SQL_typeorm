@@ -7,11 +7,13 @@ import { CommentLikeDbType } from '../likes/db.likes.types';
 import { sortDirectionFixer } from 'src/helpers/helpers.functions';
 import { Comments } from './comment.entity';
 import { CommentLikes } from '../likes/like.entity';
+import { Posts } from '../posts/post.entity';
 @Injectable()
 export class CommentsQueryRepository {
   constructor(@InjectDataSource() protected dataSource: DataSource,
               @InjectRepository(Comments) private readonly commentsRepository: Repository<Comments>,
-              @InjectRepository(CommentLikes) private readonly commentLikesRepository: Repository<CommentLikes>) {}
+              @InjectRepository(CommentLikes) private readonly commentLikesRepository: Repository<CommentLikes>,
+              @InjectRepository(Posts) private readonly postsRepository: Repository<Posts>) {}
 
   async getCommentById(
     commentId: string,
@@ -86,59 +88,53 @@ export class CommentsQueryRepository {
       postId,
     ];
 
-    let query = `
-    SELECT "Comments".*, "Users".login, "Users"."isUserBanned", "Blogs"."isBlogBanned"
-    FROM public."Comments"
-    INNER JOIN "Users" ON "Comments"."userId" = "Users"."userId"
-    INNER JOIN "Posts" ON "Comments"."postId" = "Posts"."postId"
-    INNER JOIN "Blogs" ON "Posts"."blogId" = "Blogs"."blogId"
-    WHERE "Users"."isUserBanned" = false AND "Blogs"."isBlogBanned" = false AND "Comments"."postId" = '${queryParams[5]}'
-    `;
+  //   const result = await this.postsRepository.findOne({ // хороший был бы вариант
+  //     where: { postId: postId }, 
+  //     relations: ["Comments"]
+  // });
+  // const comments = result.Comments
 
-    const countQuery = `
-    SELECT COUNT(*) as "count"
-    FROM public."Comments"
-    INNER JOIN "Users" ON "Comments"."userId" = "Users"."userId"
-    INNER JOIN "Posts" ON "Comments"."postId" = "Posts"."postId"
-    INNER JOIN "Blogs" ON "Posts"."blogId" = "Blogs"."blogId"
-    WHERE "Users"."isUserBanned" = false AND "Blogs"."isBlogBanned" = false AND "Comments"."postId" = '${queryParams[5]}'
-    `;
-    query += ` ORDER BY "${queryParams[0]}" ${queryParams[1]}
-    LIMIT ${queryParams[3]} OFFSET ${queryParams[4]};
-    `;
+    const queryBuilder = this.commentsRepository.createQueryBuilder('comment')
+    queryBuilder
+    .leftJoin('comment.Users', 'user')
+    .leftJoinAndSelect('comment.Posts', 'post')
+    .leftJoinAndSelect('post.Blogs', 'blog')
+    .select('comment.commentId', 'commentId')
+    .addSelect('comment.postId', 'postId')
+    .addSelect('comment.content', 'content')
+    .addSelect('comment.createdAt', 'createdAt')
+    .addSelect('comment.userId', 'userId')
+    .addSelect('comment.likesCount', 'likesCount')
+    .addSelect('comment.dislikesCount', 'dislikesCount')
+    .addSelect('user.login', 'login')
+    .where('comment.postId = :postId', {postId: postId})
+    .andWhere('user.isUserBanned = false')
+    .andWhere('blog.isBlogBanned = false')
 
-    const commentCountArr = await this.dataSource.query(countQuery);
+    const commentCount = await queryBuilder.getCount()
 
-    const commentCount = parseInt(commentCountArr[0].count);
-
-    const comments = await this.dataSource.query(query);
+    const comments = await queryBuilder  
+    .orderBy(`comment.${sortBy}`, sortDirection)
+    .skip(skipPage)
+    .take(pageSize)
+    .getRawMany()
 
     let usersLikeObjectsForThisComments;
     if (userId) {
       //если пришел userId то нужно узнать его лайкстатус для каждого коммента
-
       //нужен массив из айдишек комментов, которые вернул основной запрос
-
       const arrayOfCommentsId = comments.map((comment) => {
         return comment.commentId;
       });
 
       // нужно найти все лайки где есть айди пользователя и коммент айди из массива выше
-      const usersLikeObjectsQuery = `
-      SELECT *
-      FROM public."CommentLikes"
-      WHERE "userId" = '${userId}' AND "commentId" = ANY(ARRAY[${arrayOfCommentsId
-        .map((id) => `'${id}'`)
-        .join(',')}]::uuid[])
-      `;
-      // нужно подробно разобраться как эта хрень работает
-
-      usersLikeObjectsForThisComments = await this.dataSource.query(
-        usersLikeObjectsQuery,
-      );
+      usersLikeObjectsForThisComments = await this.commentLikesRepository.createQueryBuilder('commentLikes')
+    .where('commentLikes.userId = :userId', { userId: userId })
+    .andWhere('commentLikes.commentId IN (:...commentIds)', { commentIds: arrayOfCommentsId })
+    .getMany();
     }
 
-    const commentsForOutput: CommentTypeOutput = comments.map((comment) => {
+    const commentsForOutput = comments.map((comment) => { //TODO: спросить почему сломалась типизация : CommentTypeOutput
       let myStatus = 'None';
       if (userId) {
         const foundLike = usersLikeObjectsForThisComments.find(
