@@ -40,6 +40,13 @@ export type UserTypeOutput = {
   };
 };
 
+export type UserTypeOutputForSa = {
+  id: string;
+  login: string;
+  email: string;
+  createdAt: string;
+};
+
 export type NewCreatedUserTypeOutput = {
   id: string;
   login: string;
