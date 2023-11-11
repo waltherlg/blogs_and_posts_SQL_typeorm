@@ -3,7 +3,7 @@ import { BlogTypeOutput, blogSaTypeOutput } from '../blogs.types';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
-import { sortDirectionFixer } from 'src/helpers/helpers.functions';
+import { sortDirectionFixer } from '../../helpers/helpers.functions';
 import { Blogs } from '../blog.entity';
 
 @Injectable()

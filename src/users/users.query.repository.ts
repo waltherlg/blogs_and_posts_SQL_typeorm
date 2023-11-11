@@ -7,8 +7,8 @@ import {
 import { DataSource, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { sortDirectionFixer } from 'src/helpers/helpers.functions';
-import { BlogBannedUsers } from 'src/blogs/blog.entity';
+import { sortDirectionFixer } from '../helpers/helpers.functions';
+import { BlogBannedUsers } from '../blogs/blog.entity';
 import { Users } from './user.entity';
 
 @Injectable()

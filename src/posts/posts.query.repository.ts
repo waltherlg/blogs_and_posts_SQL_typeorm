@@ -5,7 +5,7 @@ import { validate as isValidUUID } from 'uuid';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PostLikeDbType } from '../likes/db.likes.types';
-import { sortDirectionFixer } from 'src/helpers/helpers.functions';
+import { sortDirectionFixer } from '../helpers/helpers.functions';
 import { Posts } from './post.entity';
 import { PostLikes } from '../likes/like.entity';
 
