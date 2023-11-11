@@ -75,6 +75,50 @@ export class LikesRepository {
     return commentLikeObject;
   }
 
+  // async multiplecountAndSetPostLikesAndDislikesForPosts(postIdArray) {
+  //   const promises = postIdArray.map((postId) =>
+  //     this.countAndSetPostLikesAndDislikesForSpecificPost(postId),
+  //   );
+  //   const results = await Promise.all(promises);
+  //   return results;
+  // }
+
+
+  async recountLikesAfterUserBanChange(userId) {
+    if (!isValidUUID(userId)) {
+      return null;
+    }
+    try {
+    const postLikeQueryBuilder = this.postLikesRepository.createQueryBuilder('postLike')
+    postLikeQueryBuilder
+    .select('postLike.postId', 'postId')
+    .where('postLike.userId = :userId', {userId: userId})
+
+    const postIdArray = await postLikeQueryBuilder
+    .getMany()
+
+    const postLikesPromises = postIdArray.map((postId) =>
+    this.countAndSetPostLikesAndDislikesForSpecificPost(postId))
+    const postLikesResults = await Promise.all(postLikesPromises);
+
+    const commentLikeQueryBuilder = this.commentLikesRepository.createQueryBuilder('commentLike')
+    commentLikeQueryBuilder
+    .select('commentLike.commentId', 'commentId')
+    .where('commentLike.userId = :userId', {userId: userId})
+
+    const commentIdArray = await commentLikeQueryBuilder
+    .getMany()
+
+    const commentLikesPromises = commentIdArray.map((commentId) =>
+    this.countAndSetCommentLikesAndDislikesForSpecificPost(commentId))
+    const commentLikeResults = await Promise.all(commentLikesPromises);
+
+    return true
+    } catch (error) {
+      return false      
+    }
+
+  }
   async countAndSetPostLikesAndDislikesForSpecificPost(
     postId,
   ): Promise<boolean> {
@@ -104,15 +148,7 @@ export class LikesRepository {
     return isLikesCountSet.affected > 0;
   }
 
-  async multiplecountAndSetPostLikesAndDislikesForPosts(postIdArray) {
-    const promises = postIdArray.map((postId) =>
-      this.countAndSetPostLikesAndDislikesForSpecificPost(postId),
-    );
-    const results = await Promise.all(promises);
-    return results;
-  }
-
-  async countAndSetCommentPostLikesAndDislikesForSpecificPost(
+  async countAndSetCommentLikesAndDislikesForSpecificPost(
     commentId,
   ): Promise<boolean> {
     const commentLikesCount = await this.commentLikesRepository
@@ -139,24 +175,5 @@ export class LikesRepository {
       },
     );
     return isLikesCountSet.affected > 0;
-  }
-
-  async recountPostLikesAfterUserBanChange(userId) {
-    if (!isValidUUID(userId)) {
-      return null;
-    }
-    const queryBuilder = this.commentLikesRepository.createQueryBuilder('postLike')
-    queryBuilder
-    .select('post.postId', 'postId')
-    .where('post.userId = :userId', {userId: userId})
-
-    const postIdArray = await queryBuilder
-    .getMany()
-
-    const promises = postIdArray.map((postId) =>
-    this.countAndSetPostLikesAndDislikesForSpecificPost(postId),
-  );
-  const results = await Promise.all(promises);
-  return results;
   }
 }
