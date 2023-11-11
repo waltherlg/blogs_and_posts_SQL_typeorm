@@ -141,7 +141,7 @@ export class LikesRepository {
     return isLikesCountSet.affected > 0;
   }
 
-  async getPostIdListForLikedUser(userId) {
+  async recountPostLikesAfterUserBanChange(userId) {
     if (!isValidUUID(userId)) {
       return null;
     }
@@ -150,9 +150,13 @@ export class LikesRepository {
     .select('post.postId', 'postId')
     .where('post.userId = :userId', {userId: userId})
 
-    const postIdList = await queryBuilder
+    const postIdArray = await queryBuilder
     .getMany()
-    return postIdList
 
+    const promises = postIdArray.map((postId) =>
+    this.countAndSetPostLikesAndDislikesForSpecificPost(postId),
+  );
+  const results = await Promise.all(promises);
+  return results;
   }
 }
