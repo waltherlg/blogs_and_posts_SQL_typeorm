@@ -119,7 +119,6 @@ export class SaBlogsController {
   @Put(':id')
   @HttpCode(204)
   async updateBlogById(
-    // TODO: fix status 500... need check
     @Req() request,
     @Param('id') blogId: string,
     @Body() blogUpdateInputModel: UpdateBlogInputModelType,
@@ -133,7 +132,6 @@ export class SaBlogsController {
   @Delete(':id')
   @HttpCode(204)
   async deleteBlogById(@Req() request, @Param('id') blogId: string) {
-    // TODO: fix status 500 if all is ok, and why 500 if nit found... need check
     const result = await this.commandBus.execute(
       new SaDeleteBlogByIdFromUriCommand(blogId),
     );
@@ -178,7 +176,6 @@ export class SaBlogsController {
   @Put(':blogId/posts/:postId')
   @HttpCode(204)
   async updatePost(
-    // TODO: fix status 500... need check
     @Param('blogId') blogId: string,
     @Param('postId') postId: string,
     @Body() postUpdateDto: UpdatePostByBlogsIdInputModelType,
@@ -199,7 +196,6 @@ export class SaBlogsController {
   @Delete(':blogId/posts/:postId')
   @HttpCode(204)
   async deletePost(
-    // TODO: fix status 500... need check
     @Param('blogId') blogId: string,
     @Param('postId') postId: string,
   ) {

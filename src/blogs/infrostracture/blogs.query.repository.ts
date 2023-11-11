@@ -116,7 +116,7 @@ export class BlogsQueryRepository {
       });
     }
 
-    const blogsCount = await queryBuilder.getCount(); //TODO: getcount
+    const blogsCount = await queryBuilder.getCount();
 
     const blogs = await queryBuilder
       .orderBy(`blog.${sortBy}`, sortDirection)
@@ -156,7 +156,6 @@ export class BlogsQueryRepository {
   }
 
   async getAllBlogsForCurrentUser(mergedQueryParams, userId) {
-    // TODO: in progress
     const searchNameTerm = mergedQueryParams.searchNameTerm;
     const sortBy = mergedQueryParams.sortBy;
     const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
