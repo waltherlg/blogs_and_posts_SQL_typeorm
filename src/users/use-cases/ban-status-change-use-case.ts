@@ -2,6 +2,7 @@ import { UsersRepository } from '../users.repository';
 import { UsersDevicesRepository } from 'src/usersDevices/user.devices.repository';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { BanUserInputModel } from '../sa.users.controller';
+import { LikesRepository } from '../../likes/likes.repository';
 
 export class UserBanStatusChangeCommand {
   constructor(public userId, public banDto: BanUserInputModel) {}
@@ -14,6 +15,7 @@ export class UserBanStatusChangeUseCase
   constructor(
     private readonly usersRepository: UsersRepository,
     private readonly usersDevicesRepository: UsersDevicesRepository,
+    private readonly likesRepository: LikesRepository,
   ) {}
 
   async execute(command: UserBanStatusChangeCommand): Promise<boolean> {
@@ -44,6 +46,11 @@ export class UserBanStatusChangeUseCase
     const isBanStatusChanged = await this.usersRepository.changeUserBanStatus(
       userBanDto,
     );
-    return isBanStatusChanged;
+    const isLikesRecounted = await this.likesRepository.recountLikesAfterUserBanChange(userId)
+    if(isBanStatusChanged && isLikesRecounted){
+      return true
+    } else {
+      return false
+    }
   }
 }
