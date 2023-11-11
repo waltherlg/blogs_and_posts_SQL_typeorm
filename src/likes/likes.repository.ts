@@ -140,4 +140,19 @@ export class LikesRepository {
     );
     return isLikesCountSet.affected > 0;
   }
+
+  async getPostIdListForLikedUser(userId) {
+    if (!isValidUUID(userId)) {
+      return null;
+    }
+    const queryBuilder = this.commentLikesRepository.createQueryBuilder('postLike')
+    queryBuilder
+    .select('post.postId', 'postId')
+    .where('post.userId = :userId', {userId: userId})
+
+    const postIdList = await queryBuilder
+    .getMany()
+    return postIdList
+
+  }
 }
