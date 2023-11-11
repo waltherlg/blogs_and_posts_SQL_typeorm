@@ -4,7 +4,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testComments } from './helpers/inputAndOutputObjects/commentObjects';
-export function onlyCommentLikesCrud13() {
+export function commentLikesWithUserBanCrud1301() {
   describe('COmment Likes Crud CRUD operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
 
@@ -343,5 +343,214 @@ export function onlyCommentLikesCrud13() {
         })
         .expect(204);
     });
+
+    it('01-06 sa/users/:userId/ban UPDATE = 204 ban user3', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId3}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send({
+          isBanned: true,
+          banReason: 'some ban reason for user2'
+        })
+        .expect(204);
+    });
+
+    it('01-06 posts/:postId/comments GET = 200 get comments for post1 after ban user3', async () => {
+      const testsResponse = await request(app.getHttpServer())
+        .get(`${endpoints.posts}/${createdPostId}/comments`)
+        //.set('Authorization', `Bearer ${accessTokenUser3}`)
+        .expect(200);
+
+      const createdResponse = testsResponse.body;
+      createdCommentId2 = createdResponse.id;
+
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 2,
+        items: [
+          {
+            id: expect.any(String),
+            content: 'some comment2 for post1 from user2',
+            commentatorInfo: {
+              userId: expect.any(String),
+              userLogin: 'user2',
+            },
+            createdAt: expect.any(String),
+            likesInfo: {
+              likesCount: 1,
+              dislikesCount: 0,
+              myStatus: 'None',
+            },
+          },
+          {
+            id: expect.any(String),
+            content: 'some comment for post1',
+            commentatorInfo: {
+              userId: expect.any(String),
+              userLogin: 'user1',
+            },
+            createdAt: expect.any(String),
+            likesInfo: {
+              likesCount: 1,
+              dislikesCount: 1,
+              myStatus: 'None',
+            },
+          },
+        ],
+      });
+    });
+
+    it('01-06 sa/users/:userId/ban UPDATE = 204 ban user2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId2}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send({
+          isBanned: true,
+          banReason: 'some ban reason for user2'
+        })
+        .expect(204);
+    });
+
+    it('01-06 posts/:postId/comments GET = 200 get comment1 for post1 after ban user2', async () => {
+      const testsResponse = await request(app.getHttpServer())
+        .get(`${endpoints.posts}/${createdPostId}/comments`)
+        //.set('Authorization', `Bearer ${accessTokenUser3}`)
+        .expect(200);
+
+      const createdResponse = testsResponse.body;
+      createdCommentId2 = createdResponse.id;
+
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 1,
+        items: [
+          {
+            id: expect.any(String),
+            content: 'some comment for post1',
+            commentatorInfo: {
+              userId: expect.any(String),
+              userLogin: 'user1',
+            },
+            createdAt: expect.any(String),
+            likesInfo: {
+              likesCount: 0,
+              dislikesCount: 1,
+              myStatus: 'None',
+            },
+          },
+        ],
+      });
+    });
+
+    it('01-06 sa/users/:userId/ban UPDATE = 204 unban user3', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId3}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send({
+          isBanned: false,
+          banReason: 'some ban reason for user2'
+        })
+        .expect(204);
+    });
+
+    it('01-06 posts/:postId/comments GET = 200 get comment1 for post1 after unban user3', async () => {
+      const testsResponse = await request(app.getHttpServer())
+        .get(`${endpoints.posts}/${createdPostId}/comments`)
+        //.set('Authorization', `Bearer ${accessTokenUser3}`)
+        .expect(200);
+
+      const createdResponse = testsResponse.body;
+      createdCommentId2 = createdResponse.id;
+
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 1,
+        items: [
+          {
+            id: expect.any(String),
+            content: 'some comment for post1',
+            commentatorInfo: {
+              userId: expect.any(String),
+              userLogin: 'user1',
+            },
+            createdAt: expect.any(String),
+            likesInfo: {
+              likesCount: 0,
+              dislikesCount: 2,
+              myStatus: 'None',
+            },
+          },
+        ],
+      });
+    });
+
+    it('01-06 sa/users/:userId/ban UPDATE = 204 unban user2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId2}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send({
+          isBanned: false,
+          banReason: 'some ban reason for user2'
+        })
+        .expect(204);
+    });
+
+    it('01-06 posts/:postId/comments GET = 200 get comments for post1 after unban user2', async () => {
+      const testsResponse = await request(app.getHttpServer())
+        .get(`${endpoints.posts}/${createdPostId}/comments`)
+        //.set('Authorization', `Bearer ${accessTokenUser3}`)
+        .expect(200);
+
+      const createdResponse = testsResponse.body;
+      createdCommentId2 = createdResponse.id;
+
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 2,
+        items: [
+          {
+            id: expect.any(String),
+            content: 'some comment2 for post1 from user2',
+            commentatorInfo: {
+              userId: expect.any(String),
+              userLogin: 'user2',
+            },
+            createdAt: expect.any(String),
+            likesInfo: {
+              likesCount: 1,
+              dislikesCount: 1,
+              myStatus: 'None',
+            },
+          },
+          {
+            id: expect.any(String),
+            content: 'some comment for post1',
+            commentatorInfo: {
+              userId: expect.any(String),
+              userLogin: 'user1',
+            },
+            createdAt: expect.any(String),
+            likesInfo: {
+              likesCount: 1,
+              dislikesCount: 2,
+              myStatus: 'None',
+            },
+          },
+        ],
+      });
+    });
+
+
+
+
+
   });
 }

@@ -95,10 +95,10 @@ export class LikesRepository {
     .where('postLike.userId = :userId', {userId: userId})
 
     const postIdArray = await postLikeQueryBuilder
-    .getMany()
+    .getRawMany()
 
     const postLikesPromises = postIdArray.map((postId) =>
-    this.countAndSetPostLikesAndDislikesForSpecificPost(postId))
+    this.countAndSetPostLikesAndDislikesForSpecificPost(postId.postId))
     const postLikesResults = await Promise.all(postLikesPromises);
 
     const commentLikeQueryBuilder = this.commentLikesRepository.createQueryBuilder('commentLike')
@@ -107,11 +107,16 @@ export class LikesRepository {
     .where('commentLike.userId = :userId', {userId: userId})
 
     const commentIdArray = await commentLikeQueryBuilder
-    .getMany()
+    .getRawMany()
+
+    console.log('commentIdArray ', commentIdArray);
+    
 
     const commentLikesPromises = commentIdArray.map((commentId) =>
-    this.countAndSetCommentLikesAndDislikesForSpecificPost(commentId))
+    this.countAndSetCommentLikesAndDislikesForSpecificComment(commentId.commentId))
     const commentLikeResults = await Promise.all(commentLikesPromises);
+    console.log('commentLikeResults ', commentLikeResults);
+    
 
     return true
     } catch (error) {
@@ -148,7 +153,7 @@ export class LikesRepository {
     return isLikesCountSet.affected > 0;
   }
 
-  async countAndSetCommentLikesAndDislikesForSpecificPost(
+  async countAndSetCommentLikesAndDislikesForSpecificComment(
     commentId,
   ): Promise<boolean> {
     const commentLikesCount = await this.commentLikesRepository
