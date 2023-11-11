@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "blogs_and_posts_nest_SQL",
+  "name": "blogs_and_posts_nest_SQL_typeorm",
   "builds": [
     {
       "src": "src/main.ts",
