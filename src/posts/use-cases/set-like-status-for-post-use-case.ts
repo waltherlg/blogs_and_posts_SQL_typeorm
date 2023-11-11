@@ -70,12 +70,15 @@ export class SetLikeStatusForPostUseCase
         userId,
         status,
       );
-      
+
       const isLikeAdded = await this.likesRepository.addPostLikeStatus(
         postLikeDto,
       );
 
-      const isLikesCountSet = await this.likesRepository.countAndSetPostLikesAndDislikesForSpecificPost(postId)
+      const isLikesCountSet =
+        await this.likesRepository.countAndSetPostLikesAndDislikesForSpecificPost(
+          postId,
+        );
 
       if (isLikeAdded && isLikesCountSet) {
         return PostActionResult.Success;
@@ -94,7 +97,10 @@ export class SetLikeStatusForPostUseCase
       status,
     );
 
-    const isLikesCountSet = await this.likesRepository.countAndSetPostLikesAndDislikesForSpecificPost(postId)
+    const isLikesCountSet =
+      await this.likesRepository.countAndSetPostLikesAndDislikesForSpecificPost(
+        postId,
+      );
 
     if (islikeUpdated && isLikesCountSet) {
       return PostActionResult.Success;

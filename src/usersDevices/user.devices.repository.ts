@@ -60,28 +60,30 @@ export class UsersDevicesRepository {
       return false;
     }
     const result = await this.userDevicesRepository
-    .createQueryBuilder()
-    .delete()
-    .where('userId = :userId', { userId })
-    .andWhere('deviceId <> :deviceId', { deviceId })
-    .execute();
+      .createQueryBuilder()
+      .delete()
+      .where('userId = :userId', { userId })
+      .andWhere('deviceId <> :deviceId', { deviceId })
+      .execute();
 
-  return result.affected > 0;
+    return result.affected > 0;
   }
 
   async isUserDeviceExist(deviceId): Promise<boolean> {
     if (!isValidUUID(deviceId)) {
       return false;
     }
-    const result = await this.userDevicesRepository.count({ where: {deviceId}})
-    return result > 0
+    const result = await this.userDevicesRepository.count({
+      where: { deviceId },
+    });
+    return result > 0;
   }
 
   async deleteAllUserDevicesById(userId: string): Promise<boolean> {
     if (!isValidUUID(userId)) {
       return false;
     }
-    const result = await this.userDevicesRepository.delete({userId})
+    const result = await this.userDevicesRepository.delete({ userId });
     return result.affected > 0;
   }
 }

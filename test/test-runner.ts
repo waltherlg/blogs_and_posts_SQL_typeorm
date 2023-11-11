@@ -31,14 +31,14 @@ describe('End-to-End Tests', () => {
   //..postCrudOperationsByBlogger07()
   //postCrudOperationsBySa07()
   //..testPostLikesCrud08()
-  commentCrudOperations() // this comment CRUD if blog create blogger
+  commentCrudOperations(); // this comment CRUD if blog create blogger
   saCommentCrudOperations();
 
-  testCommentLikesCrud()
+  testCommentLikesCrud();
 
   //commentPaginationTest14()
 
-  onlyCommentLikesCrud13() // только для проверки создания лайка для комментария
+  onlyCommentLikesCrud13(); // только для проверки создания лайка для комментария
   //banCheckOperation()
 
   //bloggerUsersControllers()

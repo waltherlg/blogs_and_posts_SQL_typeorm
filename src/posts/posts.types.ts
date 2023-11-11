@@ -1,4 +1,3 @@
-
 export class PostDBType {
   constructor(
     public postId: string,

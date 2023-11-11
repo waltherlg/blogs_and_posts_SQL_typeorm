@@ -1,4 +1,3 @@
-
 export class CommentDBType {
   constructor(
     public commentId: string,

@@ -32,7 +32,7 @@ export class UsersRepository {
     if (!isValidUUID(userId)) {
       return false;
     }
-    const result = await this.usersRepository.delete(userId)
+    const result = await this.usersRepository.delete(userId);
     return result.affected > 0;
   }
 
@@ -141,7 +141,6 @@ export class UsersRepository {
       },
     );
     return result.affected > 0;
-
   }
 
   async isEmailExists(email: string): Promise<boolean> {
@@ -209,10 +208,10 @@ export class UsersRepository {
       },
       where: { userId },
     });
-    if(user){
-      return user.login
+    if (user) {
+      return user.login;
     } else {
-      return null
+      return null;
     }
   }
 

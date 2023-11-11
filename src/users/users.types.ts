@@ -1,5 +1,3 @@
-
-
 export type CommentsLikeType = {
   commentsId: string;
   createdAt: Date;

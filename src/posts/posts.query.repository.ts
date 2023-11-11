@@ -11,47 +11,51 @@ import { PostLikes } from '../likes/like.entity';
 
 @Injectable()
 export class PostsQueryRepository {
-  constructor(@InjectRepository(Posts) private readonly postsRepository: Repository<Posts>,
-              @InjectRepository(PostLikes) private readonly postLikesRepository: Repository<PostLikes>) {}
+  constructor(
+    @InjectRepository(Posts)
+    private readonly postsRepository: Repository<Posts>,
+    @InjectRepository(PostLikes)
+    private readonly postLikesRepository: Repository<PostLikes>,
+  ) {}
 
   async getPostById(postId, userId?): Promise<PostTypeOutput | null> {
     if (!isValidUUID(postId)) {
       return null;
     }
-    const postQueryBuilder = this.postsRepository
-    .createQueryBuilder('post');
+    const postQueryBuilder = this.postsRepository.createQueryBuilder('post');
     postQueryBuilder
-    .leftJoin('post.Blogs', 'blog')
-    .select('post.postId', 'postId')
-    .addSelect('post.title', 'title' )
-    .addSelect('post.shortDescription', 'shortDescription' )
-    .addSelect('post.content', 'content' )
-    .addSelect('post.blogId', 'blogId' )
-    .addSelect('blog.name', 'blogName' )
-    .addSelect('post.createdAt', 'createdAt' )
-    .addSelect('post.likesCount', 'likesCount' )
-    .addSelect('post.dislikesCount', 'dislikesCount' )
-    .where('post.postId = :postId', {postId: postId})
-    .andWhere('blog.isBlogBanned = false')
-    const post = await postQueryBuilder.getRawOne()
+      .leftJoin('post.Blogs', 'blog')
+      .select('post.postId', 'postId')
+      .addSelect('post.title', 'title')
+      .addSelect('post.shortDescription', 'shortDescription')
+      .addSelect('post.content', 'content')
+      .addSelect('post.blogId', 'blogId')
+      .addSelect('blog.name', 'blogName')
+      .addSelect('post.createdAt', 'createdAt')
+      .addSelect('post.likesCount', 'likesCount')
+      .addSelect('post.dislikesCount', 'dislikesCount')
+      .where('post.postId = :postId', { postId: postId })
+      .andWhere('blog.isBlogBanned = false');
+    const post = await postQueryBuilder.getRawOne();
 
     if (!post) {
       return null;
     }
 
-  const newestLikesQueryBuilder = this.postLikesRepository.createQueryBuilder('postLike')
-  newestLikesQueryBuilder
-  .leftJoin('postLike.Users', 'user')
-  .select('postLike.addedAt', 'addedAt')
-  .addSelect('user.login', 'login')
-  .addSelect('postLike.userId', 'userId')
-  .where('postLike.postId = :postId', {postId: postId})
-  .andWhere('postLike.status = :status', { status: 'Like' })
-  .andWhere('user.isUserBanned = false')
-  .orderBy('postLike.addedAt', 'DESC')
-  .limit(3)
+    const newestLikesQueryBuilder =
+      this.postLikesRepository.createQueryBuilder('postLike');
+    newestLikesQueryBuilder
+      .leftJoin('postLike.Users', 'user')
+      .select('postLike.addedAt', 'addedAt')
+      .addSelect('user.login', 'login')
+      .addSelect('postLike.userId', 'userId')
+      .where('postLike.postId = :postId', { postId: postId })
+      .andWhere('postLike.status = :status', { status: 'Like' })
+      .andWhere('user.isUserBanned = false')
+      .orderBy('postLike.addedAt', 'DESC')
+      .limit(3);
 
-  const newestLikes = await newestLikesQueryBuilder.getRawMany()
+    const newestLikes = await newestLikesQueryBuilder.getRawMany();
     let myStatus = 'None';
     if (userId) {
       const usersLike = await this.getPostLikeObject(userId, postId);
@@ -84,38 +88,39 @@ export class PostsQueryRepository {
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
 
-    const queryBuilder = this.postsRepository.createQueryBuilder('post')
+    const queryBuilder = this.postsRepository.createQueryBuilder('post');
     queryBuilder
-    .leftJoin('post.Blogs', 'blog')
-    .select('post.postId', 'postId')
-    .addSelect('post.title', 'title')
-    .addSelect('post.shortDescription', 'shortDescription')
-    .addSelect('post.content', 'content')
-    .addSelect('post.blogId', 'blogId')
-    .addSelect('blog.name', 'blogName')
-    .addSelect('post.createdAt', 'createdAt')
-    .addSelect('post.likesCount', 'likesCount')
-    .addSelect('post.dislikesCount', 'dislikesCount')
+      .leftJoin('post.Blogs', 'blog')
+      .select('post.postId', 'postId')
+      .addSelect('post.title', 'title')
+      .addSelect('post.shortDescription', 'shortDescription')
+      .addSelect('post.content', 'content')
+      .addSelect('post.blogId', 'blogId')
+      .addSelect('blog.name', 'blogName')
+      .addSelect('post.createdAt', 'createdAt')
+      .addSelect('post.likesCount', 'likesCount')
+      .addSelect('post.dislikesCount', 'dislikesCount');
 
-    const postCount = await queryBuilder.getCount()
+    const postCount = await queryBuilder.getCount();
 
     const posts = await queryBuilder
       .orderBy(`"${sortBy}"`, sortDirection)
       .limit(pageSize)
       .offset(skipPage)
-      .getRawMany()
+      .getRawMany();
 
-    const postLikeQueryBuilder = this.postLikesRepository.createQueryBuilder('postLike')
+    const postLikeQueryBuilder =
+      this.postLikesRepository.createQueryBuilder('postLike');
     const postLikesObjectArray = await postLikeQueryBuilder
-    .leftJoin('postLike.Users', 'user')
-    .select('postLike.addedAt', 'addedAt')
-    .addSelect('postLike.postId', 'postId')
-    .addSelect('postLike.userId', 'userId')
-    .addSelect('user.login', 'login')
-    .addSelect('postLike.status', 'status')
-    .addSelect('user.isUserBanned', 'isUserBanned')
-    .orderBy('postLike.addedAt', 'DESC')
-    .getRawMany()
+      .leftJoin('postLike.Users', 'user')
+      .select('postLike.addedAt', 'addedAt')
+      .addSelect('postLike.postId', 'postId')
+      .addSelect('postLike.userId', 'userId')
+      .addSelect('user.login', 'login')
+      .addSelect('postLike.status', 'status')
+      .addSelect('user.isUserBanned', 'isUserBanned')
+      .orderBy('postLike.addedAt', 'DESC')
+      .getRawMany();
 
     const onlyLikeObjects = postLikesObjectArray.filter(
       (likeObject) =>
@@ -195,40 +200,41 @@ export class PostsQueryRepository {
       blogId,
     ];
 
-    const queryBuilder = this.postsRepository.createQueryBuilder('post')
+    const queryBuilder = this.postsRepository.createQueryBuilder('post');
     queryBuilder
-    .leftJoin('post.Blogs', 'blog')
-    .select('post.postId', 'postId')
-    .addSelect('post.title', 'title')
-    .addSelect('post.shortDescription', 'shortDescription')
-    .addSelect('post.content', 'content')
-    .addSelect('post.blogId', 'blogId')
-    .addSelect('blog.name', 'blogName')
-    .addSelect('post.createdAt', 'createdAt')
-    .addSelect('post.likesCount', 'likesCount')
-    .addSelect('post.dislikesCount', 'dislikesCount')
-    .where('post.blogId = :blogId', {blogId: blogId})
-    .andWhere('blog.isBlogBanned = false')
+      .leftJoin('post.Blogs', 'blog')
+      .select('post.postId', 'postId')
+      .addSelect('post.title', 'title')
+      .addSelect('post.shortDescription', 'shortDescription')
+      .addSelect('post.content', 'content')
+      .addSelect('post.blogId', 'blogId')
+      .addSelect('blog.name', 'blogName')
+      .addSelect('post.createdAt', 'createdAt')
+      .addSelect('post.likesCount', 'likesCount')
+      .addSelect('post.dislikesCount', 'dislikesCount')
+      .where('post.blogId = :blogId', { blogId: blogId })
+      .andWhere('blog.isBlogBanned = false');
 
-    const postCount = await queryBuilder.getCount()
+    const postCount = await queryBuilder.getCount();
 
     const posts = await queryBuilder
       .orderBy(`"${sortBy}"`, sortDirection)
       .limit(pageSize)
       .offset(skipPage)
-      .getRawMany()
+      .getRawMany();
 
-    const postLikeQueryBuilder = this.postLikesRepository.createQueryBuilder('postLike')
+    const postLikeQueryBuilder =
+      this.postLikesRepository.createQueryBuilder('postLike');
     const postLikesObjectArray = await postLikeQueryBuilder
-    .leftJoin('postLike.Users', 'user')
-    .select('postLike.addedAt', 'addedAt')
-    .addSelect('postLike.postId', 'postId')
-    .addSelect('postLike.userId', 'userId')
-    .addSelect('user.login', 'login')
-    .addSelect('postLike.status', 'status')
-    .addSelect('user.isUserBanned', 'isUserBanned')
-    .orderBy('postLike.addedAt', 'DESC')
-    .getRawMany()
+      .leftJoin('postLike.Users', 'user')
+      .select('postLike.addedAt', 'addedAt')
+      .addSelect('postLike.postId', 'postId')
+      .addSelect('postLike.userId', 'userId')
+      .addSelect('user.login', 'login')
+      .addSelect('postLike.status', 'status')
+      .addSelect('user.isUserBanned', 'isUserBanned')
+      .orderBy('postLike.addedAt', 'DESC')
+      .getRawMany();
 
     const onlyLikeObjects = postLikesObjectArray.filter(
       (likeObject) =>
@@ -295,9 +301,9 @@ export class PostsQueryRepository {
     const postLikeObject = await this.postLikesRepository.findOne({
       where: {
         userId: userId,
-        postId: postId
-      }
-    })
-    return postLikeObject
+        postId: postId,
+      },
+    });
+    return postLikeObject;
   }
 }

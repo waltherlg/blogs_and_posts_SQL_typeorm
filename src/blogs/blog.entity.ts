@@ -1,4 +1,3 @@
-
 import { Posts } from '../posts/post.entity';
 import { Users } from '../users/user.entity';
 import {
@@ -12,7 +11,6 @@ import {
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-
 
 @Entity({ name: 'Blogs' })
 export class Blogs {
@@ -35,11 +33,11 @@ export class Blogs {
   @Column()
   isMembership: boolean;
   @OneToMany(() => BlogBannedUsers, (b) => b.Blogs)
-  @JoinColumn({name: 'blogId'})
+  @JoinColumn({ name: 'blogId' })
   BlogBannedUsers: BlogBannedUsers[];
   @OneToMany(() => Posts, (p) => p.Blogs, { cascade: ['remove'] })
-  @JoinColumn({name: 'blogId'})
-  Posts: Posts[]
+  @JoinColumn({ name: 'blogId' })
+  Posts: Posts[];
 }
 
 @Entity({ name: 'BlogBannedUsers' })

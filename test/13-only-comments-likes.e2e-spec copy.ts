@@ -31,9 +31,8 @@ export function onlyCommentLikesCrud13() {
       await app.close();
     });
 
-
-    let userId2
-    let userId3
+    let userId2;
+    let userId3;
 
     let BlogId1User1: string;
     let createdPostId: string;
@@ -267,7 +266,7 @@ export function onlyCommentLikesCrud13() {
         })
         .expect(204);
     });
-    
+
     it('01-06 /comments/commentId/like-status UPDATE = 204 like for comment2 from user1 ', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.comments}/${createdCommentId2}/like-status`)
@@ -303,37 +302,35 @@ export function onlyCommentLikesCrud13() {
         pageSize: 10,
         totalCount: 2,
         items: [
-       {
-        id: expect.any(String),
-        content: 'some comment2 for post1 from user2',
-        commentatorInfo: {
-          userId: expect.any(String),
-          userLogin: 'user2',
-        },
-        createdAt: expect.any(String),
-        likesInfo: {
-          likesCount: 1,
-          dislikesCount: 1,
-          myStatus: 'None',
-        }},
-        {
-          id: expect.any(String),
-          content: 'some comment for post1',
-          commentatorInfo: {
-            userId: expect.any(String),
-            userLogin: 'user1',
+          {
+            id: expect.any(String),
+            content: 'some comment2 for post1 from user2',
+            commentatorInfo: {
+              userId: expect.any(String),
+              userLogin: 'user2',
+            },
+            createdAt: expect.any(String),
+            likesInfo: {
+              likesCount: 1,
+              dislikesCount: 1,
+              myStatus: 'None',
+            },
           },
-          createdAt: expect.any(String),
-          likesInfo: {
-            likesCount: 2,
-            dislikesCount: 1,
-            myStatus: 'None',
+          {
+            id: expect.any(String),
+            content: 'some comment for post1',
+            commentatorInfo: {
+              userId: expect.any(String),
+              userLogin: 'user1',
+            },
+            createdAt: expect.any(String),
+            likesInfo: {
+              likesCount: 2,
+              dislikesCount: 1,
+              myStatus: 'None',
+            },
           },
-        },
-        ]
-
-
-
+        ],
       });
     });
 
@@ -346,8 +343,5 @@ export function onlyCommentLikesCrud13() {
         })
         .expect(204);
     });
-
-
-
   });
 }

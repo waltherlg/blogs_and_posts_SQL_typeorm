@@ -1,5 +1,3 @@
-
-
 export class UserDeviceDBType {
   constructor(
     public deviceId: string,

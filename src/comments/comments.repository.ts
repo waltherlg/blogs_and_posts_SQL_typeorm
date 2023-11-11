@@ -21,15 +21,19 @@ export class CommentsRepository {
     if (!isValidUUID(commentId)) {
       return false;
     }
-    const result = await this.commentsRepository.count({where: {commentId: commentId}})
-    return result > 0
+    const result = await this.commentsRepository.count({
+      where: { commentId: commentId },
+    });
+    return result > 0;
   }
 
   async getCommentDbTypeById(commentId): Promise<CommentDBType | null> {
     if (!isValidUUID(commentId)) {
       return null;
     }
-    const comment = await this.commentsRepository.findOne({where: {commentId: commentId}})
+    const comment = await this.commentsRepository.findOne({
+      where: { commentId: commentId },
+    });
     return comment;
   }
 
@@ -37,15 +41,15 @@ export class CommentsRepository {
     if (!isValidUUID(commentId)) {
       return false;
     }
-    const result = await this.commentsRepository.delete(commentId)
+    const result = await this.commentsRepository.delete(commentId);
     return result.affected > 0;
   }
 
   async updateCommentById(commentId, content): Promise<boolean> {
     const result = await this.commentsRepository.update(
-      {commentId: commentId},
-      {content: content}
-    )
-    return result.affected > 0
+      { commentId: commentId },
+      { content: content },
+    );
+    return result.affected > 0;
   }
 }

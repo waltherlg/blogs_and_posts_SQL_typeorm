@@ -59,7 +59,10 @@ export class SetLikeStatusForCommentUseCase
       const isLikeAdded = await this.likesRepository.addCommentLikeStatus(
         commentLikeDto,
       );
-      const isLikeCountSet = await this.likesRepository.countAndSetCommentPostLikesAndDislikesForSpecificPost(commentId)
+      const isLikeCountSet =
+        await this.likesRepository.countAndSetCommentPostLikesAndDislikesForSpecificPost(
+          commentId,
+        );
       if (isLikeAdded && isLikeCountSet) {
         return CommentActionResult.Success;
       } else {
@@ -77,7 +80,10 @@ export class SetLikeStatusForCommentUseCase
       status,
     );
 
-    const isLikeCountSet = await this.likesRepository.countAndSetCommentPostLikesAndDislikesForSpecificPost(commentId)
+    const isLikeCountSet =
+      await this.likesRepository.countAndSetCommentPostLikesAndDislikesForSpecificPost(
+        commentId,
+      );
 
     if (islikeUpdated && isLikeCountSet) {
       return CommentActionResult.Success;

@@ -1,4 +1,3 @@
-
 export class PostLikeDbType {
   constructor(
     public postId: string,

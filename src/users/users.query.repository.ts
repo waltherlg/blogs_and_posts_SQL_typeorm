@@ -151,11 +151,11 @@ export class UsersQueryRepository {
       }
     }
 
-  const [users, usersCount] = await queryBuilder
-  .orderBy(`user.${sortBy}`, sortDirection)
-  .skip(skipPage)
-  .take(pageSize)
-  .getManyAndCount();
+    const [users, usersCount] = await queryBuilder
+      .orderBy(`user.${sortBy}`, sortDirection)
+      .skip(skipPage)
+      .take(pageSize)
+      .getManyAndCount();
 
     const outUsers = users.map((user) => {
       return {
@@ -219,7 +219,7 @@ export class UsersQueryRepository {
       // .skip(skipPage)
       .limit(pageSize)
       .offset(skipPage)
-      .getRawMany();      
+      .getRawMany();
 
     const bannedUsersForOutput = bannedUsers.map((bannedUser) => {
       return {

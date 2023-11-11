@@ -41,7 +41,7 @@ export class CommentLikes {
   commentLikeId: string;
   @ManyToOne(() => Comments, (cl) => cl.CommentLikes)
   @JoinColumn({ name: 'commentId' })
-  Comments: Comments
+  Comments: Comments;
   @Column('uuid')
   commentId: string;
   @Column()

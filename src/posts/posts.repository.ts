@@ -8,19 +8,22 @@ import { Posts } from './post.entity';
 
 @Injectable()
 export class PostsRepository {
-  constructor(@InjectDataSource() protected dataSource: DataSource,
-              @InjectRepository(Posts) private readonly postsRepository: Repository<Posts> ) {}
+  constructor(
+    @InjectDataSource() protected dataSource: DataSource,
+    @InjectRepository(Posts)
+    private readonly postsRepository: Repository<Posts>,
+  ) {}
 
   async createPost(postDTO: PostDBType): Promise<string> {
     const result = await this.postsRepository.save(postDTO);
-    return result.postId
+    return result.postId;
   }
 
   async deletePostById(postId: string): Promise<boolean> {
-        if (!isValidUUID(postId)) {
+    if (!isValidUUID(postId)) {
       return false;
     }
-    const result = await this.postsRepository.delete(postId)
+    const result = await this.postsRepository.delete(postId);
     return result.affected > 0;
   }
 
@@ -28,7 +31,9 @@ export class PostsRepository {
     if (!isValidUUID(postId)) {
       return null;
     }
-    const result = await this.postsRepository.findOne({where: [{postId: postId}]})
+    const result = await this.postsRepository.findOne({
+      where: [{ postId: postId }],
+    });
     return result;
   }
 
@@ -47,8 +52,8 @@ export class PostsRepository {
         title: title,
         shortDescription: shortDescription,
         content: content,
-      }
-    )
+      },
+    );
     return result.affected > 0;
   }
 
@@ -56,7 +61,9 @@ export class PostsRepository {
     if (!isValidUUID(postId)) {
       return false;
     }
-    const result = await this.postsRepository.count({where: {postId: postId}})
+    const result = await this.postsRepository.count({
+      where: { postId: postId },
+    });
     return result > 0;
   }
 }

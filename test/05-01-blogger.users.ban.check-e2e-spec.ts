@@ -346,9 +346,7 @@ export function testBanUserForBlogByBlogger() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [
-          testBloggerBanBody.bannedUser2ForBlogOutput,
-        ],
+        items: [testBloggerBanBody.bannedUser2ForBlogOutput],
       });
     });
 

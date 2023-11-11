@@ -249,9 +249,6 @@ export function testAuthOperations() {
           .set('Cookie', refreshTokenCookie2)
           .expect(401);
       });
-
-
-      
     });
   });
 }

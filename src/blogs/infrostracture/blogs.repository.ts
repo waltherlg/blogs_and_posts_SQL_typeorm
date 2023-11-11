@@ -59,12 +59,12 @@ export class BlogsRepository {
       return false;
     }
     const result = await this.blogsRepository.update(
-      {blogId: blogId},
+      { blogId: blogId },
       {
         name: name,
-        description: description, 
-        websiteUrl: websiteUrl
-      }
+        description: description,
+        websiteUrl: websiteUrl,
+      },
     );
     return result.affected > 0;
   }
@@ -75,8 +75,8 @@ export class BlogsRepository {
     }
     const result = await this.blogsRepository.update(
       { blogId: blogId },
-      { userId: userId }
-    )
+      { userId: userId },
+    );
     return result.affected > 0;
   }
 
@@ -84,25 +84,21 @@ export class BlogsRepository {
     if (!isValidUUID(blogId)) {
       return false;
     }
-    const result = await this.blogsRepository.count({where: { blogId }})
+    const result = await this.blogsRepository.count({ where: { blogId } });
     return result > 0;
   }
 
-  async newBanStatus(
-    blogId,
-    newBanStatus,
-    newBanDate,
-  ): Promise<boolean>{
+  async newBanStatus(blogId, newBanStatus, newBanDate): Promise<boolean> {
     if (!isValidUUID(blogId)) {
       return false;
     }
     const result = await this.blogsRepository.update(
-      {blogId: blogId},
+      { blogId: blogId },
       {
         isBlogBanned: newBanStatus,
-        blogBanDate: newBanDate
-      }
-    )
+        blogBanDate: newBanDate,
+      },
+    );
     return result.affected > 0;
   }
 
@@ -111,8 +107,8 @@ export class BlogsRepository {
       return false;
     }
     const result = await this.blogBannedUsersRepository.count({
-      where: {blogId, userId}
-    })
+      where: { blogId, userId },
+    });
     return result > 0;
   }
 
@@ -120,10 +116,10 @@ export class BlogsRepository {
     banUserInfo: BannedBlogUsersType,
   ): Promise<boolean> {
     const result = await this.blogBannedUsersRepository.save(banUserInfo);
-    if(result.userId){
-      return true
+    if (result.userId) {
+      return true;
     } else {
-      return false
+      return false;
     }
   }
 
@@ -132,11 +128,11 @@ export class BlogsRepository {
       return false;
     }
     const result = await this.blogBannedUsersRepository
-  .createQueryBuilder()
-  .delete()
-  .where('userId = :userId', { userId: userId })
-  .andWhere('blogId = :blogId', { blogId: blogId })
-  .execute();
-  return result.affected > 0;
+      .createQueryBuilder()
+      .delete()
+      .where('userId = :userId', { userId: userId })
+      .andWhere('blogId = :blogId', { blogId: blogId })
+      .execute();
+    return result.affected > 0;
   }
 }

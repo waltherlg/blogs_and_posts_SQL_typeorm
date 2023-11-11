@@ -1,4 +1,3 @@
-
 export class BlogDBType {
   constructor(
     public blogId: string,

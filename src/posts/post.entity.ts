@@ -1,7 +1,14 @@
 import { Comments } from '../comments/comment.entity';
 import { Blogs } from '../blogs/blog.entity';
 import { Users } from '../users/user.entity';
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryColumn,
+} from 'typeorm';
 import { PostLikes } from '../likes/like.entity';
 
 @Entity({ name: 'Posts' })
@@ -15,7 +22,7 @@ export class Posts {
   @Column()
   content: string;
   @ManyToOne(() => Blogs, (b) => b.Posts)
-  @JoinColumn({name: 'blogId'})
+  @JoinColumn({ name: 'blogId' })
   Blogs: Blogs;
   @Column('uuid')
   blogId: string;
@@ -28,9 +35,9 @@ export class Posts {
   @Column()
   dislikesCount: number;
   @OneToMany(() => Comments, (c) => c.Posts)
-  @JoinColumn({name: 'postId'})
-  Comments: Comments[]
-  @OneToMany(() => PostLikes, (pl) => pl.Posts )
-  @JoinColumn({name: 'postId'})
-  PostLikes: PostLikes[]
+  @JoinColumn({ name: 'postId' })
+  Comments: Comments[];
+  @OneToMany(() => PostLikes, (pl) => pl.Posts)
+  @JoinColumn({ name: 'postId' })
+  PostLikes: PostLikes[];
 }

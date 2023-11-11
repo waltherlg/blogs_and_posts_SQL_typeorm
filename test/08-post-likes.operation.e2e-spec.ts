@@ -276,8 +276,6 @@ export function testPostLikesCrud08() {
         .expect(204);
     });
 
-
-
     it('01-07 /posts/:postId GET = 200 return post for unauth user with 2 like and 2 dislike', async () => {
       //await delay(1000);
       const createResponse = await request(app.getHttpServer())
