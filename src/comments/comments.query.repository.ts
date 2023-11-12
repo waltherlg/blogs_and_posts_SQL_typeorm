@@ -84,15 +84,6 @@ export class CommentsQueryRepository {
     const pageSize = mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
 
-    const queryParams = [
-      sortBy,
-      sortDirection,
-      pageNumber,
-      pageSize,
-      skipPage,
-      postId,
-    ];
-
     //   const result = await this.postsRepository.findOne({ // хороший был бы вариант
     //     where: { postId: postId },
     //     relations: ["Comments"]
@@ -120,8 +111,10 @@ export class CommentsQueryRepository {
 
     const comments = await queryBuilder
       .orderBy(`comment.${sortBy}`, sortDirection)
-      .skip(skipPage)
-      .take(pageSize)
+      // .skip(skipPage)
+      // .take(pageSize)
+      .limit(pageSize)
+      .offset(skipPage)
       .getRawMany();
 
     let usersLikeObjectsForThisComments;

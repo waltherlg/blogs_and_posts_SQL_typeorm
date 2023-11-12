@@ -244,8 +244,10 @@ export class UsersQueryRepository {
 
     const [users, usersCount] = await queryBuilder
       .orderBy(`user.${sortBy}`, sortDirection)
-      .skip(skipPage)
-      .take(pageSize)
+      // .skip(skipPage)
+      // .take(pageSize)
+      .limit(pageSize)
+      .offset(skipPage)
       .getManyAndCount();
 
     const outUsers = users.map((user) => {

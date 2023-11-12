@@ -108,15 +108,11 @@ export class LikesRepository {
 
     const commentIdArray = await commentLikeQueryBuilder
     .getRawMany()
-
-    console.log('commentIdArray ', commentIdArray);
     
-
     const commentLikesPromises = commentIdArray.map((commentId) =>
     this.countAndSetCommentLikesAndDislikesForSpecificComment(commentId.commentId))
     const commentLikeResults = await Promise.all(commentLikesPromises);
-    console.log('commentLikeResults ', commentLikeResults);
-    
+  
 
     return true
     } catch (error) {

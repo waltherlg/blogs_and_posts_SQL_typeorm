@@ -69,8 +69,10 @@ export class BlogsQueryRepository {
     const blogsCount = await queryBuilder.getCount();
     const blogs = await queryBuilder
       .orderBy(`blog.${sortBy}`, sortDirection)
-      .skip(skipPage)
-      .take(pageSize)
+      .limit(pageSize)
+      .offset(skipPage)
+      // .skip(skipPage)
+      // .take(pageSize)
       .getMany();
     const blogsForOutput = blogs.map((blog) => {
       return {
@@ -120,8 +122,10 @@ export class BlogsQueryRepository {
 
     const blogs = await queryBuilder
       .orderBy(`blog.${sortBy}`, sortDirection)
-      .skip(skipPage)
-      .take(pageSize)
+      .limit(pageSize)
+      .offset(skipPage)
+      // .skip(skipPage)
+      // .take(pageSize)
       .getRawMany();
 
     const blogsForOutput = blogs.map((blog) => {
@@ -184,8 +188,10 @@ export class BlogsQueryRepository {
 
     const [blogs, blogsCount] = await queryBuilder
       .orderBy(`blog.${sortBy}`, sortDirection)
-      .skip(skipPage)
-      .take(pageSize)
+      .limit(pageSize)
+      .offset(skipPage)
+      // .skip(skipPage)
+      // .take(pageSize)
       .getManyAndCount();
 
     const pageCount = Math.ceil(blogsCount / pageSize);
