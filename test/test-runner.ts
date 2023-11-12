@@ -25,7 +25,7 @@ describe('End-to-End Tests', () => {
   testSaUsersGetWithPagination();
   //..testSecurityDevices()
   //..testAuthOperations();
-  //testAuthValidations()
+  //..testAuthValidations()
   //..testBloggerCrudOnlyBlogs();
   //..testBanUserForBlogByBlogger();
   //..saBlogsControllerCrudAndBan();

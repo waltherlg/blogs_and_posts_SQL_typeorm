@@ -16,7 +16,6 @@ export class RegisterationEmailResendingUseCase
 {
   constructor(
     private readonly usersRepository: UsersRepository,
-    private readonly dtoFactory: DTOFactory,
     private readonly emailManager: EmailManager,
   ) {}
   async execute(command: RegisterationEmailResendingCommand): Promise<any> {
