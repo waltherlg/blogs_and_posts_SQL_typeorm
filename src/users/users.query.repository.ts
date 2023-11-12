@@ -120,7 +120,7 @@ export class UsersQueryRepository {
         });
       }
       if (searchEmailTerm !== '') {
-        queryBuilder.where(`user.email ILIKE :searchEmailTerm`, {
+        queryBuilder.orWhere(`user.email ILIKE :searchEmailTerm`, {
           searchEmailTerm: `%${searchEmailTerm}%`,
         });
       }
@@ -211,7 +211,7 @@ export class UsersQueryRepository {
         });
       }
       if (searchEmailTerm !== '') {
-        queryBuilder.where(`user.email ILIKE :searchEmailTerm`, {
+        queryBuilder.orWhere(`user.email ILIKE :searchEmailTerm`, {
           searchEmailTerm: `%${searchEmailTerm}%`,
         });
       }

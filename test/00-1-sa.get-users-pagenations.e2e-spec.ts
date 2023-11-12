@@ -146,12 +146,12 @@ export function testSaUsersGetWithPagination() {
         pageSize: 10,
         totalCount: 6,
         items: [
-          testUserPag.outputUseraaafffkkk,
-          testUserPag.outputUseriiijjjkkk,
-          testUserPag.outputUserqqqrrrsss,
-          testUserPag.outputUseraaabbbccc,
-          testUserPag.outputUsereeefffggg,
-          testUserPag.outputUsermmmnnnooo,
+          testUserPag.outputUserSaaaafffkkk,
+          testUserPag.outputUserSaiiijjjkkk,
+          testUserPag.outputUserSaqqqrrrsss,
+          testUserPag.outputUserSaaaabbbccc,
+          testUserPag.outputUserSaeeefffggg,
+          testUserPag.outputUserSammmnnnooo,
         ],
       });
     });
@@ -170,20 +170,21 @@ export function testSaUsersGetWithPagination() {
         pageSize: 10,
         totalCount: 6,
         items: [
-          testUserPag.outputUseraaabbbccc,
-          testUserPag.outputUseraaafffkkk,
-          testUserPag.outputUsereeefffggg,
-          testUserPag.outputUseriiijjjkkk,
-          testUserPag.outputUsermmmnnnooo,
-          testUserPag.outputUserqqqrrrsss,
+          testUserPag.outputUserSaaaabbbccc,
+          testUserPag.outputUserSaaaafffkkk,
+          testUserPag.outputUserSaeeefffggg,
+          testUserPag.outputUserSaiiijjjkkk,
+          testUserPag.outputUserSammmnnnooo,
+          testUserPag.outputUserSaqqqrrrsss,
         ],
       });
     });
 
-    it('01-01 sa/users GET = 200 return with 2 users by searchLoginTerm "aaa" ASC', async () => {
+    it('01-01 sa/users GET = 200 return with 3 users by searchLoginTerm "aaa" ASC and searchEmailTerm: "pppppp"', async () => {
       const createResponse = await request(app.getHttpServer())
         .get(endpoints.saUsers)
         .query({
+          searchEmailTerm: 'pppppp',
           searchLoginTerm: 'aaa',
           sortBy: 'login',
           sortDirection: 'asc',
@@ -196,10 +197,34 @@ export function testSaUsersGetWithPagination() {
         pagesCount: 1,
         page: 1,
         pageSize: 10,
-        totalCount: 2,
+        totalCount: 3,
         items: [
-          testUserPag.outputUseraaabbbccc,
-          testUserPag.outputUseraaafffkkk,
+          testUserPag.outputUserSaaaabbbccc,
+          testUserPag.outputUserSaaaafffkkk,
+          testUserPag.outputUserSammmnnnooo
+        ],
+      });
+    });
+
+    it('01-01 sa/users GET = 200 return with 3 users by searchEmailTerm: "pppppp"', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.saUsers)
+        .query({
+          searchEmailTerm: 'pppppp',
+          sortBy: 'login',
+          sortDirection: 'asc',
+        })
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .expect(200);
+      const createdResponseBody = createResponse.body;
+
+      expect(createdResponseBody).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 1,
+        items: [
+          testUserPag.outputUserSammmnnnooo
         ],
       });
     });
@@ -242,8 +267,8 @@ export function testSaUsersGetWithPagination() {
         pageSize: 10,
         totalCount: 2,
         items: [
-          testUserPag.outputUsereeefffgggBanned,
-          testUserPag.outputUseriiijjjkkkBanned,
+          testUserPag.outputUserSaeeefffgggBanned,
+          testUserPag.outputUserSaiiijjjkkkBanned,
         ],
       });
     });
@@ -266,10 +291,10 @@ export function testSaUsersGetWithPagination() {
         pageSize: 10,
         totalCount: 4,
         items: [
-          testUserPag.outputUseraaabbbccc,
-          testUserPag.outputUseraaafffkkk,
-          testUserPag.outputUsermmmnnnooo,
-          testUserPag.outputUserqqqrrrsss,
+          testUserPag.outputUserSaaaabbbccc,
+          testUserPag.outputUserSaaaafffkkk,
+          testUserPag.outputUserSammmnnnooo,
+          testUserPag.outputUserSaqqqrrrsss,
         ],
       });
     });
@@ -288,12 +313,12 @@ export function testSaUsersGetWithPagination() {
         pageSize: 10,
         totalCount: 6,
         items: [
-          testUserPag.outputUserqqqrrrsss,
-          testUserPag.outputUsermmmnnnooo,
-          testUserPag.outputUseriiijjjkkkBanned,
-          testUserPag.outputUsereeefffgggBanned,
-          testUserPag.outputUseraaafffkkk,
-          testUserPag.outputUseraaabbbccc,
+          testUserPag.outputUserSaqqqrrrsss,
+          testUserPag.outputUserSammmnnnooo,
+          testUserPag.outputUserSaiiijjjkkkBanned,
+          testUserPag.outputUserSaeeefffgggBanned,
+          testUserPag.outputUserSaaaafffkkk,
+          testUserPag.outputUserSaaaabbbccc,
         ],
       });
     });
@@ -312,8 +337,8 @@ export function testSaUsersGetWithPagination() {
         pageSize: 2,
         totalCount: 6,
         items: [
-          testUserPag.outputUserqqqrrrsss,
-          testUserPag.outputUsermmmnnnooo,
+          testUserPag.outputUserSaqqqrrrsss,
+          testUserPag.outputUserSammmnnnooo,
         ],
       });
     });
@@ -337,9 +362,9 @@ export function testSaUsersGetWithPagination() {
         pageSize: 3,
         totalCount: 6,
         items: [
-          testUserPag.outputUseriiijjjkkkBanned,
-          testUserPag.outputUsermmmnnnooo,
-          testUserPag.outputUserqqqrrrsss,
+          testUserPag.outputUserSaiiijjjkkkBanned,
+          testUserPag.outputUserSammmnnnooo,
+          testUserPag.outputUserSaqqqrrrsss,
         ],
       });
     });

@@ -256,6 +256,12 @@ export const testUserPag = {
       banReason: expect.any(String),
     },
   },
+  outputUserSaeeefffgggBanned: {
+    id: expect.any(String),
+    login: 'eeefffggg',
+    email: 'hhhhhh@gemeil.com',
+    createdAt: expect.any(String),
+  },
   outputUseriiijjjkkkBanned: {
     id: expect.any(String),
     login: 'iiijjjkkk',
@@ -266,6 +272,12 @@ export const testUserPag = {
       banDate: expect.any(String),
       banReason: expect.any(String),
     },
+  },
+  outputUserSaiiijjjkkkBanned: {
+    id: expect.any(String),
+    login: 'iiijjjkkk',
+    email: 'llllll@gemeil.com',
+    createdAt: expect.any(String),
   },
 };
 
