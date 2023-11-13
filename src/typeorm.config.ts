@@ -29,7 +29,7 @@ const typeOrmConfig: TypeOrmModuleOptions = {
   autoLoadEntities: true,
   //options: { encrypt: false },
   logging: false,
-  synchronize: false,
+  synchronize: true,
   ssl: true,
   extra: {
       ssl: {
