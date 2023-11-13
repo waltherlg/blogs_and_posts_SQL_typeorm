@@ -52,8 +52,6 @@ export class SetLikeStatusForCommentUseCase
         commentId,
         new Date().toISOString(),
         userId,
-        likerLogin,
-        false,
         status,
       );
       const isLikeAdded = await this.likesRepository.addCommentLikeStatus(

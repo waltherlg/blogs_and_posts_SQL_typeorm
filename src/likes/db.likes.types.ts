@@ -12,8 +12,8 @@ export class CommentLikeDbType {
     public commentId: string,
     public addedAt: string,
     public userId: string,
-    public login: string,
-    public isUserBanned: boolean,
+    // public login: string,
+    // public isUserBanned: boolean,
     public status: string,
   ) {}
 }

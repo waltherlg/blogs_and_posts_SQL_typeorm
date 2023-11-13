@@ -51,10 +51,10 @@ export class CommentLikes {
   Users: Users;
   @Column('uuid')
   userId: string;
-  @Column({ nullable: true })
-  login: string;
-  @Column()
-  isUserBanned: boolean;
+  // @Column({ nullable: true })
+  // login: string;
+  // @Column()
+  // isUserBanned: boolean;
   @Column()
   status: string;
 }
