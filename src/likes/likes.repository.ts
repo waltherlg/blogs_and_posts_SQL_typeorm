@@ -75,15 +75,6 @@ export class LikesRepository {
     return commentLikeObject;
   }
 
-  // async multiplecountAndSetPostLikesAndDislikesForPosts(postIdArray) {
-  //   const promises = postIdArray.map((postId) =>
-  //     this.countAndSetPostLikesAndDislikesForSpecificPost(postId),
-  //   );
-  //   const results = await Promise.all(promises);
-  //   return results;
-  // }
-
-
   async recountLikesAfterUserBanChange(userId) {
     if (!isValidUUID(userId)) {
       return null;
