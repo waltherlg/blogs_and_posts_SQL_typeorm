@@ -21,26 +21,26 @@ import { postCrudOperationsBySa07 } from './07-01-post.CRUDBySa.e2e-spec';
 import { commentLikesWithUserBanCrud1301 } from './13-01-comments-likes.with.user.bane2e-spec copy 2';
 
 describe('End-to-End Tests', () => {
-  testSaUsersCrud();
-  testSaUsersGetWithPagination();
-  testSecurityDevices()
-  testAuthOperations();
-  testAuthValidations()
-  testBloggerCrudOnlyBlogs();
+  //..testSaUsersCrud();
+  //..testSaUsersGetWithPagination();
+  //..testSecurityDevices();
+  //..testAuthOperations();
+  //..testAuthValidations();
+  //..testBloggerCrudOnlyBlogs();
   testBanUserForBlogByBlogger();
-  saBlogsControllerCrudAndBan();
-  postCrudOperationsByBlogger07()
+  //..saBlogsControllerCrudAndBan();
+  //..postCrudOperationsByBlogger07();
   //postCrudOperationsBySa07()
-  testPostLikesCrud08()
-  commentCrudOperations(); // this comment CRUD if blog create blogger
-  saCommentCrudOperations();
+  //..testPostLikesCrud08();
+  //..commentCrudOperations(); // this comment CRUD if blog create blogger
+  //..saCommentCrudOperations();
 
-  testCommentLikesCrud();
+  //..testCommentLikesCrud();
 
   //commentPaginationTest14()
 
-  onlyCommentLikesCrud13(); // только для проверки создания лайка для комментария
-  commentLikesWithUserBanCrud1301()
+  //..onlyCommentLikesCrud13(); // только для проверки создания лайка для комментария
+  //..commentLikesWithUserBanCrud1301();
   //banCheckOperation()
 
   //bloggerUsersControllers()

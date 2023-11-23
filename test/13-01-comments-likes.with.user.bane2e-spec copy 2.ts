@@ -350,7 +350,7 @@ export function commentLikesWithUserBanCrud1301() {
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send({
           isBanned: true,
-          banReason: 'some ban reason for user2'
+          banReason: 'some ban reason for user2',
         })
         .expect(204);
     });
@@ -408,7 +408,7 @@ export function commentLikesWithUserBanCrud1301() {
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send({
           isBanned: true,
-          banReason: 'some ban reason for user2'
+          banReason: 'some ban reason for user2',
         })
         .expect(204);
     });
@@ -452,7 +452,7 @@ export function commentLikesWithUserBanCrud1301() {
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send({
           isBanned: false,
-          banReason: 'some ban reason for user2'
+          banReason: 'some ban reason for user2',
         })
         .expect(204);
     });
@@ -496,7 +496,7 @@ export function commentLikesWithUserBanCrud1301() {
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send({
           isBanned: false,
-          banReason: 'some ban reason for user2'
+          banReason: 'some ban reason for user2',
         })
         .expect(204);
     });
@@ -547,10 +547,5 @@ export function commentLikesWithUserBanCrud1301() {
         ],
       });
     });
-
-
-
-
-
   });
 }

@@ -201,7 +201,7 @@ export function testSaUsersGetWithPagination() {
         items: [
           testUserPag.outputUserSaaaabbbccc,
           testUserPag.outputUserSaaaafffkkk,
-          testUserPag.outputUserSammmnnnooo
+          testUserPag.outputUserSammmnnnooo,
         ],
       });
     });
@@ -223,9 +223,7 @@ export function testSaUsersGetWithPagination() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [
-          testUserPag.outputUserSammmnnnooo
-        ],
+        items: [testUserPag.outputUserSammmnnnooo],
       });
     });
 

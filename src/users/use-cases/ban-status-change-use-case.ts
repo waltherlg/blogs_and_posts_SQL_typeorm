@@ -46,11 +46,12 @@ export class UserBanStatusChangeUseCase
     const isBanStatusChanged = await this.usersRepository.changeUserBanStatus(
       userBanDto,
     );
-    const isLikesRecounted = await this.likesRepository.recountLikesAfterUserBanChange(userId)
-    if(isBanStatusChanged && isLikesRecounted){
-      return true
+    const isLikesRecounted =
+      await this.likesRepository.recountLikesAfterUserBanChange(userId);
+    if (isBanStatusChanged && isLikesRecounted) {
+      return true;
     } else {
-      return false
+      return false;
     }
   }
 }

@@ -80,36 +80,38 @@ export class LikesRepository {
       return null;
     }
     try {
-    const postLikeQueryBuilder = this.postLikesRepository.createQueryBuilder('postLike')
-    postLikeQueryBuilder
-    .select('postLike.postId', 'postId')
-    .where('postLike.userId = :userId', {userId: userId})
+      const postLikeQueryBuilder =
+        this.postLikesRepository.createQueryBuilder('postLike');
+      postLikeQueryBuilder
+        .select('postLike.postId', 'postId')
+        .where('postLike.userId = :userId', { userId: userId });
 
-    const postIdArray = await postLikeQueryBuilder
-    .getRawMany()
+      const postIdArray = await postLikeQueryBuilder.getRawMany();
 
-    const postLikesPromises = postIdArray.map((postId) =>
-    this.countAndSetPostLikesAndDislikesForSpecificPost(postId.postId))
-    const postLikesResults = await Promise.all(postLikesPromises);
+      const postLikesPromises = postIdArray.map((postId) =>
+        this.countAndSetPostLikesAndDislikesForSpecificPost(postId.postId),
+      );
+      const postLikesResults = await Promise.all(postLikesPromises);
 
-    const commentLikeQueryBuilder = this.commentLikesRepository.createQueryBuilder('commentLike')
-    commentLikeQueryBuilder
-    .select('commentLike.commentId', 'commentId')
-    .where('commentLike.userId = :userId', {userId: userId})
+      const commentLikeQueryBuilder =
+        this.commentLikesRepository.createQueryBuilder('commentLike');
+      commentLikeQueryBuilder
+        .select('commentLike.commentId', 'commentId')
+        .where('commentLike.userId = :userId', { userId: userId });
 
-    const commentIdArray = await commentLikeQueryBuilder
-    .getRawMany()
-    
-    const commentLikesPromises = commentIdArray.map((commentId) =>
-    this.countAndSetCommentLikesAndDislikesForSpecificComment(commentId.commentId))
-    const commentLikeResults = await Promise.all(commentLikesPromises);
-  
+      const commentIdArray = await commentLikeQueryBuilder.getRawMany();
 
-    return true
+      const commentLikesPromises = commentIdArray.map((commentId) =>
+        this.countAndSetCommentLikesAndDislikesForSpecificComment(
+          commentId.commentId,
+        ),
+      );
+      const commentLikeResults = await Promise.all(commentLikesPromises);
+
+      return true;
     } catch (error) {
-      return false      
+      return false;
     }
-
   }
   async countAndSetPostLikesAndDislikesForSpecificPost(
     postId,

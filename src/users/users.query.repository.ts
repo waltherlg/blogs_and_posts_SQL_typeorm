@@ -1,5 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { NewCreatedUserTypeOutput, UserTypeOutput, UserTypeOutputForSa } from './users.types';
+import {
+  NewCreatedUserTypeOutput,
+  UserTypeOutput,
+  UserTypeOutputForSa,
+} from './users.types';
 import {
   PaginationOutputModel,
   RequestBannedUsersQueryModel,
@@ -303,16 +307,16 @@ export class UsersQueryRepository {
 
     const bannedUsers = await queryBuilder
       .orderBy(`"${sortBy}"`, sortDirection)
-      // .take(pageSize)
-      // .skip(skipPage)
+      .take(pageSize)
+      .skip(skipPage)
       .limit(pageSize)
       .offset(skipPage)
-      .getRawMany();
+      .getRawMany();  
 
     const bannedUsersForOutput = bannedUsers.map((bannedUser) => {
       return {
         id: bannedUser.userId,
-        login: bannedUser.login,
+        //login: bannedUser.login,
         banInfo: {
           isBanned: true,
           banDate: bannedUser.banDate,
