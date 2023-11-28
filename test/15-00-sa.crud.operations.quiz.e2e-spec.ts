@@ -9,6 +9,7 @@ export function questionCrudOperationsSa15() {
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
+    let questionId1
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -21,6 +22,25 @@ export function questionCrudOperationsSa15() {
     afterAll(async () => {
       await app.close();
     });
+
+    it('00-00 testing/all-data DELETE = 204 removeAllData', async () => {
+        await request(app.getHttpServer())
+          .delete(endpoints.wipeAllData)
+          .expect(204);
+      });
+
+      it('00-00 sa/questions POST = 201 create question1 with return', async () => {
+        const createResponse = await request(app.getHttpServer())
+          .post(endpoints.saQuestions)
+          .set('Authorization', `Basic ${basicAuthRight}`)
+          .send(testQuestion.inputQuestion1)
+          .expect(201);
+  
+        const createdResponseBody = createResponse.body;
+        questionId1 = createdResponseBody.id;
+  
+        expect(createdResponseBody).toEqual(testQuestion.outputQuestion1Sa);
+      });
 
   });
 }

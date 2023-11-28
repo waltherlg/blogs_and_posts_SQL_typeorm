@@ -1,9 +1,9 @@
 export const endpoints = {
   wipeAllData: '/testing/all-data',
-  //
+  
   bloggerBlogs: '/blogger/blogs',
   bloggerUsers: '/blogger/users',
-
+  
   comments: '/comments',
   saUsers: '/sa/users',
   saBlogs: '/sa/blogs',
@@ -11,6 +11,8 @@ export const endpoints = {
   posts: '/posts',
   auth: '/auth',
   devices: '/security/devices',
+  saQuestions: '/sa/questions',
+
 };
 
 export const delayFunction = async (ms: number) => {
