@@ -95,6 +95,7 @@ import { Comments } from './comments/comment.entity';
 import { CommentLikes, PostLikes } from './likes/like.entity';
 import { PublicQuizGameController } from './quizGame/public.pair.game.quiz.controller';
 import { SaQuizController } from './quizGame/sa.quiz.controller';
+import { SaCreateQuestionUseCase } from './quizGame/use-cases/sa-creates-question-use-case';
 const mongoUri = process.env.MONGO_URL;
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
@@ -132,6 +133,7 @@ const useCases = [
   CreateUserUseCase,
   SetLikeStatusForPostUseCase,
   SetLikeStatusForCommentUseCase,
+  SaCreateQuestionUseCase,
 ];
 
 @Module({
