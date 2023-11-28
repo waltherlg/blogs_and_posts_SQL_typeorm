@@ -30,7 +30,7 @@ export class QuestionDbType {
         public correctAnswers: [],
         public published: boolean,
         public createdAt: string,
-        public updatedAt: string | null,
+        public updatedAt: string,
     ) {}
 }
 
@@ -46,6 +46,6 @@ export class Questions {
     published: boolean;
     @Column({ type: 'timestamptz'})
     createdAt: string;
-    @Column({ type: 'timestamptz', nullable: true })
-    updatedAt: string | null;    
+    @Column({ type: 'timestamptz'})
+    updatedAt: string;    
 }
