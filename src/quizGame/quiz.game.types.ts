@@ -1,4 +1,4 @@
-import { IsArray, Length } from "class-validator";
+import { IsArray, IsBoolean, Length } from "class-validator";
 import { StringTrimNotEmpty } from "../middlewares/validators";
 
 export class CreateQuestionImputModelType {
@@ -7,4 +7,9 @@ export class CreateQuestionImputModelType {
     body: string;
     @IsArray()
     correctAnswers: [];
+}
+
+export class PublishQuestionImputModelType {
+    @IsBoolean()
+    published: string;
 }
