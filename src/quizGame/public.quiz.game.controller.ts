@@ -1,7 +1,7 @@
 import { Controller, Get, HttpCode, Post } from "@nestjs/common";
 
 @Controller('pair-game-quiz')
-export class QuizGameController {
+export class PublicQuizGameController {
 
     @Post('pairs/my-current')
     @HttpCode(200) 
