@@ -30,7 +30,7 @@ export class QuestionDbType {
         public correctAnswers: [],
         public published: boolean,
         public createdAt: string,
-        public updatedAt: string | null,
+        public updatedAt: string,
     ) {}
 }
 
