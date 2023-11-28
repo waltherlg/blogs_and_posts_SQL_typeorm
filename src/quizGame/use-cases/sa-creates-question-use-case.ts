@@ -1,4 +1,5 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
+import { QuestionsRepository } from "../questions.repository";
 
 
 
@@ -8,7 +9,8 @@ export class SaCreateQuestionCommand {
 //TODO need finish
 @CommandHandler(SaCreateQuestionCommand)
 export class SaCreateQuestionUseCase implements ICommandHandler<SaCreateQuestionCommand>{
-    constructor(){}
+    constructor(private readonly questionRepository: QuestionsRepository){}
+    
     async execute(command: SaCreateQuestionCommand): Promise<any> {
         
     }

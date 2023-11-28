@@ -1,7 +1,10 @@
 import { Controller, Delete, Get, HttpCode, Post, Put } from "@nestjs/common";
+import { CommandBus } from "@nestjs/cqrs";
 
 @Controller('quiz')
 export class SaQuizController {
+constructor(private readonly commandBus: CommandBus){}
+
     @Get('questions')
     @HttpCode(200)
     //TODO
