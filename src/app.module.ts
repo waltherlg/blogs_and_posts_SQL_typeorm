@@ -96,6 +96,7 @@ import { CommentLikes, PostLikes } from './likes/like.entity';
 import { PublicQuizGameController } from './quizGame/public.pair.game.quiz.controller';
 import { SaQuizController } from './quizGame/sa.quiz.controller';
 import { SaCreateQuestionUseCase } from './quizGame/use-cases/sa-creates-question-use-case';
+import { QuestionsRepository } from './quizGame/questions.repository';
 const mongoUri = process.env.MONGO_URL;
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
@@ -213,6 +214,7 @@ const useCases = [
     CommentsRepository,
     CommentsQueryRepository,
     LikesRepository,
+    QuestionsRepository,
     LocalStrategy,
     JwtStrategy,
     RefreshTokenStrategy,
