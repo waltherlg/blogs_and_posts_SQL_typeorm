@@ -46,6 +46,6 @@ export class Questions {
     published: boolean;
     @Column({ type: 'timestamptz'})
     createdAt: string;
-    @Column({ type: 'timestamptz', nullable: true })
-    updatedAt: string | null;    
+    @Column({ type: 'timestamptz'})
+    updatedAt: string;    
 }
