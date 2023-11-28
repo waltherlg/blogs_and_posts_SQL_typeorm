@@ -13,6 +13,7 @@ import { Blogs, BlogBannedUsers } from '../blogs/blog.entity';
 import { Posts } from '../posts/post.entity';
 import { Comments } from '../comments/comment.entity';
 import { CommentLikes, PostLikes } from '../likes/like.entity';
+import { Questions } from '../quizGame/quiz.game.types';
 
 export default new DataSource({
   type: 'postgres',
@@ -32,6 +33,7 @@ export default new DataSource({
     Comments,
     CommentLikes,
     PostLikes,
+    Questions,
   ],
   //migrations: [ "src/db/migrations/*.ts" ],
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
