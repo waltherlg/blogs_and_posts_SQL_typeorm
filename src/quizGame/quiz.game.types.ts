@@ -21,3 +21,15 @@ export class PublishQuestionImputModelType {
     @IsBoolean()
     published: string;
 }
+
+export class QuestionDbType {
+    constructor(
+        public questionId: string,
+        public body: string,
+        public correctAnswers: [],
+        public published: boolean,
+        public createdAt: string,
+        public updatedAt: string | null,
+    ) {}
+
+}
