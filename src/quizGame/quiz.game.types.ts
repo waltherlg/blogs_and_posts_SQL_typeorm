@@ -9,6 +9,14 @@ export class CreateQuestionImputModelType {
     correctAnswers: [];
 }
 
+export class UpdateQuestionImputModelType {
+    @StringTrimNotEmpty()
+    @Length(10, 500)
+    body: string;
+    @IsArray()
+    correctAnswers: [];
+}
+
 export class PublishQuestionImputModelType {
     @IsBoolean()
     published: string;
