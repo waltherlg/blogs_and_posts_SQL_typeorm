@@ -22,6 +22,7 @@ export class SaCreateQuestionUseCase implements ICommandHandler<SaCreateQuestion
             new Date().toISOString(),
             new Date().toISOString(),            
         )
-        
+        const questionId = await this.questionRepository.createQuestion(questionDto)
+        return questionId        
     }
 }

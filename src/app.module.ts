@@ -97,6 +97,8 @@ import { PublicQuizGameController } from './quizGame/public.pair.game.quiz.contr
 import { SaQuizController } from './quizGame/sa.quiz.controller';
 import { SaCreateQuestionUseCase } from './quizGame/use-cases/sa-creates-question-use-case';
 import { QuestionsRepository } from './quizGame/questions.repository';
+import { QuestionsQueryRepository } from './quizGame/questions.query.repository';
+import { Questions } from './quizGame/quiz.game.types';
 const mongoUri = process.env.MONGO_URL;
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
@@ -149,6 +151,7 @@ const useCases = [
       PostLikes,
       CommentLikes,
       BlogBannedUsers,
+      Questions,
     ]),
     CqrsModule,
     ThrottlerModule.forRoot({
@@ -215,6 +218,7 @@ const useCases = [
     CommentsQueryRepository,
     LikesRepository,
     QuestionsRepository,
+    QuestionsQueryRepository,
     LocalStrategy,
     JwtStrategy,
     RefreshTokenStrategy,

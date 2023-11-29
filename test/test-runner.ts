@@ -1,9 +1,6 @@
 import { testSaUsersCrud } from './00-0-sa.users.e2e-spec';
 import { testSaUsersGetWithPagination } from './00-1-sa.get-users-pagenations.e2e-spec';
-import { testBlogCrud } from './w-blogs.e2e-spec';
-import { testPostCrud } from './w-posts.e2e-spec';
 import { testSecurityDevices } from './01-01-security-devices.e2e-spec';
-import { testCommentsCrud } from './w-comments.e2e-spec';
 import { testAuthOperations } from './03-00-auth.(integration).test';
 import { testAuthValidations } from './03-01-auth.validations.e2e-spec';
 import { testBloggerCrudOnlyBlogs } from './05-00-blogger.blogs.controller';
@@ -19,6 +16,7 @@ import { onlyCommentLikesCrud13 } from './13-only-comments-likes.e2e-spec copy';
 import { commentPaginationTest14 } from './14-00-comments.pagination.e2e-spec';
 import { postCrudOperationsBySa07 } from './07-01-post.CRUDBySa.e2e-spec';
 import { commentLikesWithUserBanCrud1301 } from './13-01-comments-likes.with.user.bane2e-spec copy 2';
+import { questionCrudOperationsSa15 } from './15-00-sa.crud.operations.quiz.e2e-spec';
 
 describe('End-to-End Tests', () => {
   //..testSaUsersCrud();
@@ -27,7 +25,7 @@ describe('End-to-End Tests', () => {
   //..testAuthOperations();
   //..testAuthValidations();
   //..testBloggerCrudOnlyBlogs();
-  testBanUserForBlogByBlogger();
+  //..testBanUserForBlogByBlogger();
   //..saBlogsControllerCrudAndBan();
   //..postCrudOperationsByBlogger07();
   //postCrudOperationsBySa07()
@@ -44,4 +42,6 @@ describe('End-to-End Tests', () => {
   //banCheckOperation()
 
   //bloggerUsersControllers()
+
+  questionCrudOperationsSa15()
 });
