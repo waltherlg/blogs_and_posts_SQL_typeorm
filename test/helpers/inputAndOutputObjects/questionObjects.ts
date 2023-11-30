@@ -1,4 +1,4 @@
-const testQuestion = {
+export const testQuestions = {
     inputQuestion1: {
         body: 'question1',
         correctAnswers: ['correct answer for question1', 'ansForQue1']

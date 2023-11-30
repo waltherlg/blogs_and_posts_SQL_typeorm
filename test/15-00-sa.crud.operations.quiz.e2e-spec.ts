@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
+import { testQuestions } from './helpers/inputAndOutputObjects/questionObjects';
 
 export function questionCrudOperationsSa15() {
   describe('question CRUD operation SA (e2e)', () => {
@@ -29,17 +30,17 @@ export function questionCrudOperationsSa15() {
           .expect(204);
       });
 
-      it('00-00 sa/questions POST = 201 create question1 with return', async () => {
+      it('00-00 quiz/questions POST = 201 create question1 with return', async () => {
         const createResponse = await request(app.getHttpServer())
-          .post(endpoints.saQuestions)
+          .post(endpoints.quizQuestions)
           .set('Authorization', `Basic ${basicAuthRight}`)
-          .send(testQuestion.inputQuestion1)
+          .send(testQuestions.inputQuestion1)
           .expect(201);
   
         const createdResponseBody = createResponse.body;
         questionId1 = createdResponseBody.id;
   
-        expect(createdResponseBody).toEqual(testQuestion.outputQuestion1Sa);
+        expect(createdResponseBody).toEqual(testQuestions.outputQuestion1Sa);
       });
 
   });

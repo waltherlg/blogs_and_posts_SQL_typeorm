@@ -21,7 +21,7 @@ constructor(private readonly commandBus: CommandBus,
     }
 
     @Post('questions')
-    @HttpCode(200)
+    @HttpCode(201)
     //TODO
     //create questions for quizGame
     async createQuestion(@Body()inputQuestionData: CreateQuestionImputModelType ){

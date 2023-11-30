@@ -11,7 +11,7 @@ export const endpoints = {
   posts: '/posts',
   auth: '/auth',
   devices: '/security/devices',
-  saQuestions: '/sa/questions',
+  quizQuestions: '/quiz/questions',
 
 };
 
