@@ -41,6 +41,22 @@ export type RequestUsersQueryModel = RequestQueryParamsModel & {
   banStatus: string;
 };
 
+export type RequestQuestionsQueryModel = RequestQueryParamsModel & {
+  bodySearchTerm: string;
+  publishedStatus: string;
+};
+
+enum enumPublishedStatus {all, published, notPublished}
+
+export const DEFAULT_QUESTIONS_QUERY_PARAMS: RequestQuestionsQueryModel = {
+  sortBy: 'createdAt',
+  sortDirection: 'DESC',
+  pageNumber: '1',
+  pageSize: '10',
+  bodySearchTerm: '',
+  publishedStatus: 'all',
+};
+
 export const DEFAULT_USERS_QUERY_PARAMS: RequestUsersQueryModel = {
   sortBy: 'createdAt',
   sortDirection: 'DESC',

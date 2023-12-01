@@ -34,6 +34,15 @@ export class QuestionDbType {
     ) {}
 }
 
+export type questionOutputSaType = {
+        id: string,
+        body: string,
+        correctAnswers: any[],
+        published: boolean,
+        createdAt: string,
+        updatedAt: string,
+}
+
 @Entity({name: 'Questions'})
 export class Questions {
     @PrimaryColumn('uuid')

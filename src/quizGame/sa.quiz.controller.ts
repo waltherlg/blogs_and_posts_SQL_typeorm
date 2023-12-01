@@ -1,10 +1,11 @@
-import { Body, Controller, Delete, Get, HttpCode, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
 import { CreateQuestionImputModelType } from "./quiz.game.types";
 import { BasicAuthGuard } from "src/auth/guards/auth.guards";
 import { SaCreateQuestionCommand } from "./use-cases/sa-creates-question-use-case";
 import { QuestionsRepository } from "./questions.repository";
 import { QuestionsQueryRepository } from "./questions.query.repository";
+import { DEFAULT_QUESTIONS_QUERY_PARAMS, RequestQuestionsQueryModel } from "src/models/types";
 
 @UseGuards(BasicAuthGuard)
 @Controller('quiz')
@@ -16,7 +17,9 @@ constructor(private readonly commandBus: CommandBus,
     @HttpCode(200)
     //TODO
     // get all question with pagination
-    async getAllQuestions(){
+    async getAllQuestions(@Query() queryParams: RequestQuestionsQueryModel){
+        const mergedQueryParams = { ...DEFAULT_QUESTIONS_QUERY_PARAMS, ...queryParams };
+        return await this.questionQueryRepository.getAllQuestionsForSa(mergedQueryParams)
 
     }
 
