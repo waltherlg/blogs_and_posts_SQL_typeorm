@@ -6,12 +6,15 @@ import { SaCreateQuestionCommand } from "./use-cases/sa-creates-question-use-cas
 import { QuestionsRepository } from "./questions.repository";
 import { QuestionsQueryRepository } from "./questions.query.repository";
 import { DEFAULT_QUESTIONS_QUERY_PARAMS, RequestQuestionsQueryModel } from "src/models/types";
+import { CheckService } from "../other.services/check.service";
+import { CustomNotFoundException } from "../exceptions/custom.exceptions";
 
 @UseGuards(BasicAuthGuard)
 @Controller('quiz')
 export class SaQuizController {
 constructor(private readonly commandBus: CommandBus,
-            private readonly questionQueryRepository: QuestionsQueryRepository){}
+            private readonly questionQueryRepository: QuestionsQueryRepository,
+            private readonly checkService: CheckService){}
 
     @Get('questions')
     @HttpCode(200)
@@ -36,6 +39,9 @@ constructor(private readonly commandBus: CommandBus,
     @HttpCode(204)
     //TODO
     async deleteQuestionById(@Param('questionId') questionId: string){
+        if(!(await this.checkService.isQuestionExist(questionId))){
+            throw new CustomNotFoundException('question')
+        }
 
     }
 
