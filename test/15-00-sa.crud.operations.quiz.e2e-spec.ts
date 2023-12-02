@@ -30,6 +30,22 @@ export function questionCrudOperationsSa15() {
           .expect(204);
       });
 
+      it('01-01 quiz/questions GET = 200 return empty array with pagination', async () => {
+        const createResponse = await request(app.getHttpServer())
+          .get(endpoints.quizQuestions)
+          .set('Authorization', `Basic ${basicAuthRight}`)
+          .expect(200);
+        const createdResponse = createResponse.body;
+  
+        expect(createdResponse).toEqual({
+          pagesCount: 0,
+          page: 1,
+          pageSize: 10,
+          totalCount: 0,
+          items: [],
+        });
+      });
+
       it('00-00 quiz/questions POST = 201 create question1 with return', async () => {
         const createResponse = await request(app.getHttpServer())
           .post(endpoints.quizQuestions)
@@ -41,6 +57,38 @@ export function questionCrudOperationsSa15() {
         questionId1 = createdResponseBody.id;
   
         expect(createdResponseBody).toEqual(testQuestions.outputQuestion1Sa);
+      });
+
+      it('00-00 quiz/questions POST = 201 create question2 with return', async () => {
+        const createResponse = await request(app.getHttpServer())
+          .post(endpoints.quizQuestions)
+          .set('Authorization', `Basic ${basicAuthRight}`)
+          .send(testQuestions.inputQuestion2)
+          .expect(201);
+  
+        const createdResponseBody = createResponse.body;
+        questionId1 = createdResponseBody.id;
+  
+        expect(createdResponseBody).toEqual(testQuestions.outputQuestion2Sa);
+      });
+
+      it('01-01 quiz/questions GET = 200 return array with 2 questions pagination', async () => {
+        const createResponse = await request(app.getHttpServer())
+          .get(endpoints.quizQuestions)
+          .set('Authorization', `Basic ${basicAuthRight}`)
+          .expect(200);
+        const createdResponse = createResponse.body;
+  
+        expect(createdResponse).toEqual({
+          pagesCount: 1,
+          page: 1,
+          pageSize: 10,
+          totalCount: 2,
+          items: [
+            testQuestions.outputQuestion2Sa,
+            testQuestions.outputQuestion1Sa,
+          ],
+        });
       });
 
   });

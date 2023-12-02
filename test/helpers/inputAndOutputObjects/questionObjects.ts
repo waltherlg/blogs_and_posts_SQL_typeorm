@@ -37,85 +37,85 @@ export const testQuestions = {
         updatedAt:expect.any(String),
     },
     inputQuestion4: {
-        body: 'question1',
+        body: 'question4',
         correctAnswers: ['correct answer for question4', 'answer4']
     },
     outputQuestion4Sa: {
         id: expect.any(String),
-        body: 'question1',
+        body: 'question4',
         correctAnswers: ['correct answer for question4', 'answer4'],
         published: false,
         createdAt:expect.any(String),
         updatedAt:expect.any(String),
     },
     inputQuestion5: {
-        body: 'question1',
+        body: 'question5',
         correctAnswers: ['correct answer for question5', 'answer5']
     },
     outputQuestion5Sa: {
         id: expect.any(String),
-        body: 'question1',
+        body: 'question5',
         correctAnswers: ['correct answer for question5', 'answer5'],
         published: false,
         createdAt:expect.any(String),
         updatedAt:expect.any(String),
     },
     inputQuestion6: {
-        body: 'question1',
+        body: 'question6',
         correctAnswers: ['correct answer for question6', 'answer6']
     },
     outputQuestion6Sa: {
         id: expect.any(String),
-        body: 'question1',
+        body: 'question6',
         correctAnswers: ['correct answer for question6', 'answer6'],
         published: false,
         createdAt:expect.any(String),
         updatedAt:expect.any(String),
     },
     inputQuestion7: {
-        body: 'question1',
+        body: 'question7',
         correctAnswers: ['correct answer for question7', 'answer7']
     },
     outputQuestion7Sa: {
         id: expect.any(String),
-        body: 'question1',
+        body: 'question7',
         correctAnswers: ['correct answer for question7', 'answer7'],
         published: false,
         createdAt:expect.any(String),
         updatedAt:expect.any(String),
     },
     inputQuestion8: {
-        body: 'question1',
+        body: 'question8',
         correctAnswers: ['correct answer for question8', 'answer8']
     },
     outputQuestion8Sa: {
         id: expect.any(String),
-        body: 'question1',
+        body: 'question8',
         correctAnswers: ['correct answer for question8', 'answer8'],
         published: false,
         createdAt:expect.any(String),
         updatedAt:expect.any(String),
     },
-    inputQuestion2: {
-        body: 'question1',
-        correctAnswers: ['correct answer for question2', 'answer2']
+    inputQuestion9: {
+        body: 'question9',
+        correctAnswers: ['correct answer for question9', 'answer9']
     },
-    outputQuestion2Sa: {
+    outputQuestion9Sa: {
         id: expect.any(String),
-        body: 'question1',
-        correctAnswers: ['correct answer for question2', 'answer2'],
+        body: 'question9',
+        correctAnswers: ['correct answer for question9', 'answer9'],
         published: false,
         createdAt:expect.any(String),
         updatedAt:expect.any(String),
     },
-    inputQuestion2: {
-        body: 'question1',
-        correctAnswers: ['correct answer for question2', 'answer2']
+    inputQuestion10: {
+        body: 'question10',
+        correctAnswers: ['correct answer for question10', 'answer10']
     },
-    outputQuestion2Sa: {
+    outputQuestion10Sa: {
         id: expect.any(String),
-        body: 'question1',
-        correctAnswers: ['correct answer for question2', 'answer2'],
+        body: 'question10',
+        correctAnswers: ['correct answer for question10', 'answer10'],
         published: false,
         createdAt:expect.any(String),
         updatedAt:expect.any(String),

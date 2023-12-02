@@ -15,8 +15,6 @@ constructor(private readonly commandBus: CommandBus,
 
     @Get('questions')
     @HttpCode(200)
-    //TODO
-    // get all question with pagination
     async getAllQuestions(@Query() queryParams: RequestQuestionsQueryModel){
         const mergedQueryParams = { ...DEFAULT_QUESTIONS_QUERY_PARAMS, ...queryParams };
         return await this.questionQueryRepository.getAllQuestionsForSa(mergedQueryParams)
@@ -25,8 +23,6 @@ constructor(private readonly commandBus: CommandBus,
 
     @Post('questions')
     @HttpCode(201)
-    //TODO
-    //create questions for quizGame
     async createQuestion(@Body()inputQuestionData: CreateQuestionImputModelType ){
         const newQuestionId = await this.commandBus.execute(
             new SaCreateQuestionCommand(
