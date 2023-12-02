@@ -13,7 +13,7 @@ export class CheckService {
     private readonly usersRepository: UsersRepository,
     private readonly usersDeviceRepository: UsersDevicesRepository,
     private readonly commentsRepository: CommentsRepository,
-    private readonly questionRepository: QuestionsRepository,
+    // private readonly questionRepository: QuestionsRepository,
   ) {}
   async isBlogExist(blogId): Promise<boolean> {
     const isExist = await this.blogsRepository.isBlogExist(blogId);
@@ -113,7 +113,7 @@ export class CheckService {
     return isUserBanned;
   }
 
-  async isQuestionExist(questionId: string): Promise<boolean>{
-    return await this.questionRepository.isQuestionExist(questionId)
-  }
+  // async isQuestionExist(questionId: string): Promise<boolean>{
+  //   return await this.questionRepository.isQuestionExist(questionId)
+  // }
 }

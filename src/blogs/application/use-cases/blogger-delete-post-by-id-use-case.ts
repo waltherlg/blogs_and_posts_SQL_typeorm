@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { BlogActionResult } from '../../../blogs/helpers/blogs.enum.action.result';
 import { PostsRepository } from '../../../posts/posts.repository';
+import { ActionResult } from '../../../helpers/enum.action.result.helper';
 
 export class DeletePostByIdFromUriCommand {
   constructor(
@@ -17,12 +17,12 @@ export class DeletePostByIdFromUriUseCase
   constructor(private readonly postsRepository: PostsRepository) {}
   async execute(
     command: DeletePostByIdFromUriCommand,
-  ): Promise<BlogActionResult> {
+  ): Promise<ActionResult> {
     const post = await this.postsRepository.getPostDBTypeById(command.postId);
-    if (!post) return BlogActionResult.PostNotFound;
-    if (post.userId !== command.userId) return BlogActionResult.NotOwner;
+    if (!post) return ActionResult.PostNotFound;
+    if (post.userId !== command.userId) return ActionResult.NotOwner;
     const isDeleted = await this.postsRepository.deletePostById(command.postId);
-    if (!isDeleted) return BlogActionResult.NotDeleted;
-    return BlogActionResult.Success;
+    if (!isDeleted) return ActionResult.NotDeleted;
+    return ActionResult.Success;
   }
 }

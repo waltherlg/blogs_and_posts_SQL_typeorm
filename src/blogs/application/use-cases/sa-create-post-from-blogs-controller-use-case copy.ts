@@ -1,11 +1,11 @@
 import { BlogsRepository } from '../../infrostracture/blogs.repository';
 import { CommandHandler } from '@nestjs/cqrs/dist/decorators';
 import { ICommandHandler } from '@nestjs/cqrs/dist/interfaces';
-import { BlogActionResult } from '../../../blogs/helpers/blogs.enum.action.result';
 import { CreatePostByBlogsIdInputModelType } from '../../../blogs/api/blogger.blogs.controller';
 import { PostsRepository } from '../../../posts/posts.repository';
 import { PostDBType } from '../../../posts/posts.types';
 import { v4 as uuidv4 } from 'uuid';
+import { ActionResult } from '../../../helpers/enum.action.result.helper';
 
 export class SaCreatePostFromBloggerControllerCommand {
   constructor(
@@ -25,9 +25,9 @@ export class SaCreatePostFromBloggerControllerUseCase
 
   async execute(
     command: SaCreatePostFromBloggerControllerCommand,
-  ): Promise<BlogActionResult | string> {
+  ): Promise<ActionResult | string> {
     const blog = await this.blogsRepository.getBlogDBTypeById(command.blogId);
-    if (!blog) return BlogActionResult.BlogNotFound;
+    if (!blog) return ActionResult.BlogNotFound;
     // if(blog.userId !== command.userId) return BlogActionResult.NotOwner // not needed in this use case
     const postDto = new PostDBType(
       uuidv4(),
@@ -41,7 +41,7 @@ export class SaCreatePostFromBloggerControllerUseCase
       0,
     );
     const newPostId = await this.postsRepository.createPost(postDto);
-    if (!newPostId) return BlogActionResult.NotCreated;
+    if (!newPostId) return ActionResult.NotCreated;
     return newPostId;
   }
 }

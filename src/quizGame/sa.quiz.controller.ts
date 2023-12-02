@@ -14,7 +14,8 @@ import { CustomNotFoundException } from "../exceptions/custom.exceptions";
 export class SaQuizController {
 constructor(private readonly commandBus: CommandBus,
             private readonly questionQueryRepository: QuestionsQueryRepository,
-            private readonly checkService: CheckService){}
+            private readonly checkService: CheckService
+            ){}
 
     @Get('questions')
     @HttpCode(200)
@@ -39,9 +40,9 @@ constructor(private readonly commandBus: CommandBus,
     @HttpCode(204)
     //TODO
     async deleteQuestionById(@Param('questionId') questionId: string){
-        if(!(await this.checkService.isQuestionExist(questionId))){
-            throw new CustomNotFoundException('question')
-        }
+        // if(!(await this.checkService.isQuestionExist(questionId))){
+        //     throw new CustomNotFoundException('question')
+        // }
 
     }
 

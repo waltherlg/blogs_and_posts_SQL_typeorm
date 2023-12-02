@@ -34,7 +34,7 @@ import {
 } from '../middlewares/validators';
 import { SetLikeStatusForCommentCommand } from './application/use-cases/set-like-status-for-comment-use-case';
 import { CommandBus } from '@nestjs/cqrs';
-import { handleCommentActionResult } from './helpers/comment.enum.action.result';
+import { handleActionResult } from '../helpers/enum.action.result.helper';
 
 export class UpdateCommentInputModelType {
   @StringTrimNotEmpty()
@@ -144,6 +144,6 @@ export class CommentsControllers {
         likeStatus.likeStatus,
       ),
     );
-    handleCommentActionResult(result);
+    handleActionResult(result);
   }
 }

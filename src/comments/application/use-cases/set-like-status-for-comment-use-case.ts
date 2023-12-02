@@ -2,8 +2,8 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { CommentsRepository } from '../../../comments/comments.repository';
 import { LikesRepository } from '../../../likes/likes.repository';
 import { CommentLikeDbType } from '../../../likes/db.likes.types';
-import { CommentActionResult } from '../../../comments/helpers/comment.enum.action.result';
 import { UsersRepository } from '../../../users/users.repository';
+import { ActionResult } from '../../../helpers/enum.action.result.helper';
 
 export class SetLikeStatusForCommentCommand {
   constructor(
@@ -25,7 +25,7 @@ export class SetLikeStatusForCommentUseCase
 
   async execute(
     command: SetLikeStatusForCommentCommand,
-  ): Promise<CommentActionResult | string> {
+  ): Promise<ActionResult | string> {
     const userId = command.userId;
     const commentId = command.commentId;
     const status = command.status;
@@ -34,7 +34,7 @@ export class SetLikeStatusForCommentUseCase
       commentId,
     );
     if (!comment) {
-      return CommentActionResult.CommentNotFound;
+      return ActionResult.CommentNotFound;
     }
 
     //check is user already liked this comment
@@ -46,7 +46,7 @@ export class SetLikeStatusForCommentUseCase
     if (!commentLikeObject) {
       const likerLogin = await this.usersRepository.getUserLoginById(userId);
       if (!likerLogin) {
-        return CommentActionResult.UserNotFound;
+        return ActionResult.UserNotFound;
       }
       const commentLikeDto = new CommentLikeDbType(
         commentId,
@@ -62,14 +62,14 @@ export class SetLikeStatusForCommentUseCase
           commentId,
         );
       if (isLikeAdded && isLikeCountSet) {
-        return CommentActionResult.Success;
+        return ActionResult.Success;
       } else {
-        CommentActionResult.NotSaved;
+        ActionResult.NotSaved;
       }
     }
 
     if (commentLikeObject.status === status) {
-      return CommentActionResult.NoChangeNeeded;
+      return ActionResult.NoChangeNeeded;
     }
 
     const islikeUpdated = await this.likesRepository.updateCommentLike(
@@ -84,9 +84,9 @@ export class SetLikeStatusForCommentUseCase
       );
 
     if (islikeUpdated && isLikeCountSet) {
-      return CommentActionResult.Success;
+      return ActionResult.Success;
     } else {
-      return CommentActionResult.NotSaved;
+      return ActionResult.NotSaved;
     }
   }
 }

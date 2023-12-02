@@ -2,7 +2,7 @@ import { BlogsRepository } from '../../infrostracture/blogs.repository';
 import { UpdateBlogInputModelType } from '../../api/public.blogs.controller';
 import { CommandHandler } from '@nestjs/cqrs/dist/decorators';
 import { ICommandHandler } from '@nestjs/cqrs/dist/interfaces';
-import { BlogActionResult } from '../../helpers/blogs.enum.action.result';
+import { ActionResult } from '../../../helpers/enum.action.result.helper';
 
 export class SaUpdateBlogByIdFromUriCommand {
   constructor(
@@ -19,14 +19,14 @@ export class SaUpdateBlogByIdFromUriUseCase
 
   async execute(
     command: SaUpdateBlogByIdFromUriCommand,
-  ): Promise<BlogActionResult> {
+  ): Promise<ActionResult> {
     const name = command.blogUpdateInputModel.name;
     const description = command.blogUpdateInputModel.description;
     const websiteUrl = command.blogUpdateInputModel.websiteUrl;
 
     const blog = await this.blogsRepository.getBlogDBTypeById(command.blogId);
 
-    if (!blog) return BlogActionResult.BlogNotFound;
+    if (!blog) return ActionResult.BlogNotFound;
 
     const result = await this.blogsRepository.updateBlogById(
       command.blogId,
@@ -35,9 +35,9 @@ export class SaUpdateBlogByIdFromUriUseCase
       websiteUrl,
     );
     if (result) {
-      return BlogActionResult.Success;
+      return ActionResult.Success;
     } else {
-      return BlogActionResult.NotSaved;
+      return ActionResult.NotSaved;
     }
   }
 }

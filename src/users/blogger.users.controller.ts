@@ -13,7 +13,6 @@ import { CommandBus } from '@nestjs/cqrs';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { BanUserForBlogInputModelType } from '../blogs/api/blogger.blogs.controller';
 import { BanUserForSpecificBlogCommand } from '../blogs/application/use-cases/blogger-ban-user-for-blog-use-case';
-import { handleBlogOperationResult } from '../blogs/helpers/blogs.enum.action.result';
 import {
   RequestBannedUsersQueryModel,
   DEFAULT_BANNED_USERS_QUERY_PARAMS,
@@ -24,6 +23,7 @@ import {
   CustomNotFoundException,
   CustomisableException,
 } from '../exceptions/custom.exceptions';
+import { handleActionResult } from '../helpers/enum.action.result.helper';
 
 @UseGuards(JwtAuthGuard)
 @Controller('blogger/users')
@@ -49,7 +49,7 @@ export class BloggerUsersController {
           banUserDto,
         ),
       );
-      handleBlogOperationResult(result);
+      handleActionResult(result);
     } catch (error) {
       console.log(error);
     }

@@ -1,9 +1,8 @@
 import { CommandHandler } from '@nestjs/cqrs/dist/decorators';
 import { ICommandHandler } from '@nestjs/cqrs/dist/interfaces';
-
-import { PostActionResult } from '../helpers/post.enum.action.result';
 import { PostsRepository } from '../posts.repository';
 import { UpdatePostByBlogsIdInputModelType } from '../../blogs/api/blogger.blogs.controller';
+import { ActionResult } from '../../helpers/enum.action.result.helper';
 
 export class SaUpdatePostByIdCommand {
   constructor(
@@ -19,11 +18,11 @@ export class SaUpdatePostByIdUseCase
 {
   constructor(private readonly postsRepository: PostsRepository) {}
 
-  async execute(command: SaUpdatePostByIdCommand): Promise<PostActionResult> {
+  async execute(command: SaUpdatePostByIdCommand): Promise<ActionResult> {
     const postId = command.postId;
 
     const post = await this.postsRepository.getPostDBTypeById(postId);
-    if (!post) return PostActionResult.PostNotFound;
+    if (!post) return ActionResult.PostNotFound;
 
     const title = command.postUpdateDto.title;
     const shortDescription = command.postUpdateDto.shortDescription;
@@ -36,9 +35,9 @@ export class SaUpdatePostByIdUseCase
       content,
     );
     if (result) {
-      return PostActionResult.Success;
+      return ActionResult.Success;
     } else {
-      return PostActionResult.NotSaved;
+      return ActionResult.NotSaved;
     }
   }
 }

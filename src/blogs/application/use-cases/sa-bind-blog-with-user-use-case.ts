@@ -1,7 +1,7 @@
 import { BlogsRepository } from '../../infrostracture/blogs.repository';
 import { CommandHandler } from '@nestjs/cqrs/dist';
 import { ICommandHandler } from '@nestjs/cqrs/dist/interfaces';
-import { BlogActionResult } from '../../helpers/blogs.enum.action.result';
+import { ActionResult } from '../../../helpers/enum.action.result.helper';
 
 export class BindBlogWithUserCommand {
   constructor(public blogId: string, public userId: string) {}
@@ -12,18 +12,18 @@ export class BindBlogWithUserUseCase
   implements ICommandHandler<BindBlogWithUserCommand>
 {
   constructor(private readonly blogsRepository: BlogsRepository) {}
-  async execute(command: BindBlogWithUserCommand): Promise<BlogActionResult> {
+  async execute(command: BindBlogWithUserCommand): Promise<ActionResult> {
     const blog = await this.blogsRepository.getBlogDBTypeById(command.blogId);
 
-    if (!blog) return BlogActionResult.BlogNotFound;
+    if (!blog) return ActionResult.BlogNotFound;
 
-    if (blog.userId !== null) return BlogActionResult.UserAlreadyBound;
+    if (blog.userId !== null) return ActionResult.UserAlreadyBound;
 
     //заглушка
     const result = await this.blogsRepository.bindBlogWithUser(
       command.blogId,
       command.userId,
     );
-    if (result) return BlogActionResult.Success;
+    if (result) return ActionResult.Success;
   }
 }

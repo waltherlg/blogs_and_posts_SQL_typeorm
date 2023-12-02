@@ -1,11 +1,11 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { BlogsRepository } from '../../blogs/infrostracture/blogs.repository';
 import { PostsRepository } from '../posts.repository';
-import { PostActionResult } from '../helpers/post.enum.action.result';
 import { CheckService } from '../../other.services/check.service';
 import { LikesRepository } from '../../likes/likes.repository';
 import { PostLikeDbType } from '../../likes/db.likes.types';
 import { UsersRepository } from '../../users/users.repository';
+import { ActionResult } from '../../helpers/enum.action.result.helper';
 
 export class SetLikeStatusForPostCommand {
   constructor(
@@ -29,19 +29,19 @@ export class SetLikeStatusForPostUseCase
 
   async execute(
     command: SetLikeStatusForPostCommand,
-  ): Promise<PostActionResult | string> {
+  ): Promise<ActionResult | string> {
     const userId = command.userId;
     const postId = command.postId;
     const status = command.status;
 
     const post = await this.postRepository.getPostDBTypeById(postId);
     if (!post) {
-      return PostActionResult.PostNotFound;
+      return ActionResult.PostNotFound;
     }
 
     const blog = await this.blogRepository.getBlogDBTypeById(post.blogId);
     if (!blog) {
-      return PostActionResult.BlogNotFound;
+      return ActionResult.BlogNotFound;
     }
 
     const isUserBannedForBlog = await this.checkService.isUserBannedForBlog(
@@ -49,7 +49,7 @@ export class SetLikeStatusForPostUseCase
       userId,
     );
     if (isUserBannedForBlog) {
-      return PostActionResult.UserBannedForBlog;
+      return ActionResult.UserBannedForBlog;
     }
 
     //check is user already liked post
@@ -62,7 +62,7 @@ export class SetLikeStatusForPostUseCase
     if (!likeObject) {
       const likerLogin = await this.usersRepository.getUserLoginById(userId);
       if (!likerLogin) {
-        return PostActionResult.UserNotFound;
+        return ActionResult.UserNotFound;
       }
       const postLikeDto = new PostLikeDbType(
         postId,
@@ -81,14 +81,14 @@ export class SetLikeStatusForPostUseCase
         );
 
       if (isLikeAdded && isLikesCountSet) {
-        return PostActionResult.Success;
+        return ActionResult.Success;
       } else {
-        return PostActionResult.NotSaved;
+        return ActionResult.NotSaved;
       }
     }
 
     if (likeObject.status === status) {
-      return PostActionResult.NoChangeNeeded;
+      return ActionResult.NoChangeNeeded;
     }
 
     const islikeUpdated = await this.likesRepository.updatePostLike(
@@ -103,9 +103,9 @@ export class SetLikeStatusForPostUseCase
       );
 
     if (islikeUpdated && isLikesCountSet) {
-      return PostActionResult.Success;
+      return ActionResult.Success;
     } else {
-      return PostActionResult.NotSaved;
+      return ActionResult.NotSaved;
     }
   }
 }

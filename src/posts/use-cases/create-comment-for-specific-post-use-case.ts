@@ -4,9 +4,9 @@ import { PostsRepository } from '../posts.repository';
 import { UsersRepository } from '../../users/users.repository';
 import { CommentDBType } from '../../comments/comments.types';
 import { CommentsRepository } from '../../comments/comments.repository';
-import { PostActionResult } from '../helpers/post.enum.action.result';
 import { v4 as uuidv4 } from 'uuid';
 import { CheckService } from '../../other.services/check.service';
+import { ActionResult } from '../../helpers/enum.action.result.helper';
 
 export class CreateCommentForSpecificPostCommand {
   constructor(
@@ -30,25 +30,25 @@ export class CreateCommentForSpecificPostUseCase
 
   async execute(
     command: CreateCommentForSpecificPostCommand,
-  ): Promise<PostActionResult | string> {
+  ): Promise<ActionResult | string> {
     const userId = command.userId;
     const postId = command.postId;
     const content = command.content;
 
     const post = await this.postRepository.getPostDBTypeById(postId);
     if (!post) {
-      return PostActionResult.PostNotFound;
+      return ActionResult.PostNotFound;
     }
     const blog = await this.blogRepository.getBlogDBTypeById(post.blogId);
     if (!blog) {
-      return PostActionResult.BlogNotFound;
+      return ActionResult.BlogNotFound;
     }
     const isUserBannedForBlog = await this.checkService.isUserBannedForBlog(
       blog.blogId,
       userId,
     );
     if (isUserBannedForBlog) {
-      return PostActionResult.UserBannedForBlog;
+      return ActionResult.UserBannedForBlog;
     }
 
     const CommentDTO = new CommentDBType(
@@ -64,7 +64,7 @@ export class CreateCommentForSpecificPostUseCase
       CommentDTO,
     );
     if (!createdCommentId) {
-      return PostActionResult.NotCreated;
+      return ActionResult.NotCreated;
     }
     return createdCommentId;
   }

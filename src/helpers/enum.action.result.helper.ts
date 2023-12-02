@@ -11,6 +11,8 @@ export enum ActionResult {
   PostNotFound = 'POST_NOT_FOUND',
   QuestionNotFound = 'QUESTION_NOT_FOUND',
   CommentNotFound = 'COMMENT_NOT_FOUND',
+  UserAlreadyBanned = 'USER_ALREADY_BANNED',
+  UserNotBanned = 'USER_NOT_BANNED',  
   UserBannedForBlog = 'USER_BANNED_FOR_BLOG',
   UserAlreadyBound = 'USER_ALREADY_BOUND',
   NoChangeNeeded = 'NO_CHANGE_NEEDED',
@@ -28,6 +30,10 @@ export function handleActionResult(result: ActionResult) {
     case ActionResult.Success:
       break;
     case ActionResult.NoChangeNeeded:
+      break;
+    case ActionResult.UserAlreadyBanned:
+      break;
+    case ActionResult.UserNotBanned:
       break;
     case ActionResult.BlogNotFound:
       throw new CustomNotFoundException('blog');

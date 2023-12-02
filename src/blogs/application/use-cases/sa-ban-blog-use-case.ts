@@ -1,8 +1,8 @@
 import { BlogsRepository } from '../../infrostracture/blogs.repository';
 import { CommandHandler } from '@nestjs/cqrs/dist/decorators';
 import { ICommandHandler } from '@nestjs/cqrs/dist/interfaces';
-import { BlogActionResult } from '../../helpers/blogs.enum.action.result';
 import { BanBlogInputModelType } from '../../../blogs/api/sa.blogs.controller';
+import { ActionResult } from '../../../helpers/enum.action.result.helper';
 
 export class SaBanBlogCommand {
   constructor(
@@ -15,15 +15,15 @@ export class SaBanBlogCommand {
 export class SaBanBlogUseCase implements ICommandHandler<SaBanBlogCommand> {
   constructor(private readonly blogsRepository: BlogsRepository) {}
 
-  async execute(command: SaBanBlogCommand): Promise<BlogActionResult> {
+  async execute(command: SaBanBlogCommand): Promise<ActionResult> {
     const blogId = command.blogId;
     const newBanStatus = command.banBlogDto.isBanned;
 
     const blog = await this.blogsRepository.getBlogDBTypeById(blogId);
-    if (!blog) return BlogActionResult.BlogNotFound;
+    if (!blog) return ActionResult.BlogNotFound;
 
     if (blog.isBlogBanned === newBanStatus) {
-      return BlogActionResult.NoChangeNeeded;
+      return ActionResult.NoChangeNeeded;
     }
 
     blog.isBlogBanned = newBanStatus;
@@ -42,9 +42,9 @@ export class SaBanBlogUseCase implements ICommandHandler<SaBanBlogCommand> {
     );
 
     if (isBlogSave) {
-      return BlogActionResult.Success;
+      return ActionResult.Success;
     } else {
-      return BlogActionResult.NotSaved;
+      return ActionResult.NotSaved;
     }
   }
 }

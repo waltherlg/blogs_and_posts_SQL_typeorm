@@ -110,6 +110,12 @@ export const testUser = {
       banReason: expect.any(String),
     },
   },
+  outputUser1BannedSa: {
+    id: expect.any(String),
+    login: 'user1',
+    email: 'ruslan@gmail-1.com',
+    createdAt: expect.any(String),
+  },
 };
 
 export const testUserPag = {

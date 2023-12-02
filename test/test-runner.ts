@@ -19,7 +19,7 @@ import { commentLikesWithUserBanCrud1301 } from './13-01-comments-likes.with.use
 import { questionCrudOperationsSa15 } from './15-00-sa.crud.operations.quiz.e2e-spec';
 
 describe('End-to-End Tests', () => {
-  //..testSaUsersCrud();
+  testSaUsersCrud();
   //..testSaUsersGetWithPagination();
   //..testSecurityDevices();
   //..testAuthOperations();
@@ -39,9 +39,9 @@ describe('End-to-End Tests', () => {
 
   //..onlyCommentLikesCrud13(); // только для проверки создания лайка для комментария
   //..commentLikesWithUserBanCrud1301();
-  //banCheckOperation()
+
 
   //bloggerUsersControllers()
 
-  questionCrudOperationsSa15()
+  //..questionCrudOperationsSa15()
 });

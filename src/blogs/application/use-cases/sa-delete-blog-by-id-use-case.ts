@@ -1,6 +1,6 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { BlogsRepository } from '../../../blogs/infrostracture/blogs.repository';
-import { BlogActionResult } from '../../../blogs/helpers/blogs.enum.action.result';
+import { ActionResult } from '../../../helpers/enum.action.result.helper';
 
 export class SaDeleteBlogByIdFromUriCommand {
   constructor(public blogId: string) {}
@@ -14,14 +14,14 @@ export class SaDeleteBlogByIdFromUriUseCase
 
   async execute(
     command: SaDeleteBlogByIdFromUriCommand,
-  ): Promise<BlogActionResult> {
+  ): Promise<ActionResult> {
     const blog = await this.blogsRepository.getBlogDBTypeById(command.blogId);
-    if (!blog) return BlogActionResult.BlogNotFound;
+    if (!blog) return ActionResult.BlogNotFound;
     const result = await this.blogsRepository.deleteBlogById(command.blogId);
     if (result) {
-      return BlogActionResult.Success;
+      return ActionResult.Success;
     } else {
-      return BlogActionResult.NotSaved;
+      return ActionResult.NotSaved;
     }
   }
 }

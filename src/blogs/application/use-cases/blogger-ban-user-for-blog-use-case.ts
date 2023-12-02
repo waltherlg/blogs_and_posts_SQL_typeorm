@@ -1,11 +1,11 @@
 import { BlogsRepository } from '../../infrostracture/blogs.repository';
 import { CommandHandler } from '@nestjs/cqrs/dist/decorators';
 import { ICommandHandler } from '@nestjs/cqrs/dist/interfaces';
-import { BlogActionResult } from '../../helpers/blogs.enum.action.result';
 import { BanUserForBlogInputModelType } from '../../../blogs/api/blogger.blogs.controller';
 import { BannedBlogUsersType } from '../../../blogs/blogs.types';
 import { UsersRepository } from '../../../users/users.repository';
 import { CheckService } from '../../../other.services/check.service';
+import { ActionResult } from '../../../helpers/enum.action.result.helper';
 
 export class BanUserForSpecificBlogCommand {
   constructor(
@@ -27,7 +27,7 @@ export class BanUserForSpecificBlogUseCase
 
   async execute(
     command: BanUserForSpecificBlogCommand,
-  ): Promise<BlogActionResult> {
+  ): Promise<ActionResult> {
     const bloggerId = command.bloggerId;
     const userId = command.userId;
     const banStatus = command.banUserDto.isBanned;
@@ -36,18 +36,18 @@ export class BanUserForSpecificBlogUseCase
 
     const blog = await this.blogsRepository.getBlogDBTypeById(blogId);
 
-    if (!blog) return BlogActionResult.BlogNotFound;
+    if (!blog) return ActionResult.BlogNotFound;
 
-    if (blog.userId !== bloggerId) return BlogActionResult.NotOwner;
+    if (blog.userId !== bloggerId) return ActionResult.NotOwner;
 
     const user = await this.usersRepository.getUserDBTypeById(userId);
     if (!user) {
-      return BlogActionResult.UserNotFound;
+      return ActionResult.UserNotFound;
     }
 
     if (banStatus === true) {
       if (await this.checkService.isUserBannedForBlog(blogId, userId)) {
-        return BlogActionResult.UserAlreadyBanned;
+        return ActionResult.UserAlreadyBanned;
       }
 
       const banUserInfo: BannedBlogUsersType = {
@@ -61,24 +61,24 @@ export class BanUserForSpecificBlogUseCase
         banUserInfo,
       );
       if (result) {
-        return BlogActionResult.Success;
+        return ActionResult.Success;
       } else {
-        return BlogActionResult.NotSaved;
+        return ActionResult.NotSaved;
       }
     }
 
     if (banStatus === false) {
       if (!(await this.checkService.isUserBannedForBlog(blogId, userId))) {
-        return BlogActionResult.UserNotBanned;
+        return ActionResult.UserNotBanned;
       }
       const result = await this.blogsRepository.removeUserFromBlogBanList(
         blogId,
         userId,
       );
       if (result) {
-        return BlogActionResult.Success;
+        return ActionResult.Success;
       } else {
-        return BlogActionResult.NotSaved;
+        return ActionResult.NotSaved;
       }
     }
   }

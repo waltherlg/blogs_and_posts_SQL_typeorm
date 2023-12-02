@@ -82,7 +82,7 @@ export function testSaUsersCrud() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [testUser.outputUser1],
+        items: [testUser.outputUser1Sa],
       });
     });
 
@@ -106,7 +106,7 @@ export function testSaUsersCrud() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [testUser.outputUser1Banned],
+        items: [testUser.outputUser1BannedSa],
       });
     });
 
@@ -130,7 +130,7 @@ export function testSaUsersCrud() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [testUser.outputUser1],
+        items: [testUser.outputUser1Sa],
       });
     });
 

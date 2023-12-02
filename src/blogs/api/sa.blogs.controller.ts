@@ -22,10 +22,7 @@ import {
 import { BasicAuthGuard } from '../../auth/guards/auth.guards';
 import { CommandBus } from '@nestjs/cqrs';
 import { BindBlogWithUserCommand } from '../application/use-cases/sa-bind-blog-with-user-use-case';
-import {
-  BlogActionResult,
-  handleBlogOperationResult,
-} from '../helpers/blogs.enum.action.result';
+
 import { IsBoolean } from 'class-validator';
 import { SaBanBlogCommand } from '../application/use-cases/sa-ban-blog-use-case';
 import {
@@ -47,6 +44,7 @@ import { SaUpdateBlogByIdFromUriCommand } from '../application/use-cases/sa-upad
 import { SaDeleteBlogByIdFromUriCommand } from '../application/use-cases/sa-delete-blog-by-id-use-case';
 import { SaUpdatePostByIdFromBloggerControllerCommand } from '../application/use-cases/sa-upadate-post-by-id-from-blogs-controller-use-case';
 import { SaDeletePostByIdFromUriCommand } from '../application/use-cases/sa-delete-post-by-id-use-case';
+import { ActionResult, handleActionResult } from '../../helpers/enum.action.result.helper';
 
 export class BanBlogInputModelType {
   @IsBoolean()
@@ -69,10 +67,10 @@ export class SaBlogsController {
     @Param('blogId') blogId: string,
     @Param('userId') userId: string,
   ) {
-    const result: BlogActionResult = await this.commandBus.execute(
+    const result: ActionResult = await this.commandBus.execute(
       new BindBlogWithUserCommand(blogId, userId),
     );
-    handleBlogOperationResult(result);
+    handleActionResult(result);
   }
 
   // not needed in new homework
@@ -91,7 +89,7 @@ export class SaBlogsController {
     const result = await this.commandBus.execute(
       new SaBanBlogCommand(blogId, banBlogDto),
     );
-    handleBlogOperationResult(result);
+    handleActionResult(result);
   }
 
   @Get()
@@ -123,10 +121,10 @@ export class SaBlogsController {
     @Param('id') blogId: string,
     @Body() blogUpdateInputModel: UpdateBlogInputModelType,
   ) {
-    const result: BlogActionResult = await this.commandBus.execute(
+    const result: ActionResult = await this.commandBus.execute(
       new SaUpdateBlogByIdFromUriCommand(blogId, blogUpdateInputModel),
     );
-    handleBlogOperationResult(result);
+    handleActionResult(result);
   }
 
   @Delete(':id')
@@ -135,7 +133,7 @@ export class SaBlogsController {
     const result = await this.commandBus.execute(
       new SaDeleteBlogByIdFromUriCommand(blogId),
     );
-    handleBlogOperationResult(result);
+    handleActionResult(result);
   }
 
   @Post(':id/posts')
@@ -147,7 +145,7 @@ export class SaBlogsController {
       new SaCreatePostFromBloggerControllerCommand(blogId, postCreateDto),
     );
 
-    handleBlogOperationResult(result);
+    handleActionResult(result);
     const newPost = await this.postsQueryRepository.getPostById(result);
 
     if (!newPost) {
@@ -183,14 +181,14 @@ export class SaBlogsController {
     if (!(await this.checkService.isBlogExist(blogId))) {
       throw new CustomNotFoundException('blog');
     }
-    const result: BlogActionResult = await this.commandBus.execute(
+    const result: ActionResult = await this.commandBus.execute(
       new SaUpdatePostByIdFromBloggerControllerCommand(
         blogId,
         postId,
         postUpdateDto,
       ),
     );
-    handleBlogOperationResult(result);
+    handleActionResult(result);
   }
 
   @Delete(':blogId/posts/:postId')
@@ -202,9 +200,9 @@ export class SaBlogsController {
     if (!(await this.checkService.isBlogExist(blogId))) {
       throw new CustomNotFoundException('blog');
     }
-    const result: BlogActionResult = await this.commandBus.execute(
+    const result: ActionResult = await this.commandBus.execute(
       new SaDeletePostByIdFromUriCommand(blogId, postId),
     );
-    handleBlogOperationResult(result);
+    handleActionResult(result);
   }
 }
