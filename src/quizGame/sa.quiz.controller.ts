@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpCode, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, Post, Put, Query, UseGuards, Param } from "@nestjs/common";
 import { CommandBus } from "@nestjs/cqrs";
 import { CreateQuestionImputModelType } from "./quiz.game.types";
 import { BasicAuthGuard } from "src/auth/guards/auth.guards";
@@ -35,7 +35,7 @@ constructor(private readonly commandBus: CommandBus,
     @Delete('questions/:questionId')
     @HttpCode(204)
     //TODO
-    async deleteQuestionById(){
+    async deleteQuestionById(@Param('questionId') questionId: string){
 
     }
 

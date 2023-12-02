@@ -4,6 +4,7 @@ import { PostsRepository } from '../posts/posts.repository';
 import { UsersRepository } from '../users/users.repository';
 import { CommentsRepository } from '../comments/comments.repository';
 import { UsersDevicesRepository } from '../usersDevices/user.devices.repository';
+import { QuestionsRepository } from '../quizGame/questions.repository';
 @Injectable()
 export class CheckService {
   constructor(
@@ -12,6 +13,7 @@ export class CheckService {
     private readonly usersRepository: UsersRepository,
     private readonly usersDeviceRepository: UsersDevicesRepository,
     private readonly commentsRepository: CommentsRepository,
+    private readonly questionRepository: QuestionsRepository,
   ) {}
   async isBlogExist(blogId): Promise<boolean> {
     const isExist = await this.blogsRepository.isBlogExist(blogId);
@@ -109,5 +111,9 @@ export class CheckService {
       userId,
     );
     return isUserBanned;
+  }
+
+  async isQuestionExist(questionId: string): Promise<boolean>{
+    return await this.questionRepository.isQuestionExist(questionId)
   }
 }

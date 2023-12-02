@@ -34,4 +34,12 @@ export class QuestionsRepository {
         const result = await this.questionsRepository.delete(questionId)
         return result.affected > 0
     }
+
+    async isQuestionExist(questionId): Promise<boolean>{
+        if (!isValidUUID(questionId)) {
+            return false;
+          }
+        const count = await this.questionsRepository.count({where: {questionId}})
+        return count > 0
+    }
 }
