@@ -34,7 +34,7 @@ import {
 import { CommandBus } from '@nestjs/cqrs';
 import { CreateCommentForSpecificPostCommand } from '../use-cases/create-comment-for-specific-post-use-case';
 import { SetLikeStatusForPostCommand } from '../use-cases/set-like-status-for-post-use-case';
-import { handlePostActionResult } from '../helpers/post.enum.action.result';
+import { handleActionResult } from '../../helpers/enum.action.result.helper';
 
 export class CreatePostInputModelType {
   @StringTrimNotEmpty()
@@ -127,7 +127,7 @@ export class PostController {
         content.content,
       ),
     );
-    handlePostActionResult(resultOrCommentId);
+    handleActionResult(resultOrCommentId);
     const createdComment = await this.commentsQueryRepository.getCommentById(
       resultOrCommentId,
     );
@@ -167,6 +167,6 @@ export class PostController {
         likeStatus.likeStatus,
       ),
     );
-    handlePostActionResult(result);
+    handleActionResult(result);
   }
 }

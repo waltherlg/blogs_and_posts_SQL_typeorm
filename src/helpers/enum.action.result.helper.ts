@@ -12,6 +12,7 @@ export enum ActionResult {
   QuestionNotFound = 'QUESTION_NOT_FOUND',
   CommentNotFound = 'COMMENT_NOT_FOUND',
   UserBannedForBlog = 'USER_BANNED_FOR_BLOG',
+  UserAlreadyBound = 'USER_ALREADY_BOUND',
   NoChangeNeeded = 'NO_CHANGE_NEEDED',
   NotOwner = 'CURRENT_USER_IS_NOT_OWNER',
   NotSaved = 'CHANGES_NOT_SAVED',
@@ -48,6 +49,12 @@ export function handleActionResult(result: ActionResult) {
 
     case ActionResult.UserBannedForBlog:
       throw new ForbiddenException("banned user can't add comment");
+    case ActionResult.UserAlreadyBound:
+        throw new CustomisableException(
+          'blogId',
+          'current blog already bound',
+          400,
+        );
 
     case ActionResult.NotCreated:
       throw new CustomisableException(

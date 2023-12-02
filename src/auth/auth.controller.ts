@@ -76,6 +76,7 @@ export class AuthController {
     private readonly usersQueryRepository: UsersQueryRepository,
     private readonly commandBus: CommandBus,
   ) {}
+  
   @Post('registration')
   @HttpCode(204)
   async registration(@Body() userCreateInputModel: CreateUserInputModelType) {
@@ -94,6 +95,7 @@ export class AuthController {
     }
     return user;
   }
+
   @Post('registration-email-resending')
   @HttpCode(204)
   async registrationEmailResending(
