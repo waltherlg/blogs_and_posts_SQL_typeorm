@@ -12,7 +12,8 @@ export class CheckService {
     private readonly postsRepository: PostsRepository,
     private readonly usersRepository: UsersRepository,
     private readonly usersDeviceRepository: UsersDevicesRepository,
-    private readonly commentsRepository: CommentsRepository, //private readonly questionsRepository: QuestionsRepository
+    private readonly commentsRepository: CommentsRepository,
+    private readonly questionsRepository: QuestionsRepository,
   ) {}
   async isBlogExist(blogId): Promise<boolean> {
     const isExist = await this.blogsRepository.isBlogExist(blogId);
@@ -104,7 +105,7 @@ export class CheckService {
     return isUserBanned;
   }
 
-  async isUserBannedForBlog(blogId, userId) {
+  async isUserBannedForBlog(blogId, userId): Promise<boolean> {
     const isUserBanned = await this.blogsRepository.isUserBannedForBlog(
       blogId,
       userId,
@@ -112,7 +113,7 @@ export class CheckService {
     return isUserBanned;
   }
 
-  // async isQuestionExist(questionId: string): Promise<boolean>{
-  //   return await this.questionsRepository.isQuestionExist(questionId)
-  // }
+  async isQuestionExist(questionId: string): Promise<boolean>{
+    return await this.questionsRepository.isQuestionExist(questionId)
+  }
 }
