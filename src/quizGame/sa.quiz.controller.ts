@@ -22,6 +22,8 @@ import {
 } from 'src/models/types';
 import { CheckService } from '../other.services/check.service';
 import { CustomNotFoundException } from '../exceptions/custom.exceptions';
+import { ActionResult, handleActionResult } from '../helpers/enum.action.result.helper';
+import { SaDeleteQuestionByIdCommand } from './use-cases/sa-delete-question-by-id-use-case';
 
 @UseGuards(BasicAuthGuard)
 @Controller('quiz')
@@ -61,9 +63,8 @@ export class SaQuizController {
   @HttpCode(204)
   //TODO
   async deleteQuestionById(@Param('questionId') questionId: string) {
-    // if(!(await this.checkService.isQuestionExist(questionId))){
-    //     throw new CustomNotFoundException('question')
-    // }
+    const deleteResult: ActionResult = await this.commandBus.execute(new SaDeleteQuestionByIdCommand(questionId))
+    handleActionResult(deleteResult)
   }
 
   @Put('questions/:questionId')
