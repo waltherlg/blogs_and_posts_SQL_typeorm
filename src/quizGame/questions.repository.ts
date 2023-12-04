@@ -52,7 +52,8 @@ export class QuestionsRepository {
       {questionId: questionId},
       {
         body: UpdateQuestionDto.body,
-        correctAnswers: UpdateQuestionDto.correctAnswers
+        correctAnswers: UpdateQuestionDto.correctAnswers,
+        updatedAt: new Date().toISOString()
       }
     )
     return result.affected > 0;

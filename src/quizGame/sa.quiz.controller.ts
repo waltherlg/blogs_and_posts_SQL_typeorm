@@ -11,7 +11,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { CreateQuestionImputModelType } from './quiz.game.types';
+import { CreateQuestionImputModelType, UpdateQuestionImputModelType } from './quiz.game.types';
 import { BasicAuthGuard } from 'src/auth/guards/auth.guards';
 import { SaCreateQuestionCommand } from './use-cases/sa-creates-question-use-case';
 import { QuestionsRepository } from './questions.repository';
@@ -25,6 +25,7 @@ import { CustomNotFoundException } from '../exceptions/custom.exceptions';
 import { ActionResult, handleActionResult } from '../helpers/enum.action.result.helper';
 import { SaDeleteQuestionByIdCommand } from './use-cases/sa-delete-question-by-id-use-case';
 import { validate as isValidUUID } from 'uuid';
+import { SaUpdateQuestionByIdCommand } from './use-cases/sa-update-question-by-id-use-case';
 
 @UseGuards(BasicAuthGuard)
 @Controller('quiz')
@@ -70,8 +71,12 @@ export class SaQuizController {
   @Put('questions/:questionId')
   @HttpCode(204)
   //TODO
-  async updateQuestionById(questionId) {
-
+  async updateQuestionById(
+    @Param('questionId') questionId: string,
+    @Body() updateQuestionDto: UpdateQuestionImputModelType
+    ){
+    const updateResult: ActionResult = await this.commandBus.execute(new SaUpdateQuestionByIdCommand(questionId, updateQuestionDto))
+    handleActionResult(updateResult)
   }
 
   @Put('questions/:questionId/publish')

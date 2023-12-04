@@ -12,6 +12,18 @@ export const testQuestions = {
     createdAt: expect.any(String),
     updatedAt: expect.any(String),
   },
+  updateQuestion1: {
+    body: 'updatedQuestion1',
+    correctAnswers: ['updated correct answer for question1', 'updatedAnswer1'],
+  },
+  updatedOutputQuestion1Sa: {
+    id: expect.any(String),
+    body: 'updatedQuestion1',
+    correctAnswers: ['updated correct answer for question1', 'updatedAnswer1'],
+    published: false,
+    createdAt: expect.any(String),
+    updatedAt: expect.any(String),
+  },
   inputQuestion2: {
     body: 'question2',
     correctAnswers: ['correct answer for question2', 'answer2'],

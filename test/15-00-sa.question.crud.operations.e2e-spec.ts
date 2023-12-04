@@ -117,5 +117,33 @@ export function questionCrudOperationsSa15() {
       });
     });
 
+    it('00-00 quiz/questions PUT = 201 update question1', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.quizQuestions}/${questionId1}`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testQuestions.updateQuestion1)
+        .expect(204);
+    });
+
+    it('01-01 quiz/questions GET = 200 return array with question1 after update', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.quizQuestions)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 1,
+        items: [
+          testQuestions.updatedOutputQuestion1Sa,
+        ],
+      });
+      const question = createdResponse.items[0];
+      expect(question.createdAt).not.toEqual(question.updatedAt);
+    });
+
   });
 }
