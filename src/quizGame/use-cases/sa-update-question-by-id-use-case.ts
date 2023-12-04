@@ -2,22 +2,24 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { QuestionsRepository } from '../questions.repository';
 import { ActionResult } from '../../helpers/enum.action.result.helper';
 import { CheckService } from '../../other.services/check.service';
+import { UpdateQuestionImputModelType } from '../quiz.game.types';
 
-export class SaDeleteQuestionByIdCommand {
-  constructor(public questionId) {}
+export class SaUpdateQuestionByIdCommand {
+  constructor(public questionId, public updateQuestionDto: UpdateQuestionImputModelType) {}
 }
-@CommandHandler(SaDeleteQuestionByIdCommand)
-export class SaDeleteQuestionByIdUseCase
-  implements ICommandHandler<SaDeleteQuestionByIdCommand>
+
+@CommandHandler(SaUpdateQuestionByIdCommand)
+export class SaUpdateQuestionByIdUseCase
+  implements ICommandHandler<SaUpdateQuestionByIdCommand>
 {
   constructor(private readonly questionRepository: QuestionsRepository,
               private readonly checkService: CheckService) {}
 
-  async execute(command: SaDeleteQuestionByIdCommand): Promise<ActionResult> {
+  async execute(command: SaUpdateQuestionByIdCommand): Promise<ActionResult> {
     if(!(await this.checkService.isQuestionExist(command.questionId))){
       return ActionResult.QuestionNotFound
     }
-    const result = await this.questionRepository.deleteQuestionById(command.questionId)
+    const result = await this.questionRepository.updateQuestionById(command.questionId, command.updateQuestionDto)
     if(result){
       return ActionResult.Success
     } else {
