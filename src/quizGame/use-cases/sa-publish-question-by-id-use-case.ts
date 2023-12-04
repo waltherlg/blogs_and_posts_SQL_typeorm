@@ -2,7 +2,6 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { QuestionsRepository } from '../questions.repository';
 import { ActionResult } from '../../helpers/enum.action.result.helper';
 import { CheckService } from '../../other.services/check.service';
-import { UpdateQuestionImputModelType } from '../quiz.game.types';
 
 export class SaPublishQuestionByIdCommand {
   constructor(public questionId: string, public published: boolean) {}
