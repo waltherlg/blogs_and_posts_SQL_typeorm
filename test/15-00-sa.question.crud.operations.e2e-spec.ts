@@ -11,6 +11,7 @@ export function questionCrudOperationsSa15() {
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
     let questionId1;
+    let questionId2;
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -67,7 +68,7 @@ export function questionCrudOperationsSa15() {
         .expect(201);
 
       const createdResponseBody = createResponse.body;
-      questionId1 = createdResponseBody.id;
+      questionId2 = createdResponseBody.id;
 
       expect(createdResponseBody).toEqual(testQuestions.outputQuestion2Sa);
     });
@@ -90,6 +91,31 @@ export function questionCrudOperationsSa15() {
         ],
       });
     });
-    
+
+    it('00-00 quiz/questions/:questionId DELETE = 204 delete question2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .delete(`${endpoints.quizQuestions}/${questionId2}`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .expect(204);
+    });
+
+    it('01-01 quiz/questions GET = 200 return array with question1 after delete question2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.quizQuestions)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 1,
+        items: [
+          testQuestions.outputQuestion1Sa,
+        ],
+      });
+    });
+
   });
 }

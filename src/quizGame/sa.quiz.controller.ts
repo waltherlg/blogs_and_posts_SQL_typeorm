@@ -61,7 +61,6 @@ export class SaQuizController {
 
   @Delete('questions/:questionId')
   @HttpCode(204)
-  //TODO
   async deleteQuestionById(@Param('questionId') questionId: string) {
     const deleteResult: ActionResult = await this.commandBus.execute(new SaDeleteQuestionByIdCommand(questionId))
     handleActionResult(deleteResult)

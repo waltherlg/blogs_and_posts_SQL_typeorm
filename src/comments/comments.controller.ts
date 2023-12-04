@@ -58,7 +58,6 @@ export class CommentsControllers {
   @UseGuards(OptionalJwtAuthGuard)
   @Get(':id')
   async getCommentById(@Req() request, @Param('id') commentId: string) {
-    // TODO: findout status 500
     const comment = await this.commentsQueryRepository.getCommentById(
       commentId,
       request.user.userId, //user = userId
@@ -131,7 +130,6 @@ export class CommentsControllers {
   @Put(':id/like-status')
   @HttpCode(204)
   async setLikeStatusForComment(
-    // TODO: if :id from uri param not found need status 404, not 400... need check
     @Req() request,
     @Param('id') commentId: string,
     @Body(new ValidationPipe({ transform: true }))
