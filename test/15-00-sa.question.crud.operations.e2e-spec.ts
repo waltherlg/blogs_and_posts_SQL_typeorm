@@ -145,5 +145,23 @@ export function questionCrudOperationsSa15() {
       expect(question.createdAt).not.toEqual(question.updatedAt);
     });
 
+    it('00-00 quiz/questions/:questionId/publish PUT = 204 publish question1', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.quizQuestions}/${questionId1}/publish`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send({published: true})
+        .expect(204);
+    });
+
+    it('01-01 quiz/questions GET = 200 return array with published question1', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.quizQuestions)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+      const question = createdResponse.items[0];
+      expect(question.published).toEqual(true);
+    });
+
   });
 }

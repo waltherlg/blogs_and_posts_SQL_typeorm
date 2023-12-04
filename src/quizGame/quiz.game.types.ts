@@ -20,7 +20,7 @@ export class UpdateQuestionImputModelType {
 
 export class PublishQuestionImputModelType {
   @IsBoolean()
-  published: string;
+  published: boolean;
 }
 
 export class QuestionDbType {
