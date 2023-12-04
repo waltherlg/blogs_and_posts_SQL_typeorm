@@ -18,9 +18,7 @@ export class UpdateBlogByIdFromUriUseCase
 {
   constructor(private readonly blogsRepository: BlogsRepository) {}
 
-  async execute(
-    command: UpdateBlogByIdFromUriCommand,
-  ): Promise<ActionResult> {
+  async execute(command: UpdateBlogByIdFromUriCommand): Promise<ActionResult> {
     const name = command.blogUpdateInputModel.name;
     const description = command.blogUpdateInputModel.description;
     const websiteUrl = command.blogUpdateInputModel.websiteUrl;

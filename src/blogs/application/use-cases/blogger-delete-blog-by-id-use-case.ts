@@ -12,9 +12,7 @@ export class DeleteBlogByIdFromUriUseCase
 {
   constructor(private readonly blogsRepository: BlogsRepository) {}
 
-  async execute(
-    command: DeleteBlogByIdFromUriCommand,
-  ): Promise<ActionResult> {
+  async execute(command: DeleteBlogByIdFromUriCommand): Promise<ActionResult> {
     const blog = await this.blogsRepository.getBlogDBTypeById(command.blogId);
     if (!blog) return ActionResult.BlogNotFound;
     if (blog.userId !== command.userId) return ActionResult.NotOwner;

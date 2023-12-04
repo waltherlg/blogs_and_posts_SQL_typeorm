@@ -46,7 +46,11 @@ export type RequestQuestionsQueryModel = RequestQueryParamsModel & {
   publishedStatus: string;
 };
 
-enum enumPublishedStatus {all, published, notPublished}
+enum enumPublishedStatus {
+  all,
+  published,
+  notPublished,
+}
 
 export const DEFAULT_QUESTIONS_QUERY_PARAMS: RequestQuestionsQueryModel = {
   sortBy: 'createdAt',

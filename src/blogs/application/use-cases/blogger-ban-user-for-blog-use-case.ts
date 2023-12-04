@@ -25,9 +25,7 @@ export class BanUserForSpecificBlogUseCase
     private readonly checkService: CheckService,
   ) {}
 
-  async execute(
-    command: BanUserForSpecificBlogCommand,
-  ): Promise<ActionResult> {
+  async execute(command: BanUserForSpecificBlogCommand): Promise<ActionResult> {
     const bloggerId = command.bloggerId;
     const userId = command.userId;
     const banStatus = command.banUserDto.isBanned;

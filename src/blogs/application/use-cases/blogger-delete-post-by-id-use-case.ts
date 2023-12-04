@@ -15,9 +15,7 @@ export class DeletePostByIdFromUriUseCase
   implements ICommandHandler<DeletePostByIdFromUriCommand>
 {
   constructor(private readonly postsRepository: PostsRepository) {}
-  async execute(
-    command: DeletePostByIdFromUriCommand,
-  ): Promise<ActionResult> {
+  async execute(command: DeletePostByIdFromUriCommand): Promise<ActionResult> {
     const post = await this.postsRepository.getPostDBTypeById(command.postId);
     if (!post) return ActionResult.PostNotFound;
     if (post.userId !== command.userId) return ActionResult.NotOwner;

@@ -76,7 +76,7 @@ export class AuthController {
     private readonly usersQueryRepository: UsersQueryRepository,
     private readonly commandBus: CommandBus,
   ) {}
-  
+
   @Post('registration')
   @HttpCode(204)
   async registration(@Body() userCreateInputModel: CreateUserInputModelType) {

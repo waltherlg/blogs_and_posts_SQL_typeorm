@@ -10,7 +10,7 @@ export function questionCrudOperationsSa15() {
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
-    let questionId1
+    let questionId1;
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -25,71 +25,70 @@ export function questionCrudOperationsSa15() {
     });
 
     it('00-00 testing/all-data DELETE = 204 removeAllData', async () => {
-        await request(app.getHttpServer())
-          .delete(endpoints.wipeAllData)
-          .expect(204);
-      });
+      await request(app.getHttpServer())
+        .delete(endpoints.wipeAllData)
+        .expect(204);
+    });
 
-      it('01-01 quiz/questions GET = 200 return empty array with pagination', async () => {
-        const createResponse = await request(app.getHttpServer())
-          .get(endpoints.quizQuestions)
-          .set('Authorization', `Basic ${basicAuthRight}`)
-          .expect(200);
-        const createdResponse = createResponse.body;
-  
-        expect(createdResponse).toEqual({
-          pagesCount: 0,
-          page: 1,
-          pageSize: 10,
-          totalCount: 0,
-          items: [],
-        });
-      });
+    it('01-01 quiz/questions GET = 200 return empty array with pagination', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.quizQuestions)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
 
-      it('00-00 quiz/questions POST = 201 create question1 with return', async () => {
-        const createResponse = await request(app.getHttpServer())
-          .post(endpoints.quizQuestions)
-          .set('Authorization', `Basic ${basicAuthRight}`)
-          .send(testQuestions.inputQuestion1)
-          .expect(201);
-  
-        const createdResponseBody = createResponse.body;
-        questionId1 = createdResponseBody.id;
-  
-        expect(createdResponseBody).toEqual(testQuestions.outputQuestion1Sa);
+      expect(createdResponse).toEqual({
+        pagesCount: 0,
+        page: 1,
+        pageSize: 10,
+        totalCount: 0,
+        items: [],
       });
+    });
 
-      it('00-00 quiz/questions POST = 201 create question2 with return', async () => {
-        const createResponse = await request(app.getHttpServer())
-          .post(endpoints.quizQuestions)
-          .set('Authorization', `Basic ${basicAuthRight}`)
-          .send(testQuestions.inputQuestion2)
-          .expect(201);
-  
-        const createdResponseBody = createResponse.body;
-        questionId1 = createdResponseBody.id;
-  
-        expect(createdResponseBody).toEqual(testQuestions.outputQuestion2Sa);
+    it('00-00 quiz/questions POST = 201 create question1 with return', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(endpoints.quizQuestions)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testQuestions.inputQuestion1)
+        .expect(201);
+
+      const createdResponseBody = createResponse.body;
+      questionId1 = createdResponseBody.id;
+
+      expect(createdResponseBody).toEqual(testQuestions.outputQuestion1Sa);
+    });
+
+    it('00-00 quiz/questions POST = 201 create question2 with return', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(endpoints.quizQuestions)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testQuestions.inputQuestion2)
+        .expect(201);
+
+      const createdResponseBody = createResponse.body;
+      questionId1 = createdResponseBody.id;
+
+      expect(createdResponseBody).toEqual(testQuestions.outputQuestion2Sa);
+    });
+
+    it('01-01 quiz/questions GET = 200 return array with 2 questions pagination', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.quizQuestions)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 2,
+        items: [
+          testQuestions.outputQuestion2Sa,
+          testQuestions.outputQuestion1Sa,
+        ],
       });
-
-      it('01-01 quiz/questions GET = 200 return array with 2 questions pagination', async () => {
-        const createResponse = await request(app.getHttpServer())
-          .get(endpoints.quizQuestions)
-          .set('Authorization', `Basic ${basicAuthRight}`)
-          .expect(200);
-        const createdResponse = createResponse.body;
-  
-        expect(createdResponse).toEqual({
-          pagesCount: 1,
-          page: 1,
-          pageSize: 10,
-          totalCount: 2,
-          items: [
-            testQuestions.outputQuestion2Sa,
-            testQuestions.outputQuestion1Sa,
-          ],
-        });
-      });
-
+    });
   });
 }
