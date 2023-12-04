@@ -57,6 +57,16 @@ export class QuestionsRepository {
       }
     )
     return result.affected > 0;
+  }
 
+  async publishQuestionById(questionId: string, published: boolean): Promise<boolean>{
+    if (!isValidUUID(questionId)) {
+      return false;
+    }
+    const result = await this.questionsRepository.update(
+      { questionId: questionId },
+      { published: published }
+    )
+    return result.affected > 0;
   }
 }

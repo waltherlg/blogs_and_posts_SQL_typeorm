@@ -70,7 +70,6 @@ export class SaQuizController {
 
   @Put('questions/:questionId')
   @HttpCode(204)
-  //TODO
   async updateQuestionById(
     @Param('questionId') questionId: string,
     @Body() updateQuestionDto: UpdateQuestionImputModelType
