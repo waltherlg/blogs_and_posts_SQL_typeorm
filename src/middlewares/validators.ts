@@ -87,7 +87,6 @@ export class CustomBlogIdValidator implements ValidatorConstraintInterface {
   constructor(private readonly checkService: CheckService) {}
 
   async validate(blogId: any, args: ValidationArguments) {
-    // Проверка с использованием декоратора @IsString
     const isBlogIdString = isString(blogId);
 
     if (!isBlogIdString) {
