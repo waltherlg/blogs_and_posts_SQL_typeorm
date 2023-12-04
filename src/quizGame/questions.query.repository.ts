@@ -30,7 +30,7 @@ export class QuestionsQueryRepository {
         where: [{ questionId: questionId }],
       });
     if (!question) return null;
-    return questionMapper.forSa(question);
+    return questionMapper.returnForSa(question);
   }
 
   async getAllQuestionsForSa(
@@ -67,7 +67,7 @@ export class QuestionsQueryRepository {
       .getManyAndCount();
 
     const outQuestions = questions.map((question) =>
-      questionMapper.forSa(question),
+      questionMapper.returnForSa(question),
     );
 
     const pageCount = Math.ceil(questionsCount / pageSize);

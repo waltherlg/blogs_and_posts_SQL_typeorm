@@ -1,7 +1,7 @@
 import { QuestionDbType } from '../quiz.game.types';
 
 export const questionMapper = {
-  forSa(question: QuestionDbType) {
+  returnForSa(question: QuestionDbType) {
     return {
       id: question.questionId,
       body: question.body,
