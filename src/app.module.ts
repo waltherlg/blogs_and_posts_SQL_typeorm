@@ -39,7 +39,7 @@ import { CommentsQueryRepository } from './comments/comments.query.repository';
 import { CommentsService } from './comments/comments.service';
 import { CommentsControllers } from './comments/comments.controller';
 import {
-  CustomBlogIdValidator,
+  //CustomBlogIdValidator,
   CustomUrlValidator,
   LikeStatusValidator,
   TrimNotEmptyValidator,
@@ -225,7 +225,7 @@ const useCases = [
     AnonymousStrategy,
     LikeStatusValidator,
     CustomUrlValidator,
-    CustomBlogIdValidator,
+    //CustomBlogIdValidator,
     TrimNotEmptyValidator,
     ...useCases,
     {

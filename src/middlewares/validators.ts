@@ -81,38 +81,38 @@ export function IsCustomUrl(validationOptions?: ValidationOptions) {
     });
   };
 }
-@Injectable()
-@ValidatorConstraint({ name: 'BlogId', async: true })
-export class CustomBlogIdValidator implements ValidatorConstraintInterface {
-  constructor(private readonly checkService: CheckService) {}
+// @Injectable()
+// @ValidatorConstraint({ name: 'BlogId', async: true })
+// export class CustomBlogIdValidator implements ValidatorConstraintInterface {
+//   constructor(private readonly checkService: CheckService) {}
 
-  async validate(blogId: any, args: ValidationArguments) {
-    const isBlogIdString = isString(blogId);
+//   async validate(blogId: any, args: ValidationArguments) {
+//     const isBlogIdString = isString(blogId);
 
-    if (!isBlogIdString) {
-      return true;
-    }
+//     if (!isBlogIdString) {
+//       return true;
+//     }
 
-    return await this.checkService.isBlogExist(blogId.toString());
-  }
+//     return await this.checkService.isBlogExist(blogId.toString());
+//   }
 
-  defaultMessage(args: ValidationArguments) {
-    return `must be existing blog`;
-  }
-}
+//   defaultMessage(args: ValidationArguments) {
+//     return `must be existing blog`;
+//   }
+// }
 
-export function BlogIdCustomValidator(validationOptions?: ValidationOptions) {
-  return function (object: Record<string, any>, propertyName: string) {
-    registerDecorator({
-      name: 'BlogIdCustomValidator',
-      target: object.constructor,
-      propertyName: propertyName,
-      options: validationOptions,
-      constraints: [],
-      validator: CustomBlogIdValidator,
-    });
-  };
-}
+// export function BlogIdCustomValidator(validationOptions?: ValidationOptions) {
+//   return function (object: Record<string, any>, propertyName: string) {
+//     registerDecorator({
+//       name: 'BlogIdCustomValidator',
+//       target: object.constructor,
+//       propertyName: propertyName,
+//       options: validationOptions,
+//       constraints: [],
+//       validator: CustomBlogIdValidator,
+//     });
+//   };
+// }
 
 @ValidatorConstraint({ name: 'trimNotEmpty', async: false })
 export class TrimNotEmptyValidator implements ValidatorConstraintInterface {
