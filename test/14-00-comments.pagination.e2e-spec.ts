@@ -130,7 +130,7 @@ export function commentPaginationTest14() {
 
     it('00-00 sa/blogs POST = 201 create blog1', async () => {
       const createResponse = await request(app.getHttpServer())
-        .post(`${endpoints.bloggerBlogs}`)
+        .post(`${endpoints.saBlogs}`)
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send(testComments.inputBodyBlog1)
         .expect(201);
@@ -141,7 +141,7 @@ export function commentPaginationTest14() {
 
     it('00-00 sa/blogs/{blogId}/posts POST = 201 sa create post1 for blog1', async () => {
       const createResponse = await request(app.getHttpServer())
-        .post(`${endpoints.bloggerBlogs}/${blogId1}/posts`)
+        .post(`${endpoints.saBlogs}/${blogId1}/posts`)
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send(testComments.inputBodyPost1forBlog1)
         .expect(201);
