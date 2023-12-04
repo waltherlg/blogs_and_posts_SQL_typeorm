@@ -27,7 +27,7 @@ import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard'
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 import { CommentsQueryRepository } from '../../comments/comments.query.repository';
 import {
-  BlogIdCustomValidator,
+  //BlogIdCustomValidator,
   LikeStatusValidator,
   StringTrimNotEmpty,
 } from '../../middlewares/validators';
@@ -36,37 +36,37 @@ import { CreateCommentForSpecificPostCommand } from '../use-cases/create-comment
 import { SetLikeStatusForPostCommand } from '../use-cases/set-like-status-for-post-use-case';
 import { handleActionResult } from '../../helpers/enum.action.result.helper';
 
-export class CreatePostInputModelType {
-  @StringTrimNotEmpty()
-  @MaxLength(30)
-  title: string;
-  @StringTrimNotEmpty()
-  @MaxLength(100)
-  shortDescription: string;
-  @StringTrimNotEmpty()
-  @MaxLength(1000)
-  content: string;
-  @StringTrimNotEmpty()
-  @MaxLength(1000)
-  @BlogIdCustomValidator()
-  blogId: string;
-}
+// export class CreatePostInputModelType {
+//   @StringTrimNotEmpty()
+//   @MaxLength(30)
+//   title: string;
+//   @StringTrimNotEmpty()
+//   @MaxLength(100)
+//   shortDescription: string;
+//   @StringTrimNotEmpty()
+//   @MaxLength(1000)
+//   content: string;
+//   @StringTrimNotEmpty()
+//   @MaxLength(1000)
+//   @BlogIdCustomValidator()
+//   blogId: string;
+// }
 
-export class UpdatePostInputModelType {
-  @StringTrimNotEmpty()
-  @MaxLength(30)
-  title: string;
-  @StringTrimNotEmpty()
-  @MaxLength(100)
-  shortDescription: string;
-  @StringTrimNotEmpty()
-  @MaxLength(1000)
-  content: string;
-  @StringTrimNotEmpty()
-  @MaxLength(100)
-  @BlogIdCustomValidator()
-  blogId: string;
-}
+// export class UpdatePostInputModelType {
+//   @StringTrimNotEmpty()
+//   @MaxLength(30)
+//   title: string;
+//   @StringTrimNotEmpty()
+//   @MaxLength(100)
+//   shortDescription: string;
+//   @StringTrimNotEmpty()
+//   @MaxLength(1000)
+//   content: string;
+//   @StringTrimNotEmpty()
+//   @MaxLength(100)
+//   @BlogIdCustomValidator()
+//   blogId: string;
+// }
 export class CreateCommentInputModelType {
   @StringTrimNotEmpty()
   @Length(20, 300)
