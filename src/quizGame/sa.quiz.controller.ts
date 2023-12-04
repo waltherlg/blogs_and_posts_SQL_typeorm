@@ -24,6 +24,7 @@ import { CheckService } from '../other.services/check.service';
 import { CustomNotFoundException } from '../exceptions/custom.exceptions';
 import { ActionResult, handleActionResult } from '../helpers/enum.action.result.helper';
 import { SaDeleteQuestionByIdCommand } from './use-cases/sa-delete-question-by-id-use-case';
+import { validate as isValidUUID } from 'uuid';
 
 @UseGuards(BasicAuthGuard)
 @Controller('quiz')
@@ -69,7 +70,9 @@ export class SaQuizController {
   @Put('questions/:questionId')
   @HttpCode(204)
   //TODO
-  async updateQuestionById() {}
+  async updateQuestionById(questionId) {
+
+  }
 
   @Put('questions/:questionId/publish')
   @HttpCode(204)

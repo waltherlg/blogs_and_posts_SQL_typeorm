@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QuestionDbType, Questions } from './quiz.game.types';
+import { QuestionDbType, Questions, UpdateQuestionImputModelType } from './quiz.game.types';
 import { Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 
@@ -42,5 +42,20 @@ export class QuestionsRepository {
       where: { questionId },
     });
     return count > 0;
+  }
+
+  async updateQuestionById(questionId: string, UpdateQuestionDto: UpdateQuestionImputModelType): Promise<boolean>{
+    if (!isValidUUID(questionId)) {
+      return false;
+    }
+    const result = await this.questionsRepository.update(
+      {questionId: questionId},
+      {
+        body: UpdateQuestionDto.body,
+        correctAnswers: UpdateQuestionDto.correctAnswers
+      }
+    )
+    return result.affected > 0;
+
   }
 }
