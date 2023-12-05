@@ -2,12 +2,6 @@ import { IsArray, IsBoolean, Length } from 'class-validator';
 import { StringTrimNotEmpty } from '../middlewares/validators';
 import { Entity, PrimaryColumn, Column } from 'typeorm';
 
-@Entity({name: 'QuizGame'})
-export class QuizGame {
-  @PrimaryColumn('uuid')
-  quizGameId: string;
-}
-
 enum enumAnswerGameStatus {'Correct', 'Incorrect'}
 
 type answerGameType = {
@@ -46,6 +40,41 @@ export type outputGameQuizType = {
   pairCreatedDate: string,
   startGameDate: string,
   finishGameDate: string
+}
+
+@Entity({name: 'QuizGame'})
+export class QuizGame {
+  @PrimaryColumn('uuid')
+  quizGameId: string;
+  @Column({type: 'enum', enum: enumStatusGameType})
+  status: string;
+  @Column({ type: 'timestamptz' })
+  pairCreatedDate: string
+  @Column({ type: 'timestamptz' })
+  startGameDate: string
+  @Column({ type: 'timestamptz' })
+  finishGameDate: string
+
+  @Column({ type: 'jsonb' })
+  questions: questionGameType[];
+
+  @Column('uuid')
+  player1Id: string;
+  @Column({ type: 'jsonb' })
+  player1Answers: answerGameType[];
+  @Column({default: 0})
+  player1Score: number
+
+  @Column({type: 'uuid', nullable: true})
+  player2Id: string;
+  @Column({ type: 'jsonb' })
+  player2Answers: answerGameType[];
+  @Column({default: 0})
+  player2Score: number
+
+
+
+
 }
 
 // port type outputGameQuizType = {
