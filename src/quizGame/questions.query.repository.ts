@@ -4,7 +4,7 @@ import {
   QuestionDbType,
   Questions,
   questionOutputSaType,
-} from './quiz.game.types';
+} from './questions.quiz.types';
 import { Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { questionMapper } from './helpers/questions.mapper';

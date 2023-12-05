@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import {
   CreateQuestionImputModelType,
   QuestionDbType,
-} from '../quiz.game.types';
+} from '../questions.quiz.types';
 import { v4 as uuidv4 } from 'uuid';
 import { QuestionsRepository } from '../questions.repository';
 

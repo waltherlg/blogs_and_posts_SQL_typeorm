@@ -13,7 +13,7 @@ import { Blogs, BlogBannedUsers } from '../blogs/blog.entity';
 import { Posts } from '../posts/post.entity';
 import { Comments } from '../comments/comment.entity';
 import { CommentLikes, PostLikes } from '../likes/like.entity';
-import { Questions } from '../quizGame/quiz.game.types';
+import { Questions } from '../quizGame/questions.quiz.types';
 
 export default new DataSource({
   type: 'postgres',

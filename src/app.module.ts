@@ -98,7 +98,7 @@ import { SaQuizController } from './quizGame/sa.quiz.controller';
 import { SaCreateQuestionUseCase } from './quizGame/use-cases/sa-creates-question-use-case';
 import { QuestionsRepository } from './quizGame/questions.repository';
 import { QuestionsQueryRepository } from './quizGame/questions.query.repository';
-import { Questions } from './quizGame/quiz.game.types';
+import { Questions } from './quizGame/questions.quiz.types';
 import { SaDeleteQuestionByIdUseCase } from './quizGame/use-cases/sa-delete-question-by-id-use-case';
 import { SaUpdateQuestionByIdUseCase } from './quizGame/use-cases/sa-update-question-by-id-use-case';
 import { SaPublishQuestionByIdUseCase } from './quizGame/use-cases/sa-publish-question-by-id-use-case';

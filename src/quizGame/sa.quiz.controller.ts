@@ -11,7 +11,7 @@ import {
   Param,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { CreateQuestionImputModelType, PublishQuestionImputModelType, UpdateQuestionImputModelType } from './quiz.game.types';
+import { CreateQuestionImputModelType, PublishQuestionImputModelType, UpdateQuestionImputModelType } from './questions.quiz.types';
 import { BasicAuthGuard } from 'src/auth/guards/auth.guards';
 import { SaCreateQuestionCommand } from './use-cases/sa-creates-question-use-case';
 import { QuestionsRepository } from './questions.repository';
