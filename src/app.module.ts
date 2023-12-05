@@ -102,6 +102,7 @@ import { Questions } from './quizGame/questions.quiz.types';
 import { SaDeleteQuestionByIdUseCase } from './quizGame/use-cases/sa-delete-question-by-id-use-case';
 import { SaUpdateQuestionByIdUseCase } from './quizGame/use-cases/sa-update-question-by-id-use-case';
 import { SaPublishQuestionByIdUseCase } from './quizGame/use-cases/sa-publish-question-by-id-use-case';
+import { PlayerConnectGameUseCase } from './quizGame/use-cases/player-connect-to-game-use-case';
 const mongoUri = process.env.MONGO_URL;
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
@@ -143,6 +144,7 @@ const useCases = [
   SaDeleteQuestionByIdUseCase,
   SaUpdateQuestionByIdUseCase,
   SaPublishQuestionByIdUseCase,
+  PlayerConnectGameUseCase,
 ];
 
 @Module({
