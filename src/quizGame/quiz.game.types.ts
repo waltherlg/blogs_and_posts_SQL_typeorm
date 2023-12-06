@@ -1,6 +1,7 @@
 import { IsArray, IsBoolean, Length } from 'class-validator';
 import { StringTrimNotEmpty } from '../middlewares/validators';
-import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Users } from 'src/users/user.entity';
 
 enum enumAnswerGameStatus {'Correct', 'Incorrect'}
 
@@ -42,6 +43,23 @@ export type outputGameQuizType = {
   finishGameDate: string
 }
 
+export class QuizGameDbType {
+  constructor(
+    public quizGameId: string,
+    public status: enumStatusGameType = enumStatusGameType.PendingSecondPlayer,    
+    public pairCreatedDate: Date,    
+    public startGameDate: Date | null = null,    
+    public finishGameDate: Date | null = null,
+    public questions: questionGameType[],
+    public player1Id: string,
+    public player1Answers: answerGameType[] = [],
+    public player1Score: number = 0,
+    public player2Id: string = null,
+    public player2Answers: answerGameType[] = [],
+    public player2Score: number = 0,
+  ){}
+}
+
 @Entity({name: 'QuizGame'})
 export class QuizGame {
   @PrimaryColumn('uuid')
@@ -58,6 +76,9 @@ export class QuizGame {
   @Column({ type: 'jsonb' })
   questions: questionGameType[];
 
+  @ManyToOne(() => Users)
+  @JoinColumn({ name: 'player1Id' })
+  player1: Users;
   @Column('uuid')
   player1Id: string;
   @Column({ type: 'jsonb' })
@@ -65,16 +86,15 @@ export class QuizGame {
   @Column({default: 0})
   player1Score: number
 
+  @ManyToOne(() => Users, { nullable: true })
+  @JoinColumn({ name: 'player2Id' })
+  player2: Users;
   @Column({type: 'uuid', nullable: true})
   player2Id: string;
   @Column({ type: 'jsonb' })
   player2Answers: answerGameType[];
   @Column({default: 0})
   player2Score: number
-
-
-
-
 }
 
 // port type outputGameQuizType = {
