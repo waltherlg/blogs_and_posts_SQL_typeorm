@@ -6,6 +6,7 @@ import {
 import { QuestionsRepository } from '../questions.repository';
 import { QuizGameDbType, enumStatusGameType } from '../quiz.game.types';
 import { v4 as uuidv4 } from 'uuid';
+import { ActionResult } from 'src/helpers/enum.action.result.helper';
 
 export class PlayerConnectGameCommand {
   constructor(public userId: string) {}
@@ -20,16 +21,15 @@ export class PlayerConnectGameUseCase
   async execute(command: PlayerConnectGameCommand): Promise<any> {
     const questions = await this.questionRepository.get5QuestionsForGame()
     if (questions.length < 5) {
-      return
+      return ActionResult.NotEnoughQuestions
     }
-
     const quizGameDto = new QuizGameDbType (
       uuidv4(),
       enumStatusGameType.PendingSecondPlayer,
       new Date(),
       null,
       null,
-      [],
+      questions,
       command.userId,
       [],
       0,

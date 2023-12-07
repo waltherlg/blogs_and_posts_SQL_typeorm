@@ -11,4 +11,11 @@ export const questionMapper = {
       updatedAt: question.updatedAt,
     };
   },
+
+  returnForQuizGame(question: QuestionDbType){
+    return {
+      id: question.questionId,
+      body: question.body
+    }
+  }
 };

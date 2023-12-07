@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { QuestionDbType, Questions, UpdateQuestionImputModelType } from './questions.quiz.types';
 import { Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
+import { questionGameType } from './quiz.game.types';
+import { questionMapper } from './helpers/questions.mapper';
 
 @Injectable()
 export class QuestionsRepository {
@@ -70,14 +72,17 @@ export class QuestionsRepository {
     return result.affected > 0;
   }
 
-  async get5QuestionsForGame(){
-    const questions = await this.questionsRepository
+  async get5QuestionsForGame(): Promise<questionGameType[]>{
+    const questionsDbType = await this.questionsRepository
     .createQueryBuilder()
-    .select()
+    .select(['questionId', 'body'])
     .orderBy('RANDOM()')
     .limit(5)
     .getMany();
-    return questions
+    const questionsForGame = questionsDbType.map((question) => 
+      questionMapper.returnForQuizGame(question)
+    )
+    return questionsForGame
   }
   
 }

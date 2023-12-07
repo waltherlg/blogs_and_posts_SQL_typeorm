@@ -22,7 +22,7 @@ type playerGameProgressType = {
     score: number
 }
 
-type questionGameType = {
+export type questionGameType = {
   id: string,
   body: string
 }
