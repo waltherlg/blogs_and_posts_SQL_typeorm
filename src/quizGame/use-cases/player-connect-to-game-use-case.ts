@@ -18,7 +18,11 @@ export class PlayerConnectGameUseCase
   constructor(private readonly questionRepository: QuestionsRepository) {}
 
   async execute(command: PlayerConnectGameCommand): Promise<any> {
-    
+    const questions = await this.questionRepository.get5QuestionsForGame()
+    if (questions.length < 5) {
+      return
+    }
+
     const quizGameDto = new QuizGameDbType (
       uuidv4(),
       enumStatusGameType.PendingSecondPlayer,
