@@ -27,7 +27,7 @@ type questionGameType = {
   body: string
 }
 
-enum enumStatusGameType {
+export enum enumStatusGameType {
   'PendingSecondPlayer', 'Active', 'Finished'
 }
 

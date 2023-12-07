@@ -69,4 +69,15 @@ export class QuestionsRepository {
     )
     return result.affected > 0;
   }
+
+  async get5QuestionsForGame(){
+    const questions = await this.questionsRepository
+    .createQueryBuilder()
+    .select()
+    .orderBy('RANDOM()')
+    .limit(5)
+    .getMany();
+    return questions
+  }
+  
 }
