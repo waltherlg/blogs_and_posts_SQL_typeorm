@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { questionGameType } from './quiz.game.types';
 import { questionMapper } from './helpers/questions.mapper';
+import { quartersInYear } from 'date-fns';
 
 @Injectable()
 export class QuestionsRepository {
@@ -72,17 +73,15 @@ export class QuestionsRepository {
     return result.affected > 0;
   }
 
-  async get5QuestionsForGame(): Promise<questionGameType[]>{
-    const questionsDbType = await this.questionsRepository
-    .createQueryBuilder()
-    .select(['questionId', 'body'])
+  async get5QuestionsIdForGame(): Promise<[]>{
+    const questions = await this.questionsRepository
+    .createQueryBuilder('question')
+    .select(['question.questionId'])
+    .where('question.published = true')
     .orderBy('RANDOM()')
     .limit(5)
     .getMany();
-    const questionsForGame = questionsDbType.map((question) => 
-      questionMapper.returnForQuizGame(question)
-    )
-    return questionsForGame
+    return questionMapper.returnArrayOfQuestionIdForGame(questions)
   }
   
 }

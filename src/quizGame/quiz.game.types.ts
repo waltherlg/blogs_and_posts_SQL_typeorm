@@ -50,7 +50,7 @@ export class QuizGameDbType {
     public pairCreatedDate: Date,    
     public startGameDate: Date | null = null,    
     public finishGameDate: Date | null = null,
-    public questions: questionGameType[],
+    public questions: [],
     public player1Id: string,
     public player1Answers: answerGameType[] = [],
     public player1Score: number = 0,

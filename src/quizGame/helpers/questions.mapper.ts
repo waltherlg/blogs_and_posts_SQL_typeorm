@@ -17,5 +17,10 @@ export const questionMapper = {
       id: question.questionId,
       body: question.body
     }
+  },
+
+  returnArrayOfQuestionIdForGame(questionArr){
+    const arrayId = questionArr.map(question => question.questionId)
+    return arrayId
   }
 };

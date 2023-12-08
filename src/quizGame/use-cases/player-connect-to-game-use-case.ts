@@ -19,7 +19,7 @@ export class PlayerConnectGameUseCase
   constructor(private readonly questionRepository: QuestionsRepository) {}
 
   async execute(command: PlayerConnectGameCommand): Promise<any> {
-    const questions = await this.questionRepository.get5QuestionsForGame()
+    const questions = await this.questionRepository.get5QuestionsIdForGame()
     if (questions.length < 5) {
       return ActionResult.NotEnoughQuestions
     }
