@@ -48,20 +48,20 @@ export class QuizGameDbType {
     public quizGameId: string,
     public status: enumStatusGameType = enumStatusGameType.PendingSecondPlayer,    
     public pairCreatedDate: Date,    
-    public startGameDate: Date | null = null,    
-    public finishGameDate: Date | null = null,
+    public startGameDate: Date | null,    
+    public finishGameDate: Date | null,
     public questions: [],
     public player1Id: string,
-    public player1Answers: answerGameType[] = [],
-    public player1Score: number = 0,
-    public player2Id: string = null,
-    public player2Answers: answerGameType[] = [],
-    public player2Score: number = 0,
+    public player1Answers: [],
+    public player1Score: number,
+    public player2Id: string,
+    public player2Answers: [],
+    public player2Score: number,
   ){}
 }
 
-@Entity({name: 'QuizGame'})
-export class QuizGame {
+@Entity({name: 'QuizGames'})
+export class QuizGames {
   @PrimaryColumn('uuid')
   quizGameId: string;
   @Column({type: 'enum', enum: enumStatusGameType})
@@ -74,7 +74,7 @@ export class QuizGame {
   finishGameDate: string
 
   @Column({ type: 'jsonb' })
-  questions: questionGameType[];
+  questions: [];
 
   @ManyToOne(() => Users)
   @JoinColumn({ name: 'player1Id' })
