@@ -28,7 +28,7 @@ export type questionGameType = {
 }
 
 export enum enumStatusGameType {
-  'PendingSecondPlayer', 'Active', 'Finished'
+  PendingSecondPlayer = 'PendingSecondPlayer', Active = 'Active', Finished = 'Finished'
 }
 
 
@@ -46,16 +46,16 @@ export type outputGameQuizType = {
 export class QuizGameDbType {
   constructor(
     public quizGameId: string,
-    public status: enumStatusGameType = enumStatusGameType.PendingSecondPlayer,    
+    public status: string,    
     public pairCreatedDate: Date,    
     public startGameDate: Date | null,    
     public finishGameDate: Date | null,
-    public questions: [],
+    public questions: Array<string>,
     public player1Id: string,
-    public player1Answers: [],
+    public player1Answers: Array<string>,
     public player1Score: number,
     public player2Id: string,
-    public player2Answers: [],
+    public player2Answers: Array<string>,
     public player2Score: number,
   ){}
 }
@@ -64,35 +64,32 @@ export class QuizGameDbType {
 export class QuizGames {
   @PrimaryColumn('uuid')
   quizGameId: string;
-  @Column({type: 'enum', enum: enumStatusGameType})
+  @Column()
   status: string;
   @Column({ type: 'timestamptz' })
-  pairCreatedDate: string
+  pairCreatedDate: Date
   @Column({ type: 'timestamptz' })
-  startGameDate: string
+  startGameDate: Date
   @Column({ type: 'timestamptz' })
-  finishGameDate: string
-
+  finishGameDate: Date
   @Column({ type: 'jsonb' })
-  questions: [];
-
+  questions: Array<string>;
   @ManyToOne(() => Users)
   @JoinColumn({ name: 'player1Id' })
   player1: Users;
   @Column('uuid')
   player1Id: string;
   @Column({ type: 'jsonb' })
-  player1Answers: answerGameType[];
+  player1Answers: Array<string>;
   @Column({default: 0})
   player1Score: number
-
   @ManyToOne(() => Users, { nullable: true })
   @JoinColumn({ name: 'player2Id' })
   player2: Users;
   @Column({type: 'uuid', nullable: true})
   player2Id: string;
   @Column({ type: 'jsonb' })
-  player2Answers: answerGameType[];
+  player2Answers: Array<string>;
   @Column({default: 0})
   player2Score: number
 }
