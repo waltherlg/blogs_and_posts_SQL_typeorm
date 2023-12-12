@@ -16,6 +16,7 @@ import { onlyCommentLikesCrud13 } from './13-only-comments-likes.e2e-spec copy';
 import { commentPaginationTest14 } from './14-00-comments.pagination.e2e-spec';
 import { commentLikesWithUserBanCrud1301 } from './13-01-comments-likes.with.user.bane2e-spec copy 2';
 import { questionCrudOperationsSa15 } from './15-00-sa.question.crud.operations.e2e-spec';
+import { quizGameCrudOperationsSa16 } from './16-00-sa.quiz.game.crud.operations.e2e-spec';
 
 describe('End-to-End Tests', () => {
   // testSaUsersCrud();
@@ -35,5 +36,6 @@ describe('End-to-End Tests', () => {
   // onlyCommentLikesCrud13(); // только для проверки создания лайка для комментария
   // commentLikesWithUserBanCrud1301();
   // bloggerUsersControllers()
-  questionCrudOperationsSa15();
+  // questionCrudOperationsSa15();
+  quizGameCrudOperationsSa16()
 });
