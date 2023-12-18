@@ -1,4 +1,4 @@
-import { QuestionDbType } from '../questions.quiz.types';
+import { QuestionDbType } from '../quiz.questions.types';
 
 export const questionMapper = {
   returnForSa(question: QuestionDbType) {

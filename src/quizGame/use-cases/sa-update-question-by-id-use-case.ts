@@ -2,7 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { QuestionsRepository } from '../questions.repository';
 import { ActionResult } from '../../helpers/enum.action.result.helper';
 import { CheckService } from '../../other.services/check.service';
-import { UpdateQuestionImputModelType } from '../questions.quiz.types';
+import { UpdateQuestionImputModelType } from '../quiz.questions.types';
 
 export class SaUpdateQuestionByIdCommand {
   constructor(public questionId, public updateQuestionDto: UpdateQuestionImputModelType) {}

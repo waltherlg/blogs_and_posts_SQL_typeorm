@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QuestionDbType, Questions, UpdateQuestionImputModelType } from './questions.quiz.types';
+import { QuestionDbType, Questions, UpdateQuestionImputModelType } from './quiz.questions.types';
 import { Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { questionGameType } from './quiz.game.types';

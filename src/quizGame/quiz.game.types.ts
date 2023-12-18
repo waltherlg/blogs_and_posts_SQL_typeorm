@@ -2,7 +2,7 @@ import { IsArray, IsBoolean, Length } from 'class-validator';
 import { StringTrimNotEmpty } from '../middlewares/validators';
 import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 import { Users } from 'src/users/user.entity';
-import { Questions } from './questions.quiz.types';
+import { Questions } from './quiz.questions.types';
 
 enum enumAnswerGameStatus {'Correct', 'Incorrect'}
 
