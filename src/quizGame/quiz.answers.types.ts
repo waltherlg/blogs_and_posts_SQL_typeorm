@@ -1,19 +1,33 @@
-// import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from "typeorm";
-// import { QuizGames } from "./quiz.game.types";
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn } from "typeorm";
+import { QuizGames } from "./quiz.game.types";
 
-// export class QuizAnwswerDbType {
-//     constructor (
-//         public answerId: string,
-//         public userId: string,
-//         public quizGameId: string,
-//         public questionId: string,
-//         public ansertStatus: string,
-//         public addedAt: string,
-//     ){}
-// }
+export class QuizAnwswerDbType {
+    constructor (
+        public answerId: string,
+        public gameIndicator: string,
+        public questionId: string,
+        public ansertStatus: string,
+        public addedAt: Date,
+    ){}
+}
 
-// @Entity({name: 'QuizAnswer'})
-// export class QuizAnswer
+@Entity({name: 'QuizAnswers'})
+export class QuizAnswers {
+    @PrimaryColumn('uuid')
+    answerId: string;
+    @Column('uuid')
+    gameIndicator: string;
+    @Column('uuid')
+    public questionId: string;
+    @Column()
+    public ansertStatus: string;
+    @Column({ type: 'timestamptz' })
+    public addedAt: Date;
+
+  @ManyToOne(() => QuizGames, (quizGame) => quizGame.quizAnswers)
+  @JoinColumn({ name: 'gameIndicator', referencedColumnName: 'gameIndicator' })
+  quizGame: QuizGames;
+}
 
 
 
@@ -21,37 +35,3 @@
 
 
 
-
-
-// export class QuizAnswersDbType {
-//     constructor(
-//         public answersId: string,
-//         public gameId: string,
-//         public answer1Id: string,
-//         public answer2Id: string,
-//         public answer3Id: string,
-//         public answer4Id: string,
-//         public answer5Id: string,
-//     ){}
-// }
-
-// @Entity({name: 'QuizAnswers'})
-// export class QuizAnswers {
-//     @PrimaryColumn('uuid')
-//     answersId: string;
-//     @OneToOne(()=> QuizGames)
-//     @JoinColumn({name: 'quizGameId'})
-//     QuizGames: QuizGames
-//     @Column('uuid')
-//     quizGameId: string;
-//     @Column({ type: 'uuid', nullable: true })
-//     answer1Id: string;
-//     @Column({ type: 'uuid', nullable: true })
-//     answer2Id: string;
-//     @Column({ type: 'uuid', nullable: true })
-//     answer3Id: string;
-//     @Column({ type: 'uuid', nullable: true })
-//     answer4Id: string;
-//     @Column({ type: 'uuid', nullable: true })
-//     answer5Id: string;
-// }

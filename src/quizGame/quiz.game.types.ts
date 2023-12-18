@@ -1,8 +1,9 @@
 import { IsArray, IsBoolean, Length } from 'class-validator';
 import { StringTrimNotEmpty } from '../middlewares/validators';
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
 import { Users } from 'src/users/user.entity';
 import { Questions } from './quiz.questions.types';
+import { QuizAnswers } from './quiz.answers.types';
 
 enum enumAnswerGameStatus {'Correct', 'Incorrect'}
 
@@ -65,36 +66,72 @@ export class QuizGameDbType {
 export class QuizGames {
   @PrimaryColumn('uuid')
   quizGameId: string;
-  @Column()
-  status: string;
-  @Column({ type: 'timestamptz' })
-  pairCreatedDate: Date
-  @Column({ type: 'timestamptz' })
-  startGameDate: Date
-  @Column({ type: 'timestamptz' })
-  finishGameDate: Date
-  @ManyToMany(()=>Questions)
-  @JoinTable()
-  questions: Array<Questions>;
+
   @ManyToOne(() => Users)
-  @JoinColumn({ name: 'player1Id' })
+  @JoinColumn({ name: 'userId' })
   player1: Users;
   @Column('uuid')
   player1Id: string;
-  @Column({ type: 'jsonb' })
-  player1Answers: Array<string>;
-  @Column({default: 0})
-  player1Score: number
-  @ManyToOne(() => Users, { nullable: true })
-  @JoinColumn({ name: 'player2Id' })
+
+  @OneToMany(() => QuizAnswers, (quizAnswer) => quizAnswer.quizGame)
+  @JoinColumn({ name: 'gameIndicatorPlayer1', referencedColumnName: 'gameIndicator' })
+  player1Answers: QuizAnswers[];
+  @Column('uuid')
+  gameIndicatorPlayer1: string;
+
+  @ManyToOne(() => Users)
+  @JoinColumn({ name: 'userId' })
   player2: Users;
-  @Column({type: 'uuid', nullable: true})
+  @Column('uuid')
   player2Id: string;
-  @Column({ type: 'jsonb' })
-  player2Answers: Array<string>;
-  @Column({default: 0})
-  player2Score: number
+
+  @OneToMany(() => QuizAnswers, (quizAnswer) => quizAnswer.quizGame)
+  @JoinColumn({ name: 'gameIndicatorPlayer2', referencedColumnName: 'gameIndicator' })
+  player2Answers: QuizAnswers[];
+  @Column('uuid')
+  gameIndicatorPlayer2: string;
 }
+
+
+
+// @Entity({name: 'QuizGames'})
+// export class QuizGames {
+//   @PrimaryColumn('uuid')
+//   quizGameId: string;
+//   @Column()
+//   status: string;
+//   @Column({ type: 'timestamptz' })
+//   pairCreatedDate: Date
+//   @Column({ type: 'timestamptz' })
+//   startGameDate: Date
+//   @Column({ type: 'timestamptz' })
+//   finishGameDate: Date
+
+//   @ManyToOne(() => Users)
+//   @JoinColumn({ name: 'userId' })
+//   player1: Users;
+//   @Column('uuid')
+//   player1Id: string;
+
+//   @OneToMany(() => QuizAnswers )
+//   @JoinColumn({ name: 'gameIndicator' })
+//   QuizAnswers: QuizAnswers;
+
+//   @Column({ type: 'jsonb' })
+//   player1Answers: Array<string>;
+
+//   @Column({default: 0})
+//   player1Score: number
+//   @ManyToOne(() => Users, { nullable: true })
+//   @JoinColumn({ name: 'player2Id' })
+//   player2: Users;
+//   @Column({type: 'uuid', nullable: true})
+//   player2Id: string;
+//   @Column({ type: 'jsonb' })
+//   player2Answers: Array<string>;
+//   @Column({default: 0})
+//   player2Score: number
+// }
 
 // port type outputGameQuizType = {
 //   id: "string",
@@ -137,3 +174,6 @@ export class QuizGames {
 //   "startGameDate": "2023-12-05T04:56:59.947Z",
 //   "finishGameDate": "2023-12-05T04:56:59.947Z"
 // }e
+
+
+
