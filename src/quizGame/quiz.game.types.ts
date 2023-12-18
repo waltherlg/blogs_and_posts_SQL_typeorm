@@ -1,7 +1,8 @@
 import { IsArray, IsBoolean, Length } from 'class-validator';
 import { StringTrimNotEmpty } from '../middlewares/validators';
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
 import { Users } from 'src/users/user.entity';
+import { Questions } from './questions.quiz.types';
 
 enum enumAnswerGameStatus {'Correct', 'Incorrect'}
 
@@ -72,8 +73,9 @@ export class QuizGames {
   startGameDate: Date
   @Column({ type: 'timestamptz' })
   finishGameDate: Date
-  @Column({ type: 'jsonb' })
-  questions: Array<string>;
+  @ManyToMany(()=>Questions)
+  @JoinTable()
+  questions: Array<Questions>;
   @ManyToOne(() => Users)
   @JoinColumn({ name: 'player1Id' })
   player1: Users;

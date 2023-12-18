@@ -162,6 +162,19 @@ export function quizGameCrudOperationsSa16() {
         .expect(204);
     });
 
+    it('00-00 quiz/questions POST = 201 create question7 with return', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(endpoints.quizQuestions)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testQuestions.inputQuestion7)
+        .expect(201);
+
+      const createdResponseBody = createResponse.body;
+      questionId7 = createdResponseBody.id;
+
+      expect(createdResponseBody).toEqual(testQuestions.outputQuestion6Sa);
+    });
+
     // it('01-01 quiz/questions GET = 200 return array with 2 questions pagination', async () => {
     //   const createResponse = await request(app.getHttpServer())
     //     .get(endpoints.quizQuestions)
@@ -180,8 +193,6 @@ export function quizGameCrudOperationsSa16() {
     //     ],
     //   });
     // });
-
-
 
     it('01-01 quiz/questions GET = 200 return array with published question1', async () => {
       const createResponse = await request(app.getHttpServer())
