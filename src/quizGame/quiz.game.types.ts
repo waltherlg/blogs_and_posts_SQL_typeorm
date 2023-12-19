@@ -87,7 +87,7 @@ export class QuizGames {
   @Column('uuid')
   player1Id: string;
 
-  @OneToMany(() => QuizAnswers, (quizAnswer) => quizAnswer.quizGamePlayer1)
+  @ManyToMany(() => QuizAnswers)
   @JoinColumn({ name: 'gameIndicatorPlayer1', referencedColumnName: 'gameIndicator' })
   player1Answers: QuizAnswers[];
   @Column('uuid')
@@ -101,7 +101,7 @@ export class QuizGames {
   @Column('uuid')
   player2Id: string;
 
-  @OneToMany(() => QuizAnswers, (quizAnswer) => quizAnswer.quizGamePlayer2)
+  @ManyToMany(() => QuizAnswers )
   @JoinColumn({ name: 'gameIndicatorPlayer2', referencedColumnName: 'gameIndicator' })
   player2Answers: QuizAnswers[];
   @Column('uuid')
@@ -109,26 +109,31 @@ export class QuizGames {
   @Column()
   player2Score: number;
 
-  @OneToOne(()=> Questions)
-  @JoinColumn({name: 'questionId'})
-  @Column('uuid')
-  question1Id: string;
-  @OneToOne(()=> Questions)
-  @JoinColumn({name: 'questionId'})
-  @Column('uuid')
-  question2Id: string;
-  @OneToOne(()=> Questions)
-  @JoinColumn({name: 'questionId'})
-  @Column('uuid')
-  question3Id: string;
-  @OneToOne(()=> Questions)
-  @JoinColumn({name: 'questionId'})
-  @Column('uuid')
-  question4Id: string;
-  @OneToOne(()=> Questions)
-  @JoinColumn({name: 'questionId'})
-  @Column('uuid')
-  question5Id: string;
+  // @ManyToMany(()=> Questions)
+  // @JoinColumn({name: 'question1Id'})
+  // Questions1: Questions;
+  // @Column('uuid')
+  // question1Id: string;
+  // @ManyToMany(()=> Questions)
+  // @JoinColumn({name: 'question2Id'})
+  // Questions2: Questions;
+  // @Column('uuid')
+  // question2Id: string;
+  // @ManyToMany(()=> Questions)
+  // @JoinColumn({name: 'question3Id'})
+  // Questions3: Questions;
+  // @Column('uuid')
+  // question3Id: string;
+  // @ManyToMany(()=> Questions)
+  // @JoinColumn({name: 'question4Id'})
+  // Questions4: Questions;
+  // @Column('uuid')
+  // question4Id: string;
+  // @ManyToMany(()=> Questions)
+  // @JoinColumn({name: 'question5Id'})
+  // Questions5: Questions;
+  // @Column('uuid')
+  // question5Id: string;
 }
 
 // port type outputGameQuizType = {

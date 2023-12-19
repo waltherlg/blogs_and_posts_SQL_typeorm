@@ -24,13 +24,13 @@ export class QuizAnswers {
     @Column({ type: 'timestamptz' })
     public addedAt: Date;
 
-    @ManyToOne(() => QuizGames, (quizGame) => quizGame.player1Answers)
-    @JoinColumn({ name: 'gameIndicator', referencedColumnName: 'gameIndicatorPlayer1' })
-    quizGamePlayer1: QuizGames;
+    // @ManyToOne(() => QuizGames, (quizGame) => quizGame.player1Answers)
+    // @JoinColumn({ name: 'gameIndicator', referencedColumnName: 'gameIndicatorPlayer1' })
+    // quizGamePlayer1: QuizGames;
   
-    @ManyToOne(() => QuizGames, (quizGame) => quizGame.player2Answers)
-    @JoinColumn({ name: 'gameIndicator', referencedColumnName: 'gameIndicatorPlayer2' })
-    quizGamePlayer2: QuizGames;
+    // @ManyToOne(() => QuizGames, (quizGame) => quizGame.player2Answers)
+    // @JoinColumn({ name: 'gameIndicator', referencedColumnName: 'gameIndicatorPlayer2' })
+    // quizGamePlayer2: QuizGames;
 }
 
 
