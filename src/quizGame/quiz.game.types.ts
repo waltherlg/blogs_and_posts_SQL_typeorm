@@ -1,6 +1,6 @@
 import { IsArray, IsBoolean, Length } from 'class-validator';
 import { StringTrimNotEmpty } from '../middlewares/validators';
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, ManyToMany, JoinTable, OneToMany } from 'typeorm';
+import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, ManyToMany, JoinTable, OneToMany, OneToOne } from 'typeorm';
 import { Users } from 'src/users/user.entity';
 import { Questions } from './quiz.questions.types';
 import { QuizAnswers } from './quiz.answers.types';
@@ -109,58 +109,27 @@ export class QuizGames {
   @Column()
   player2Score: number;
 
+  @OneToOne(()=> Questions)
+  @JoinColumn({name: 'questionId'})
   @Column('uuid')
   question1Id: string;
+  @OneToOne(()=> Questions)
+  @JoinColumn({name: 'questionId'})
   @Column('uuid')
   question2Id: string;
+  @OneToOne(()=> Questions)
+  @JoinColumn({name: 'questionId'})
   @Column('uuid')
   question3Id: string;
+  @OneToOne(()=> Questions)
+  @JoinColumn({name: 'questionId'})
   @Column('uuid')
   question4Id: string;
+  @OneToOne(()=> Questions)
+  @JoinColumn({name: 'questionId'})
   @Column('uuid')
   question5Id: string;
 }
-
-
-
-// @Entity({name: 'QuizGames'})
-// export class QuizGames {
-//   @PrimaryColumn('uuid')
-//   quizGameId: string;
-//   @Column()
-//   status: string;
-//   @Column({ type: 'timestamptz' })
-//   pairCreatedDate: Date
-//   @Column({ type: 'timestamptz' })
-//   startGameDate: Date
-//   @Column({ type: 'timestamptz' })
-//   finishGameDate: Date
-
-//   @ManyToOne(() => Users)
-//   @JoinColumn({ name: 'userId' })
-//   player1: Users;
-//   @Column('uuid')
-//   player1Id: string;
-
-//   @OneToMany(() => QuizAnswers )
-//   @JoinColumn({ name: 'gameIndicator' })
-//   QuizAnswers: QuizAnswers;
-
-//   @Column({ type: 'jsonb' })
-//   player1Answers: Array<string>;
-
-//   @Column({default: 0})
-//   player1Score: number
-//   @ManyToOne(() => Users, { nullable: true })
-//   @JoinColumn({ name: 'player2Id' })
-//   player2: Users;
-//   @Column({type: 'uuid', nullable: true})
-//   player2Id: string;
-//   @Column({ type: 'jsonb' })
-//   player2Answers: Array<string>;
-//   @Column({default: 0})
-//   player2Score: number
-// }
 
 // port type outputGameQuizType = {
 //   id: "string",
