@@ -17,6 +17,8 @@ export class TestRepository {
     DELETE FROM public."UserDevices";
     DELETE FROM public."Users";
     DELETE FROM public."Questions";
+    DELETE FROM public."QuizAnswers";
+    DELETE FROM public."QuizGames";
      `);
     return true;
   }

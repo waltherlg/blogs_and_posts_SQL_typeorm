@@ -25,24 +25,24 @@ export class PlayerConnectGameUseCase
     }
     const quizGameDto = new QuizGameDbType (
       uuidv4(),
-      enumStatusGameType.PendingSecondPlayer,
-      new Date(),
-      null,
-      null,
+      // enumStatusGameType.PendingSecondPlayer,
+      // new Date(),
+      // null,
+      // null,
 
-      command.userId,
+      // command.userId,
       uuidv4(),
-      0,
+      // 0,
 
-      null,
-      uuidv4(),
-      0,
+      // null,
+      // uuidv4(),
+      // 0,
 
-      questions[0],
-      questions[1],
-      questions[2],
-      questions[3],
-      questions[4]
+      // questions[0],
+      // questions[1],
+      // questions[2],
+      // questions[3],
+      // questions[4]
     )
 
   }

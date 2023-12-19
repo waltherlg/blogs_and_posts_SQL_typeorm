@@ -1,3 +1,5 @@
 yarn typeorm-ts-node-esm migration:generate ./src/db/migrations/first_migration -d ./src/db/data-source.ts
 
 yarn typeorm-ts-node-esm migration:run -- -d ./src/db/data-source.ts
+
+yarn typeorm-ts-node-esm migration:revert -- -d ./src/db/data-source.ts

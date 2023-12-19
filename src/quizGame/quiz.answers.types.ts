@@ -16,13 +16,13 @@ export class QuizAnswers {
     @PrimaryColumn('uuid')
     answerId: string;
     @Column('uuid')
-    gameIndicator: string;
+    gamePlayerIndicator: string;
     @Column('uuid')
-    public questionId: string;
+    questionId: string;
     @Column()
-    public ansertStatus: string;
+    ansertStatus: string;
     @Column({ type: 'timestamptz' })
-    public addedAt: Date;
+    addedAt: Date;
 
     // @ManyToOne(() => QuizGames, (quizGame) => quizGame.player1Answers)
     // @JoinColumn({ name: 'gameIndicator', referencedColumnName: 'gameIndicatorPlayer1' })

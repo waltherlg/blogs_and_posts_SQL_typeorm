@@ -48,23 +48,23 @@ export type outputGameQuizType = {
 export class QuizGameDbType {
   constructor(
     public quizGameId: string,
-    public status: string,    
-    public pairCreatedDate: Date,    
-    public startGameDate: Date | null,    
-    public finishGameDate: Date | null,
+    // public status: string,    
+    // public pairCreatedDate: Date,    
+    // public startGameDate: Date | null,    
+    // public finishGameDate: Date | null,
 
-    public player1Id: string,
+    // public player1Id: string,
     public gameIndicatorPlayer1: string,
-    public player1Score: number,
+    // public player1Score: number,
 
-    public player2Id: string,
-    public gameIndicatorPlayer2: string,
-    public player2Score: number,
-    public question1Id: string,
-    public question2Id: string,
-    public question3Id: string,
-    public question4Id: string,
-    public question5Id: string,
+    // public player2Id: string,
+    // public gameIndicatorPlayer2: string,
+    // public player2Score: number,
+    // public question1Id: string,
+    // public question2Id: string,
+    // public question3Id: string,
+    // public question4Id: string,
+    // public question5Id: string,
   ){}
 }
 
@@ -72,69 +72,80 @@ export class QuizGameDbType {
 export class QuizGames {
   @PrimaryColumn('uuid')
   quizGameId: string;
-  @Column()
-  status: string
-  @Column({ type: 'timestamptz' })
-  pairCreatedDate: Date
-  @Column({ type: 'timestamptz' })
-  startGameDate: Date
-  @Column({ type: 'timestamptz' })
-  finishGameDate: Date
-
-  @OneToOne(() => Users)
-  @JoinColumn({ name: 'player1Id' })
-  player1: Users;
-  @Column('uuid')
-  player1Id: string;
-
   @ManyToMany(() => QuizAnswers)
-  @JoinColumn({ name: 'gameIndicatorPlayer1', referencedColumnName: 'gameIndicator' })
+  @JoinColumn({ name: 'gameIndicatorPlayer1', referencedColumnName: 'gamePlayerIndicator' })
   player1Answers: QuizAnswers[];
-  @Column('uuid')
+  @Column('uuid', { unique: true })
   gameIndicatorPlayer1: string;
-  @Column()
-  player1Score: number;
-
-  @OneToOne(() => Users)
-  @JoinColumn({ name: 'player2Id' })
-  player2: Users;
-  @Column('uuid')
-  player2Id: string;
-
-  @ManyToMany(() => QuizAnswers )
-  @JoinColumn({ name: 'gameIndicatorPlayer2', referencedColumnName: 'gameIndicator' })
-  player2Answers: QuizAnswers[];
-  @Column('uuid')
-  gameIndicatorPlayer2: string;
-  @Column()
-  player2Score: number;
-
-  @ManyToMany(()=> Questions)
-  @JoinColumn({name: 'question1Id'})
-  Questions1: Questions;
-  @Column('uuid')
-  question1Id: string;
-  @ManyToMany(()=> Questions)
-  @JoinColumn({name: 'question2Id'})
-  Questions2: Questions;
-  @Column('uuid')
-  question2Id: string;
-  @ManyToMany(()=> Questions)
-  @JoinColumn({name: 'question3Id'})
-  Questions3: Questions;
-  @Column('uuid')
-  question3Id: string;
-  @ManyToMany(()=> Questions)
-  @JoinColumn({name: 'question4Id'})
-  Questions4: Questions;
-  @Column('uuid')
-  question4Id: string;
-  @ManyToMany(()=> Questions)
-  @JoinColumn({name: 'question5Id'})
-  Questions5: Questions;
-  @Column('uuid')
-  question5Id: string;
 }
+
+// @Entity({name: 'QuizGames'})
+// export class QuizGames {
+//   @PrimaryColumn('uuid')
+//   quizGameId: string;
+//   @Column()
+//   status: string
+//   @Column({ type: 'timestamptz' })
+//   pairCreatedDate: Date
+//   @Column({ type: 'timestamptz' })
+//   startGameDate: Date
+//   @Column({ type: 'timestamptz' })
+//   finishGameDate: Date
+
+//   @OneToOne(() => Users)
+//   @JoinColumn({ name: 'player1Id' })
+//   player1: Users;
+//   @Column('uuid')
+//   player1Id: string;
+
+//   @ManyToMany(() => QuizAnswers)
+//   @JoinColumn({ name: 'gameIndicatorPlayer1', referencedColumnName: 'gameIndicator' })
+//   player1Answers: QuizAnswers[];
+//   @Column('uuid', { unique: true })
+//   gameIndicatorPlayer1: string;
+//   @Column()
+//   player1Score: number;
+
+//   @OneToOne(() => Users)
+//   @JoinColumn({ name: 'player2Id' })
+//   player2: Users;
+//   @Column('uuid')
+//   player2Id: string;
+
+//   @ManyToMany(() => QuizAnswers )
+//   @JoinColumn({ name: 'gameIndicatorPlayer2', referencedColumnName: 'gameIndicator' })
+//   player2Answers: QuizAnswers[];
+//   @Column('uuid', { unique: true })
+//   gameIndicatorPlayer2: string;
+//   @Column()
+//   player2Score: number;
+
+//   @ManyToMany(()=> Questions)
+//   @JoinColumn({name: 'question1Id'})
+//   Questions1: Questions;
+//   @Column('uuid')
+//   question1Id: string;
+//   @ManyToMany(()=> Questions)
+//   @JoinColumn({name: 'question2Id'})
+//   Questions2: Questions;
+//   @Column('uuid')
+//   question2Id: string;
+//   @ManyToMany(()=> Questions)
+//   @JoinColumn({name: 'question3Id'})
+//   Questions3: Questions;
+//   @Column('uuid')
+//   question3Id: string;
+//   @ManyToMany(()=> Questions)
+//   @JoinColumn({name: 'question4Id'})
+//   Questions4: Questions;
+//   @Column('uuid')
+//   question4Id: string;
+//   @ManyToMany(()=> Questions)
+//   @JoinColumn({name: 'question5Id'})
+//   Questions5: Questions;
+//   @Column('uuid')
+//   question5Id: string;
+// }
 
 // port type outputGameQuizType = {
 //   id: "string",
