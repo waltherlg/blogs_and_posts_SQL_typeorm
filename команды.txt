@@ -1,5 +1,3 @@
 yarn typeorm-ts-node-esm migration:generate ./src/db/migrations/first_migration -d ./src/db/data-source.ts
 
 yarn typeorm-ts-node-esm migration:run -- -d ./src/db/data-source.ts
-
-"74f44612-a92c-49fc-b9b0-f003eb8fd44d"	"8b0a3c29-759f-43a1-b5a7-80d4ff1e8b9b"	"b0bfab13-81c3-46db-aa13-4cc6530a6eb8"	"2023-11-08T07:45:50.895Z"	"some reason for ban user for this blog"

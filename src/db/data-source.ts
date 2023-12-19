@@ -14,6 +14,8 @@ import { Posts } from '../posts/post.entity';
 import { Comments } from '../comments/comment.entity';
 import { CommentLikes, PostLikes } from '../likes/like.entity';
 import { Questions } from '../quizGame/quiz.questions.types';
+import { QuizAnswers } from '../quizGame/quiz.answers.types';
+import { QuizGames } from '../quizGame/quiz.game.types';
 
 export default new DataSource({
   type: 'postgres',
@@ -34,6 +36,8 @@ export default new DataSource({
     CommentLikes,
     PostLikes,
     Questions,
+    QuizAnswers,
+    QuizGames,
   ],
   //migrations: [ "src/db/migrations/*.ts" ],
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],

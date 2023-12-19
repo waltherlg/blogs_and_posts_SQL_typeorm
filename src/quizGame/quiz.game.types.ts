@@ -1,7 +1,7 @@
 import { IsArray, IsBoolean, Length } from 'class-validator';
 import { StringTrimNotEmpty } from '../middlewares/validators';
 import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, ManyToMany, JoinTable, OneToMany, OneToOne } from 'typeorm';
-import { Users } from 'src/users/user.entity';
+import { Users } from '../users/user.entity';
 import { Questions } from './quiz.questions.types';
 import { QuizAnswers } from './quiz.answers.types';
 
@@ -81,8 +81,8 @@ export class QuizGames {
   @Column({ type: 'timestamptz' })
   finishGameDate: Date
 
-  @ManyToOne(() => Users)
-  @JoinColumn({ name: 'userId' })
+  @OneToOne(() => Users)
+  @JoinColumn({ name: 'player1Id' })
   player1: Users;
   @Column('uuid')
   player1Id: string;
@@ -95,8 +95,8 @@ export class QuizGames {
   @Column()
   player1Score: number;
 
-  @ManyToOne(() => Users)
-  @JoinColumn({ name: 'userId' })
+  @OneToOne(() => Users)
+  @JoinColumn({ name: 'player2Id' })
   player2: Users;
   @Column('uuid')
   player2Id: string;
