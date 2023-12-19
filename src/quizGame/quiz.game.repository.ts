@@ -18,4 +18,4 @@ export class QuizGamesRepository {
     return result.quizGameId;
   }
   
-}
+6}

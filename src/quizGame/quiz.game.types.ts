@@ -52,12 +52,13 @@ export class QuizGameDbType {
     public pairCreatedDate: Date,    
     public startGameDate: Date | null,    
     public finishGameDate: Date | null,
-    public questions: Array<string>,
+
     public player1Id: string,
-    public player1Answers: Array<string>,
+    public gameIndicatorPlayer1: string,
     public player1Score: number,
+
     public player2Id: string,
-    public player2Answers: Array<string>,
+    public gameIndicatorPlayer2: string,
     public player2Score: number,
   ){}
 }
@@ -66,6 +67,14 @@ export class QuizGameDbType {
 export class QuizGames {
   @PrimaryColumn('uuid')
   quizGameId: string;
+  @Column()
+  status: string
+  @Column({ type: 'timestamptz' })
+  pairCreatedDate: Date
+  @Column({ type: 'timestamptz' })
+  startGameDate: Date
+  @Column({ type: 'timestamptz' })
+  finishGameDate: Date
 
   @ManyToOne(() => Users)
   @JoinColumn({ name: 'userId' })
@@ -73,11 +82,13 @@ export class QuizGames {
   @Column('uuid')
   player1Id: string;
 
-  @OneToMany(() => QuizAnswers, (quizAnswer) => quizAnswer.quizGame)
+  @OneToMany(() => QuizAnswers, (quizAnswer) => quizAnswer.quizGamePlayer1)
   @JoinColumn({ name: 'gameIndicatorPlayer1', referencedColumnName: 'gameIndicator' })
   player1Answers: QuizAnswers[];
   @Column('uuid')
   gameIndicatorPlayer1: string;
+  @Column()
+  player1Score: number;
 
   @ManyToOne(() => Users)
   @JoinColumn({ name: 'userId' })
@@ -85,11 +96,24 @@ export class QuizGames {
   @Column('uuid')
   player2Id: string;
 
-  @OneToMany(() => QuizAnswers, (quizAnswer) => quizAnswer.quizGame)
+  @OneToMany(() => QuizAnswers, (quizAnswer) => quizAnswer.quizGamePlayer2)
   @JoinColumn({ name: 'gameIndicatorPlayer2', referencedColumnName: 'gameIndicator' })
   player2Answers: QuizAnswers[];
   @Column('uuid')
   gameIndicatorPlayer2: string;
+  @Column()
+  player2Score: number;
+
+  @Column('uuid')
+  question1Id: string;
+  @Column('uuid')
+  question2Id: string;
+  @Column('uuid')
+  question3Id: string;
+  @Column('uuid')
+  question4Id: string;
+  @Column('uuid')
+  question5Id: string;
 }
 
 

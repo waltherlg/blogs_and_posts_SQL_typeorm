@@ -29,12 +29,13 @@ export class PlayerConnectGameUseCase
       new Date(),
       null,
       null,
-      questions,
+
       command.userId,
-      [],
+      uuidv4(),
       0,
+      
       null,
-      [],
+      uuidv4(),
       0,
     )
 
