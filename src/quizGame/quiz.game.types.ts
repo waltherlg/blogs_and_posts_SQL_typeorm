@@ -109,31 +109,31 @@ export class QuizGames {
   @Column()
   player2Score: number;
 
-  // @ManyToMany(()=> Questions)
-  // @JoinColumn({name: 'question1Id'})
-  // Questions1: Questions;
-  // @Column('uuid')
-  // question1Id: string;
-  // @ManyToMany(()=> Questions)
-  // @JoinColumn({name: 'question2Id'})
-  // Questions2: Questions;
-  // @Column('uuid')
-  // question2Id: string;
-  // @ManyToMany(()=> Questions)
-  // @JoinColumn({name: 'question3Id'})
-  // Questions3: Questions;
-  // @Column('uuid')
-  // question3Id: string;
-  // @ManyToMany(()=> Questions)
-  // @JoinColumn({name: 'question4Id'})
-  // Questions4: Questions;
-  // @Column('uuid')
-  // question4Id: string;
-  // @ManyToMany(()=> Questions)
-  // @JoinColumn({name: 'question5Id'})
-  // Questions5: Questions;
-  // @Column('uuid')
-  // question5Id: string;
+  @ManyToMany(()=> Questions)
+  @JoinColumn({name: 'question1Id'})
+  Questions1: Questions;
+  @Column('uuid')
+  question1Id: string;
+  @ManyToMany(()=> Questions)
+  @JoinColumn({name: 'question2Id'})
+  Questions2: Questions;
+  @Column('uuid')
+  question2Id: string;
+  @ManyToMany(()=> Questions)
+  @JoinColumn({name: 'question3Id'})
+  Questions3: Questions;
+  @Column('uuid')
+  question3Id: string;
+  @ManyToMany(()=> Questions)
+  @JoinColumn({name: 'question4Id'})
+  Questions4: Questions;
+  @Column('uuid')
+  question4Id: string;
+  @ManyToMany(()=> Questions)
+  @JoinColumn({name: 'question5Id'})
+  Questions5: Questions;
+  @Column('uuid')
+  question5Id: string;
 }
 
 // port type outputGameQuizType = {
