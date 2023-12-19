@@ -60,6 +60,11 @@ export class QuizGameDbType {
     public player2Id: string,
     public gameIndicatorPlayer2: string,
     public player2Score: number,
+    public question1Id: string,
+    public question2Id: string,
+    public question3Id: string,
+    public question4Id: string,
+    public question5Id: string,
   ){}
 }
 
