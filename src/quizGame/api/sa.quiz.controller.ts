@@ -11,22 +11,22 @@ import {
   Param,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { CreateQuestionImputModelType, PublishQuestionImputModelType, UpdateQuestionImputModelType } from './quiz.questions.types';
+import { CreateQuestionImputModelType, PublishQuestionImputModelType, UpdateQuestionImputModelType } from '../quiz.questions.types';
 import { BasicAuthGuard } from 'src/auth/guards/auth.guards';
-import { SaCreateQuestionCommand } from './use-cases/sa-creates-question-use-case';
-import { QuestionsRepository } from './questions.repository';
-import { QuestionsQueryRepository } from './questions.query.repository';
+import { SaCreateQuestionCommand } from '../use-cases/sa-creates-question-use-case';
+import { QuestionsRepository } from '../questions.repository';
+import { QuestionsQueryRepository } from '../questions.query.repository';
 import {
   DEFAULT_QUESTIONS_QUERY_PARAMS,
   RequestQuestionsQueryModel,
 } from 'src/models/types';
-import { CheckService } from '../other.services/check.service';
-import { CustomNotFoundException } from '../exceptions/custom.exceptions';
-import { ActionResult, handleActionResult } from '../helpers/enum.action.result.helper';
-import { SaDeleteQuestionByIdCommand } from './use-cases/sa-delete-question-by-id-use-case';
+import { CheckService } from '../../other.services/check.service';
+import { CustomNotFoundException } from '../../exceptions/custom.exceptions';
+import { ActionResult, handleActionResult } from '../../helpers/enum.action.result.helper';
+import { SaDeleteQuestionByIdCommand } from '../use-cases/sa-delete-question-by-id-use-case';
 import { validate as isValidUUID } from 'uuid';
-import { SaUpdateQuestionByIdCommand } from './use-cases/sa-update-question-by-id-use-case';
-import { SaPublishQuestionByIdCommand } from './use-cases/sa-publish-question-by-id-use-case';
+import { SaUpdateQuestionByIdCommand } from '../use-cases/sa-update-question-by-id-use-case';
+import { SaPublishQuestionByIdCommand } from '../use-cases/sa-publish-question-by-id-use-case';
 
 @UseGuards(BasicAuthGuard)
 @Controller('quiz')
