@@ -7,6 +7,7 @@ import { QuestionsRepository } from '../questions.repository';
 import { QuizGameDbType, enumStatusGameType } from '../quiz.game.types';
 import { v4 as uuidv4 } from 'uuid';
 import { ActionResult } from 'src/helpers/enum.action.result.helper';
+import { QuizGamesRepository } from '../quiz.game.repository';
 
 export class PlayerConnectGameCommand {
   constructor(public userId: string) {}
@@ -16,7 +17,8 @@ export class PlayerConnectGameCommand {
 export class PlayerConnectGameUseCase
   implements ICommandHandler<PlayerConnectGameCommand>
 {
-  constructor(private readonly questionRepository: QuestionsRepository) {}
+  constructor(private readonly questionRepository: QuestionsRepository,
+              private readonly quizGamesRepository: QuizGamesRepository ) {}
 
   async execute(command: PlayerConnectGameCommand): Promise<any> {
     const questions: Array<string> = await this.questionRepository.get5QuestionsIdForGame()
@@ -44,6 +46,12 @@ export class PlayerConnectGameUseCase
       questions[3],
       questions[4]
     )
+    const newGameId = await this.quizGamesRepository.createQuizGame(quizGameDto)
+    if (newGameId){
+      return newGameId
+    } else {
+      return ActionResult.NotCreated
+    }
 
   }
 }

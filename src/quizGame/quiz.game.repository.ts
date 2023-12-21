@@ -17,5 +17,10 @@ export class QuizGamesRepository {
     const result = await this.quizGamesRepository.save(quizGameDto);
     return result.quizGameId;
   }
+//TODO: get attive game
+  async getActiveGameByUserId(userId){
+
+
+  }
   
-6}
+ }

@@ -2,6 +2,7 @@ import { Controller, Get, HttpCode, Post, Req, UseGuards } from '@nestjs/common'
 import { CommandBus } from '@nestjs/cqrs';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { PlayerConnectGameCommand } from '../use-cases/player-connect-to-game-use-case';
+import { ActionResult, handleActionResult } from 'src/helpers/enum.action.result.helper';
 
 @Controller('pair-game-quiz')
 export class PublicQuizGameController {
@@ -23,7 +24,7 @@ export class PublicQuizGameController {
     @Req() request
   ) {
     const result = await this.commandBus.execute( new PlayerConnectGameCommand(request.user.userId))
-    //заглушка
+    handleActionResult(result)
     return 'game'
   }
 
@@ -45,6 +46,7 @@ export class PublicQuizGameController {
   // finishGameDate: null
   async getGameById() {}
 
+  @UseGuards(JwtAuthGuard)
   @Post('pairs/my-current/answers')
   @HttpCode(200)
   //TODO
@@ -56,5 +58,5 @@ export class PublicQuizGameController {
   // (поле questions: [...])
   // Участники последовательно отвечают на вопросы. Одна попытка.
   // Ответ либо правильный либо нет.
-  async getAnswers() {}
+  async putAnswers() {}
 }
