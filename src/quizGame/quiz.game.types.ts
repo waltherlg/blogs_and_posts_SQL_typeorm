@@ -58,13 +58,13 @@ export class QuizGameDbType {
     // public player1Score: number,
 
     // public player2Id: string,
-    // public gameIndicatorPlayer2: string,
-    // public player2Score: number,
-    // public question1Id: string,
-    // public question2Id: string,
-    // public question3Id: string,
-    // public question4Id: string,
-    // public question5Id: string,
+    public gameIndicatorPlayer2: string,
+    //public player2Score: number,
+    public question1Id: string,
+    public question2Id: string,
+    public question3Id: string,
+    public question4Id: string,
+    public question5Id: string,
   ){}
 }
 
@@ -72,11 +72,46 @@ export class QuizGameDbType {
 export class QuizGames {
   @PrimaryColumn('uuid')
   quizGameId: string;
-  @ManyToMany(() => QuizAnswers)
-  @JoinColumn({ name: 'gameIndicatorPlayer1', referencedColumnName: 'gamePlayerIndicator' })
-  player1Answers: QuizAnswers[];
+
+  @ManyToMany(() => QuizAnswers, (answer) => answer.QuizGames)
+  @JoinColumn({name: 'gameIndicatorPlayer1', referencedColumnName: 'gamePlayerIndicator'})
+  QuizAnswersPlayer1: QuizAnswers[];
   @Column('uuid', { unique: true })
   gameIndicatorPlayer1: string;
+
+  @ManyToMany(() => QuizAnswers, (answer) => answer.QuizGames)
+  @JoinColumn({name: 'gameIndicatorPlayer2', referencedColumnName: 'gamePlayerIndicator'})
+  QuizAnswersPlayer2: QuizAnswers[];
+  @Column('uuid', { unique: true })
+  gameIndicatorPlayer2: string;
+
+  @ManyToMany(()=> Questions)
+  @JoinColumn({name: 'question1Id'})
+  Questions1: Questions;
+  @Column('uuid')
+  question1Id: string;
+  @ManyToMany(()=> Questions)
+  @JoinColumn({name: 'question2Id'})
+  Questions2: Questions;
+  @Column('uuid')
+  question2Id: string;
+  @ManyToMany(()=> Questions)
+  @JoinColumn({name: 'question3Id'})
+  Questions3: Questions;
+  @Column('uuid')
+  question3Id: string;
+  @ManyToMany(()=> Questions)
+  @JoinColumn({name: 'question4Id'})
+  Questions4: Questions;
+  @Column('uuid')
+  question4Id: string;
+  @ManyToMany(()=> Questions)
+  @JoinColumn({name: 'question5Id'})
+  Questions5: Questions;
+  @Column('uuid')
+  question5Id: string;
+
+
 }
 
 // @Entity({name: 'QuizGames'})

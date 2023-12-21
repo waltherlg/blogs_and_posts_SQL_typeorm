@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToOne, PrimaryColumn } from "typeorm";
 import { QuizGames } from "./quiz.game.types";
 
 export class QuizAnwswerDbType {
@@ -15,14 +15,22 @@ export class QuizAnwswerDbType {
 export class QuizAnswers {
     @PrimaryColumn('uuid')
     answerId: string;
+
+    @ManyToMany(() => QuizGames)
+    @JoinColumn({name: 'gamePlayerIndicator'})
+    QuizGames: QuizGames
+
     @Column('uuid')
     gamePlayerIndicator: string;
+
     @Column('uuid')
     questionId: string;
     @Column()
     ansertStatus: string;
     @Column({ type: 'timestamptz' })
     addedAt: Date;
+
+
 
     // @ManyToOne(() => QuizGames, (quizGame) => quizGame.player1Answers)
     // @JoinColumn({ name: 'gameIndicator', referencedColumnName: 'gameIndicatorPlayer1' })

@@ -12,6 +12,7 @@ export const endpoints = {
   auth: '/auth',
   devices: '/security/devices',
   quizQuestions: '/quiz/questions',
+  pairGameQuiz: 'pair-game-quiz',
 };
 
 export const delayFunction = async (ms: number) => {

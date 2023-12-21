@@ -1,7 +1,15 @@
-import { Controller, Get, HttpCode, Post } from '@nestjs/common';
+import { Controller, Get, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
+import { CommandBus } from '@nestjs/cqrs';
+import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
+import { PlayerConnectGameCommand } from '../use-cases/player-connect-to-game-use-case';
 
 @Controller('pair-game-quiz')
 export class PublicQuizGameController {
+  constructor (
+    private readonly commandBus: CommandBus,
+  ) {}
+
+  @UseGuards(JwtAuthGuard)
   @Post('pairs/my-current')
   @HttpCode(200)
   //TODO
@@ -11,7 +19,13 @@ export class PublicQuizGameController {
   // 3. Если есть игрок в ожидании - создаётся пара: я + этот игрок
   // 4. Если нет, я становлюсь игроком в ожидании и могу стать парой для
   // следующего, кто нажмёт соревноваться
-  async ConnectOrCreateGame() {}
+  async ConnectOrCreateGame(
+    @Req() request
+  ) {
+    const result = await this.commandBus.execute( new PlayerConnectGameCommand(request.user.userId))
+    //заглушка
+    return 'game'
+  }
 
   @Get('pairs/my-current')
   @HttpCode(200)

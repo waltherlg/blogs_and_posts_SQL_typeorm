@@ -4,6 +4,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testQuestions } from './helpers/inputAndOutputObjects/questionObjects';
+import { testComments } from './helpers/inputAndOutputObjects/commentObjects';
 
 export function quizGameCrudOperationsSa16() {
   describe('quizGame CRUD operation SA (e2e)', () => {
@@ -17,6 +18,8 @@ export function quizGameCrudOperationsSa16() {
     let questionId5;
     let questionId6;
     let questionId7;
+    let userId1;
+    let accessTokenUser1
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -203,6 +206,39 @@ export function quizGameCrudOperationsSa16() {
       const question = createdResponse.items[0];
       expect(question.published).toEqual(true);
     });
+
+    it('00-00 sa/users post = 201 create user1 with return', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(endpoints.saUsers)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testComments.inputUser1)
+        .expect(201);
+
+      const createdResponseBody = createResponse.body;
+      userId1 = createdResponseBody.id;
+
+      expect(createdResponseBody).toEqual(testComments.outputUser1Sa);
+    });
+
+    it('00-00 login = 204 login user1', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.auth}/login`)
+        .send(testComments.loginUser1)
+        .expect(200);
+      const createdResponse = createResponse.body;
+      accessTokenUser1 = createdResponse.accessToken;
+      expect(createdResponse).toEqual({
+        accessToken: expect.any(String),
+      });
+      expect(createResponse.headers['set-cookie']).toBeDefined();
+    });
+
+    it('00-00 pair-game-quiz/pairs/my-current POST = user1 create new game', async () => {
+      const createResponse = await request(app.getHttpServer())
+      .post(`${endpoints.pairGameQuiz}/pairs/my-current`)
+      .set('Authorization', `Bearer ${accessTokenUser1}`)
+      .expect(200)
+    })
 
   });
 }

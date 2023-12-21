@@ -35,14 +35,14 @@ export class PlayerConnectGameUseCase
       // 0,
 
       // null,
-      // uuidv4(),
+      uuidv4(),
       // 0,
 
-      // questions[0],
-      // questions[1],
-      // questions[2],
-      // questions[3],
-      // questions[4]
+      questions[0],
+      questions[1],
+      questions[2],
+      questions[3],
+      questions[4]
     )
 
   }

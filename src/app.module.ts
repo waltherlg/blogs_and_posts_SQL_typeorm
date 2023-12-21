@@ -105,6 +105,7 @@ import { SaPublishQuestionByIdUseCase } from './quizGame/use-cases/sa-publish-qu
 import { PlayerConnectGameUseCase } from './quizGame/use-cases/player-connect-to-game-use-case';
 import { QuizGamesRepository } from './quizGame/quiz.game.repository';
 import { QuizGames } from './quizGame/quiz.game.types';
+import { QuizAnswers } from './quizGame/quiz.answers.types';
 const mongoUri = process.env.MONGO_URL;
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
@@ -163,6 +164,7 @@ const useCases = [
       BlogBannedUsers,
       Questions,
       QuizGames,
+      QuizAnswers,
     ]),
     CqrsModule,
     ThrottlerModule.forRoot({
