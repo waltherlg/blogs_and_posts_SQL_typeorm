@@ -74,11 +74,11 @@ export class QuizGames {
   quizGameId: string;
   @Column()
   status: string
-  @Column({ type: 'timestamptz' })
+  @Column({ type: 'timestamptz'})
   pairCreatedDate: Date
-  @Column({ type: 'timestamptz' })
+  @Column({ type: 'timestamptz', nullable: true })
   startGameDate: Date
-  @Column({ type: 'timestamptz' })
+  @Column({ type: 'timestamptz', nullable: true })
   finishGameDate: Date
 
   @ManyToMany(() => Users)
@@ -98,7 +98,7 @@ export class QuizGames {
   @ManyToMany(() => Users)
   @JoinColumn({ name: 'player2Id', referencedColumnName: 'userId' })
   player2: Users;
-  @Column('uuid')
+  @Column({type: 'uuid', nullable: true})
   player2Id: string;
 
   @ManyToMany(() => QuizAnswers, (answer) => answer.QuizGames)

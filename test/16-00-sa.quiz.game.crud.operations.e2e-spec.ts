@@ -58,6 +58,10 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send({published: true})
         .expect(204);
+
+        if (createResponse.status === 204) {
+          testQuestions.outputQuestion1Sa.published = true;
+        }
     });
 
     it('00-00 quiz/questions POST = 201 create question2 with return', async () => {
@@ -79,6 +83,10 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send({published: true})
         .expect(204);
+
+        if (createResponse.status === 204) {
+          testQuestions.outputQuestion2Sa.published = true;
+        }
     });
 
     it('00-00 quiz/questions POST = 201 create question3 with return', async () => {
@@ -100,6 +108,10 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send({published: true})
         .expect(204);
+
+        if (createResponse.status === 204) {
+          testQuestions.outputQuestion3Sa.published = true;
+        }
     });
 
     it('00-00 quiz/questions POST = 201 create question4 with return', async () => {
@@ -121,6 +133,10 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send({published: true})
         .expect(204);
+
+        if (createResponse.status === 204) {
+          testQuestions.outputQuestion4Sa.published = true;
+        }
     });
 
     it('00-00 quiz/questions POST = 201 create question5 with return', async () => {
@@ -142,6 +158,10 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send({published: true})
         .expect(204);
+
+        if (createResponse.status === 204) {
+          testQuestions.outputQuestion5Sa.published = true;
+        }
     });
 
     it('00-00 quiz/questions POST = 201 create question6 with return', async () => {
@@ -163,6 +183,10 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Basic ${basicAuthRight}`)
         .send({published: true})
         .expect(204);
+
+        if (createResponse.status === 204) {
+          testQuestions.outputQuestion6Sa.published = true;
+        }
     });
 
     it('00-00 quiz/questions POST = 201 create question7 with return', async () => {
@@ -175,37 +199,42 @@ export function quizGameCrudOperationsSa16() {
       const createdResponseBody = createResponse.body;
       questionId7 = createdResponseBody.id;
 
-      expect(createdResponseBody).toEqual(testQuestions.outputQuestion6Sa);
+      expect(createdResponseBody).toEqual(testQuestions.outputQuestion7Sa);
     });
 
-    // it('01-01 quiz/questions GET = 200 return array with 2 questions pagination', async () => {
+    it('01-01 quiz/questions GET = 200 return array with 6 questions pagination', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.quizQuestions)
+        .query({ publishedStatus: 'published' })
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 6,
+        items: [
+          testQuestions.outputQuestion6Sa,
+          testQuestions.outputQuestion5Sa,
+          testQuestions.outputQuestion4Sa,
+          testQuestions.outputQuestion3Sa,
+          testQuestions.outputQuestion2Sa,
+          testQuestions.outputQuestion1Sa,
+        ],
+      });
+    });
+
+    // it('01-01 quiz/questions GET = 200 return array with published question1', async () => {
     //   const createResponse = await request(app.getHttpServer())
     //     .get(endpoints.quizQuestions)
     //     .set('Authorization', `Basic ${basicAuthRight}`)
     //     .expect(200);
     //   const createdResponse = createResponse.body;
-
-    //   expect(createdResponse).toEqual({
-    //     pagesCount: 1,
-    //     page: 1,
-    //     pageSize: 10,
-    //     totalCount: 2,
-    //     items: [
-    //       testQuestions.outputQuestion2Sa,
-    //       testQuestions.outputQuestion1Sa,
-    //     ],
-    //   });
+    //   const question = createdResponse.items[0];
+    //   expect(question.published).toEqual(true);
     // });
-
-    it('01-01 quiz/questions GET = 200 return array with published question1', async () => {
-      const createResponse = await request(app.getHttpServer())
-        .get(endpoints.quizQuestions)
-        .set('Authorization', `Basic ${basicAuthRight}`)
-        .expect(200);
-      const createdResponse = createResponse.body;
-      const question = createdResponse.items[0];
-      expect(question.published).toEqual(true);
-    });
 
     it('00-00 sa/users post = 201 create user1 with return', async () => {
       const createResponse = await request(app.getHttpServer())

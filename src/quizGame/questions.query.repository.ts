@@ -55,8 +55,8 @@ export class QuestionsQueryRepository {
       });
     }
     if (publishedStatus !== 'all') {
-      queryBuilder.andWhere(`question.body = :publishedStatus`, {
-        publishedStatus: `%${publishedStatus}`,
+      queryBuilder.andWhere(`question.published = :publishedStatus`, {
+        publishedStatus: publishedStatus,
       });
     }
 

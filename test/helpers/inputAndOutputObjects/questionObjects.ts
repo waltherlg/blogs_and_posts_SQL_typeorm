@@ -1,5 +1,5 @@
 //TODO need fix
-export const testQuestions = {
+export let testQuestions = {
   inputQuestion1: {
     body: 'question1',
     correctAnswers: ['correct answer for question1', 'answer1'],
