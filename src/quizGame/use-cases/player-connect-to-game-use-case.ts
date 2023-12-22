@@ -32,11 +32,11 @@ export class PlayerConnectGameUseCase
       null,
       null,
 
-      // command.userId,
+      command.userId,
       uuidv4(),
       0,
 
-      // null,
+      null,
       uuidv4(),
       0,
 

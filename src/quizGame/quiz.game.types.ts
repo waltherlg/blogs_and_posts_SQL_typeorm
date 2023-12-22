@@ -53,11 +53,11 @@ export class QuizGameDbType {
     public startGameDate: Date | null,    
     public finishGameDate: Date | null,
 
-    // public player1Id: string,
+    public player1Id: string,
     public gameIndicatorPlayer1: string,
     public player1Score: number,
 
-    // public player2Id: string,
+    public player2Id: string,
     public gameIndicatorPlayer2: string,
     public player2Score: number,
     public question1Id: string,
@@ -81,6 +81,12 @@ export class QuizGames {
   @Column({ type: 'timestamptz' })
   finishGameDate: Date
 
+  @ManyToMany(() => Users)
+  @JoinColumn({ name: 'player1Id', referencedColumnName: 'userId' })
+  player1: Users;
+  @Column('uuid')
+  player1Id: string;
+
   @ManyToMany(() => QuizAnswers, (answer) => answer.QuizGames)
   @JoinColumn({name: 'gameIndicatorPlayer1', referencedColumnName: 'gamePlayerIndicator'})
   QuizAnswersPlayer1: QuizAnswers[];
@@ -88,6 +94,12 @@ export class QuizGames {
   gameIndicatorPlayer1: string;
   @Column()
   player1Score: number;
+
+  @ManyToMany(() => Users)
+  @JoinColumn({ name: 'player2Id', referencedColumnName: 'userId' })
+  player2: Users;
+  @Column('uuid')
+  player2Id: string;
 
   @ManyToMany(() => QuizAnswers, (answer) => answer.QuizGames)
   @JoinColumn({name: 'gameIndicatorPlayer2', referencedColumnName: 'gamePlayerIndicator'})
