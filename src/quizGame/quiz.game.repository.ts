@@ -20,7 +20,6 @@ export class QuizGamesRepository {
 //TODO: get attive game
   async getActiveGameByUserId(userId){
 
-
   }
   
  }

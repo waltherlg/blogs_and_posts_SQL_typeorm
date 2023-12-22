@@ -48,10 +48,10 @@ export type outputGameQuizType = {
 export class QuizGameDbType {
   constructor(
     public quizGameId: string,
-    // public status: string,    
-    // public pairCreatedDate: Date,    
-    // public startGameDate: Date | null,    
-    // public finishGameDate: Date | null,
+    public status: string,    
+    public pairCreatedDate: Date,    
+    public startGameDate: Date | null,    
+    public finishGameDate: Date | null,
 
     // public player1Id: string,
     public gameIndicatorPlayer1: string,
@@ -72,6 +72,14 @@ export class QuizGameDbType {
 export class QuizGames {
   @PrimaryColumn('uuid')
   quizGameId: string;
+  @Column()
+  status: string
+  @Column({ type: 'timestamptz' })
+  pairCreatedDate: Date
+  @Column({ type: 'timestamptz' })
+  startGameDate: Date
+  @Column({ type: 'timestamptz' })
+  finishGameDate: Date
 
   @ManyToMany(() => QuizAnswers, (answer) => answer.QuizGames)
   @JoinColumn({name: 'gameIndicatorPlayer1', referencedColumnName: 'gamePlayerIndicator'})
