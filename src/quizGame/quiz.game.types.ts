@@ -55,11 +55,11 @@ export class QuizGameDbType {
 
     // public player1Id: string,
     public gameIndicatorPlayer1: string,
-    // public player1Score: number,
+    public player1Score: number,
 
     // public player2Id: string,
     public gameIndicatorPlayer2: string,
-    //public player2Score: number,
+    public player2Score: number,
     public question1Id: string,
     public question2Id: string,
     public question3Id: string,
@@ -86,12 +86,16 @@ export class QuizGames {
   QuizAnswersPlayer1: QuizAnswers[];
   @Column('uuid', { unique: true })
   gameIndicatorPlayer1: string;
+  @Column()
+  player1Score: number;
 
   @ManyToMany(() => QuizAnswers, (answer) => answer.QuizGames)
   @JoinColumn({name: 'gameIndicatorPlayer2', referencedColumnName: 'gamePlayerIndicator'})
   QuizAnswersPlayer2: QuizAnswers[];
   @Column('uuid', { unique: true })
   gameIndicatorPlayer2: string;
+  @Column()
+  player2Score: number;
 
   @ManyToMany(()=> Questions)
   @JoinColumn({name: 'question1Id'})
