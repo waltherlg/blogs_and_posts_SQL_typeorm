@@ -45,6 +45,13 @@ export type outputGameQuizType = {
   finishGameDate: string
 }
 
+export class PlayerDtoType {
+  constructor(
+    public id: string,
+    public login: string
+  ){}
+}
+
 export class QuizGameDbType {
   constructor(
     public quizGameId: string,

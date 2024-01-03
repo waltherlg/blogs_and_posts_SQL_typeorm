@@ -215,6 +215,8 @@ export class UsersRepository {
     }
   }
 
+  async getUserForGame(userId)
+
   async getConfirmationCodeOfLastCreatedUser() {
     const result = await this.dataSource.query(`SELECT "confirmationCode"
 FROM "Users"
