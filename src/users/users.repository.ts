@@ -5,6 +5,7 @@ import { PasswordRecoveryModel } from '../auth/auth.types';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { Users } from './user.entity';
+import { PlayerDtoType } from '../quizGame/quiz.game.types';
 
 @Injectable()
 export class UsersRepository {
@@ -215,7 +216,15 @@ export class UsersRepository {
     }
   }
 
-  async getUserForGame(userId)
+  async getUserForGame(userId): Promise<PlayerDtoType>{
+    const user = await this.usersRepository.findOne({
+      select: {
+        userId: true,
+        login: true,
+      },
+      where: { userId }
+    })
+  }
 
   async getConfirmationCodeOfLastCreatedUser() {
     const result = await this.dataSource.query(`SELECT "confirmationCode"
