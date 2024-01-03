@@ -19,6 +19,17 @@ export class QuizGamesRepository {
   }
 //TODO: get attive game
   async getActiveGameByUserId(userId){
+    if (!isValidUUID(userId)) {
+      return null;
+    }
+    const gameQueryBuilder = this.quizGamesRepository.createQueryBuilder('game');
+    gameQueryBuilder
+    .leftJoinAndSelect('game.player1', 'player1')
+    .select('game.quizGameId', 'quizGameId')
+    .select('game.status', 'status')
+    .where('game.player1Id = :userId', { userId: userId })
+    const game = await gameQueryBuilder.getOne();
+    return game
 
   }
   

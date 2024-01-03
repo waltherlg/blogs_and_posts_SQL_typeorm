@@ -3,6 +3,7 @@ import { CommandBus } from '@nestjs/cqrs';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { PlayerConnectGameCommand } from '../use-cases/player-connect-to-game-use-case';
 import { ActionResult, handleActionResult } from 'src/helpers/enum.action.result.helper';
+import { PlayerRequestActiveGameCommand } from '../use-cases/player-request-active-game-use-case';
 
 @Controller('pair-game-quiz')
 export class PublicQuizGameController {
@@ -28,13 +29,18 @@ export class PublicQuizGameController {
     return 'game'
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('pairs/my-current')
   @HttpCode(200)
   //TODO
   //Эндпоинт GET /pair-game-quiz/pairs/my-current
   // возвращает активную игру текущего пользователя (того, кто делает запрос)
   // в статусе "PendingSecondPlayer" или "Active".
-  async ReturnActiveGame() {}
+  async ReturnActiveGame(@Req() request) {
+    const result = await this.commandBus.execute( new PlayerRequestActiveGameCommand(request.user.userId))
+    handleActionResult(result)
+    return result
+  }
 
   @Get('pairs/:gameId')
   @HttpCode(200)
@@ -44,7 +50,9 @@ export class PublicQuizGameController {
   // Если игра в статусе ожидания второго игрока (status: "PendingSecondPlayer")
   // - поля secondPlayerProgress: null, questions: null, startGameDate: null,
   // finishGameDate: null
-  async getGameById() {}
+  async getGameById(@Req() request) {
+    
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('pairs/my-current/answers')

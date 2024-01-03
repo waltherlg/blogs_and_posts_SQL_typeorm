@@ -106,6 +106,7 @@ import { PlayerConnectGameUseCase } from './quizGame/use-cases/player-connect-to
 import { QuizGamesRepository } from './quizGame/quiz.game.repository';
 import { QuizGames } from './quizGame/quiz.game.types';
 import { QuizAnswers } from './quizGame/quiz.answers.types';
+import { PlayerRequestActiveGameUseCase } from './quizGame/use-cases/player-request-active-game-use-case';
 const mongoUri = process.env.MONGO_URL;
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
@@ -148,6 +149,7 @@ const useCases = [
   SaUpdateQuestionByIdUseCase,
   SaPublishQuestionByIdUseCase,
   PlayerConnectGameUseCase,
+  PlayerRequestActiveGameUseCase,
 ];
 
 @Module({

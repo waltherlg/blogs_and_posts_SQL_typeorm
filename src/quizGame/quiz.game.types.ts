@@ -80,12 +80,13 @@ export class QuizGames {
   startGameDate: Date
   @Column({ type: 'timestamptz', nullable: true })
   finishGameDate: Date
-
+  
   @ManyToMany(() => Users)
   @JoinColumn({ name: 'player1Id', referencedColumnName: 'userId' })
   player1: Users;
   @Column('uuid')
   player1Id: string;
+
 
   @ManyToMany(() => QuizAnswers, (answer) => answer.QuizGames)
   @JoinColumn({name: 'gameIndicatorPlayer1', referencedColumnName: 'gamePlayerIndicator'})

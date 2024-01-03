@@ -12,7 +12,6 @@ import { QuizGamesRepository } from '../quiz.game.repository';
 export class PlayerConnectGameCommand {
   constructor(public userId: string) {}
 }
-//TODO need finish
 @CommandHandler(PlayerConnectGameCommand)
 export class PlayerConnectGameUseCase
   implements ICommandHandler<PlayerConnectGameCommand>
