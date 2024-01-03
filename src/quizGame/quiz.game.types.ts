@@ -81,11 +81,9 @@ export class QuizGames {
   @Column({ type: 'timestamptz', nullable: true })
   finishGameDate: Date
   
-  @ManyToMany(() => Users)
-  @JoinColumn({ name: 'player1Id', referencedColumnName: 'userId' })
+  @ManyToOne(() => Users, { eager: true })
+  @JoinColumn({ name: 'player1Id' })
   player1: Users;
-  @Column('uuid')
-  player1Id: string;
 
 
   @ManyToMany(() => QuizAnswers, (answer) => answer.QuizGames)
@@ -96,11 +94,9 @@ export class QuizGames {
   @Column()
   player1Score: number;
 
-  @ManyToMany(() => Users)
-  @JoinColumn({ name: 'player2Id', referencedColumnName: 'userId' })
-  player2: Users;
-  @Column({type: 'uuid', nullable: true})
-  player2Id: string;
+  @ManyToOne(() => Users, { eager: true, nullable: true })
+  @JoinColumn({ name: 'player2Id' })
+  player2: Users | null;
 
   @ManyToMany(() => QuizAnswers, (answer) => answer.QuizGames)
   @JoinColumn({name: 'gameIndicatorPlayer2', referencedColumnName: 'gamePlayerIndicator'})
