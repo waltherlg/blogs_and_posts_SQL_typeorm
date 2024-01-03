@@ -269,5 +269,14 @@ export function quizGameCrudOperationsSa16() {
       .expect(200)
     })
 
+    it('00-00 pair-game-quiz/pairs/my-current GET = user1 req own game', async () => {
+      const createResponse = await request(app.getHttpServer())
+      .get(`${endpoints.pairGameQuiz}/pairs/my-current`)
+      .set('Authorization', `Bearer ${accessTokenUser1}`)
+      .expect(200)
+    })
+
+
+
   });
 }

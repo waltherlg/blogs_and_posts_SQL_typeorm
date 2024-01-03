@@ -24,11 +24,11 @@ export class QuizGamesRepository {
     }
     const gameQueryBuilder = this.quizGamesRepository.createQueryBuilder('game');
     gameQueryBuilder
-    .leftJoinAndSelect('game.player1', 'player1')
-    .select('game.quizGameId', 'quizGameId')
-    .select('game.status', 'status')
+    .select()
     .where('game.player1Id = :userId', { userId: userId })
     const game = await gameQueryBuilder.getOne();
+    console.log(game);
+    
     return game
 
   }
