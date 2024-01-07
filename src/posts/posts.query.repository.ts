@@ -191,15 +191,6 @@ export class PostsQueryRepository {
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
 
-    const queryParams = [
-      sortBy,
-      sortDirection,
-      pageNumber,
-      pageSize,
-      skipPage,
-      blogId,
-    ];
-
     const queryBuilder = this.postsRepository.createQueryBuilder('post');
     queryBuilder
       .leftJoin('post.Blogs', 'blog')

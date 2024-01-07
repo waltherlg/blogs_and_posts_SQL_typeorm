@@ -1,6 +1,5 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UsersRepository } from '../../users/users.repository';
-import { UsersDevicesRepository } from '../../usersDevices/user.devices.repository';
 import { CreateUserInputModelType } from '../sa.users.controller';
 import { DTOFactory } from '../../helpers/DTO.factory';
 

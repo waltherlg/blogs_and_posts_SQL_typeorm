@@ -21,12 +21,7 @@ export function testAuthOperations() {
     let usersRepository: UsersRepository;
     let app: INestApplication;
 
-    //const usersRepository = new UsersRepository();
-
-    const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
-    const basicAuthWrongPassword =
-      Buffer.from('admin:12345').toString('base64');
-    const basicAuthWrongLogin = Buffer.from('12345:qwerty').toString('base64');
+    Buffer.from('admin:12345').toString('base64');
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -42,9 +37,6 @@ export function testAuthOperations() {
     afterAll(async () => {
       await app.close();
     });
-
-    let firstCreatedBlogId: string;
-    let createdPostId: string;
 
     it('00-00 testing/all-data DELETE = 204 removeAllData', async () => {
       await request(app.getHttpServer())

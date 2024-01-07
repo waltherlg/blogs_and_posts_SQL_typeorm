@@ -7,9 +7,6 @@ import {
 } from './quiz.questions.types';
 import { Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
-import { questionGameType } from './quiz.game.types';
-import { questionMapper } from './helpers/questions.mapper';
-import { quartersInYear } from 'date-fns';
 
 @Injectable()
 export class QuestionsRepository {

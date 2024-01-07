@@ -15,19 +15,12 @@ import { CommentsQueryRepository } from './comments.query.repository';
 import { CheckService } from '../other.services/check.service';
 import { OptionalJwtAuthGuard } from '../auth/guards/optional-jwt-auth.guard';
 import {
-  BlogNotFoundException,
   CustomisableException,
   CustomNotFoundException,
   UnableException,
 } from '../exceptions/custom.exceptions';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import {
-  IsString,
-  Length,
-  Validate,
-  IsNotEmpty,
-  MaxLength,
-} from 'class-validator';
+import { Length, Validate } from 'class-validator';
 import {
   LikeStatusValidator,
   StringTrimNotEmpty,

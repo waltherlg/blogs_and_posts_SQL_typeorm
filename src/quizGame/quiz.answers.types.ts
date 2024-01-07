@@ -1,13 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  JoinTable,
-  ManyToMany,
-  ManyToOne,
-  OneToOne,
-  PrimaryColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToMany, PrimaryColumn } from 'typeorm';
 import { QuizGames } from './quiz.game.types';
 
 export class QuizAnwswerDbType {

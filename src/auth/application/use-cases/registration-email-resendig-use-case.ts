@@ -1,4 +1,3 @@
-import { DTOFactory } from './../../../helpers/DTO.factory';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { UsersRepository } from '../../../users/users.repository';
 import { add } from 'date-fns';

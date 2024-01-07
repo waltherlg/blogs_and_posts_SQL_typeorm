@@ -9,7 +9,6 @@ import {
   isString,
 } from 'class-validator';
 import { CustomisableException } from '../exceptions/custom.exceptions';
-import { CheckService } from '../other.services/check.service';
 import { Transform } from 'class-transformer';
 
 @Injectable()

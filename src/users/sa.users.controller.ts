@@ -14,7 +14,6 @@ import {
 import { IsEmail, Length, Matches, IsBoolean } from 'class-validator';
 import { UsersQueryRepository } from './users.query.repository';
 import {
-  DEFAULT_QUERY_PARAMS,
   DEFAULT_USERS_QUERY_PARAMS,
   RequestUsersQueryModel,
 } from '../models/types';

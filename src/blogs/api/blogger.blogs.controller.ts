@@ -25,14 +25,8 @@ import {
   UnableException,
 } from '../../exceptions/custom.exceptions';
 import { IsCustomUrl, StringTrimNotEmpty } from '../../middlewares/validators';
-import {
-  CreateBlogCommand,
-  CreateBlogUseCase,
-} from '../application/use-cases/blogger-create-blog-use-case';
-import {
-  UpdateBlogByIdFromUriCommand,
-  UpdateBlogByIdFromUriUseCase,
-} from '../application/use-cases/blogger-upadate-blog-using-id-from-uri-use-case';
+import { CreateBlogCommand } from '../application/use-cases/blogger-create-blog-use-case';
+import { UpdateBlogByIdFromUriCommand } from '../application/use-cases/blogger-upadate-blog-using-id-from-uri-use-case';
 import { CommandBus } from '@nestjs/cqrs';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 

@@ -39,13 +39,12 @@ import { CommentsQueryRepository } from './comments/comments.query.repository';
 import { CommentsService } from './comments/comments.service';
 import { CommentsControllers } from './comments/comments.controller';
 import {
-  //CustomBlogIdValidator,
   CustomUrlValidator,
   LikeStatusValidator,
   TrimNotEmptyValidator,
 } from './middlewares/validators';
 import { TestRepository } from './all.data/test.repository';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { CqrsModule } from '@nestjs/cqrs/dist/cqrs.module';
 import { APP_GUARD } from '@nestjs/core';
@@ -107,7 +106,6 @@ import { QuizGamesRepository } from './quizGame/quiz.game.repository';
 import { QuizGames } from './quizGame/quiz.game.types';
 import { QuizAnswers } from './quizGame/quiz.answers.types';
 import { PlayerRequestActiveGameUseCase } from './quizGame/use-cases/player-request-active-game-use-case';
-const mongoUri = process.env.MONGO_URL;
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
