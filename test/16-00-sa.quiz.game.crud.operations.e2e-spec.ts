@@ -19,7 +19,11 @@ export function quizGameCrudOperationsSa16() {
     let questionId6;
     let questionId7;
     let userId1;
+    let userId2;
+    let userId3;
     let accessTokenUser1
+    let accessTokenUser2
+    let accessTokenUser3
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -256,6 +260,58 @@ export function quizGameCrudOperationsSa16() {
         .expect(200);
       const createdResponse = createResponse.body;
       accessTokenUser1 = createdResponse.accessToken;
+      expect(createdResponse).toEqual({
+        accessToken: expect.any(String),
+      });
+      expect(createResponse.headers['set-cookie']).toBeDefined();
+    });
+
+    it('00-00 sa/users post = 201 create user2 with return', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(endpoints.saUsers)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testComments.inputUser2)
+        .expect(201);
+
+      const createdResponseBody = createResponse.body;
+      userId2 = createdResponseBody.id;
+
+      expect(createdResponseBody).toEqual(testComments.outputUser2Sa);
+    });
+
+    it('00-00 login = 204 login user2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.auth}/login`)
+        .send(testComments.loginUser2)
+        .expect(200);
+      const createdResponse = createResponse.body;
+      accessTokenUser2 = createdResponse.accessToken;
+      expect(createdResponse).toEqual({
+        accessToken: expect.any(String),
+      });
+      expect(createResponse.headers['set-cookie']).toBeDefined();
+    });
+
+    it('00-00 sa/users post = 201 create user3 with return', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(endpoints.saUsers)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testComments.inputUser3)
+        .expect(201);
+
+      const createdResponseBody = createResponse.body;
+      userId3 = createdResponseBody.id;
+
+      expect(createdResponseBody).toEqual(testComments.outputUser2Sa);
+    });
+
+    it('00-00 login = 204 login user3', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.auth}/login`)
+        .send(testComments.loginUser3)
+        .expect(200);
+      const createdResponse = createResponse.body;
+      accessTokenUser3 = createdResponse.accessToken;
       expect(createdResponse).toEqual({
         accessToken: expect.any(String),
       });

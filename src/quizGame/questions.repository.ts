@@ -82,6 +82,5 @@ export class QuestionsRepository {
     .limit(5)
     .getMany();
     return questionMapper.returnArrayOfQuestionIdForGame(questions)
-  }
-  
+  }  
 }

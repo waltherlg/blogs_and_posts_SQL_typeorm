@@ -6,6 +6,7 @@ import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { Users } from './user.entity';
 import { PlayerDtoType } from '../quizGame/quiz.game.types';
+import { userMapper } from './helpers/user.mapper';
 
 @Injectable()
 export class UsersRepository {
@@ -224,6 +225,7 @@ export class UsersRepository {
       },
       where: { userId }
     })
+    return userMapper.returnForGame(user)
   }
 
   async getConfirmationCodeOfLastCreatedUser() {

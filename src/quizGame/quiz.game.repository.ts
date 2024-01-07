@@ -24,7 +24,22 @@ export class QuizGamesRepository {
     }
     const gameQueryBuilder = this.quizGamesRepository.createQueryBuilder('game');
     gameQueryBuilder
-    .select()
+    .select([
+      'game.quizGameId',
+      'player1.userId',
+      'player1.login',
+      'player2.userId',
+      'player2.login',
+      'game.question1Id',
+    ])
+    .leftJoin('game.player1', 'player1')
+    .leftJoin('game.player2', 'player2')
+    .leftJoin('game.Questions1', 'Questions1')
+    .leftJoin('game.Questions2', 'Questions2')
+    .leftJoin('game.Questions3', 'Questions3')
+    .leftJoin('game.Questions4', 'Questions4')
+    .leftJoin('game.Questions5', 'Questions5')
+
     .where('game.player1Id = :userId', { userId: userId })
     const game = await gameQueryBuilder.getOne();
     console.log(game);

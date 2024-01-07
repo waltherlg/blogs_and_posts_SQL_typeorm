@@ -60,7 +60,7 @@ export class QuizGameDbType {
     public startGameDate: Date | null,    
     public finishGameDate: Date | null,
 
-    public player1Id: string,
+    public player1: PlayerDtoType,
     public gameIndicatorPlayer1: string,
     public player1Score: number,
 
@@ -113,31 +113,25 @@ export class QuizGames {
   @Column()
   player2Score: number;
 
-  @ManyToMany(()=> Questions)
+  @ManyToOne(()=> Questions)
   @JoinColumn({name: 'question1Id'})
   Questions1: Questions;
-  @Column('uuid')
-  question1Id: string;
-  @ManyToMany(()=> Questions)
+  
+  @ManyToOne(()=> Questions)
   @JoinColumn({name: 'question2Id'})
   Questions2: Questions;
-  @Column('uuid')
-  question2Id: string;
-  @ManyToMany(()=> Questions)
+  
+  @ManyToOne(()=> Questions)
   @JoinColumn({name: 'question3Id'})
   Questions3: Questions;
-  @Column('uuid')
-  question3Id: string;
-  @ManyToMany(()=> Questions)
+  
+  @ManyToOne(()=> Questions)
   @JoinColumn({name: 'question4Id'})
   Questions4: Questions;
-  @Column('uuid')
-  question4Id: string;
-  @ManyToMany(()=> Questions)
+  
+  @ManyToOne(()=> Questions)
   @JoinColumn({name: 'question5Id'})
   Questions5: Questions;
-  @Column('uuid')
-  question5Id: string;
 
 
 }
