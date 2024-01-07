@@ -17,11 +17,15 @@ export class PlayerRequestActiveGameCommand {
 export class PlayerRequestActiveGameUseCase
   implements ICommandHandler<PlayerRequestActiveGameCommand>
 {
-  constructor(private readonly questionRepository: QuestionsRepository,
-              private readonly quizGamesRepository: QuizGamesRepository ) {}
+  constructor(
+    private readonly questionRepository: QuestionsRepository,
+    private readonly quizGamesRepository: QuizGamesRepository,
+  ) {}
 
   async execute(command: PlayerRequestActiveGameCommand): Promise<any> {
-    const game = await this.quizGamesRepository.getActiveGameByUserId(command.userId)
-    return game
+    const game = await this.quizGamesRepository.getActiveGameByUserId(
+      command.userId,
+    );
+    return game;
   }
 }

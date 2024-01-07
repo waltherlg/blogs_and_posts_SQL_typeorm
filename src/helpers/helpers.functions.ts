@@ -6,7 +6,11 @@ export const sortDirectionFixer = (sortDirection) => {
 export const publishedStatusFixer = (publishedStatus) => {
   const validStatusValues = ['all', 'published', 'notPublished'];
 
-  return publishedStatus === 'published' ? true :
-         publishedStatus === 'notPublished' ? false :
-         validStatusValues.includes(publishedStatus) ? publishedStatus : 'all';
+  return publishedStatus === 'published'
+    ? true
+    : publishedStatus === 'notPublished'
+    ? false
+    : validStatusValues.includes(publishedStatus)
+    ? publishedStatus
+    : 'all';
 };

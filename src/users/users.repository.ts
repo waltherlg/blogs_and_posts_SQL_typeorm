@@ -217,20 +217,19 @@ export class UsersRepository {
     }
   }
 
-  async getUserForGame(userId): Promise<PlayerDtoType | null>{
+  async getUserForGame(userId): Promise<PlayerDtoType | null> {
     const user = await this.usersRepository.findOne({
       select: {
         userId: true,
         login: true,
       },
-      where: { userId }
-    })
-    if(user){
-      return userMapper.returnForGame(user)
+      where: { userId },
+    });
+    if (user) {
+      return userMapper.returnForGame(user);
     } else {
-      return null
+      return null;
     }
-    
   }
 
   async getConfirmationCodeOfLastCreatedUser() {

@@ -25,7 +25,7 @@ export class BindBlogWithUserUseCase
       command.userId,
     );
     if (result) {
-      return ActionResult.Success; 
+      return ActionResult.Success;
     } else {
       return ActionResult.NotSaved;
     }

@@ -11,19 +11,24 @@ export class SaPublishQuestionByIdCommand {
 export class SaPublishQuestionByIdUseCase
   implements ICommandHandler<SaPublishQuestionByIdCommand>
 {
-  constructor(private readonly questionRepository: QuestionsRepository,
-              private readonly checkService: CheckService) {}
+  constructor(
+    private readonly questionRepository: QuestionsRepository,
+    private readonly checkService: CheckService,
+  ) {}
 
   async execute(command: SaPublishQuestionByIdCommand): Promise<ActionResult> {
-    if(!(await this.checkService.isQuestionExist(command.questionId))){
-      return ActionResult.QuestionNotFound
+    if (!(await this.checkService.isQuestionExist(command.questionId))) {
+      return ActionResult.QuestionNotFound;
     }
     //TODO add check is change needed
-    const result = await this.questionRepository.publishQuestionById(command.questionId, command.published)
-    if(result){
-      return ActionResult.Success
+    const result = await this.questionRepository.publishQuestionById(
+      command.questionId,
+      command.published,
+    );
+    if (result) {
+      return ActionResult.Success;
     } else {
-      return ActionResult.NotSaved
+      return ActionResult.NotSaved;
     }
   }
 }

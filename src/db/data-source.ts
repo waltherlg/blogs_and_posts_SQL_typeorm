@@ -38,8 +38,6 @@ export default new DataSource({
     Questions,
     QuizAnswers,
     QuizGames,
-    
-    
   ],
   //migrations: [ "src/db/migrations/*.ts" ],
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],

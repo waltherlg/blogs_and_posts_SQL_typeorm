@@ -11,7 +11,11 @@ import {
   Param,
 } from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
-import { CreateQuestionImputModelType, PublishQuestionImputModelType, UpdateQuestionImputModelType } from '../quiz.questions.types';
+import {
+  CreateQuestionImputModelType,
+  PublishQuestionImputModelType,
+  UpdateQuestionImputModelType,
+} from '../quiz.questions.types';
 import { BasicAuthGuard } from 'src/auth/guards/auth.guards';
 import { SaCreateQuestionCommand } from '../use-cases/sa-creates-question-use-case';
 import { QuestionsRepository } from '../questions.repository';
@@ -22,7 +26,10 @@ import {
 } from 'src/models/types';
 import { CheckService } from '../../other.services/check.service';
 import { CustomNotFoundException } from '../../exceptions/custom.exceptions';
-import { ActionResult, handleActionResult } from '../../helpers/enum.action.result.helper';
+import {
+  ActionResult,
+  handleActionResult,
+} from '../../helpers/enum.action.result.helper';
 import { SaDeleteQuestionByIdCommand } from '../use-cases/sa-delete-question-by-id-use-case';
 import { validate as isValidUUID } from 'uuid';
 import { SaUpdateQuestionByIdCommand } from '../use-cases/sa-update-question-by-id-use-case';
@@ -65,18 +72,22 @@ export class SaQuizController {
   @Delete('questions/:questionId')
   @HttpCode(204)
   async deleteQuestionById(@Param('questionId') questionId: string) {
-    const deleteResult: ActionResult = await this.commandBus.execute(new SaDeleteQuestionByIdCommand(questionId))
-    handleActionResult(deleteResult)
+    const deleteResult: ActionResult = await this.commandBus.execute(
+      new SaDeleteQuestionByIdCommand(questionId),
+    );
+    handleActionResult(deleteResult);
   }
 
   @Put('questions/:questionId')
   @HttpCode(204)
   async updateQuestionById(
     @Param('questionId') questionId: string,
-    @Body() updateQuestionDto: UpdateQuestionImputModelType
-    ){
-    const updateResult: ActionResult = await this.commandBus.execute(new SaUpdateQuestionByIdCommand(questionId, updateQuestionDto))
-    handleActionResult(updateResult)
+    @Body() updateQuestionDto: UpdateQuestionImputModelType,
+  ) {
+    const updateResult: ActionResult = await this.commandBus.execute(
+      new SaUpdateQuestionByIdCommand(questionId, updateQuestionDto),
+    );
+    handleActionResult(updateResult);
   }
 
   @Put('questions/:questionId/publish')
@@ -84,9 +95,11 @@ export class SaQuizController {
   //TODO
   async publishQuestionById(
     @Param('questionId') questionId: string,
-    @Body() publish: PublishQuestionImputModelType
+    @Body() publish: PublishQuestionImputModelType,
   ) {
-    const publishResult: ActionResult = await this.commandBus.execute(new SaPublishQuestionByIdCommand(questionId, publish.published))
-    handleActionResult(publishResult)
+    const publishResult: ActionResult = await this.commandBus.execute(
+      new SaPublishQuestionByIdCommand(questionId, publish.published),
+    );
+    handleActionResult(publishResult);
   }
 }

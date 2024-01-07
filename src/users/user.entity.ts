@@ -41,7 +41,7 @@ export class Users {
   passwordRecoveryCode: string | null;
   @Column({ type: 'timestamptz', nullable: true })
   expirationDateOfRecoveryCode: Date | null;
-  
+
   @OneToMany(() => UserDevices, (d) => d.Users, { cascade: ['remove'] })
   @JoinColumn({ name: 'userId' })
   UserDevices: UserDevices[];

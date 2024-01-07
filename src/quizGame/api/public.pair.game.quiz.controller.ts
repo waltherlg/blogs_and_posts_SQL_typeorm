@@ -1,15 +1,23 @@
-import { Controller, Get, HttpCode, Post, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { CommandBus } from '@nestjs/cqrs';
 import { JwtAuthGuard } from 'src/auth/guards/jwt-auth.guard';
 import { PlayerConnectGameCommand } from '../use-cases/player-connect-to-game-use-case';
-import { ActionResult, handleActionResult } from 'src/helpers/enum.action.result.helper';
+import {
+  ActionResult,
+  handleActionResult,
+} from 'src/helpers/enum.action.result.helper';
 import { PlayerRequestActiveGameCommand } from '../use-cases/player-request-active-game-use-case';
 
 @Controller('pair-game-quiz')
 export class PublicQuizGameController {
-  constructor (
-    private readonly commandBus: CommandBus,
-  ) {}
+  constructor(private readonly commandBus: CommandBus) {}
 
   @UseGuards(JwtAuthGuard)
   @Post('pairs/my-current')
@@ -21,12 +29,12 @@ export class PublicQuizGameController {
   // 3. Если есть игрок в ожидании - создаётся пара: я + этот игрок
   // 4. Если нет, я становлюсь игроком в ожидании и могу стать парой для
   // следующего, кто нажмёт соревноваться
-  async ConnectOrCreateGame(
-    @Req() request
-  ) {
-    const result = await this.commandBus.execute( new PlayerConnectGameCommand(request.user.userId))
-    handleActionResult(result)
-    return 'game'
+  async ConnectOrCreateGame(@Req() request) {
+    const result = await this.commandBus.execute(
+      new PlayerConnectGameCommand(request.user.userId),
+    );
+    handleActionResult(result);
+    return 'game';
   }
 
   @UseGuards(JwtAuthGuard)
@@ -37,9 +45,11 @@ export class PublicQuizGameController {
   // возвращает активную игру текущего пользователя (того, кто делает запрос)
   // в статусе "PendingSecondPlayer" или "Active".
   async ReturnActiveGame(@Req() request) {
-    const result = await this.commandBus.execute( new PlayerRequestActiveGameCommand(request.user.userId))
-    handleActionResult(result)
-    return result
+    const result = await this.commandBus.execute(
+      new PlayerRequestActiveGameCommand(request.user.userId),
+    );
+    handleActionResult(result);
+    return result;
   }
 
   @Get('pairs/:gameId')
@@ -50,9 +60,7 @@ export class PublicQuizGameController {
   // Если игра в статусе ожидания второго игрока (status: "PendingSecondPlayer")
   // - поля secondPlayerProgress: null, questions: null, startGameDate: null,
   // finishGameDate: null
-  async getGameById(@Req() request) {
-    
-  }
+  async getGameById(@Req() request) {}
 
   @UseGuards(JwtAuthGuard)
   @Post('pairs/my-current/answers')

@@ -113,7 +113,7 @@ export class CheckService {
     return isUserBanned;
   }
 
-  async isQuestionExist(questionId: string): Promise<boolean>{
-    return await this.questionsRepository.isQuestionExist(questionId)
+  async isQuestionExist(questionId: string): Promise<boolean> {
+    return await this.questionsRepository.isQuestionExist(questionId);
   }
 }

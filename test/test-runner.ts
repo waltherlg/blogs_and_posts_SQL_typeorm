@@ -37,5 +37,5 @@ describe('End-to-End Tests', () => {
   // commentLikesWithUserBanCrud1301();
   // bloggerUsersControllers()
   // questionCrudOperationsSa15();
-  quizGameCrudOperationsSa16()
+  quizGameCrudOperationsSa16();
 });

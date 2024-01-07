@@ -21,9 +21,9 @@ export function quizGameCrudOperationsSa16() {
     let userId1;
     let userId2;
     let userId3;
-    let accessTokenUser1
-    let accessTokenUser2
-    let accessTokenUser3
+    let accessTokenUser1;
+    let accessTokenUser2;
+    let accessTokenUser3;
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -60,12 +60,12 @@ export function quizGameCrudOperationsSa16() {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.quizQuestions}/${questionId1}/publish`)
         .set('Authorization', `Basic ${basicAuthRight}`)
-        .send({published: true})
+        .send({ published: true })
         .expect(204);
 
-        if (createResponse.status === 204) {
-          testQuestions.outputQuestion1Sa.published = true;
-        }
+      if (createResponse.status === 204) {
+        testQuestions.outputQuestion1Sa.published = true;
+      }
     });
 
     it('00-00 quiz/questions POST = 201 create question2 with return', async () => {
@@ -85,12 +85,12 @@ export function quizGameCrudOperationsSa16() {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.quizQuestions}/${questionId2}/publish`)
         .set('Authorization', `Basic ${basicAuthRight}`)
-        .send({published: true})
+        .send({ published: true })
         .expect(204);
 
-        if (createResponse.status === 204) {
-          testQuestions.outputQuestion2Sa.published = true;
-        }
+      if (createResponse.status === 204) {
+        testQuestions.outputQuestion2Sa.published = true;
+      }
     });
 
     it('00-00 quiz/questions POST = 201 create question3 with return', async () => {
@@ -110,12 +110,12 @@ export function quizGameCrudOperationsSa16() {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.quizQuestions}/${questionId3}/publish`)
         .set('Authorization', `Basic ${basicAuthRight}`)
-        .send({published: true})
+        .send({ published: true })
         .expect(204);
 
-        if (createResponse.status === 204) {
-          testQuestions.outputQuestion3Sa.published = true;
-        }
+      if (createResponse.status === 204) {
+        testQuestions.outputQuestion3Sa.published = true;
+      }
     });
 
     it('00-00 quiz/questions POST = 201 create question4 with return', async () => {
@@ -135,12 +135,12 @@ export function quizGameCrudOperationsSa16() {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.quizQuestions}/${questionId4}/publish`)
         .set('Authorization', `Basic ${basicAuthRight}`)
-        .send({published: true})
+        .send({ published: true })
         .expect(204);
 
-        if (createResponse.status === 204) {
-          testQuestions.outputQuestion4Sa.published = true;
-        }
+      if (createResponse.status === 204) {
+        testQuestions.outputQuestion4Sa.published = true;
+      }
     });
 
     it('00-00 quiz/questions POST = 201 create question5 with return', async () => {
@@ -160,12 +160,12 @@ export function quizGameCrudOperationsSa16() {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.quizQuestions}/${questionId5}/publish`)
         .set('Authorization', `Basic ${basicAuthRight}`)
-        .send({published: true})
+        .send({ published: true })
         .expect(204);
 
-        if (createResponse.status === 204) {
-          testQuestions.outputQuestion5Sa.published = true;
-        }
+      if (createResponse.status === 204) {
+        testQuestions.outputQuestion5Sa.published = true;
+      }
     });
 
     it('00-00 quiz/questions POST = 201 create question6 with return', async () => {
@@ -185,12 +185,12 @@ export function quizGameCrudOperationsSa16() {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.quizQuestions}/${questionId6}/publish`)
         .set('Authorization', `Basic ${basicAuthRight}`)
-        .send({published: true})
+        .send({ published: true })
         .expect(204);
 
-        if (createResponse.status === 204) {
-          testQuestions.outputQuestion6Sa.published = true;
-        }
+      if (createResponse.status === 204) {
+        testQuestions.outputQuestion6Sa.published = true;
+      }
     });
 
     it('00-00 quiz/questions POST = 201 create question7 with return', async () => {
@@ -320,27 +320,24 @@ export function quizGameCrudOperationsSa16() {
 
     it('00-00 pair-game-quiz/pairs/my-current POST = user1 create new game', async () => {
       const createResponse = await request(app.getHttpServer())
-      .post(`${endpoints.pairGameQuiz}/pairs/my-current`)
-      .set('Authorization', `Bearer ${accessTokenUser1}`)
-      .expect(200)
-    })
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+    });
 
     //TODO: need finish
     it('00-00 pair-game-quiz/pairs/my-current GET = user1 req own game', async () => {
       const createResponse = await request(app.getHttpServer())
-      .get(`${endpoints.pairGameQuiz}/pairs/my-current`)
-      .set('Authorization', `Bearer ${accessTokenUser1}`)
-      .expect(200)
-    })
+        .get(`${endpoints.pairGameQuiz}/pairs/my-current`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+    });
 
     it('00-00 pair-game-quiz/pairs/my-current POST = user2 join to game1', async () => {
       const createResponse = await request(app.getHttpServer())
-      .post(`${endpoints.pairGameQuiz}/pairs/my-current`)
-      .set('Authorization', `Bearer ${accessTokenUser2}`)
-      .expect(200)
-    })
-
-
-
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current`)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+    });
   });
 }

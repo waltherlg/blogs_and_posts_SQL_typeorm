@@ -12,15 +12,15 @@ export const questionMapper = {
     };
   },
 
-  returnForQuizGame(question: QuestionDbType){
+  returnForQuizGame(question: QuestionDbType) {
     return {
       id: question.questionId,
-      body: question.body
-    }
+      body: question.body,
+    };
   },
 
-  returnArrayOfQuestionIdForGame(questionArr){
-    const arrayId = questionArr.map(question => question.questionId)
-    return arrayId
-  }
+  returnArrayOfQuestionIdForGame(questionArr) {
+    const arrayId = questionArr.map((question) => question.questionId);
+    return arrayId;
+  },
 };

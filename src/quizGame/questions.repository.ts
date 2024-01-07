@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QuestionDbType, Questions, UpdateQuestionImputModelType } from './quiz.questions.types';
+import {
+  QuestionDbType,
+  Questions,
+  UpdateQuestionImputModelType,
+} from './quiz.questions.types';
 import { Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { questionGameType } from './quiz.game.types';
@@ -47,29 +51,35 @@ export class QuestionsRepository {
     return count > 0;
   }
 
-  async updateQuestionById(questionId: string, UpdateQuestionDto: UpdateQuestionImputModelType): Promise<boolean>{
-    if (!isValidUUID(questionId)) {
-      return false;
-    }
-    const result = await this.questionsRepository.update(
-      {questionId: questionId},
-      {
-        body: UpdateQuestionDto.body,
-        correctAnswers: UpdateQuestionDto.correctAnswers,
-        updatedAt: new Date().toISOString()
-      }
-    )
-    return result.affected > 0;
-  }
-
-  async publishQuestionById(questionId: string, published: boolean): Promise<boolean>{
+  async updateQuestionById(
+    questionId: string,
+    UpdateQuestionDto: UpdateQuestionImputModelType,
+  ): Promise<boolean> {
     if (!isValidUUID(questionId)) {
       return false;
     }
     const result = await this.questionsRepository.update(
       { questionId: questionId },
-      { published: published }
-    )
+      {
+        body: UpdateQuestionDto.body,
+        correctAnswers: UpdateQuestionDto.correctAnswers,
+        updatedAt: new Date().toISOString(),
+      },
+    );
+    return result.affected > 0;
+  }
+
+  async publishQuestionById(
+    questionId: string,
+    published: boolean,
+  ): Promise<boolean> {
+    if (!isValidUUID(questionId)) {
+      return false;
+    }
+    const result = await this.questionsRepository.update(
+      { questionId: questionId },
+      { published: published },
+    );
     return result.affected > 0;
   }
 
@@ -82,29 +92,29 @@ export class QuestionsRepository {
   //   .limit(5)
   //   .getMany();
   //   return questionMapper.returnArrayOfQuestionIdForGame(questions)
-  // }  
+  // }
 
-  async get1QuestionsForGame(): Promise<QuestionDbType>{
+  async get1QuestionsForGame(): Promise<QuestionDbType> {
     const question = await this.questionsRepository
-    .createQueryBuilder()
-    .select()
-    .where('published = true')
-    .orderBy('RANDOM()')
-    .limit(1)
-    .getOne();
+      .createQueryBuilder()
+      .select()
+      .where('published = true')
+      .orderBy('RANDOM()')
+      .limit(1)
+      .getOne();
     console.log('questions1 get1QuestionsIdForGame ', question);
-    return question
-  }  
+    return question;
+  }
 
-  async get5QuestionsIdForGame(): Promise<QuestionDbType[]>{
+  async get5QuestionsIdForGame(): Promise<QuestionDbType[]> {
     const questions = await this.questionsRepository
-    .createQueryBuilder()
-    .select()
-    .where('published = true')
-    .orderBy('RANDOM()')
-    .limit(5)
-    .getMany();
-    
-    return questions
-  }  
+      .createQueryBuilder()
+      .select()
+      .where('published = true')
+      .orderBy('RANDOM()')
+      .limit(5)
+      .getMany();
+
+    return questions;
+  }
 }

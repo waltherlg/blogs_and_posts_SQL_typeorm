@@ -53,13 +53,13 @@ export function handleActionResult(result: ActionResult) {
         'users cannot change data unless they are the owner',
         403,
       );
-    
+
     case ActionResult.NotEnoughQuestions:
       throw new CustomisableException(
-        'can\'t create game',
+        "can't create game",
         'Not enough questions for create new quiz game',
         418,
-      )
+      );
 
     case ActionResult.UserBannedForBlog:
       throw new ForbiddenException("banned user can't add comment");

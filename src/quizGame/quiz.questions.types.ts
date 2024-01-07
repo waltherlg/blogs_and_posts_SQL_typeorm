@@ -58,5 +58,3 @@ export class Questions {
   @Column({ type: 'timestamptz' })
   updatedAt: string;
 }
-
-

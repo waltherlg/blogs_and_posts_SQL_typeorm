@@ -1,64 +1,75 @@
 import { IsArray, IsBoolean, Length } from 'class-validator';
 import { StringTrimNotEmpty } from '../middlewares/validators';
-import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn, ManyToMany, JoinTable, OneToMany, OneToOne } from 'typeorm';
+import {
+  Entity,
+  PrimaryColumn,
+  Column,
+  ManyToOne,
+  JoinColumn,
+  ManyToMany,
+  JoinTable,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { Users } from '../users/user.entity';
 import { QuestionDbType, Questions } from './quiz.questions.types';
 import { QuizAnswers } from './quiz.answers.types';
 import { UserDBType } from '../users/users.types';
 
-enum enumAnswerGameStatus {'Correct', 'Incorrect'}
+enum enumAnswerGameStatus {
+  'Correct',
+  'Incorrect',
+}
 
 type answerGameType = {
-    questionId: string,
-    answerStatus: enumAnswerGameStatus,
-    addedAt: string
-}
+  questionId: string;
+  answerStatus: enumAnswerGameStatus;
+  addedAt: string;
+};
 
-type playerGameType ={
-  id: string,
-  login: string
-}
+type playerGameType = {
+  id: string;
+  login: string;
+};
 
 type playerGameProgressType = {
-    answers: answerGameType[],
-    player: playerGameType,
-    score: number
-}
+  answers: answerGameType[];
+  player: playerGameType;
+  score: number;
+};
 
 export type questionGameType = {
-  id: string,
-  body: string
-}
+  id: string;
+  body: string;
+};
 
 export enum enumStatusGameType {
-  PendingSecondPlayer = 'PendingSecondPlayer', Active = 'Active', Finished = 'Finished'
+  PendingSecondPlayer = 'PendingSecondPlayer',
+  Active = 'Active',
+  Finished = 'Finished',
 }
-
 
 export type outputGameQuizType = {
-  id: string,
-  firstPlayerProgress: playerGameProgressType,
-  secondPlayerProgress: playerGameProgressType,
-  questions: questionGameType[],
-  status: enumStatusGameType,
-  pairCreatedDate: string,
-  startGameDate: string,
-  finishGameDate: string
-}
+  id: string;
+  firstPlayerProgress: playerGameProgressType;
+  secondPlayerProgress: playerGameProgressType;
+  questions: questionGameType[];
+  status: enumStatusGameType;
+  pairCreatedDate: string;
+  startGameDate: string;
+  finishGameDate: string;
+};
 
 export class PlayerDtoType {
-  constructor(
-    public id: string,
-    public login: string
-  ){}
+  constructor(public id: string, public login: string) {}
 }
 
 export class QuizGameDbType {
   constructor(
     public quizGameId: string,
-    public status: string,    
-    public pairCreatedDate: Date,    
-    public startGameDate: Date | null,    
+    public status: string,
+    public pairCreatedDate: Date,
+    public startGameDate: Date | null,
     public finishGameDate: Date | null,
 
     public player1: UserDBType,
@@ -73,29 +84,31 @@ export class QuizGameDbType {
     public question3: QuestionDbType,
     public question4: QuestionDbType,
     public question5: QuestionDbType,
-  ){}
+  ) {}
 }
 
-@Entity({name: 'QuizGames'})
+@Entity({ name: 'QuizGames' })
 export class QuizGames {
   @PrimaryColumn('uuid')
   quizGameId: string;
   @Column()
-  status: string
-  @Column({ type: 'timestamptz'})
-  pairCreatedDate: Date
+  status: string;
+  @Column({ type: 'timestamptz' })
+  pairCreatedDate: Date;
   @Column({ type: 'timestamptz', nullable: true })
-  startGameDate: Date
+  startGameDate: Date;
   @Column({ type: 'timestamptz', nullable: true })
-  finishGameDate: Date
-  
+  finishGameDate: Date;
+
   @ManyToOne(() => Users, { eager: true, nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'player1Id' })
   player1: Users;
 
-
   @ManyToMany(() => QuizAnswers, (answer) => answer.QuizGames)
-  @JoinColumn({name: 'gameIndicatorPlayer1', referencedColumnName: 'gamePlayerIndicator'})
+  @JoinColumn({
+    name: 'gameIndicatorPlayer1',
+    referencedColumnName: 'gamePlayerIndicator',
+  })
   QuizAnswersPlayer1: QuizAnswers[];
 
   @Column('uuid', { unique: true })
@@ -109,31 +122,59 @@ export class QuizGames {
   player2: Users | null;
 
   @ManyToMany(() => QuizAnswers, (answer) => answer.QuizGames)
-  @JoinColumn({name: 'gameIndicatorPlayer2', referencedColumnName: 'gamePlayerIndicator'})
+  @JoinColumn({
+    name: 'gameIndicatorPlayer2',
+    referencedColumnName: 'gamePlayerIndicator',
+  })
   QuizAnswersPlayer2: QuizAnswers[];
   @Column('uuid', { unique: true })
   gameIndicatorPlayer2: string;
   @Column()
   player2Score: number;
 
-  @ManyToOne(()=> Questions, { eager: true, nullable: true, onDelete: 'SET NULL', onUpdate: 'CASCADE' })
-  @JoinColumn({name: 'question1Id', referencedColumnName: 'questionId'})
+  @ManyToOne(() => Questions, {
+    eager: true,
+    nullable: true,
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'question1Id', referencedColumnName: 'questionId' })
   question1: Questions;
-  
-  @ManyToOne(()=> Questions, { eager: true, nullable: true, onDelete: 'SET NULL', onUpdate: 'CASCADE' })
-  @JoinColumn({name: 'question2Id', referencedColumnName: 'questionId'})
+
+  @ManyToOne(() => Questions, {
+    eager: true,
+    nullable: true,
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'question2Id', referencedColumnName: 'questionId' })
   question2: Questions;
-  
-  @ManyToOne(()=> Questions, { eager: true, nullable: true, onDelete: 'SET NULL', onUpdate: 'CASCADE' })
-  @JoinColumn({name: 'question3Id', referencedColumnName: 'questionId'})
+
+  @ManyToOne(() => Questions, {
+    eager: true,
+    nullable: true,
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'question3Id', referencedColumnName: 'questionId' })
   question3: Questions;
-  
-  @ManyToOne(()=> Questions, { eager: true, nullable: true, onDelete: 'SET NULL', onUpdate: 'CASCADE' })
-  @JoinColumn({name: 'question4Id', referencedColumnName: 'questionId'})
+
+  @ManyToOne(() => Questions, {
+    eager: true,
+    nullable: true,
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'question4Id', referencedColumnName: 'questionId' })
   question4: Questions;
-  
-  @ManyToOne(()=> Questions, { eager: true, nullable: true, onDelete: 'SET NULL', onUpdate: 'CASCADE' })
-  @JoinColumn({name: 'question5Id', referencedColumnName: 'questionId'})
+
+  @ManyToOne(() => Questions, {
+    eager: true,
+    nullable: true,
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn({ name: 'question5Id', referencedColumnName: 'questionId' })
   question5: Questions;
 }
 
@@ -246,6 +287,3 @@ export class QuizGames {
 //   "startGameDate": "2023-12-05T04:56:59.947Z",
 //   "finishGameDate": "2023-12-05T04:56:59.947Z"
 // }e
-
-
-

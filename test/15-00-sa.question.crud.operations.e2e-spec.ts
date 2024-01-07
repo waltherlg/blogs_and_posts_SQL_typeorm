@@ -111,9 +111,7 @@ export function questionCrudOperationsSa15() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [
-          testQuestions.outputQuestion1Sa,
-        ],
+        items: [testQuestions.outputQuestion1Sa],
       });
     });
 
@@ -137,9 +135,7 @@ export function questionCrudOperationsSa15() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [
-          testQuestions.updatedOutputQuestion1Sa,
-        ],
+        items: [testQuestions.updatedOutputQuestion1Sa],
       });
       const question = createdResponse.items[0];
       expect(question.createdAt).not.toEqual(question.updatedAt);
@@ -149,7 +145,7 @@ export function questionCrudOperationsSa15() {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.quizQuestions}/${questionId1}/publish`)
         .set('Authorization', `Basic ${basicAuthRight}`)
-        .send({published: true})
+        .send({ published: true })
         .expect(204);
     });
 
@@ -162,6 +158,5 @@ export function questionCrudOperationsSa15() {
       const question = createdResponse.items[0];
       expect(question.published).toEqual(true);
     });
-
   });
 }

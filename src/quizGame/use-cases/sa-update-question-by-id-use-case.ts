@@ -5,25 +5,33 @@ import { CheckService } from '../../other.services/check.service';
 import { UpdateQuestionImputModelType } from '../quiz.questions.types';
 
 export class SaUpdateQuestionByIdCommand {
-  constructor(public questionId, public updateQuestionDto: UpdateQuestionImputModelType) {}
+  constructor(
+    public questionId,
+    public updateQuestionDto: UpdateQuestionImputModelType,
+  ) {}
 }
 
 @CommandHandler(SaUpdateQuestionByIdCommand)
 export class SaUpdateQuestionByIdUseCase
   implements ICommandHandler<SaUpdateQuestionByIdCommand>
 {
-  constructor(private readonly questionRepository: QuestionsRepository,
-              private readonly checkService: CheckService) {}
+  constructor(
+    private readonly questionRepository: QuestionsRepository,
+    private readonly checkService: CheckService,
+  ) {}
 
   async execute(command: SaUpdateQuestionByIdCommand): Promise<ActionResult> {
-    if(!(await this.checkService.isQuestionExist(command.questionId))){
-      return ActionResult.QuestionNotFound
+    if (!(await this.checkService.isQuestionExist(command.questionId))) {
+      return ActionResult.QuestionNotFound;
     }
-    const result = await this.questionRepository.updateQuestionById(command.questionId, command.updateQuestionDto)
-    if(result){
-      return ActionResult.Success
+    const result = await this.questionRepository.updateQuestionById(
+      command.questionId,
+      command.updateQuestionDto,
+    );
+    if (result) {
+      return ActionResult.Success;
     } else {
-      return ActionResult.NotSaved
+      return ActionResult.NotSaved;
     }
   }
 }

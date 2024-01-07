@@ -10,18 +10,22 @@ export class SaDeleteQuestionByIdCommand {
 export class SaDeleteQuestionByIdUseCase
   implements ICommandHandler<SaDeleteQuestionByIdCommand>
 {
-  constructor(private readonly questionRepository: QuestionsRepository,
-              private readonly checkService: CheckService) {}
+  constructor(
+    private readonly questionRepository: QuestionsRepository,
+    private readonly checkService: CheckService,
+  ) {}
 
   async execute(command: SaDeleteQuestionByIdCommand): Promise<ActionResult> {
-    if(!(await this.checkService.isQuestionExist(command.questionId))){
-      return ActionResult.QuestionNotFound
+    if (!(await this.checkService.isQuestionExist(command.questionId))) {
+      return ActionResult.QuestionNotFound;
     }
-    const result = await this.questionRepository.deleteQuestionById(command.questionId)
-    if(result){
-      return ActionResult.Success
+    const result = await this.questionRepository.deleteQuestionById(
+      command.questionId,
+    );
+    if (result) {
+      return ActionResult.Success;
     } else {
-      return ActionResult.NotSaved
+      return ActionResult.NotSaved;
     }
   }
 }
