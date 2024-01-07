@@ -9,6 +9,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { ActionResult } from 'src/helpers/enum.action.result.helper';
 import { QuizGamesRepository } from '../quiz.game.repository';
 import { UsersRepository } from '../../users/users.repository';
+import { UserDBType } from '../../users/users.types';
+import { Users } from '../../users/user.entity';
 
 export class PlayerConnectGameCommand {
   constructor(public userId: string) {}
@@ -22,14 +24,16 @@ export class PlayerConnectGameUseCase
               private readonly usersRepository: UsersRepository ) {}
 
   async execute(command: PlayerConnectGameCommand): Promise<any> {
-    const questions: Array<string> = await this.questionRepository.get5QuestionsIdForGame()
+
+    const existingGame = await this.quizGamesRepository.getPandingGame()
+    if(!existingGame){
+    const questions: Array<QuestionDbType> = await this.questionRepository.get5QuestionsIdForGame()
     if (questions.length < 5) {
       return ActionResult.NotEnoughQuestions
     }
 
-    const player1: PlayerDtoType = await this.usersRepository.getUserForGame(command.userId)
+    const player1: Users = await this.usersRepository.getUserDBTypeById(command.userId)
 
-    
     const quizGameDto = new QuizGameDbType (
       uuidv4(),
       enumStatusGameType.PendingSecondPlayer,
@@ -51,12 +55,23 @@ export class PlayerConnectGameUseCase
       questions[3],
       questions[4]
     )
+    
     const newGameId = await this.quizGamesRepository.createQuizGame(quizGameDto)
     if (newGameId){
       return newGameId
     } else {
       return ActionResult.NotCreated
     }
+
+    }
+
+    const result = await this.quizGamesRepository.addSecondPlayerToGame(existingGame.quizGameId, command.userId)
+      if(result){
+        return ActionResult.Success
+      } else {
+        return ActionResult.NotSaved
+      }
+
 
   }
 }

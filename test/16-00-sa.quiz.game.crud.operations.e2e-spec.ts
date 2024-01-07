@@ -302,7 +302,7 @@ export function quizGameCrudOperationsSa16() {
       const createdResponseBody = createResponse.body;
       userId3 = createdResponseBody.id;
 
-      expect(createdResponseBody).toEqual(testComments.outputUser2Sa);
+      expect(createdResponseBody).toEqual(testComments.outputUser3Sa);
     });
 
     it('00-00 login = 204 login user3', async () => {
@@ -325,10 +325,18 @@ export function quizGameCrudOperationsSa16() {
       .expect(200)
     })
 
+    //TODO: need finish
     it('00-00 pair-game-quiz/pairs/my-current GET = user1 req own game', async () => {
       const createResponse = await request(app.getHttpServer())
       .get(`${endpoints.pairGameQuiz}/pairs/my-current`)
       .set('Authorization', `Bearer ${accessTokenUser1}`)
+      .expect(200)
+    })
+
+    it('00-00 pair-game-quiz/pairs/my-current POST = user2 join to game1', async () => {
+      const createResponse = await request(app.getHttpServer())
+      .post(`${endpoints.pairGameQuiz}/pairs/my-current`)
+      .set('Authorization', `Bearer ${accessTokenUser2}`)
       .expect(200)
     })
 

@@ -38,7 +38,7 @@ export class UsersRepository {
     return result.affected > 0;
   }
 
-  async getUserDBTypeById(userId): Promise<UserDBType | null> {
+  async getUserDBTypeById(userId): Promise<Users | null> {
     if (!isValidUUID(userId)) {
       return null;
     }
@@ -217,7 +217,7 @@ export class UsersRepository {
     }
   }
 
-  async getUserForGame(userId): Promise<PlayerDtoType>{
+  async getUserForGame(userId): Promise<PlayerDtoType | null>{
     const user = await this.usersRepository.findOne({
       select: {
         userId: true,
@@ -225,7 +225,12 @@ export class UsersRepository {
       },
       where: { userId }
     })
-    return userMapper.returnForGame(user)
+    if(user){
+      return userMapper.returnForGame(user)
+    } else {
+      return null
+    }
+    
   }
 
   async getConfirmationCodeOfLastCreatedUser() {

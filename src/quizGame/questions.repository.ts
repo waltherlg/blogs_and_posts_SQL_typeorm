@@ -73,14 +73,38 @@ export class QuestionsRepository {
     return result.affected > 0;
   }
 
-  async get5QuestionsIdForGame(): Promise<[]>{
+  // async get5QuestionsIdForGame(): Promise<[]>{
+  //   const questions = await this.questionsRepository
+  //   .createQueryBuilder('question')
+  //   .select(['question.questionId'])
+  //   .where('question.published = true')
+  //   .orderBy('RANDOM()')
+  //   .limit(5)
+  //   .getMany();
+  //   return questionMapper.returnArrayOfQuestionIdForGame(questions)
+  // }  
+
+  async get1QuestionsForGame(): Promise<QuestionDbType>{
+    const question = await this.questionsRepository
+    .createQueryBuilder()
+    .select()
+    .where('published = true')
+    .orderBy('RANDOM()')
+    .limit(1)
+    .getOne();
+    console.log('questions1 get1QuestionsIdForGame ', question);
+    return question
+  }  
+
+  async get5QuestionsIdForGame(): Promise<QuestionDbType[]>{
     const questions = await this.questionsRepository
-    .createQueryBuilder('question')
-    .select(['question.questionId'])
-    .where('question.published = true')
+    .createQueryBuilder()
+    .select()
+    .where('published = true')
     .orderBy('RANDOM()')
     .limit(5)
     .getMany();
-    return questionMapper.returnArrayOfQuestionIdForGame(questions)
+    
+    return questions
   }  
 }
