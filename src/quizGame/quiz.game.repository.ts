@@ -96,4 +96,19 @@ export class QuizGamesRepository {
 
     return game;
   }
+
+  async isUserHaveUnfinishedGame(userId){
+    const game = await this.quizGamesRepository
+    .createQueryBuilder("game")
+    .where(
+      "(game.player1Id = :userId AND (game.status = 'Active' OR game.status = 'PendingSecondPlayer')) OR " +
+      "(game.player2Id = :userId AND game.status = 'Active')"
+    )
+    .setParameter("userId", userId)
+    .getOne();
+  return !!game;
+
+  }
+
+
 }

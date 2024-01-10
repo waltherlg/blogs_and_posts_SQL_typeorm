@@ -30,6 +30,11 @@ export class PlayerConnectGameUseCase
   ) {}
 
   async execute(command: PlayerConnectGameCommand): Promise<any> {
+    const isUserAlreadyHasGame = await this.quizGamesRepository.isUserHaveUnfinishedGame(command.userId)
+    if(isUserAlreadyHasGame){
+      return ActionResult.UserAlreadyHasUnfinishedGame
+    }
+
     const existingGame = await this.quizGamesRepository.getPandingGame();
     if (!existingGame) {
       const questions: Array<QuestionDbType> =
