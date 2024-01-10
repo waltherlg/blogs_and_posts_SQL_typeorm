@@ -320,7 +320,7 @@ export function quizGameCrudOperationsSa16() {
 
     it('00-00 pair-game-quiz/pairs/my-current POST = user1 create new game', async () => {
       const createResponse = await request(app.getHttpServer())
-        .post(`${endpoints.pairGameQuiz}/pairs/my-current`)
+        .post(`${endpoints.pairGameQuiz}/pairs/connection`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
     });
@@ -335,7 +335,7 @@ export function quizGameCrudOperationsSa16() {
 
     it('00-00 pair-game-quiz/pairs/my-current POST = user2 join to game1', async () => {
       const createResponse = await request(app.getHttpServer())
-        .post(`${endpoints.pairGameQuiz}/pairs/my-current`)
+        .post(`${endpoints.pairGameQuiz}/pairs/connection`)
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(200);
     });

@@ -20,7 +20,7 @@ export class PublicQuizGameController {
   constructor(private readonly commandBus: CommandBus) {}
 
   @UseGuards(JwtAuthGuard)
-  @Post('pairs/my-current')
+  @Post('pairs/connection')
   @HttpCode(200)
   //TODO
   // 1. Я как зарегестрированный пользователь могу соревноваться в квизе попарно
