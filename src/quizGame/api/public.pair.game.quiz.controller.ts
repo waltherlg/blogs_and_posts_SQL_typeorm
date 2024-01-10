@@ -52,6 +52,7 @@ export class PublicQuizGameController {
     return result;
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get('pairs/:gameId')
   @HttpCode(200)
   //TODO
@@ -60,7 +61,9 @@ export class PublicQuizGameController {
   // Если игра в статусе ожидания второго игрока (status: "PendingSecondPlayer")
   // - поля secondPlayerProgress: null, questions: null, startGameDate: null,
   // finishGameDate: null
-  async getGameById(@Req() request) {}
+  async getGameById(@Req() request) {
+
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('pairs/my-current/answers')

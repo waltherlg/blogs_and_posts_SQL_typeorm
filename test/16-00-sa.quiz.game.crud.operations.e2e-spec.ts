@@ -318,11 +318,18 @@ export function quizGameCrudOperationsSa16() {
       expect(createResponse.headers['set-cookie']).toBeDefined();
     });
 
-    it('00-00 pair-game-quiz/pairs/my-current POST = user1 create new game', async () => {
+    it('00-00 pair-game-quiz/pairs/connection POST = user1 create new game', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.pairGameQuiz}/pairs/connection`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
+    });
+
+    it('00-00 pair-game-quiz/pairs/my-current POST = user1 get 403 if trying create new game before finish previous', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/connection`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(403);
     });
 
     //TODO: need finish
@@ -333,11 +340,18 @@ export function quizGameCrudOperationsSa16() {
         .expect(200);
     });
 
-    it('00-00 pair-game-quiz/pairs/my-current POST = user2 join to game1', async () => {
+    it('00-00 pair-game-quiz/pairs/connection POST = user2 join to game1', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.pairGameQuiz}/pairs/connection`)
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(200);
+    });
+
+    it('00-00 pair-game-quiz/pairs/my-current POST = user2 get 403 if trying connect to new game before finish previous', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/connection`)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(403);
     });
   });
 }
