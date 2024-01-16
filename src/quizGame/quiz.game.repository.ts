@@ -62,7 +62,7 @@ export class QuizGamesRepository {
     return game;
   }
 
-  //TODO: get attive game
+  //TODO: get attive game (add answers)
   async getActiveGameByUserId(userId) {
     if (!isValidUUID(userId)) {
       return null;
@@ -97,6 +97,8 @@ export class QuizGamesRepository {
     return game;
   }
 
+
+
   async isUserHaveUnfinishedGame(userId){
     const game = await this.quizGamesRepository
     .createQueryBuilder("game")
@@ -107,8 +109,38 @@ export class QuizGamesRepository {
     .setParameter("userId", userId)
     .getOne();
   return !!game;
-
   }
 
+  async getGameForConnectUseCase(gameId, userId){
+    if (!isValidUUID(gameId)) {
+      return null;
+    }
+    const gameQueryBuilder =
+      this.quizGamesRepository.createQueryBuilder('game');
+    gameQueryBuilder
+      .select([
+        'game',
+        'player1.userId',
+        'player1.login',
+        'player2.userId',
+        'player2.login',
+        'question1',
+        'question2',
+        'question3',
+        'question4',
+        'question5',
+      ])
+      .leftJoin('game.player1', 'player1')
+      .leftJoin('game.player2', 'player2')
+      .leftJoin('game.question1', 'question1')
+      .leftJoin('game.question2', 'question2')
+      .leftJoin('game.question3', 'question3')
+      .leftJoin('game.question4', 'question4')
+      .leftJoin('game.question5', 'question5')
+
+      .where('game.quizGameId = :gameId', { gameId: gameId })
+    const game = await gameQueryBuilder.getOne();
+    return game;
+  }
 
 }

@@ -30,10 +30,15 @@ export class PublicQuizGameController {
   // 4. Если нет, я становлюсь игроком в ожидании и могу стать парой для
   // следующего, кто нажмёт соревноваться
   async ConnectOrCreateGame(@Req() request) {
-    const result = await this.commandBus.execute(
+    //TODO: разобраться с типизацией, почему результат не может быть стринг
+    const result = await this.commandBus.execute( 
       new PlayerConnectGameCommand(request.user.userId),
-    );
+    );// result will be actionResult or gameId
     handleActionResult(result);
+
+    
+
+
     return 'game';
   }
 

@@ -1,15 +1,17 @@
 import { Column, Entity, JoinColumn, ManyToMany, PrimaryColumn } from 'typeorm';
 import { QuizGames } from './quiz.game.types';
 
+
 export class QuizAnwswerDbType {
   constructor(
     public answerId: string,
     public gameIndicator: string,
     public questionId: string,
-    public ansertStatus: string,
+    public answerStatus: string,
     public addedAt: Date,
   ) {}
 }
+
 
 @Entity({ name: 'QuizAnswers' })
 export class QuizAnswers {
