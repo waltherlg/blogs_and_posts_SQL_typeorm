@@ -90,7 +90,7 @@ export class QuizGamesRepository {
       .leftJoin('game.question4', 'question4')
       .leftJoin('game.question5', 'question5')
 
-      .where('game.player1Id = :userId', { userId: userId })
+      .where('(game.player1Id = :userId  OR game.player2Id = :userId)', { userId: userId })
       .andWhere(`game.status = 'Active'`);
     const game = await gameQueryBuilder.getOne();
 

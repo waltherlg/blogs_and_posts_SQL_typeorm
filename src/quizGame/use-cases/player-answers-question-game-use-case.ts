@@ -12,7 +12,6 @@ import { QuizAnwswerDbType } from '../quiz.answers.types';
 
 export class PlayerAnswersQuestionGameCommand {
   constructor(
-    public gameId: string,
     public userId: string,
     public answerBody: string) {}
 }

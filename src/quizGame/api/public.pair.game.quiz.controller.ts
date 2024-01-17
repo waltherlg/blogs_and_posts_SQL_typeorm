@@ -1,4 +1,5 @@
 import {
+  Body,
   Controller,
   Get,
   HttpCode,
@@ -14,6 +15,8 @@ import {
   handleActionResult,
 } from 'src/helpers/enum.action.result.helper';
 import { PlayerRequestActiveGameCommand } from '../use-cases/player-request-active-game-use-case';
+import { AnswerInputModelType } from '../quiz.answers.types';
+import { PlayerAnswersQuestionGameCommand } from '../use-cases/player-answers-question-game-use-case';
 
 @Controller('pair-game-quiz')
 export class PublicQuizGameController {
@@ -82,5 +85,7 @@ export class PublicQuizGameController {
   // (поле questions: [...])
   // Участники последовательно отвечают на вопросы. Одна попытка.
   // Ответ либо правильный либо нет.
-  async putAnswers() {}
+  async putAnswers(@Req() request, @Body() answerBody: AnswerInputModelType) {
+    const result = await this.commandBus.execute(new PlayerAnswersQuestionGameCommand(request.userId, answerBody.body))
+  }
 }

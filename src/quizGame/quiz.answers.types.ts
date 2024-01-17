@@ -1,6 +1,13 @@
 import { Column, Entity, JoinColumn, ManyToMany, PrimaryColumn } from 'typeorm';
 import { QuizGames } from './quiz.game.types';
+import { StringTrimNotEmpty } from 'src/middlewares/validators';
+import { Length } from 'class-validator';
 
+export class AnswerInputModelType {
+  @StringTrimNotEmpty()
+  @Length(0, 500)
+  body: string;
+}
 
 export class QuizAnwswerDbType {
   constructor(
