@@ -37,11 +37,12 @@ export class PlayerAnswersQuestionGameUseCase
       uuidv4(),
       game.gameIndicatorPlayer1,
       uuidv4(),
+      command.answerBody,
       'wrong',
       new Date()
     )
 
 
-    return game;
+    return answer;
   }
 }

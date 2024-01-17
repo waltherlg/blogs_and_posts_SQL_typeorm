@@ -7,6 +7,7 @@ export class QuizAnwswerDbType {
     public answerId: string,
     public gameIndicator: string,
     public questionId: string,
+    public body: string,
     public answerStatus: string,
     public addedAt: Date,
   ) {}
@@ -27,6 +28,8 @@ export class QuizAnswers {
 
   @Column('uuid')
   questionId: string;
+  @Column()
+  body: string;
   @Column()
   ansertStatus: string;
   @Column({ type: 'timestamptz' })
