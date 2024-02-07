@@ -26,8 +26,6 @@ export class PlayerAnswersQuestionGameUseCase
 
   async execute(command: PlayerAnswersQuestionGameCommand): Promise<any> {
 
-    
-
     let game = await this.quizGamesRepository.getActiveGameByUserId(
       command.userId,
     );
@@ -36,16 +34,14 @@ export class PlayerAnswersQuestionGameUseCase
     let playerNumber
 
     if(game.player1.userId === command.userId){
-      gameIndicator = game.gameIndicatorPlayer1
       playerNumber = 1
     } else {
-      gameIndicator = game.gameIndicatorPlayer2
-      playerNumber = 1
+      playerNumber = 2
     }
 
     const answer = new QuizAnwswerDbType(
       uuidv4(),
-      gameIndicator,
+      playerNumber,
       uuidv4(),
       command.answerBody,
       'wrong',

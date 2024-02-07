@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
 import { QuizGames } from './quiz.game.types';
 import { StringTrimNotEmpty } from 'src/middlewares/validators';
 import { Length } from 'class-validator';
@@ -12,7 +12,7 @@ export class AnswerInputModelType {
 export class QuizAnwswerDbType {
   constructor(
     public answerId: string,
-    public gameIndicator: string,
+    public playerNumber: number,
     public questionId: string,
     public body: string,
     public answerStatus: string,
@@ -26,12 +26,12 @@ export class QuizAnswers {
   @PrimaryColumn('uuid')
   answerId: string;
 
-  @ManyToMany(() => QuizGames)
+  @ManyToOne(() => QuizGames)
   @JoinColumn({ name: 'gamePlayerIndicator' })
   QuizGames: QuizGames;
 
-  @Column('uuid')
-  gamePlayerIndicator: string;
+  @Column()
+  playerNumber: number;
 
   @Column('uuid')
   questionId: string;
@@ -41,12 +41,4 @@ export class QuizAnswers {
   ansertStatus: string;
   @Column({ type: 'timestamptz' })
   addedAt: Date;
-
-  // @ManyToOne(() => QuizGames, (quizGame) => quizGame.player1Answers)
-  // @JoinColumn({ name: 'gameIndicator', referencedColumnName: 'gameIndicatorPlayer1' })
-  // quizGamePlayer1: QuizGames;
-
-  // @ManyToOne(() => QuizGames, (quizGame) => quizGame.player2Answers)
-  // @JoinColumn({ name: 'gameIndicator', referencedColumnName: 'gameIndicatorPlayer2' })
-  // quizGamePlayer2: QuizGames;
 }

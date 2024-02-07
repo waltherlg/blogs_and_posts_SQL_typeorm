@@ -13,7 +13,7 @@ import {
 } from 'typeorm';
 import { Users } from '../users/user.entity';
 import { QuestionDbType, Questions } from './quiz.questions.types';
-import { QuizAnswers } from './quiz.answers.types';
+import { QuizAnswers, QuizAnwswerDbType } from './quiz.answers.types';
 import { UserDBType } from '../users/users.types';
 
 enum enumAnswerGameStatus {
@@ -72,18 +72,16 @@ export class QuizGameDbType {
     public startGameDate: Date | null,
     public finishGameDate: Date | null,
 
-    public player1: UserDBType,
-    public quizAnswersPlayer1: QuizAnswers[],
+    public answers: QuizAnwswerDbType[],
 
-    public gameIndicatorPlayer1: string,
+    public player1: UserDBType,
+
     public player1Score: number,
 
     public player2: UserDBType,
-    
-    public quizAnswersPlayer2: QuizAnswers[],
 
-    public gameIndicatorPlayer2: string,
     public player2Score: number,
+
     public question1: QuestionDbType,
     public question2: QuestionDbType,
     public question3: QuestionDbType,
@@ -105,19 +103,13 @@ export class QuizGames {
   @Column({ type: 'timestamptz', nullable: true })
   finishGameDate: Date;
 
+  @OneToMany(() => QuizAnswers, (a) => a.QuizGames, { eager: true, nullable: true, onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'gameId' })
+  answers: QuizAnswers[]; 
+
   @ManyToOne(() => Users, { eager: true, nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'player1Id' })
   player1: Users;
-
-  @ManyToMany(() => QuizAnswers, (answer) => answer.QuizGames)
-  @JoinColumn({
-    name: 'gameIndicatorPlayer1',
-    referencedColumnName: 'gamePlayerIndicator',
-  })
-  QuizAnswersPlayer1: QuizAnswers[];
-
-  @Column('uuid', { unique: true })
-  gameIndicatorPlayer1: string;
 
   @Column()
   player1Score: number;
@@ -126,14 +118,6 @@ export class QuizGames {
   @JoinColumn({ name: 'player2Id' })
   player2: Users | null;
 
-  @ManyToMany(() => QuizAnswers, (answer) => answer.QuizGames)
-  @JoinColumn({
-    name: 'gameIndicatorPlayer2',
-    referencedColumnName: 'gamePlayerIndicator',
-  })
-  QuizAnswersPlayer2: QuizAnswers[];
-  @Column('uuid', { unique: true })
-  gameIndicatorPlayer2: string;
   @Column()
   player2Score: number;
 

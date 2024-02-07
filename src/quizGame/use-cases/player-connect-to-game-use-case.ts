@@ -55,14 +55,12 @@ export class PlayerConnectGameUseCase
         null,
         null,
 
-        player1,
         [],
-        uuidv4(),
+
+        player1,
         0,
 
         null,
-        [],
-        uuidv4(),
         0,
 
         questions[0],
