@@ -34,6 +34,7 @@ import { SaDeleteQuestionByIdCommand } from '../use-cases/sa-delete-question-by-
 import { validate as isValidUUID } from 'uuid';
 import { SaUpdateQuestionByIdCommand } from '../use-cases/sa-update-question-by-id-use-case';
 import { SaPublishQuestionByIdCommand } from '../use-cases/sa-publish-question-by-id-use-case';
+import { QuizGamesRepository } from '../quiz.game.repository';
 
 @UseGuards(BasicAuthGuard)
 @Controller('quiz')
@@ -41,6 +42,7 @@ export class SaQuizController {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly questionQueryRepository: QuestionsQueryRepository,
+    private readonly quizGamesRepository: QuizGamesRepository,
     private readonly checkService: CheckService,
   ) {}
 
@@ -101,5 +103,15 @@ export class SaQuizController {
       new SaPublishQuestionByIdCommand(questionId, publish.published),
     );
     handleActionResult(publishResult);
+  }
+
+
+  //TODO: remove before prod
+  @Get('game/:gameId')
+  async getGameForSa(
+    @Param('gameId') gameId: string
+  ){
+    const game = await this.quizGamesRepository.getFullGameById(gameId)
+    return game
   }
 }

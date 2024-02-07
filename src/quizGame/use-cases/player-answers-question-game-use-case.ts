@@ -28,18 +28,31 @@ export class PlayerAnswersQuestionGameUseCase
 
     
 
-    const game = await this.quizGamesRepository.getActiveGameByUserId(
+    let game = await this.quizGamesRepository.getActiveGameByUserId(
       command.userId,
     );
 
+    let gameIndicator
+    let playerNumber
+
+    if(game.player1.userId === command.userId){
+      gameIndicator = game.gameIndicatorPlayer1
+      playerNumber = 1
+    } else {
+      gameIndicator = game.gameIndicatorPlayer2
+      playerNumber = 1
+    }
+
     const answer = new QuizAnwswerDbType(
       uuidv4(),
-      game.gameIndicatorPlayer1,
+      gameIndicator,
       uuidv4(),
       command.answerBody,
       'wrong',
       new Date()
     )
+
+    
 
 
     return answer;

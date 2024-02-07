@@ -56,10 +56,12 @@ export class PlayerConnectGameUseCase
         null,
 
         player1,
+        [],
         uuidv4(),
         0,
 
         null,
+        [],
         uuidv4(),
         0,
 

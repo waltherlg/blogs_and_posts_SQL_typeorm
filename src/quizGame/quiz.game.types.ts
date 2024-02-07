@@ -73,10 +73,15 @@ export class QuizGameDbType {
     public finishGameDate: Date | null,
 
     public player1: UserDBType,
+    public quizAnswersPlayer1: QuizAnswers[],
+
     public gameIndicatorPlayer1: string,
     public player1Score: number,
 
     public player2: UserDBType,
+    
+    public quizAnswersPlayer2: QuizAnswers[],
+
     public gameIndicatorPlayer2: string,
     public player2Score: number,
     public question1: QuestionDbType,

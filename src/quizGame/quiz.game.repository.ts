@@ -97,20 +97,7 @@ export class QuizGamesRepository {
     return game;
   }
 
-
-
-  async isUserHaveUnfinishedGame(userId){
-    const game = await this.quizGamesRepository
-    .createQueryBuilder("game")
-    .where(
-      "(game.player1Id = :userId AND (game.status = 'Active' OR game.status = 'PendingSecondPlayer')) OR " +
-      "(game.player2Id = :userId AND game.status = 'Active')"
-    )
-    .setParameter("userId", userId)
-    .getOne();
-  return !!game;
-  }
-
+  //TODO: need maping
   async getGameForConnectUseCase(gameId, userId){
     if (!isValidUUID(gameId)) {
       return null;
@@ -141,6 +128,64 @@ export class QuizGamesRepository {
       .where('game.quizGameId = :gameId', { gameId: gameId })
     const game = await gameQueryBuilder.getOne();
     return game;
+  }
+
+  async addAnswerToGame(gameId, playerNumber, answer){
+    
+
+  }
+
+  //TODO: need remove before prod
+  async getFullGameById(gameId){
+    if (!isValidUUID(gameId)) {
+      return null;
+    }
+    const gameQueryBuilder =
+      this.quizGamesRepository.createQueryBuilder('game');
+    gameQueryBuilder
+    // .select()
+    // .where('game.quizGameId = :gameId', { gameId: gameId })
+      .select([
+        'game',
+        'player1.userId',
+        'player1.login',
+        'QuizAnswersPlayer1',
+        'player2.userId',
+        'player2.login',
+        'QuizAnswersPlayer2',
+        'question1',
+        'question2',
+        'question3',
+        'question4',
+        'question5',
+      ])
+      .leftJoin('game.player1', 'player1')
+      .leftJoin('game.player2', 'player2')
+      .leftJoin('game.QuizAnswersPlayer1', 'player1Answers')
+      .leftJoin('game.QuizAnswersPlayer2', 'player2Answers')
+      .leftJoin('game.question1', 'question1')
+      .leftJoin('game.question2', 'question2')
+      .leftJoin('game.question3', 'question3')
+      .leftJoin('game.question4', 'question4')
+      .leftJoin('game.question5', 'question5')
+
+      .where('game.quizGameId = :gameId', { gameId: gameId })
+    const game = await gameQueryBuilder.getOne();
+    return game;
+  }
+
+
+
+  async isUserHaveUnfinishedGame(userId){
+    const game = await this.quizGamesRepository
+    .createQueryBuilder("game")
+    .where(
+      "(game.player1Id = :userId AND (game.status = 'Active' OR game.status = 'PendingSecondPlayer')) OR " +
+      "(game.player2Id = :userId AND game.status = 'Active')"
+    )
+    .setParameter("userId", userId)
+    .getOne();
+  return !!game;
   }
 
 }
