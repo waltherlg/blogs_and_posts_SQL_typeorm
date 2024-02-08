@@ -7,6 +7,7 @@ import {
   QuizGames,
   enumStatusGameType,
 } from './quiz.game.types';
+import { QuizAnwswerDbType } from './quiz.answers.types';
 
 @Injectable()
 export class QuizGamesRepository {
@@ -17,8 +18,16 @@ export class QuizGamesRepository {
 
   async createQuizGame(quizGameDto: QuizGameDbType): Promise<string> {
     const result = await this.quizGamesRepository.save(quizGameDto);
-
     return result.quizGameId;
+  }
+
+  async saveGameChange(game: QuizGames): Promise <boolean>{
+    const result = await this.quizGamesRepository.save(game)
+    if (result){
+      return true
+    } else {
+      return false
+    }   
   }
 
   async addSecondPlayerToGame(quizGameId, player2): Promise<boolean> {
@@ -130,11 +139,6 @@ export class QuizGamesRepository {
     return game;
   }
 
-  async addAnswerToGame(gameId, playerNumber, answer){
-    
-
-  }
-
   //TODO: need remove before prod
   async getFullGameById(gameId){
     if (!isValidUUID(gameId)) {
@@ -186,6 +190,10 @@ export class QuizGamesRepository {
     .setParameter("userId", userId)
     .getOne();
   return !!game;
+  }
+
+  async addAnswerToGame(gameId, answer: QuizAnwswerDbType){
+
   }
 
 }

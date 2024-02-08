@@ -30,7 +30,6 @@ export class PlayerAnswersQuestionGameUseCase
       command.userId,
     );
 
-    let gameIndicator
     let playerNumber
 
     if(game.player1.userId === command.userId){
@@ -48,9 +47,8 @@ export class PlayerAnswersQuestionGameUseCase
       new Date()
     )
 
-    
-
-
-    return answer;
+    game.answers.push(answer)
+    const result = await this.quizGamesRepository.saveGameChange(game)
+    return result;
   }
 }

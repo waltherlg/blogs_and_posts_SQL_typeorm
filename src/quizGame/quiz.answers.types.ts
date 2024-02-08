@@ -26,10 +26,6 @@ export class QuizAnswers {
   @PrimaryColumn('uuid')
   answerId: string;
 
-  @ManyToOne(() => QuizGames)
-  @JoinColumn({ name: 'gamePlayerIndicator' })
-  QuizGames: QuizGames;
-
   @Column()
   playerNumber: number;
 
@@ -38,7 +34,7 @@ export class QuizAnswers {
   @Column()
   body: string;
   @Column()
-  ansertStatus: string;
+  answerStatus: string;
   @Column({ type: 'timestamptz' })
   addedAt: Date;
 }
