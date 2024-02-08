@@ -1,4 +1,4 @@
-yarn typeorm-ts-node-esm migration:generate ./src/db/migrations/remove_question_ids_from_game -d ./src/db/data-source.ts
+yarn typeorm-ts-node-esm migration:generate ./src/db/migrations/merged_player2_and_player2 -d ./src/db/data-source.ts
 
 yarn typeorm-ts-node-esm migration:run -- -d ./src/db/data-source.ts
 
