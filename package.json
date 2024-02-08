@@ -8,7 +8,6 @@
   "scripts": {
     "test:e2e": "jest --config ./test/jest-e2e.json --runInBand --detectOpenHandles --forceExit",
     "start:dev": "nest start --watch",
-    
     "build": "nest build",
     "build:dev": "nest build --watch",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -20,7 +19,6 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand"
-    
   },
   "dependencies": {
     "@neondatabase/serverless": "^0.4.23",
