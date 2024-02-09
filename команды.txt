@@ -1,5 +1,11 @@
 yarn typeorm-ts-node-esm migration:generate ./src/db/migrations/merged_player -d ./src/db/data-source.ts
 
+typeorm migration:generate -d <path/to/datasource> path/to/migrations/<migration-name>
+
+yarn typeorm migration:create ./src/db/migrations/PostRefactoring
+
+yarn typeorm migration:run -- -d ./src/db/data-source.ts
+
 yarn typeorm-ts-node-esm migration:run -- -d ./src/db/data-source.ts
 
 yarn typeorm-ts-node-esm migration:revert -- -d ./src/db/data-source.ts

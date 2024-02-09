@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
 import { QuizGames } from './quiz.game.types';
-import { StringTrimNotEmpty } from 'src/middlewares/validators';
 import { Length } from 'class-validator';
+import { StringTrimNotEmpty } from '../middlewares/validators';
 
 export class AnswerInputModelType {
   @StringTrimNotEmpty()
