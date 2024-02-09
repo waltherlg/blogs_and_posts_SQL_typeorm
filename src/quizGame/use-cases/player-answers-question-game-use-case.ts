@@ -8,7 +8,7 @@ import { QuizGameDbType, enumStatusGameType } from '../quiz.game.types';
 import { v4 as uuidv4 } from 'uuid';
 import { ActionResult } from 'src/helpers/enum.action.result.helper';
 import { QuizGamesRepository } from '../quiz.game.repository';
-import { QuizAnwswerDbType } from '../quiz.answers.types';
+import { QuizAnswers, QuizAnwswerDbType } from '../quiz.answers.types';
 
 export class PlayerAnswersQuestionGameCommand {
   constructor(
@@ -44,7 +44,8 @@ export class PlayerAnswersQuestionGameUseCase
       uuidv4(),
       command.answerBody,
       'wrong',
-      new Date()
+      new Date(),
+      game,
     )
 
     game.answers.push(answer)
