@@ -23,6 +23,8 @@ export class QuizGamesRepository {
 
   async saveGameChange(game: QuizGames): Promise <boolean>{
     const result = await this.quizGamesRepository.save(game)
+    console.log("result of save game changes ", result);
+    
     if (result){
       return true
     } else {
@@ -71,6 +73,21 @@ export class QuizGamesRepository {
     return game;
   }
 
+  // async getFullGame(userId) {
+  //   console.log("userId in repo ", userId);
+    
+  //   if (!isValidUUID(userId)) {
+  //       return null;
+  //   }
+  //   const game: QuizGames  = await this.quizGamesRepository
+  //   .createQueryBuilder('game')
+  //   .where('game.player1Id = :userId OR game.player2Id = :userId', { userId })
+  //   .andWhere('game.status = :status', { status: 'Active' })
+  //   .getOne();
+
+  //   return game;
+  // }
+
   //TODO: get attive game (add answers)
   async getActiveGameByUserId(userId) {
     if (!isValidUUID(userId)) {
@@ -81,6 +98,7 @@ export class QuizGamesRepository {
     gameQueryBuilder
       .select([
         'game',
+        'answers',
         'player1.userId',
         'player1.login',
         'player2.userId',
@@ -91,6 +109,7 @@ export class QuizGamesRepository {
         'question4',
         'question5',
       ])
+      .leftJoin('game.answers', 'answers')
       .leftJoin('game.player1', 'player1')
       .leftJoin('game.player2', 'player2')
       .leftJoin('game.question1', 'question1')

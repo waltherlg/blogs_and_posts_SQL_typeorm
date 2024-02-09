@@ -30,6 +30,9 @@ export class PlayerAnswersQuestionGameUseCase
       command.userId,
     );
 
+    console.log("game in use case ", game);
+    
+
     let playerNumber
 
     if(game.player1.userId === command.userId){
@@ -48,7 +51,9 @@ export class PlayerAnswersQuestionGameUseCase
       game,
     )
 
-    game.answers.push(answer)
+    game.answers[0] = answer
+    console.log("game after push ", game);
+    
     const result = await this.quizGamesRepository.saveGameChange(game)
     return result;
   }

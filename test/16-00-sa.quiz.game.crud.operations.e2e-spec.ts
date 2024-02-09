@@ -354,6 +354,20 @@ export function quizGameCrudOperationsSa16() {
         .expect(403);
     });
 
+    it('00-00 pairs/my-current/answers POST = user1 add answer 1 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+    });
+
+    it('00-00 pairs/my-current/answers POST = user1 add answer 2 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+    });
+
     
   });
 }
