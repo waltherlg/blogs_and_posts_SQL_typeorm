@@ -86,4 +86,14 @@ export class UsersDevicesRepository {
     const result = await this.userDevicesRepository.delete({ userId });
     return result.affected > 0;
   }
+
+  async isDeviceExistByUserIdAndDeviceId(userId, deviceId): Promise<boolean>{
+    if (!isValidUUID(userId) || !isValidUUID(deviceId)) {
+      return false;
+    }
+    const result = await this.userDevicesRepository.count({
+      where: { userId, deviceId },
+    });
+    return result > 0;
+  }
 }

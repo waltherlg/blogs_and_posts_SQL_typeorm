@@ -82,11 +82,7 @@ export class QuizGameDbType {
 
     public player2Score: number,
 
-    public question1: QuestionDbType,
-    public question2: QuestionDbType,
-    public question3: QuestionDbType,
-    public question4: QuestionDbType,
-    public question5: QuestionDbType,
+    public questionы: QuestionDbType[],
   ) {}
 }
 
@@ -125,50 +121,14 @@ export class QuizGames {
   @Column()
   player2Score: number;
 
-  @ManyToOne(() => Questions, {
+  @ManyToMany(() => Questions, {
     eager: true,
     nullable: true,
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   })
-  @JoinColumn({ name: 'question1Id', referencedColumnName: 'questionId' })
-  question1: Questions;
-
-  @ManyToOne(() => Questions, {
-    eager: true,
-    nullable: true,
-    onDelete: 'SET NULL',
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn({ name: 'question2Id', referencedColumnName: 'questionId' })
-  question2: Questions;
-
-  @ManyToOne(() => Questions, {
-    eager: true,
-    nullable: true,
-    onDelete: 'SET NULL',
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn({ name: 'question3Id', referencedColumnName: 'questionId' })
-  question3: Questions;
-
-  @ManyToOne(() => Questions, {
-    eager: true,
-    nullable: true,
-    onDelete: 'SET NULL',
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn({ name: 'question4Id', referencedColumnName: 'questionId' })
-  question4: Questions;
-
-  @ManyToOne(() => Questions, {
-    eager: true,
-    nullable: true,
-    onDelete: 'SET NULL',
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn({ name: 'question5Id', referencedColumnName: 'questionId' })
-  question5: Questions;
+  @JoinTable()
+  questions: Questions;
 }
 
 // @Entity({name: 'QuizGames'})

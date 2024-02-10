@@ -3,9 +3,11 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthService } from '../auth.service';
 import { settings } from '../../settings';
+import { CheckService } from '../../other.services/check.service';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly authService: AuthService) {
+  constructor(private readonly authService: AuthService,
+    private readonly checkService: CheckService) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -14,6 +16,11 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
   async validate(payload: any) {
     const userId = payload.userId;
+    console.log("payload in jwt token ", payload);
+    const isDeviceOk = await this.checkService.isDeviceExistByUserIdAndDeviceId(payload.userId, payload.deviceId)
+    if(!isDeviceOk){
+      return null
+    }
     if (userId) {
       return { userId };
     } else {

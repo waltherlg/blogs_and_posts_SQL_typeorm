@@ -100,6 +100,11 @@ export class CheckService {
     }
   }
 
+  async isDeviceExistByUserIdAndDeviceId(userId, deviceId): Promise<boolean>{
+    const result = await this.usersDeviceRepository.isDeviceExistByUserIdAndDeviceId(userId, deviceId)
+    return !!result
+  }
+
   async isUserBanned(userId: string): Promise<boolean> {
     const isUserBanned = await this.usersRepository.isUserBanned(userId);
     return isUserBanned;

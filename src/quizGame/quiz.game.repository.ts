@@ -54,19 +54,11 @@ export class QuizGamesRepository {
         'player1.login',
         'player2.userId',
         'player2.login',
-        'question1',
-        'question2',
-        'question3',
-        'question4',
-        'question5',
+        'questions'
       ])
       .leftJoin('game.player1', 'player1')
       .leftJoin('game.player2', 'player2')
-      .leftJoin('game.question1', 'question1')
-      .leftJoin('game.question2', 'question2')
-      .leftJoin('game.question3', 'question3')
-      .leftJoin('game.question4', 'question4')
-      .leftJoin('game.question5', 'question5')
+      .leftJoin('game.questions', 'questions')
 
       .where(`game.status = 'PendingSecondPlayer'`);
     const game = await gameQueryBuilder.getOne();
@@ -78,6 +70,8 @@ export class QuizGamesRepository {
     if (!isValidUUID(userId)) {
       return null;
     }
+    console.log("userId in repo ", userId);
+    
     const gameQueryBuilder =
       this.quizGamesRepository.createQueryBuilder('game');
     gameQueryBuilder
@@ -88,20 +82,12 @@ export class QuizGamesRepository {
         'player1.login',
         'player2.userId',
         'player2.login',
-        'question1',
-        'question2',
-        'question3',
-        'question4',
-        'question5',
+        'questions'
       ])
       .leftJoin('game.answers', 'answers')
       .leftJoin('game.player1', 'player1')
       .leftJoin('game.player2', 'player2')
-      .leftJoin('game.question1', 'question1')
-      .leftJoin('game.question2', 'question2')
-      .leftJoin('game.question3', 'question3')
-      .leftJoin('game.question4', 'question4')
-      .leftJoin('game.question5', 'question5')
+      .leftJoin('game.questions', 'questions')
 
       .where('(game.player1Id = :userId  OR game.player2Id = :userId)', {
         userId: userId,
@@ -126,19 +112,11 @@ export class QuizGamesRepository {
         'player1.login',
         'player2.userId',
         'player2.login',
-        'question1',
-        'question2',
-        'question3',
-        'question4',
-        'question5',
+        'questions',
       ])
       .leftJoin('game.player1', 'player1')
       .leftJoin('game.player2', 'player2')
-      .leftJoin('game.question1', 'question1')
-      .leftJoin('game.question2', 'question2')
-      .leftJoin('game.question3', 'question3')
-      .leftJoin('game.question4', 'question4')
-      .leftJoin('game.question5', 'question5')
+      .leftJoin('game.questions', 'questions')
 
       .where('game.quizGameId = :gameId', { gameId: gameId });
     const game = await gameQueryBuilder.getOne();
@@ -162,20 +140,12 @@ export class QuizGamesRepository {
         'player1.login',
         'player2.userId',
         'player2.login',
-        'question1',
-        'question2',
-        'question3',
-        'question4',
-        'question5',
+        'questions',
       ])
       .leftJoin('game.answers', 'answers')
       .leftJoin('game.player1', 'player1')
       .leftJoin('game.player2', 'player2')
-      .leftJoin('game.question1', 'question1')
-      .leftJoin('game.question2', 'question2')
-      .leftJoin('game.question3', 'question3')
-      .leftJoin('game.question4', 'question4')
-      .leftJoin('game.question5', 'question5')
+      .leftJoin('game.questions', 'questions')
 
       .where('game.quizGameId = :gameId', { gameId: gameId });
     const game = await gameQueryBuilder.getOne();

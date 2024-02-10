@@ -103,7 +103,7 @@ export class QuestionsRepository {
     return question;
   }
 
-  async get5QuestionsIdForGame(): Promise<QuestionDbType[]> {
+  async get5QuestionsIdForGame(): Promise<Questions[]> {
     const questions = await this.questionsRepository
       .createQueryBuilder()
       .select()

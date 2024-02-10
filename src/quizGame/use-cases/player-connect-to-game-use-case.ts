@@ -2,6 +2,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import {
   CreateQuestionImputModelType,
   QuestionDbType,
+  Questions,
 } from '../quiz.questions.types';
 import { QuestionsRepository } from '../questions.repository';
 import {
@@ -41,7 +42,7 @@ export class PlayerConnectGameUseCase
     const existingGame = await this.quizGamesRepository.getPandingGame();
 
     if (!existingGame) {
-      const questions: Array<QuestionDbType> =
+      const questions: Array<Questions> =
         await this.questionRepository.get5QuestionsIdForGame();
       if (questions.length < 5) {
         return ActionResult.NotEnoughQuestions;
@@ -66,12 +67,11 @@ export class PlayerConnectGameUseCase
         null,
         0,
 
-        questions[0],
-        questions[1],
-        questions[2],
-        questions[3],
-        questions[4],
+        questions
       );
+
+      console.log("quizGameDto ", quizGameDto);
+      
 
       const newGameId = await this.quizGamesRepository.createQuizGame(
         quizGameDto,

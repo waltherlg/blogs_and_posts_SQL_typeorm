@@ -9,7 +9,7 @@ export class TokensService {
 
   async createTokens(userId: string, deviceId: string) {
     const accessToken = await this.jwtService.signAsync(
-      { userId: userId },
+      { userId: userId, deviceId: deviceId },
       { expiresIn: process.env.ACCESS_TOKEN_EXPIRES },
     );
 

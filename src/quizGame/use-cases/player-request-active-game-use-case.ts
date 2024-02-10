@@ -27,6 +27,9 @@ export class PlayerRequestActiveGameUseCase
       command.userId,
     );
 
+    console.log("game in player request ", game);
+    
+
     //TODO: remove this blog before prod
     let playerNumber;
     if (game.player1.userId === command.userId) {
