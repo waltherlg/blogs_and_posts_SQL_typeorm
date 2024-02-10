@@ -107,6 +107,7 @@ import { QuizGames } from './quizGame/quiz.game.types';
 import { QuizAnswers } from './quizGame/quiz.answers.types';
 import { PlayerRequestActiveGameUseCase } from './quizGame/use-cases/player-request-active-game-use-case';
 import { PlayerAnswersQuestionGameUseCase } from './quizGame/use-cases/player-answers-question-game-use-case';
+import { QuizAnswersRepository } from './quizGame/quiz.answers.repository';
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
@@ -235,6 +236,7 @@ const useCases = [
     QuestionsRepository,
     QuestionsQueryRepository,
     QuizGamesRepository,
+    QuizAnswersRepository,
     LocalStrategy,
     JwtStrategy,
     RefreshTokenStrategy,

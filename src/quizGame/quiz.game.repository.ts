@@ -7,13 +7,14 @@ import {
   QuizGames,
   enumStatusGameType,
 } from './quiz.game.types';
-import { QuizAnwswerDbType } from './quiz.answers.types';
+import { QuizAnswers, QuizAnwswerDbType } from './quiz.answers.types';
 
 @Injectable()
 export class QuizGamesRepository {
   constructor(
     @InjectRepository(QuizGames)
     private readonly quizGamesRepository: Repository<QuizGames>,
+    //private readonly quizAnswersRepository: Repository<QuizAnswers>
   ) {}
 
   async createQuizGame(quizGameDto: QuizGameDbType): Promise<string> {
@@ -86,6 +87,12 @@ export class QuizGamesRepository {
   //   .getOne();
 
   //   return game;
+  // }
+
+
+  //TODO настроить return
+  // async saveAnswerInGame(answer){
+  //   const result = await this.quizAnswersRepository.save(answer)
   // }
 
   //TODO: get attive game (add answers)

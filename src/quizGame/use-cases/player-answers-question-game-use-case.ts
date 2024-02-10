@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ActionResult } from 'src/helpers/enum.action.result.helper';
 import { QuizGamesRepository } from '../quiz.game.repository';
 import { QuizAnswers, QuizAnwswerDbType } from '../quiz.answers.types';
+import { QuizAnswersRepository } from '../quiz.answers.repository';
 
 export class PlayerAnswersQuestionGameCommand {
   constructor(
@@ -21,6 +22,7 @@ export class PlayerAnswersQuestionGameUseCase
   implements ICommandHandler<PlayerAnswersQuestionGameCommand>
 {
   constructor(
+    private readonly quizAnswersRepository: QuizAnswersRepository,
     private readonly quizGamesRepository: QuizGamesRepository,
   ) {}
 
@@ -53,8 +55,10 @@ export class PlayerAnswersQuestionGameUseCase
 
     game.answers[0] = answer
     console.log("game after push ", game);
+
+    const result = await this.quizAnswersRepository.saveAnswerInGame(answer)
     
-    const result = await this.quizGamesRepository.saveGameChange(game)
+    //const result = await this.quizGamesRepository.saveGameChange(game)
     return result;
   }
 }
