@@ -12,9 +12,7 @@ import { QuizAnswers, QuizAnwswerDbType } from '../quiz.answers.types';
 import { QuizAnswersRepository } from '../quiz.answers.repository';
 
 export class PlayerAnswersQuestionGameCommand {
-  constructor(
-    public userId: string,
-    public answerBody: string) {}
+  constructor(public userId: string, public answerBody: string) {}
 }
 //TODO затычка, просто создает ответ и отправляет его в игру
 @CommandHandler(PlayerAnswersQuestionGameCommand)
@@ -27,20 +25,16 @@ export class PlayerAnswersQuestionGameUseCase
   ) {}
 
   async execute(command: PlayerAnswersQuestionGameCommand): Promise<any> {
-
-    let game = await this.quizGamesRepository.getActiveGameByUserId(
+    const game = await this.quizGamesRepository.getActiveGameByUserId(
       command.userId,
     );
+    console.log('game in use case ', game);
 
-    console.log("game in use case ", game);
-    
-
-    let playerNumber
-
-    if(game.player1.userId === command.userId){
-      playerNumber = 1
+    let playerNumber;
+    if (game.player1.userId === command.userId) {
+      playerNumber = 1;
     } else {
-      playerNumber = 2
+      playerNumber = 2;
     }
 
     const answer = new QuizAnwswerDbType(
@@ -51,13 +45,13 @@ export class PlayerAnswersQuestionGameUseCase
       'wrong',
       new Date(),
       game,
-    )
+    );
 
-    game.answers[0] = answer
-    console.log("game after push ", game);
+    game.answers[0] = answer;
+    console.log('game after push ', game);
 
-    const result = await this.quizAnswersRepository.saveAnswerInGame(answer)
-    
+    const result = await this.quizAnswersRepository.saveAnswerInGame(answer);
+
     //const result = await this.quizGamesRepository.saveGameChange(game)
     return result;
   }

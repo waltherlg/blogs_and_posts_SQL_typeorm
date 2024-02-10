@@ -370,7 +370,5 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
     });
-
-    
   });
 }

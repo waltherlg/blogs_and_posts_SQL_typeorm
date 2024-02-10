@@ -34,13 +34,10 @@ export class PublicQuizGameController {
   // следующего, кто нажмёт соревноваться
   async ConnectOrCreateGame(@Req() request) {
     //TODO: разобраться с типизацией, почему результат не может быть стринг
-    const result = await this.commandBus.execute( 
+    const result = await this.commandBus.execute(
       new PlayerConnectGameCommand(request.user.userId),
-    );// result will be actionResult or gameId
+    ); // result will be actionResult or gameId
     handleActionResult(result);
-
-    
-
 
     return 'game';
   }
@@ -69,9 +66,7 @@ export class PublicQuizGameController {
   // Если игра в статусе ожидания второго игрока (status: "PendingSecondPlayer")
   // - поля secondPlayerProgress: null, questions: null, startGameDate: null,
   // finishGameDate: null
-  async getGameById(@Req() request) {
-
-  }
+  async getGameById(@Req() request) {}
 
   @UseGuards(JwtAuthGuard)
   @Post('pairs/my-current/answers')
@@ -86,8 +81,12 @@ export class PublicQuizGameController {
   // Участники последовательно отвечают на вопросы. Одна попытка.
   // Ответ либо правильный либо нет.
   async putAnswers(@Req() request, @Body() answerBody: AnswerInputModelType) {
-    console.log("userId in controller ", request.userId);
-    
-    const result = await this.commandBus.execute(new PlayerAnswersQuestionGameCommand(request.user.userId, answerBody.body))
+    console.log('userId in controller ', request.userId);
+    const result = await this.commandBus.execute(
+      new PlayerAnswersQuestionGameCommand(
+        request.user.userId,
+        answerBody.body,
+      ),
+    );
   }
 }

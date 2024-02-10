@@ -29,10 +29,13 @@ export class PlayerConnectGameUseCase
     private readonly usersRepository: UsersRepository,
   ) {}
 
-  async execute(command: PlayerConnectGameCommand): Promise<ActionResult | string> {
-    const isUserAlreadyHasGame = await this.quizGamesRepository.isUserHaveUnfinishedGame(command.userId)
-    if(isUserAlreadyHasGame){
-      return ActionResult.UserAlreadyHasUnfinishedGame
+  async execute(
+    command: PlayerConnectGameCommand,
+  ): Promise<ActionResult | string> {
+    const isUserAlreadyHasGame =
+      await this.quizGamesRepository.isUserHaveUnfinishedGame(command.userId);
+    if (isUserAlreadyHasGame) {
+      return ActionResult.UserAlreadyHasUnfinishedGame;
     }
 
     const existingGame = await this.quizGamesRepository.getPandingGame();

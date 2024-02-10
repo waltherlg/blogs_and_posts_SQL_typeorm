@@ -75,8 +75,8 @@ export function handleActionResult(result: ActionResult) {
       throw new CustomisableException(
         'user',
         'The user is already participating in an unfinished game',
-        403
-      )
+        403,
+      );
 
     case ActionResult.NotCreated:
       throw new CustomisableException(

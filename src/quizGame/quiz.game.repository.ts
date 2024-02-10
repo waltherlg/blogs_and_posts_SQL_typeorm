@@ -13,8 +13,7 @@ import { QuizAnswers, QuizAnwswerDbType } from './quiz.answers.types';
 export class QuizGamesRepository {
   constructor(
     @InjectRepository(QuizGames)
-    private readonly quizGamesRepository: Repository<QuizGames>,
-    //private readonly quizAnswersRepository: Repository<QuizAnswers>
+    private readonly quizGamesRepository: Repository<QuizGames>, //private readonly quizAnswersRepository: Repository<QuizAnswers>
   ) {}
 
   async createQuizGame(quizGameDto: QuizGameDbType): Promise<string> {
@@ -22,15 +21,15 @@ export class QuizGamesRepository {
     return result.quizGameId;
   }
 
-  async saveGameChange(game: QuizGames): Promise <boolean>{
-    const result = await this.quizGamesRepository.save(game)
-    console.log("result of save game changes ", result);
-    
-    if (result){
-      return true
+  async saveGameChange(game: QuizGames): Promise<boolean> {
+    const result = await this.quizGamesRepository.save(game);
+    console.log('result of save game changes ', result);
+
+    if (result) {
+      return true;
     } else {
-      return false
-    }   
+      return false;
+    }
   }
 
   async addSecondPlayerToGame(quizGameId, player2): Promise<boolean> {
@@ -76,7 +75,7 @@ export class QuizGamesRepository {
 
   // async getFullGame(userId) {
   //   console.log("userId in repo ", userId);
-    
+
   //   if (!isValidUUID(userId)) {
   //       return null;
   //   }
@@ -88,7 +87,6 @@ export class QuizGamesRepository {
 
   //   return game;
   // }
-
 
   //TODO настроить return
   // async saveAnswerInGame(answer){
@@ -125,7 +123,9 @@ export class QuizGamesRepository {
       .leftJoin('game.question4', 'question4')
       .leftJoin('game.question5', 'question5')
 
-      .where('(game.player1Id = :userId  OR game.player2Id = :userId)', { userId: userId })
+      .where('(game.player1Id = :userId  OR game.player2Id = :userId)', {
+        userId: userId,
+      })
       .andWhere(`game.status = 'Active'`);
     const game = await gameQueryBuilder.getOne();
 
@@ -133,7 +133,7 @@ export class QuizGamesRepository {
   }
 
   //TODO: need maping
-  async getGameForConnectUseCase(gameId, userId){
+  async getGameForConnectUseCase(gameId, userId) {
     if (!isValidUUID(gameId)) {
       return null;
     }
@@ -160,21 +160,21 @@ export class QuizGamesRepository {
       .leftJoin('game.question4', 'question4')
       .leftJoin('game.question5', 'question5')
 
-      .where('game.quizGameId = :gameId', { gameId: gameId })
+      .where('game.quizGameId = :gameId', { gameId: gameId });
     const game = await gameQueryBuilder.getOne();
     return game;
   }
 
   //TODO: need remove before prod
-  async getFullGameById(gameId){
+  async getFullGameById(gameId) {
     if (!isValidUUID(gameId)) {
       return null;
     }
     const gameQueryBuilder =
       this.quizGamesRepository.createQueryBuilder('game');
     gameQueryBuilder
-    // .select()
-    // .where('game.quizGameId = :gameId', { gameId: gameId })
+      // .select()
+      // .where('game.quizGameId = :gameId', { gameId: gameId })
       .select([
         'game',
         'player1.userId',
@@ -199,27 +199,22 @@ export class QuizGamesRepository {
       .leftJoin('game.question4', 'question4')
       .leftJoin('game.question5', 'question5')
 
-      .where('game.quizGameId = :gameId', { gameId: gameId })
+      .where('game.quizGameId = :gameId', { gameId: gameId });
     const game = await gameQueryBuilder.getOne();
     return game;
   }
 
-
-
-  async isUserHaveUnfinishedGame(userId){
+  async isUserHaveUnfinishedGame(userId) {
     const game = await this.quizGamesRepository
-    .createQueryBuilder("game")
-    .where(
-      "(game.player1Id = :userId AND (game.status = 'Active' OR game.status = 'PendingSecondPlayer')) OR " +
-      "(game.player2Id = :userId AND game.status = 'Active')"
-    )
-    .setParameter("userId", userId)
-    .getOne();
-  return !!game;
+      .createQueryBuilder('game')
+      .where(
+        "(game.player1Id = :userId AND (game.status = 'Active' OR game.status = 'PendingSecondPlayer')) OR " +
+          "(game.player2Id = :userId AND game.status = 'Active')",
+      )
+      .setParameter('userId', userId)
+      .getOne();
+    return !!game;
   }
 
-  async addAnswerToGame(gameId, answer: QuizAnwswerDbType){
-
-  }
-
+  async addAnswerToGame(gameId, answer: QuizAnwswerDbType) {}
 }

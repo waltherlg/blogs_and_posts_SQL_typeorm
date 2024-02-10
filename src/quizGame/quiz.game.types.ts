@@ -103,9 +103,13 @@ export class QuizGames {
   @Column({ type: 'timestamptz', nullable: true })
   finishGameDate: Date;
 
-  @OneToMany(() => QuizAnswers, (a) => a.QuizGames, { eager: true, nullable: true, onDelete: 'SET NULL' })
+  @OneToMany(() => QuizAnswers, (a) => a.QuizGames, {
+    eager: true,
+    nullable: true,
+    onDelete: 'SET NULL',
+  })
   @JoinColumn({ name: 'gameId' })
-  answers: QuizAnswers[]; 
+  answers: QuizAnswers[];
 
   @ManyToOne(() => Users, { eager: true, nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'player1Id' })

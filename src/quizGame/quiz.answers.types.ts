@@ -1,8 +1,14 @@
-import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  PrimaryColumn,
+} from 'typeorm';
 import { QuizGames } from './quiz.game.types';
 import { Length } from 'class-validator';
 import { StringTrimNotEmpty } from '../middlewares/validators';
-
 
 //TODO: выяснить, почему при отсутсвии body проходит валидацию
 export class AnswerInputModelType {
@@ -19,10 +25,9 @@ export class QuizAnwswerDbType {
     public body: string,
     public answerStatus: string,
     public addedAt: Date,
-    public QuizGames: QuizGames
+    public QuizGames: QuizGames,
   ) {}
 }
-
 
 @Entity({ name: 'QuizAnswers' })
 export class QuizAnswers {
@@ -41,5 +46,5 @@ export class QuizAnswers {
 
   @ManyToOne(() => QuizGames, (g) => g.answers)
   @JoinColumn()
-  QuizGames: QuizGames
+  QuizGames: QuizGames;
 }

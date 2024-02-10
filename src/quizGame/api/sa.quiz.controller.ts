@@ -105,13 +105,10 @@ export class SaQuizController {
     handleActionResult(publishResult);
   }
 
-
   //TODO: remove before prod
   @Get('game/:gameId')
-  async getGameForSa(
-    @Param('gameId') gameId: string
-  ){
-    const game = await this.quizGamesRepository.getFullGameById(gameId)
-    return game
+  async getGameForSa(@Param('gameId') gameId: string) {
+    const game = await this.quizGamesRepository.getFullGameById(gameId);
+    return game;
   }
 }
