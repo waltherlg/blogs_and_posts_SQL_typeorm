@@ -3,9 +3,11 @@ import { QuizGames } from './quiz.game.types';
 import { Length } from 'class-validator';
 import { StringTrimNotEmpty } from '../middlewares/validators';
 
+
+//TODO: выяснить, почему при отсутсвии body проходит валидацию
 export class AnswerInputModelType {
   @StringTrimNotEmpty()
-  @Length(0, 500)
+  @Length(1, 500)
   body: string;
 }
 
