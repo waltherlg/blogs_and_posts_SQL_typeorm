@@ -5,6 +5,7 @@ import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testQuestions } from './helpers/inputAndOutputObjects/questionObjects';
 import { testComments } from './helpers/inputAndOutputObjects/commentObjects';
+import { testAnswerBody } from './helpers/inputAndOutputObjects/answersObjects';
 
 export function quizGameCrudOperationsSa16() {
   describe('quizGame CRUD operation SA (e2e)', () => {
@@ -357,7 +358,7 @@ export function quizGameCrudOperationsSa16() {
     it('00-00 pairs/my-current/answers POST = user1 add answer 1 in game', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
-        .send({body: 'Blog3'})
+        .send(testAnswerBody.correctAnswer)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
     });
@@ -365,7 +366,7 @@ export function quizGameCrudOperationsSa16() {
     it('00-00 pairs/my-current/answers POST = user1 add answer 2 in game', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
-        .send({body: 'Blog3'})
+        .send(testAnswerBody.correctAnswer)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
     });
