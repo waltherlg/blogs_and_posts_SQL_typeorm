@@ -37,6 +37,15 @@ export class PlayerAnswersQuestionGameUseCase
       playerNumber = 2;
     }
 
+    const answersArray = game.answers
+    const curentPlayerAnswers = answersArray.filter((answer) => answer.playerNumber = playerNumber)
+    console.log("curentPlayerAnswers ", curentPlayerAnswers);
+    
+    const numberOfPlayerAnswers = curentPlayerAnswers.length
+    console.log("numberOfPlayerAnswers ", numberOfPlayerAnswers);
+    const currentQuestion = game
+    
+
     const answer = new QuizAnwswerDbType(
       uuidv4(),
       playerNumber,
@@ -47,12 +56,8 @@ export class PlayerAnswersQuestionGameUseCase
       game,
     );
 
-    game.answers[0] = answer;
-    console.log('game after push ', game);
-
     const result = await this.quizAnswersRepository.saveAnswerInGame(answer);
 
-    //const result = await this.quizGamesRepository.saveGameChange(game)
     return result;
   }
 }
