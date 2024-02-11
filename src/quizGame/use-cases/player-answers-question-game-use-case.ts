@@ -39,7 +39,10 @@ export class PlayerAnswersQuestionGameUseCase
     const answersArray = game.answers
     const currentPlayerAnswers = answersArray.filter((answer) => answer.playerNumber === currentPlayerNumber)
     const numberOfPlayerAnswers = currentPlayerAnswers.length
-    
+    if(numberOfPlayerAnswers => 5){
+      return ActionResult.PlayerAnsweredAllQuestions
+    }
+
     console.log("curentPlayerAnswersArray ", currentPlayerAnswers, "numberOfPlayerAnswers ", numberOfPlayerAnswers);
     
     const currentQuestion = game.questions[numberOfPlayerAnswers]
