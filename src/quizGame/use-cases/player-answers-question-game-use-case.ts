@@ -75,6 +75,8 @@ export class PlayerAnswersQuestionGameUseCase
     //   return ActionResult.NotSaved
     // }
 
+    console.log("game before answer push ", game);
+
     game.answers.push(answer)
     console.log("game after answer push ", game);
     

@@ -98,6 +98,7 @@ export class QuizGames {
     eager: true,
     nullable: true,
     onDelete: 'SET NULL',
+    cascade: true
   })
   answers: QuizAnswers[];
 
