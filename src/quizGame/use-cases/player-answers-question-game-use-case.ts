@@ -28,7 +28,6 @@ export class PlayerAnswersQuestionGameUseCase
     const game = await this.quizGamesRepository.getActiveGameByUserId(
       command.userId,
     );
-    console.log('game in use case ', game);
 
     let playerNumber;
     if (game.player1.userId === command.userId) {

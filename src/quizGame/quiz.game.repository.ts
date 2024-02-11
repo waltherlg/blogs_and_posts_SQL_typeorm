@@ -23,7 +23,6 @@ export class QuizGamesRepository {
 
   async saveGameChange(game: QuizGames): Promise<boolean> {
     const result = await this.quizGamesRepository.save(game);
-    console.log('result of save game changes ', result);
 
     if (result) {
       return true;
@@ -70,7 +69,6 @@ export class QuizGamesRepository {
     if (!isValidUUID(userId)) {
       return null;
     }
-    console.log("userId in repo ", userId);
     
     const gameQueryBuilder =
       this.quizGamesRepository.createQueryBuilder('game');
@@ -149,7 +147,6 @@ export class QuizGamesRepository {
 
       .where('game.quizGameId = :gameId', { gameId: gameId });
     const game = await gameQueryBuilder.getOne();
-    console.log("getFullGameById ", game);
     
     return game;
   }

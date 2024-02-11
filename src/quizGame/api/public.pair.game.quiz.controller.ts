@@ -81,7 +81,6 @@ export class PublicQuizGameController {
   // Участники последовательно отвечают на вопросы. Одна попытка.
   // Ответ либо правильный либо нет.
   async putAnswers(@Req() request, @Body() answerBody: AnswerInputModelType) {
-    console.log('userId in controller ', request.user.userId);
     const result = await this.commandBus.execute(
       new PlayerAnswersQuestionGameCommand(
         request.user.userId,

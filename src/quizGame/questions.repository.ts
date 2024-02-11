@@ -99,7 +99,6 @@ export class QuestionsRepository {
       .orderBy('RANDOM()')
       .limit(1)
       .getOne();
-    console.log('questions1 get1QuestionsIdForGame ', question);
     return question;
   }
 

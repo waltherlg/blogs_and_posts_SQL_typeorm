@@ -26,8 +26,6 @@ export class PlayerRequestActiveGameUseCase
     const game = await this.quizGamesRepository.getActiveGameByUserId(
       command.userId,
     );
-
-    console.log("game in player request ", game);
     
 
     //TODO: remove this blog before prod
@@ -39,9 +37,7 @@ export class PlayerRequestActiveGameUseCase
     }
     const answersArray = game.answers
     const curentPlayerAnswers = answersArray.filter((answer) => answer.playerNumber = playerNumber)
-    console.log("curentPlayerAnswers ", curentPlayerAnswers);
     const numberOfPlayerAnswers = curentPlayerAnswers.length
-    console.log("numberOfPlayerAnswers ", numberOfPlayerAnswers);
 
 
     return game;

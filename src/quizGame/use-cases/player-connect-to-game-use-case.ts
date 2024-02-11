@@ -69,8 +69,6 @@ export class PlayerConnectGameUseCase
 
         questions
       );
-
-      console.log("quizGameDto ", quizGameDto);
       
 
       const newGameId = await this.quizGamesRepository.createQuizGame(
