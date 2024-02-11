@@ -83,6 +83,17 @@ export class PlayerAnswersQuestionGameUseCase
       game[playerScores[currentPlayerNumber]]++;
     }
 
+    //TODO: need finish
+    if(numberOfPlayerAnswers === 4){
+      if(game[playerScores[currentPlayerNumber]] > 0){
+        const numberOfOpposingPlayersAnswer = answersArray.filter((answer) => answer.playerNumber !== currentPlayerNumber).length
+        console.log('numberOfOpposingPlayersAnswer ', numberOfOpposingPlayersAnswer);
+        if(numberOfOpposingPlayersAnswer < 5){
+          game[playerScores[currentPlayerNumber]]++
+        }  
+      }
+    }
+
     //console.log("количество ответов ", numberOfPlayerAnswers, " ответ ", answer);
     
     // const result = await this.quizAnswersRepository.saveAnswerInGame(answer);
@@ -92,10 +103,10 @@ export class PlayerAnswersQuestionGameUseCase
     //   return ActionResult.NotSaved
     // }
 
-    console.log("game before answer push ", game);
+    //console.log("game before answer push ", game);
 
     game.answers.push(answer)
-    console.log("game after answer push ", game);
+    //console.log("game after answer push ", game);
     
     const result = await this.quizGamesRepository.saveGameChange(game)
     if(result){
