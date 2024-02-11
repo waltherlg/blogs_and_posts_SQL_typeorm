@@ -1,16 +1,16 @@
-import { enumAnswerGameStatus } from "../../../src/quizGame/quiz.answers.types";
+import { enumAnswerGameStatus } from '../../../src/quizGame/quiz.answers.types';
 
 export const testAnswerBody = {
   correctAnswerInput: { body: 'universal correct answer' },
   incorrectAnswerInput: { body: 'universal incorrect answer' },
-  correctAnswerOutput: { 
+  correctAnswerOutput: {
     questionId: expect.any(String),
     answerStatus: enumAnswerGameStatus.Correct,
-    addedAt: expect.any(String)
-   },
-  incorrectAnswerOutput: { 
+    addedAt: expect.any(String),
+  },
+  incorrectAnswerOutput: {
     questionId: expect.any(String),
     answerStatus: enumAnswerGameStatus.Incorrect,
-    addedAt: expect.any(String)
-   },
+    addedAt: expect.any(String),
+  },
 };

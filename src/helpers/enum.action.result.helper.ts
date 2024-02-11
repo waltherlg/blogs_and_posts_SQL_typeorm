@@ -50,7 +50,7 @@ export function handleActionResult(result: ActionResult) {
     case ActionResult.QuestionNotFound:
       throw new CustomNotFoundException('question');
     case ActionResult.GameNotFound:
-      throw new CustomNotFoundException('game');  
+      throw new CustomNotFoundException('game');
 
     case ActionResult.NotOwner:
       throw new CustomisableException(
@@ -86,8 +86,8 @@ export function handleActionResult(result: ActionResult) {
       throw new CustomisableException(
         'answer',
         'the player answered all questions',
-        403
-      )  
+        403,
+      );
 
     case ActionResult.NotCreated:
       throw new CustomisableException(

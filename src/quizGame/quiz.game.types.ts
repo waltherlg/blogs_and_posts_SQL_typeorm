@@ -13,7 +13,11 @@ import {
 } from 'typeorm';
 import { Users } from '../users/user.entity';
 import { QuestionDbType, Questions } from './quiz.questions.types';
-import { QuizAnswers, QuizAnwswerDbType, enumAnswerGameStatus } from './quiz.answers.types';
+import {
+  QuizAnswers,
+  QuizAnwswerDbType,
+  enumAnswerGameStatus,
+} from './quiz.answers.types';
 import { UserDBType } from '../users/users.types';
 
 type answerGameType = {
@@ -98,7 +102,7 @@ export class QuizGames {
     eager: true,
     nullable: true,
     onDelete: 'SET NULL',
-    cascade: true
+    cascade: true,
   })
   answers: QuizAnswers[];
 

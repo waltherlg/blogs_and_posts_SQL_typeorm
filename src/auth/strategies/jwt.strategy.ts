@@ -6,8 +6,10 @@ import { settings } from '../../settings';
 import { CheckService } from '../../other.services/check.service';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly authService: AuthService,
-    private readonly checkService: CheckService) {
+  constructor(
+    private readonly authService: AuthService,
+    private readonly checkService: CheckService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
@@ -16,9 +18,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
   async validate(payload: any) {
     const userId = payload.userId;
-    const isDeviceOk = await this.checkService.isDeviceExistByUserIdAndDeviceId(payload.userId, payload.deviceId)
-    if(!isDeviceOk){
-      return null
+    const isDeviceOk = await this.checkService.isDeviceExistByUserIdAndDeviceId(
+      payload.userId,
+      payload.deviceId,
+    );
+    if (!isDeviceOk) {
+      return null;
     }
     if (userId) {
       return { userId };

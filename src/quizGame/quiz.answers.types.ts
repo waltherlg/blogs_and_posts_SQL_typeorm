@@ -23,10 +23,10 @@ export enum enumAnswerGameStatus {
 }
 
 export type QuizAnswerOutputType = {
-  questionId: string,
-  answerStatus: string,
-  addedAt: string
-}
+  questionId: string;
+  answerStatus: string;
+  addedAt: string;
+};
 
 export class QuizAnwswerDbType {
   constructor(
@@ -38,12 +38,12 @@ export class QuizAnwswerDbType {
     public addedAt: Date,
     public QuizGames: QuizGames,
   ) {}
-  public returnForPlayer(): QuizAnswerOutputType{
+  public returnForPlayer(): QuizAnswerOutputType {
     return {
       questionId: this.questionId,
       answerStatus: this.answerStatus,
       addedAt: this.addedAt.toISOString(),
-    }
+    };
   }
 }
 
@@ -63,7 +63,7 @@ export class QuizAnswers {
   addedAt: Date;
 
   @ManyToOne(() => QuizGames, (g) => g.answers)
-  @JoinColumn({name: 'quizGameId'})
+  @JoinColumn({ name: 'quizGameId' })
   QuizGames: QuizGames;
 
   returnForPlayer(): QuizAnswerOutputType {

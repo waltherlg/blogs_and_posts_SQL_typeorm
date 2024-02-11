@@ -87,7 +87,7 @@ export class UsersDevicesRepository {
     return result.affected > 0;
   }
 
-  async isDeviceExistByUserIdAndDeviceId(userId, deviceId): Promise<boolean>{
+  async isDeviceExistByUserIdAndDeviceId(userId, deviceId): Promise<boolean> {
     if (!isValidUUID(userId) || !isValidUUID(deviceId)) {
       return false;
     }

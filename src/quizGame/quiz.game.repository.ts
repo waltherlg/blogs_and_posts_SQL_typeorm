@@ -18,8 +18,8 @@ export class QuizGamesRepository {
 
   async createQuizGame(quizGameDto: QuizGameDbType): Promise<string> {
     const result = await this.quizGamesRepository.save(quizGameDto);
-    console.log("созданая игра в репозитории ", result);
-    
+    console.log('созданая игра в репозитории ', result);
+
     return result.quizGameId;
   }
 
@@ -55,7 +55,7 @@ export class QuizGamesRepository {
         'player1.login',
         'player2.userId',
         'player2.login',
-        'questions'
+        'questions',
       ])
       .leftJoin('game.player1', 'player1')
       .leftJoin('game.player2', 'player2')
@@ -71,7 +71,7 @@ export class QuizGamesRepository {
     if (!isValidUUID(userId)) {
       return null;
     }
-    
+
     const gameQueryBuilder =
       this.quizGamesRepository.createQueryBuilder('game');
     gameQueryBuilder
@@ -82,7 +82,7 @@ export class QuizGamesRepository {
         'player1.login',
         'player2.userId',
         'player2.login',
-        'questions'
+        'questions',
       ])
       .leftJoin('game.answers', 'answers')
       .leftJoin('game.player1', 'player1')
@@ -92,7 +92,9 @@ export class QuizGamesRepository {
       .where('(game.player1Id = :userId  OR game.player2Id = :userId)', {
         userId: userId,
       })
-      .andWhere(`game.status = 'Active' OR game.status = 'PendingSecondPlayer'`);
+      .andWhere(
+        `game.status = 'Active' OR game.status = 'PendingSecondPlayer'`,
+      );
     const game = await gameQueryBuilder.getOne();
 
     return game;
@@ -131,8 +133,6 @@ export class QuizGamesRepository {
     const gameQueryBuilder =
       this.quizGamesRepository.createQueryBuilder('game');
     gameQueryBuilder
-      // .select()
-      // .where('game.quizGameId = :gameId', { gameId: gameId })
       .select([
         'game',
         'answers',
@@ -149,11 +149,10 @@ export class QuizGamesRepository {
 
       .where('game.quizGameId = :gameId', { gameId: gameId });
     const game = await gameQueryBuilder.getOne();
-    
     return game;
   }
 
-  async isUserHaveUnfinishedGame(userId) {
+  async isUserHaveUnfinishedGame(userId): Promise<boolean> {
     const game = await this.quizGamesRepository
       .createQueryBuilder('game')
       .where(
@@ -164,6 +163,4 @@ export class QuizGamesRepository {
       .getOne();
     return !!game;
   }
-
-  async addAnswerToGame(gameId, answer: QuizAnwswerDbType) {}
 }

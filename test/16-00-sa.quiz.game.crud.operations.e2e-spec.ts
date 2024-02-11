@@ -331,10 +331,8 @@ export function quizGameCrudOperationsSa16() {
         .post(`${endpoints.pairGameQuiz}/pairs/connection`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(403);
-        
     });
 
-    
     //TODO: need finish (check body)
     it('00-00 pair-game-quiz/pairs/my-current GET = user1 req own game', async () => {
       const createResponse = await request(app.getHttpServer())
@@ -372,8 +370,8 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
     });
 
     it('00-00 pairs/my-current/answers POST = user2 add correctAnswer 1 in game', async () => {
@@ -383,8 +381,8 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
     });
 
     it('00-00 pairs/my-current/answers POST = user1 add correctAnswer 3 in game', async () => {
@@ -394,8 +392,8 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
     });
 
     it('00-00 pairs/my-current/answers POST = user2 add correctAnswer 2 in game', async () => {
@@ -405,8 +403,8 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
     });
 
     it('00-00 pairs/my-current/answers POST = user1 add correctAnswer 4 in game', async () => {
@@ -416,8 +414,8 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
     });
 
     it('00-00 pairs/my-current/answers POST = user2 add incorrectAnswer 3 in game', async () => {
@@ -427,8 +425,8 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
     });
 
     it('00-00 pairs/my-current/answers POST = user2 add incorrectAnswer 4 in game', async () => {
@@ -438,8 +436,8 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
     });
 
     it('00-00 pairs/my-current/answers POST = user1 add correctAnswer 5 in game', async () => {
@@ -449,8 +447,8 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
     });
 
     it('00-00 pairs/my-current/answers POST = 403 if user1 answered all questions', async () => {
@@ -468,8 +466,8 @@ export function quizGameCrudOperationsSa16() {
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
     });
   });
 }
