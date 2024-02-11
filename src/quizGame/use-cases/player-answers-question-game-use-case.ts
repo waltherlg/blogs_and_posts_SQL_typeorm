@@ -90,6 +90,9 @@ export class PlayerAnswersQuestionGameUseCase
         console.log('numberOfOpposingPlayersAnswer ', numberOfOpposingPlayersAnswer);
         if(numberOfOpposingPlayersAnswer < 5){
           game[playerScores[currentPlayerNumber]]++
+        } else {
+          game.status = enumStatusGameType.Finished
+          game.finishGameDate = new Date()
         }  
       }
     }
