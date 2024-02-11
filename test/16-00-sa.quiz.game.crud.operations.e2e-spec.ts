@@ -389,11 +389,35 @@ export function quizGameCrudOperationsSa16() {
         .expect(200);
     });
 
+    it('00-00 pairs/my-current/answers POST = user2 add correctAnswer 2 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .send(testAnswerBody.correctAnswer)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+    });
+
     it('00-00 pairs/my-current/answers POST = user1 add correctAnswer 4 in game', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
         .send(testAnswerBody.correctAnswer)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+    });
+
+    it('00-00 pairs/my-current/answers POST = user2 add incorrectAnswer 3 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .send(testAnswerBody.incorrectAnswer)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+    });
+
+    it('00-00 pairs/my-current/answers POST = user2 add incorrectAnswer 4 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .send(testAnswerBody.incorrectAnswer)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(200);
     });
 
@@ -405,12 +429,20 @@ export function quizGameCrudOperationsSa16() {
         .expect(200);
     });
 
-    it('00-00 pairs/my-current/answers POST = user 1 add 6 answer 403 if user1 answered all questions', async () => {
+    it('00-00 pairs/my-current/answers POST = 403 if user1 answered all questions', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
         .send(testAnswerBody.correctAnswer)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(403);
+    });
+
+    it('00-00 pairs/my-current/answers POST = user2 add incorrectAnswer 5 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .send(testAnswerBody.incorrectAnswer)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
     });
   });
 }
