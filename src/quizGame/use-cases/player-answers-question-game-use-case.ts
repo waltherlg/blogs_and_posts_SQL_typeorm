@@ -113,7 +113,7 @@ export class PlayerAnswersQuestionGameUseCase
     
     const result = await this.quizGamesRepository.saveGameChange(game)
     if(result){
-      return ActionResult.Success
+      return answer.returnForPlayer()
     } else {
       return ActionResult.NotSaved
     }

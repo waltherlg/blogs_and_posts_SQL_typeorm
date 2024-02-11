@@ -88,5 +88,6 @@ export class PublicQuizGameController {
       ),
     );
     handleActionResult(result)
+    return result
   }
 }
