@@ -1,6 +1,6 @@
 yarn typeorm-ts-node-esm migration:generate ./src/db/migrations/merged_player -d ./src/db/data-source.ts
 
-yarn typeorm migration:generate -d ./src/db/data-source.ts ./src/db/migrations/merged_game_questions
+yarn typeorm migration:generate -d ./src/db/data-source.ts ./src/db/migrations/fix_quizGameId_in_relations
 
 yarn typeorm migration:create ./src/db/migrations/PostRefactoring
 

@@ -4,7 +4,7 @@ import {
   QuestionDbType,
 } from '../quiz.questions.types';
 import { QuestionsRepository } from '../questions.repository';
-import { QuizGameDbType, enumStatusGameType } from '../quiz.game.types';
+import { QuizGameDbType, QuizGames, enumStatusGameType } from '../quiz.game.types';
 import { v4 as uuidv4 } from 'uuid';
 import { ActionResult } from 'src/helpers/enum.action.result.helper';
 import { QuizGamesRepository } from '../quiz.game.repository';
@@ -25,7 +25,7 @@ export class PlayerAnswersQuestionGameUseCase
   ) {}
 
   async execute(command: PlayerAnswersQuestionGameCommand): Promise<any> {
-    const game = await this.quizGamesRepository.getActiveGameByUserId(
+    const game: QuizGames = await this.quizGamesRepository.getActiveGameByUserId(
       command.userId,
     );    
 
@@ -56,7 +56,7 @@ export class PlayerAnswersQuestionGameUseCase
       answerStatus = enumAnswerGameStatus.Incorrect
     }
     
-    const answer = new QuizAnwswerDbType(
+    const answer: QuizAnswers = new QuizAnwswerDbType(
       uuidv4(),
       currentPlayerNumber,
       currentQuestion.questionId,
@@ -68,7 +68,18 @@ export class PlayerAnswersQuestionGameUseCase
 
     //console.log("количество ответов ", numberOfPlayerAnswers, " ответ ", answer);
     
-    const result = await this.quizAnswersRepository.saveAnswerInGame(answer);
+    // const result = await this.quizAnswersRepository.saveAnswerInGame(answer);
+    // if(result){
+    //   return ActionResult.Success
+    // } else {
+    //   return ActionResult.NotSaved
+    // }
+
+    game.answers.push(answer)
+    console.log("game after answer push ", game);
+    
+
+    const result = await this.quizGamesRepository.saveGameChange(game)
     if(result){
       return ActionResult.Success
     } else {

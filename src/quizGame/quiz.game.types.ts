@@ -99,7 +99,6 @@ export class QuizGames {
     nullable: true,
     onDelete: 'SET NULL',
   })
-  @JoinColumn({ name: 'gameId' })
   answers: QuizAnswers[];
 
   @ManyToOne(() => Users, { eager: true, nullable: true, onDelete: 'SET NULL' })

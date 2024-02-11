@@ -50,6 +50,6 @@ export class QuizAnswers {
   addedAt: Date;
 
   @ManyToOne(() => QuizGames, (g) => g.answers)
-  @JoinColumn()
+  @JoinColumn({name: 'quizGameId'})
   QuizGames: QuizGames;
 }
