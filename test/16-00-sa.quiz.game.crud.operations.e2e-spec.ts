@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
-import { endpoints } from './helpers/routing';
+import { delayFunction, endpoints } from './helpers/routing';
 import { testQuestions } from './helpers/inputAndOutputObjects/questionObjects';
 import { testComments } from './helpers/inputAndOutputObjects/commentObjects';
 import { testAnswerBody } from './helpers/inputAndOutputObjects/answersObjects';
@@ -326,14 +326,16 @@ export function quizGameCrudOperationsSa16() {
         .expect(200);
     });
 
-    it('00-00 pair-game-quiz/pairs/my-current POST = user1 get 403 if trying create new game before finish previous', async () => {
+    it('00-00 pair-game-quiz/pairs/connection POST = user1 get 403 if trying create new game before finish previous', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.pairGameQuiz}/pairs/connection`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(403);
+        
     });
 
-    //TODO: need finish
+    
+    //TODO: need finish (check body)
     it('00-00 pair-game-quiz/pairs/my-current GET = user1 req own game', async () => {
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.pairGameQuiz}/pairs/my-current`)

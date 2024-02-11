@@ -11,6 +11,7 @@ export enum ActionResult {
   PostNotFound = 'POST_NOT_FOUND',
   QuestionNotFound = 'QUESTION_NOT_FOUND',
   CommentNotFound = 'COMMENT_NOT_FOUND',
+  GameNotFound = 'GAME_NOT_FOUND',
   UserAlreadyBanned = 'USER_ALREADY_BANNED',
   UserNotBanned = 'USER_NOT_BANNED',
   UserBannedForBlog = 'USER_BANNED_FOR_BLOG',
@@ -47,6 +48,8 @@ export function handleActionResult(result: ActionResult) {
       throw new CustomNotFoundException('comment');
     case ActionResult.QuestionNotFound:
       throw new CustomNotFoundException('question');
+    case ActionResult.GameNotFound:
+      throw new CustomNotFoundException('game');  
 
     case ActionResult.NotOwner:
       throw new CustomisableException(

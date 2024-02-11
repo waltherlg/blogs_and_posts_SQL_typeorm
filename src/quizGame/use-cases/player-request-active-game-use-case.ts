@@ -26,8 +26,12 @@ export class PlayerRequestActiveGameUseCase
     const game = await this.quizGamesRepository.getActiveGameByUserId(
       command.userId,
     );
+    console.log("игра в юзкейсе запроса активной игры ", game);
+    console.log("ответы в вопросах в игре ", game.questions[0].correctAnswers)
+    if(!game){
+      return ActionResult.GameNotFound
+    }
     
-
     //TODO: remove this blog before prod
     let playerNumber;
     if (game.player1.userId === command.userId) {
@@ -38,8 +42,6 @@ export class PlayerRequestActiveGameUseCase
     const answersArray = game.answers
     const curentPlayerAnswers = answersArray.filter((answer) => answer.playerNumber = playerNumber)
     const numberOfPlayerAnswers = curentPlayerAnswers.length
-
-
     return game;
   }
 }

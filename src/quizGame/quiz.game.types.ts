@@ -72,7 +72,7 @@ export class QuizGameDbType {
     public startGameDate: Date | null,
     public finishGameDate: Date | null,
 
-    public answers: QuizAnwswerDbType[],
+    public answers: QuizAnswers[],
 
     public player1: UserDBType,
 
@@ -82,7 +82,7 @@ export class QuizGameDbType {
 
     public player2Score: number,
 
-    public questionы: QuestionDbType[],
+    public questions: Questions[],
   ) {}
 }
 
@@ -128,7 +128,7 @@ export class QuizGames {
     onUpdate: 'CASCADE',
   })
   @JoinTable()
-  questions: Questions;
+  questions: Questions[];
 }
 
 // @Entity({name: 'QuizGames'})

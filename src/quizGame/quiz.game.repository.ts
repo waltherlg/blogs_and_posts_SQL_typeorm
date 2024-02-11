@@ -18,6 +18,8 @@ export class QuizGamesRepository {
 
   async createQuizGame(quizGameDto: QuizGameDbType): Promise<string> {
     const result = await this.quizGamesRepository.save(quizGameDto);
+    console.log("созданая игра в репозитории ", result);
+    
     return result.quizGameId;
   }
 
@@ -90,7 +92,7 @@ export class QuizGamesRepository {
       .where('(game.player1Id = :userId  OR game.player2Id = :userId)', {
         userId: userId,
       })
-      .andWhere(`game.status = 'Active'`);
+      .andWhere(`game.status = 'Active' OR game.status = 'PendingSecondPlayer'`);
     const game = await gameQueryBuilder.getOne();
 
     return game;

@@ -58,15 +58,11 @@ export class PlayerConnectGameUseCase
         new Date(),
         null,
         null,
-
         [],
-
         player1,
         0,
-
         null,
         0,
-
         questions
       );
       

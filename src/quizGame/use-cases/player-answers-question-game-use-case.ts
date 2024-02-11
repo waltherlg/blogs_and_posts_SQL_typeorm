@@ -29,25 +29,30 @@ export class PlayerAnswersQuestionGameUseCase
       command.userId,
     );
 
-    let playerNumber;
+    console.log(
+      "входящий айди юзера ", command.userId, 
+      " юзер айди игрока 1 ", game.player1.userId,
+      " юзер айди игрока 2 ", game.player2.userId);
+    
+
+    let currentPlayerNumber;
     if (game.player1.userId === command.userId) {
-      playerNumber = 1;
+      currentPlayerNumber = 1;
     } else {
-      playerNumber = 2;
+      currentPlayerNumber = 2;
     }
 
     const answersArray = game.answers
-    const curentPlayerAnswers = answersArray.filter((answer) => answer.playerNumber = playerNumber)
-    console.log("curentPlayerAnswers ", curentPlayerAnswers);
+    const curкentPlayerAnswers = answersArray.filter((answer) => answer.playerNumber === currentPlayerNumber)
+    const numberOfPlayerAnswers = curкentPlayerAnswers.length
+    console.log("curentPlayerAnswersArray ", curкentPlayerAnswers, "numberOfPlayerAnswers ", numberOfPlayerAnswers);
     
-    const numberOfPlayerAnswers = curentPlayerAnswers.length
-    console.log("numberOfPlayerAnswers ", numberOfPlayerAnswers);
     const currentQuestion = game
     
 
     const answer = new QuizAnwswerDbType(
       uuidv4(),
-      playerNumber,
+      currentPlayerNumber,
       uuidv4(),
       command.answerBody,
       'wrong',
