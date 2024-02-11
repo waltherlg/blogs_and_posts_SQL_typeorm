@@ -8,7 +8,7 @@ import { QuizGameDbType, enumStatusGameType } from '../quiz.game.types';
 import { v4 as uuidv4 } from 'uuid';
 import { ActionResult } from 'src/helpers/enum.action.result.helper';
 import { QuizGamesRepository } from '../quiz.game.repository';
-import { QuizAnswers, QuizAnwswerDbType } from '../quiz.answers.types';
+import { QuizAnswers, QuizAnwswerDbType, enumAnswerGameStatus } from '../quiz.answers.types';
 import { QuizAnswersRepository } from '../quiz.answers.repository';
 
 export class PlayerAnswersQuestionGameCommand {
@@ -27,13 +27,7 @@ export class PlayerAnswersQuestionGameUseCase
   async execute(command: PlayerAnswersQuestionGameCommand): Promise<any> {
     const game = await this.quizGamesRepository.getActiveGameByUserId(
       command.userId,
-    );
-
-    console.log(
-      "входящий айди юзера ", command.userId, 
-      " юзер айди игрока 1 ", game.player1.userId,
-      " юзер айди игрока 2 ", game.player2.userId);
-    
+    );    
 
     let currentPlayerNumber;
     if (game.player1.userId === command.userId) {
@@ -43,25 +37,33 @@ export class PlayerAnswersQuestionGameUseCase
     }
 
     const answersArray = game.answers
-    const curкentPlayerAnswers = answersArray.filter((answer) => answer.playerNumber === currentPlayerNumber)
-    const numberOfPlayerAnswers = curкentPlayerAnswers.length
-    console.log("curentPlayerAnswersArray ", curкentPlayerAnswers, "numberOfPlayerAnswers ", numberOfPlayerAnswers);
+    const currentPlayerAnswers = answersArray.filter((answer) => answer.playerNumber === currentPlayerNumber)
+    const numberOfPlayerAnswers = currentPlayerAnswers.length
     
-    const currentQuestion = game
+    console.log("curentPlayerAnswersArray ", currentPlayerAnswers, "numberOfPlayerAnswers ", numberOfPlayerAnswers);
     
+    const currentQuestion = game.questions[numberOfPlayerAnswers]
+    console.log("currentQuestion ", currentQuestion);
 
+    let answerStatus
+    const correctAnswersArray = currentQuestion.correctAnswers
+    if(correctAnswersArray.includes(command.answerBody)){
+      answerStatus = enumAnswerGameStatus.Correct
+    } else {
+      answerStatus = enumAnswerGameStatus.Incorrect
+    }
+    
     const answer = new QuizAnwswerDbType(
       uuidv4(),
       currentPlayerNumber,
-      uuidv4(),
+      currentQuestion.questionId,
       command.answerBody,
-      'wrong',
+      answerStatus,
       new Date(),
       game,
     );
 
     const result = await this.quizAnswersRepository.saveAnswerInGame(answer);
-
     return result;
   }
 }

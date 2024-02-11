@@ -17,13 +17,18 @@ export class AnswerInputModelType {
   body: string;
 }
 
+export enum enumAnswerGameStatus {
+  Correct = 'Correct',
+  Incorrect = 'Incorrect',
+}
+
 export class QuizAnwswerDbType {
   constructor(
     public answerId: string,
     public playerNumber: number,
     public questionId: string,
     public body: string,
-    public answerStatus: string,
+    public answerStatus: enumAnswerGameStatus,
     public addedAt: Date,
     public QuizGames: QuizGames,
   ) {}

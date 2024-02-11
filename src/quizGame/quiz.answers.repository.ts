@@ -11,7 +11,8 @@ export class QuizAnswersRepository {
   ) {}
 
   //TODO настроить return
-  async saveAnswerInGame(answer) {
+  async saveAnswerInGame(answer): Promise<boolean> {
     const result = await this.quizAnswersRepository.save(answer);
+    return !!result
   }
 }

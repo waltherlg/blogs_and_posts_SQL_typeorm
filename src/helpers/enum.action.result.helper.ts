@@ -18,6 +18,7 @@ export enum ActionResult {
   UserAlreadyBound = 'USER_ALREADY_BOUND',
   NotEnoughQuestions = 'NOT_ENOUGH_QUESTIONS',
   UserAlreadyHasUnfinishedGame = 'USER_ALREADY_HAS_UNFINISHED_GAME',
+  Player_Answered_All_Questions = 'PLAYER_ANSWERED_ALL_QUESTIONS',
   NoChangeNeeded = 'NO_CHANGE_NEEDED',
   NotOwner = 'CURRENT_USER_IS_NOT_OWNER',
   NotSaved = 'CHANGES_NOT_SAVED',
@@ -80,6 +81,13 @@ export function handleActionResult(result: ActionResult) {
         'The user is already participating in an unfinished game',
         403,
       );
+
+    case ActionResult.Player_Answered_All_Questions:
+      throw new CustomisableException(
+        'answer',
+        'the player answered all questions',
+        403
+      )  
 
     case ActionResult.NotCreated:
       throw new CustomisableException(

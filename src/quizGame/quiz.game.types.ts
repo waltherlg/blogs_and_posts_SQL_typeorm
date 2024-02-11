@@ -13,13 +13,8 @@ import {
 } from 'typeorm';
 import { Users } from '../users/user.entity';
 import { QuestionDbType, Questions } from './quiz.questions.types';
-import { QuizAnswers, QuizAnwswerDbType } from './quiz.answers.types';
+import { QuizAnswers, QuizAnwswerDbType, enumAnswerGameStatus } from './quiz.answers.types';
 import { UserDBType } from '../users/users.types';
-
-enum enumAnswerGameStatus {
-  'Correct',
-  'Incorrect',
-}
 
 type answerGameType = {
   questionId: string;
