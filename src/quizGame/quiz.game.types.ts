@@ -66,7 +66,7 @@ export class PlayerDtoType {
 export class QuizGameDbType {
   constructor(
     public quizGameId: string,
-    public status: string,
+    public status: enumStatusGameType,
     public pairCreatedDate: Date,
     public startGameDate: Date | null,
     public finishGameDate: Date | null,
@@ -83,6 +83,36 @@ export class QuizGameDbType {
 
     public questions: Questions[],
   ) {}
+
+  returnForPlayer(){
+    if(this.status === enumStatusGameType.PendingSecondPlayer){
+      const game: outputGameQuizType = {
+        id: this.quizGameId,
+        firstPlayerProgress: {
+          answers: null,
+          player: {
+            id: this.player1.userId,
+            login: this.player1.login
+          },
+          score: this.player1Score
+        },
+        secondPlayerProgress: {
+          answers: null,
+          player: {
+            id: this.player2.userId,
+            login: this.player2.login
+          },
+          score: this.player2Score
+        },
+        questions: null,
+        status: enumStatusGameType.PendingSecondPlayer,
+        pairCreatedDate: this.pairCreatedDate.toISOString(),
+        startGameDate: null,
+        finishGameDate: null
+      }
+    }
+
+  }
 }
 
 @Entity({ name: 'QuizGames' })
@@ -128,6 +158,37 @@ export class QuizGames {
   })
   @JoinTable()
   questions: Questions[];
+
+  returnForPlayer(){
+    if(this.status === enumStatusGameType.PendingSecondPlayer){
+      const game: outputGameQuizType = {
+        id: this.quizGameId,
+        firstPlayerProgress: {
+          answers: null,
+          player: {
+            id: this.player1.userId,
+            login: this.player1.login
+          },
+          score: this.player1Score
+        },
+        secondPlayerProgress: {
+          answers: null,
+          player: {
+            id: this.player2.userId,
+            login: this.player2.login
+          },
+          score: this.player2Score
+        },
+        questions: null,
+        status: enumStatusGameType.PendingSecondPlayer,
+        pairCreatedDate: this.pairCreatedDate.toISOString(),
+        startGameDate: null,
+        finishGameDate: null
+      }
+    }
+  }
+
+
 }
 
 // @Entity({name: 'QuizGames'})
