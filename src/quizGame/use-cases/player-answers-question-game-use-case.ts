@@ -66,6 +66,23 @@ export class PlayerAnswersQuestionGameUseCase
       game,
     );
 
+    // if (answerStatus === enumAnswerGameStatus.Correct) {
+    //   if (currentPlayerNumber === 1) {
+    //     game.player1Score++;
+    //   } else {
+    //     game.player2Score++;
+    //   }
+    // }
+
+    const playerScores = {
+      1: 'player1Score',
+      2: 'player2Score'
+    };
+    
+    if (answerStatus === enumAnswerGameStatus.Correct) {
+      game[playerScores[currentPlayerNumber]]++;
+    }
+
     //console.log("количество ответов ", numberOfPlayerAnswers, " ответ ", answer);
     
     // const result = await this.quizAnswersRepository.saveAnswerInGame(answer);
@@ -80,7 +97,6 @@ export class PlayerAnswersQuestionGameUseCase
     game.answers.push(answer)
     console.log("game after answer push ", game);
     
-
     const result = await this.quizGamesRepository.saveGameChange(game)
     if(result){
       return ActionResult.Success

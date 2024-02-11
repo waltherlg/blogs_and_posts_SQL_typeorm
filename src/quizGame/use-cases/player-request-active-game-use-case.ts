@@ -26,8 +26,8 @@ export class PlayerRequestActiveGameUseCase
     const game = await this.quizGamesRepository.getActiveGameByUserId(
       command.userId,
     );
-    console.log("игра в юзкейсе запроса активной игры ", game);
-    console.log("ответы в вопросах в игре ", game.questions[0].correctAnswers)
+    // console.log("игра в юзкейсе запроса активной игры ", game);
+    // console.log("ответы в вопросах в игре ", game.questions[0].correctAnswers)
     if(!game){
       return ActionResult.GameNotFound
     }
