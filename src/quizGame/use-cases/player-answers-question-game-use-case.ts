@@ -42,11 +42,11 @@ export class PlayerAnswersQuestionGameUseCase
     if(numberOfPlayerAnswers >= 5){
       return ActionResult.PlayerAnsweredAllQuestions
     }
-    
-    console.log("curentPlayerAnswersArray ", currentPlayerAnswers, "numberOfPlayerAnswers ", numberOfPlayerAnswers);
+
+    //console.log("curentPlayerAnswersArray ", currentPlayerAnswers, "numberOfPlayerAnswers ", numberOfPlayerAnswers);
     
     const currentQuestion = game.questions[numberOfPlayerAnswers]
-    console.log("currentQuestion ", currentQuestion);
+    //console.log("currentQuestion ", currentQuestion);
 
     let answerStatus
     const correctAnswersArray = currentQuestion.correctAnswers
@@ -66,7 +66,13 @@ export class PlayerAnswersQuestionGameUseCase
       game,
     );
 
+    //console.log("количество ответов ", numberOfPlayerAnswers, " ответ ", answer);
+    
     const result = await this.quizAnswersRepository.saveAnswerInGame(answer);
-    return result;
+    if(result){
+      return ActionResult.Success
+    } else {
+      return ActionResult.NotSaved
+    }
   }
 }
