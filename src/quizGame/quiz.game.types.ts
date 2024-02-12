@@ -123,91 +123,97 @@ export class QuizGames extends QuestionDbType {
   @JoinTable()
   questions: Questions[];
 
-  returnForPlayer(){
-    if(this.status === enumStatusGameType.PendingSecondPlayer){
+  returnForPlayer() {
+    if (this.status === enumStatusGameType.PendingSecondPlayer) {
       const game: outputGameQuizType = {
         id: this.quizGameId,
         firstPlayerProgress: {
           answers: null,
           player: {
             id: this.player1.userId,
-            login: this.player1.login
+            login: this.player1.login,
           },
-          score: this.player1Score
+          score: this.player1Score,
         },
         secondPlayerProgress: {
           answers: null,
           player: {
             id: null,
-            login: null
+            login: null,
           },
-          score: this.player2Score
+          score: this.player2Score,
         },
         questions: null,
         status: enumStatusGameType.PendingSecondPlayer,
         pairCreatedDate: this.pairCreatedDate.toISOString(),
         startGameDate: null,
-        finishGameDate: null
-      }
-      return game
-    } 
-    if(this.status === enumStatusGameType.Active) {
-      const game: outputGameQuizType = {
-        id: this.quizGameId,
-        firstPlayerProgress: {
-          answers: this.answers.filter((answer) => answer.playerNumber === 1).map((answer) => answer.returnForPlayer()),
-          player: {
-            id: this.player1.userId,
-            login: this.player1.login
-          },
-          score: this.player1Score
-        },
-        secondPlayerProgress: {
-          answers: this.answers.filter((answer) => answer.playerNumber === 1).map((answer) => answer.returnForPlayer()),
-          player: {
-            id: this.player2.userId,
-            login: this.player2.login
-          },
-          score: this.player2Score
-        },
-        questions: this.questions.map((question) => question.returnForGame()),
-        status: this.status,
-        pairCreatedDate: this.pairCreatedDate.toISOString(),
-        startGameDate: this.startGameDate.toISOString(),
-        finishGameDate: null
-      }
-      return game
+        finishGameDate: null,
+      };
+      return game;
     }
-    if(this.status === enumStatusGameType.Finished) {
+    if (this.status === enumStatusGameType.Active) {
       const game: outputGameQuizType = {
         id: this.quizGameId,
         firstPlayerProgress: {
-          answers: this.answers.filter((answer) => answer.playerNumber === 1).map((answer) => answer.returnForPlayer()),
+          answers: this.answers
+            .filter((answer) => answer.playerNumber === 1)
+            .map((answer) => answer.returnForPlayer()),
           player: {
             id: this.player1.userId,
-            login: this.player1.login
+            login: this.player1.login,
           },
-          score: this.player1Score
+          score: this.player1Score,
         },
         secondPlayerProgress: {
-          answers: this.answers.filter((answer) => answer.playerNumber === 1).map((answer) => answer.returnForPlayer()),
+          answers: this.answers
+            .filter((answer) => answer.playerNumber === 1)
+            .map((answer) => answer.returnForPlayer()),
           player: {
             id: this.player2.userId,
-            login: this.player2.login
+            login: this.player2.login,
           },
-          score: this.player2Score
+          score: this.player2Score,
         },
         questions: this.questions.map((question) => question.returnForGame()),
         status: this.status,
         pairCreatedDate: this.pairCreatedDate.toISOString(),
         startGameDate: this.startGameDate.toISOString(),
-        finishGameDate: this.startGameDate.toISOString()
-      }
-      return game
+        finishGameDate: null,
+      };
+      return game;
+    }
+    if (this.status === enumStatusGameType.Finished) {
+      const game: outputGameQuizType = {
+        id: this.quizGameId,
+        firstPlayerProgress: {
+          answers: this.answers
+            .filter((answer) => answer.playerNumber === 1)
+            .map((answer) => answer.returnForPlayer()),
+          player: {
+            id: this.player1.userId,
+            login: this.player1.login,
+          },
+          score: this.player1Score,
+        },
+        secondPlayerProgress: {
+          answers: this.answers
+            .filter((answer) => answer.playerNumber === 1)
+            .map((answer) => answer.returnForPlayer()),
+          player: {
+            id: this.player2.userId,
+            login: this.player2.login,
+          },
+          score: this.player2Score,
+        },
+        questions: this.questions.map((question) => question.returnForGame()),
+        status: this.status,
+        pairCreatedDate: this.pairCreatedDate.toISOString(),
+        startGameDate: this.startGameDate.toISOString(),
+        finishGameDate: this.startGameDate.toISOString(),
+      };
+      return game;
     }
   }
-
-
 }
 
 // @Entity({name: 'QuizGames'})

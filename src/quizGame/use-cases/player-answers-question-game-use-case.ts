@@ -65,7 +65,7 @@ export class PlayerAnswersQuestionGameUseCase
       answerStatus = enumAnswerGameStatus.Incorrect;
     }
 
-    //TODO: спросить как можно избежать дублирования метода 
+    //TODO: спросить как можно избежать дублирования метода
 
     const answer: QuizAnswers = new QuizAnswers(
       uuidv4(),
@@ -94,7 +94,6 @@ export class PlayerAnswersQuestionGameUseCase
       game[playerScores[currentPlayerNumber]]++;
     }
 
-    //TODO: need finish
     if (numberOfPlayerAnswers === 4) {
       if (game[playerScores[currentPlayerNumber]] > 0) {
         const numberOfOpposingPlayersAnswer = answersArray.filter(
@@ -110,16 +109,7 @@ export class PlayerAnswersQuestionGameUseCase
     }
 
     //console.log("количество ответов ", numberOfPlayerAnswers, " ответ ", answer);
-
-    // const result = await this.quizAnswersRepository.saveAnswerInGame(answer);
-    // if(result){
-    //   return ActionResult.Success
-    // } else {
-    //   return ActionResult.NotSaved
-    // }
-
     //console.log("game before answer push ", game);
-
     game.answers.push(answer);
     //console.log("game after answer push ", game);
 

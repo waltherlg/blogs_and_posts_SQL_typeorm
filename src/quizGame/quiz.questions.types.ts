@@ -33,11 +33,11 @@ export class QuestionDbType {
     public updatedAt: string,
   ) {}
 
-  returnForGame(){
+  returnForGame() {
     return {
       id: this.questionId,
-      body: this.body
-    }
+      body: this.body,
+    };
   }
 }
 
@@ -65,10 +65,10 @@ export class Questions {
   @Column({ type: 'timestamptz' })
   updatedAt: string;
 
-  returnForGame(){
+  returnForGame() {
     return {
       id: this.questionId,
-      body: this.body
-    }
+      body: this.body,
+    };
   }
 }
