@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpCode,
+  Param,
   Post,
   Req,
   UseGuards,
@@ -17,6 +18,7 @@ import {
 import { PlayerRequestActiveGameCommand } from '../use-cases/player-request-active-game-use-case';
 import { AnswerInputModelType } from '../quiz.answers.types';
 import { PlayerAnswersQuestionGameCommand } from '../use-cases/player-answers-question-game-use-case';
+import { PlayerRequestGameByIdCommand, PlayerRequestGameByIdUseCase } from '../use-cases/player-request-game-by-id-use-case';
 
 @Controller('pair-game-quiz')
 export class PublicQuizGameController {
@@ -69,7 +71,11 @@ export class PublicQuizGameController {
   // Если игра в статусе ожидания второго игрока (status: "PendingSecondPlayer")
   // - поля secondPlayerProgress: null, questions: null, startGameDate: null,
   // finishGameDate: null
-  async getGameById(@Req() request) {}
+  async getGameById(@Req() request, @Param('gameId') gameId) {
+    const result = await this.commandBus.execute(new PlayerRequestGameByIdCommand(gameId, request.user.userId))
+    handleActionResult(result)
+    return result
+  }
 
   @UseGuards(JwtAuthGuard)
   @Post('pairs/my-current/answers')

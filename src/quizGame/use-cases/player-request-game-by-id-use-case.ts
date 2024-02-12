@@ -10,7 +10,7 @@ import { ActionResult } from 'src/helpers/enum.action.result.helper';
 import { QuizGamesRepository } from '../quiz.game.repository';
 
 export class PlayerRequestGameByIdCommand {
-  constructor(public userId: string) {}
+  constructor(public gameId: string, public userId: string) {}
 }
 //TODO need finish
 @CommandHandler(PlayerRequestGameByIdCommand)
@@ -23,9 +23,15 @@ export class PlayerRequestGameByIdUseCase
   ) {}
 
   async execute(command: PlayerRequestGameByIdCommand): Promise<any> {
-    const game = await this.quizGamesRepository.getActiveGameByUserId(
-      command.userId,
+    const game = await this.quizGamesRepository.getGameByIdAnyStatus(
+      command.gameId
     );
-    return game;
+    if(!game){
+      return ActionResult.GameNotFound
+    }
+    if (game.player1.userId != command.userId && game.player2.userId != command.userId){
+      return ActionResult.NotOwner
+    }
+    return game.returnForPlayer()
   }
 }

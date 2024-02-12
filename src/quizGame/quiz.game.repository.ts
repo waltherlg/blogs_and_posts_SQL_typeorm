@@ -65,12 +65,39 @@ export class QuizGamesRepository {
     return game;
   }
 
+  async getGameByIdAnyStatus(gameId): Promise<QuizGames | null>{
+    if (!isValidUUID(gameId)) {
+      return null;
+    }
+    const gameQueryBuilder =
+      this.quizGamesRepository.createQueryBuilder('game');
+    gameQueryBuilder
+      .select([
+        'game',
+        'answers',
+        'player1.userId',
+        'player1.login',
+        'player2.userId',
+        'player2.login',
+        'questions',
+      ])
+      .leftJoin('game.answers', 'answers')
+      .leftJoin('game.player1', 'player1')
+      .leftJoin('game.player2', 'player2')
+      .leftJoin('game.questions', 'questions')
+      .where('game.quizGameId = :gameId', { gameId: gameId });
+    const game = await gameQueryBuilder.getOne();
+    if(!game){
+      return null
+    }
+    return game;
+  }
+
   //TODO: get attive game (add answers)
   async getActiveGameByUserId(userId) {
     if (!isValidUUID(userId)) {
       return null;
     }
-
     const gameQueryBuilder =
       this.quizGamesRepository.createQueryBuilder('game');
     gameQueryBuilder
