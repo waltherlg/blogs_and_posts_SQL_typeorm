@@ -38,8 +38,9 @@ export class PublicQuizGameController {
       new PlayerConnectGameCommand(request.user.userId),
     ); // result will be actionResult or gameId
     handleActionResult(result);
-
-    return 'game';
+    const connectedGame = await this.commandBus.execute(new PlayerRequestActiveGameCommand(request.user.userId))
+    handleActionResult(connectedGame)
+    return connectedGame;
   }
 
   @UseGuards(JwtAuthGuard)

@@ -18,7 +18,6 @@ export class QuizGamesRepository {
 
   async createQuizGame(quizGameDto: QuizGameDbType): Promise<string> {
     const result = await this.quizGamesRepository.save(quizGameDto);
-    console.log('созданая игра в репозитории ', result);
 
     return result.quizGameId;
   }

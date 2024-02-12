@@ -70,57 +70,21 @@ export class QuizGameDbType {
     public pairCreatedDate: Date,
     public startGameDate: Date | null,
     public finishGameDate: Date | null,
-
     public answers: QuizAnswers[],
-
     public player1: UserDBType,
-
     public player1Score: number,
-
     public player2: UserDBType,
-
     public player2Score: number,
-
     public questions: Questions[],
   ) {}
-
-  returnForPlayer(){
-    if(this.status === enumStatusGameType.PendingSecondPlayer){
-      const game: outputGameQuizType = {
-        id: this.quizGameId,
-        firstPlayerProgress: {
-          answers: null,
-          player: {
-            id: this.player1.userId,
-            login: this.player1.login
-          },
-          score: this.player1Score
-        },
-        secondPlayerProgress: {
-          answers: null,
-          player: {
-            id: this.player2.userId,
-            login: this.player2.login
-          },
-          score: this.player2Score
-        },
-        questions: null,
-        status: enumStatusGameType.PendingSecondPlayer,
-        pairCreatedDate: this.pairCreatedDate.toISOString(),
-        startGameDate: null,
-        finishGameDate: null
-      }
-    }
-
-  }
 }
 
 @Entity({ name: 'QuizGames' })
-export class QuizGames {
+export class QuizGames extends QuestionDbType {
   @PrimaryColumn('uuid')
   quizGameId: string;
   @Column()
-  status: string;
+  status: enumStatusGameType;
   @Column({ type: 'timestamptz' })
   pairCreatedDate: Date;
   @Column({ type: 'timestamptz', nullable: true })
@@ -174,8 +138,8 @@ export class QuizGames {
         secondPlayerProgress: {
           answers: null,
           player: {
-            id: this.player2.userId,
-            login: this.player2.login
+            id: null,
+            login: null
           },
           score: this.player2Score
         },
@@ -185,6 +149,61 @@ export class QuizGames {
         startGameDate: null,
         finishGameDate: null
       }
+      return game
+    } 
+    if(this.status === enumStatusGameType.Active) {
+      const game: outputGameQuizType = {
+        id: this.quizGameId,
+        firstPlayerProgress: {
+          answers: this.answers.filter((answer) => answer.playerNumber === 1).map((answer) => answer.returnForPlayer()),
+          player: {
+            id: this.player1.userId,
+            login: this.player1.login
+          },
+          score: this.player1Score
+        },
+        secondPlayerProgress: {
+          answers: this.answers.filter((answer) => answer.playerNumber === 1).map((answer) => answer.returnForPlayer()),
+          player: {
+            id: this.player2.userId,
+            login: this.player2.login
+          },
+          score: this.player2Score
+        },
+        questions: this.questions.map((question) => question.returnForGame()),
+        status: this.status,
+        pairCreatedDate: this.pairCreatedDate.toISOString(),
+        startGameDate: this.startGameDate.toISOString(),
+        finishGameDate: null
+      }
+      return game
+    }
+    if(this.status === enumStatusGameType.Finished) {
+      const game: outputGameQuizType = {
+        id: this.quizGameId,
+        firstPlayerProgress: {
+          answers: this.answers.filter((answer) => answer.playerNumber === 1).map((answer) => answer.returnForPlayer()),
+          player: {
+            id: this.player1.userId,
+            login: this.player1.login
+          },
+          score: this.player1Score
+        },
+        secondPlayerProgress: {
+          answers: this.answers.filter((answer) => answer.playerNumber === 1).map((answer) => answer.returnForPlayer()),
+          player: {
+            id: this.player2.userId,
+            login: this.player2.login
+          },
+          score: this.player2Score
+        },
+        questions: this.questions.map((question) => question.returnForGame()),
+        status: this.status,
+        pairCreatedDate: this.pairCreatedDate.toISOString(),
+        startGameDate: this.startGameDate.toISOString(),
+        finishGameDate: this.startGameDate.toISOString()
+      }
+      return game
     }
   }
 

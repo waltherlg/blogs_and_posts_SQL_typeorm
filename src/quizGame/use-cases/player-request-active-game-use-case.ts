@@ -4,7 +4,7 @@ import {
   QuestionDbType,
 } from '../quiz.questions.types';
 import { QuestionsRepository } from '../questions.repository';
-import { QuizGameDbType, enumStatusGameType } from '../quiz.game.types';
+import { QuizGameDbType, QuizGames, enumStatusGameType } from '../quiz.game.types';
 import { v4 as uuidv4 } from 'uuid';
 import { ActionResult } from 'src/helpers/enum.action.result.helper';
 import { QuizGamesRepository } from '../quiz.game.repository';
@@ -23,7 +23,7 @@ export class PlayerRequestActiveGameUseCase
   ) {}
 
   async execute(command: PlayerRequestActiveGameCommand): Promise<any> {
-    const game = await this.quizGamesRepository.getActiveGameByUserId(
+    const game: QuizGames = await this.quizGamesRepository.getActiveGameByUserId(
       command.userId,
     );
     // console.log("игра в юзкейсе запроса активной игры ", game);
@@ -31,19 +31,6 @@ export class PlayerRequestActiveGameUseCase
     if (!game) {
       return ActionResult.GameNotFound;
     }
-
-    //TODO: remove this blog before prod
-    let playerNumber;
-    if (game.player1.userId === command.userId) {
-      playerNumber = 1;
-    } else {
-      playerNumber = 2;
-    }
-    const answersArray = game.answers;
-    const curentPlayerAnswers = answersArray.filter(
-      (answer) => (answer.playerNumber = playerNumber),
-    );
-    const numberOfPlayerAnswers = curentPlayerAnswers.length;
-    return game;
+    return game.returnForPlayer();
   }
 }

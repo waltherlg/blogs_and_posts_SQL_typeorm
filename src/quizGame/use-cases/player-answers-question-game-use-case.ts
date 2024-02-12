@@ -65,7 +65,9 @@ export class PlayerAnswersQuestionGameUseCase
       answerStatus = enumAnswerGameStatus.Incorrect;
     }
 
-    const answer: QuizAnswers = new QuizAnwswerDbType(
+    //TODO: спросить как можно избежать дублирования метода 
+
+    const answer: QuizAnswers = new QuizAnswers(
       uuidv4(),
       currentPlayerNumber,
       currentQuestion.questionId,
@@ -98,10 +100,6 @@ export class PlayerAnswersQuestionGameUseCase
         const numberOfOpposingPlayersAnswer = answersArray.filter(
           (answer) => answer.playerNumber !== currentPlayerNumber,
         ).length;
-        console.log(
-          'numberOfOpposingPlayersAnswer ',
-          numberOfOpposingPlayersAnswer,
-        );
         if (numberOfOpposingPlayersAnswer < 5) {
           game[playerScores[currentPlayerNumber]]++;
         } else {

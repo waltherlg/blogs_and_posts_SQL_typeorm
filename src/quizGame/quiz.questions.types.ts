@@ -32,6 +32,13 @@ export class QuestionDbType {
     public createdAt: string,
     public updatedAt: string,
   ) {}
+
+  returnForGame(){
+    return {
+      id: this.questionId,
+      body: this.body
+    }
+  }
 }
 
 export type questionOutputSaType = {
@@ -57,4 +64,11 @@ export class Questions {
   createdAt: string;
   @Column({ type: 'timestamptz' })
   updatedAt: string;
+
+  returnForGame(){
+    return {
+      id: this.questionId,
+      body: this.body
+    }
+  }
 }
