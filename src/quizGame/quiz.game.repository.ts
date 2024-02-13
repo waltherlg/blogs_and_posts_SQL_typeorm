@@ -191,4 +191,30 @@ async getActiveGameByUserId(userId): Promise<QuizGames | null> {
       .getOne();
     return !!game;
   }
+
+  async getAllGames(userId?){
+    const queryBuilder = this.quizGamesRepository.createQueryBuilder('game')
+    queryBuilder
+    .select([
+      'game',
+      'answers',
+      'player1.userId',
+      'player1.login',
+      'player2.userId',
+      'player2.login',
+      'questions',
+    ])
+    .leftJoin('game.answers', 'answers')
+    .leftJoin('game.player1', 'player1')
+    .leftJoin('game.player2', 'player2')
+    .leftJoin('game.questions', 'questions')
+
+    if(userId){
+      queryBuilder.where('(game.player1Id = :userId  OR game.player2Id = :userId)', {
+        userId: userId,
+      })
+    }
+    const games = await queryBuilder.getMany();
+    return games.map((game) => {game.returnForPlayer});
+  }
 }

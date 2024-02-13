@@ -109,6 +109,7 @@ import { PlayerRequestActiveGameUseCase } from './quizGame/use-cases/player-requ
 import { PlayerAnswersQuestionGameUseCase } from './quizGame/use-cases/player-answers-question-game-use-case';
 import { QuizAnswersRepository } from './quizGame/quiz.answers.repository';
 import { PlayerRequestGameByIdUseCase } from './quizGame/use-cases/player-request-game-by-id-use-case';
+import { PlayerRequestAllGamesUseCase } from './quizGame/use-cases/somebody-request-all-games-use-case';
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
@@ -153,6 +154,7 @@ const useCases = [
   PlayerRequestActiveGameUseCase,
   PlayerAnswersQuestionGameUseCase,
   PlayerRequestGameByIdUseCase,
+  PlayerRequestAllGamesUseCase,
 ];
 
 @Module({
