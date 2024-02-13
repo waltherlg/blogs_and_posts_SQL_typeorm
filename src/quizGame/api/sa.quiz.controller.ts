@@ -25,7 +25,7 @@ import {
   RequestQuestionsQueryModel,
 } from 'src/models/types';
 import { CheckService } from '../../other.services/check.service';
-import { CustomNotFoundException } from '../../exceptions/custom.exceptions';
+import { CustomNotFoundException, CustomisableException } from '../../exceptions/custom.exceptions';
 import {
   ActionResult,
   handleActionResult,
@@ -37,7 +37,7 @@ import { SaPublishQuestionByIdCommand } from '../use-cases/sa-publish-question-b
 import { QuizGamesRepository } from '../quiz.game.repository';
 
 @UseGuards(BasicAuthGuard)
-@Controller('quiz')
+@Controller('sa/quiz')
 export class SaQuizController {
   constructor(
     private readonly commandBus: CommandBus,
@@ -99,6 +99,9 @@ export class SaQuizController {
     @Param('questionId') questionId: string,
     @Body() publish: PublishQuestionImputModelType,
   ) {
+    if(typeof publish.published === 'string'){
+      throw new CustomisableException('published', 'value must be a boolean', 400)
+    }
     const publishResult: ActionResult = await this.commandBus.execute(
       new SaPublishQuestionByIdCommand(questionId, publish.published),
     );

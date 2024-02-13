@@ -23,7 +23,7 @@ export class SaCreateQuestionUseCase
       command.questionCreateInputDto.correctAnswers,
       false,
       new Date().toISOString(),
-      new Date().toISOString(),
+      null,
     );
     const questionId = await this.questionRepository.createQuestion(
       questionDto,

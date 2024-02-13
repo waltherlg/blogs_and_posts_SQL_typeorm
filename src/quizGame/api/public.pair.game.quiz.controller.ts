@@ -15,6 +15,7 @@ import {
   ActionResult,
   handleActionResult,
 } from 'src/helpers/enum.action.result.helper';
+import { validate as isValidUUID } from 'uuid';
 import { PlayerRequestActiveGameCommand } from '../use-cases/player-request-active-game-use-case';
 import { AnswerInputModelType } from '../quiz.answers.types';
 import { PlayerAnswersQuestionGameCommand } from '../use-cases/player-answers-question-game-use-case';
@@ -65,13 +66,10 @@ export class PublicQuizGameController {
   @UseGuards(JwtAuthGuard)
   @Get('pairs/:gameId')
   @HttpCode(200)
-  //TODO
-  // Эндпоинт GET /pair-game-quiz/pairs/:id возвращает игру
-  // текущего пользователя (того, кто делает запрос)  в любом статусе.
-  // Если игра в статусе ожидания второго игрока (status: "PendingSecondPlayer")
-  // - поля secondPlayerProgress: null, questions: null, startGameDate: null,
-  // finishGameDate: null
   async getGameById(@Req() request, @Param('gameId') gameId) {
+    if (!isValidUUID(gameId)) {
+      handleActionResult(ActionResult.InvalidIdFormat)
+    } 
     const result = await this.commandBus.execute(new PlayerRequestGameByIdCommand(gameId, request.user.userId))
     handleActionResult(result)
     return result
@@ -80,20 +78,11 @@ export class PublicQuizGameController {
   @UseGuards(JwtAuthGuard)
   @Post('pairs/my-current/answers')
   @HttpCode(200)
-  //TODO
-  // 6. Когда фиксируется пара, система рандомно выбирает из списка 5 вопросов
-  // и фиксирует их для пары  (одни и теже 5 вопросов для каждого игрока в паре).
-  // Если пары еще нет ( поле status: "PendingSecondPlayer") -
-  // список вопросов не возвращаем (поле questions: null).
-  // Если к игре подлючился второй игрок (status: "Active") - возвращаем все 5 вопросов
-  // (поле questions: [...])
-  // Участники последовательно отвечают на вопросы. Одна попытка.
-  // Ответ либо правильный либо нет.
   async putAnswers(@Req() request, @Body() answerBody: AnswerInputModelType) {
     const result = await this.commandBus.execute(
       new PlayerAnswersQuestionGameCommand(
         request.user.userId,
-        answerBody.body,
+        answerBody.answer,
       ),
     );
     handleActionResult(result);

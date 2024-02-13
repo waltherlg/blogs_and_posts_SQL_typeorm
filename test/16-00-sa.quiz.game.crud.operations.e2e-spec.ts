@@ -6,6 +6,7 @@ import { delayFunction, endpoints } from './helpers/routing';
 import { testQuestions } from './helpers/inputAndOutputObjects/questionObjects';
 import { testComments } from './helpers/inputAndOutputObjects/commentObjects';
 import { testAnswerBody } from './helpers/inputAndOutputObjects/answersObjects';
+import { enumStatusGameType } from '../src/quizGame/quiz.game.types';
 
 export function quizGameCrudOperationsSa16() {
   describe('quizGame CRUD operation SA (e2e)', () => {
@@ -25,6 +26,7 @@ export function quizGameCrudOperationsSa16() {
     let accessTokenUser1;
     let accessTokenUser2;
     let accessTokenUser3;
+    let gameId1;
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -66,6 +68,7 @@ export function quizGameCrudOperationsSa16() {
 
       if (createResponse.status === 204) {
         testQuestions.outputQuestion1Sa.published = true;
+        testQuestions.outputQuestion1Sa.updatedAt = expect.any(String)
       }
     });
 
@@ -91,6 +94,7 @@ export function quizGameCrudOperationsSa16() {
 
       if (createResponse.status === 204) {
         testQuestions.outputQuestion2Sa.published = true;
+        testQuestions.outputQuestion2Sa.updatedAt = expect.any(String)
       }
     });
 
@@ -116,6 +120,7 @@ export function quizGameCrudOperationsSa16() {
 
       if (createResponse.status === 204) {
         testQuestions.outputQuestion3Sa.published = true;
+        testQuestions.outputQuestion3Sa.updatedAt = expect.any(String)
       }
     });
 
@@ -141,6 +146,7 @@ export function quizGameCrudOperationsSa16() {
 
       if (createResponse.status === 204) {
         testQuestions.outputQuestion4Sa.published = true;
+        testQuestions.outputQuestion4Sa.updatedAt = expect.any(String)
       }
     });
 
@@ -166,6 +172,7 @@ export function quizGameCrudOperationsSa16() {
 
       if (createResponse.status === 204) {
         testQuestions.outputQuestion5Sa.published = true;
+        testQuestions.outputQuestion5Sa.updatedAt = expect.any(String)
       }
     });
 
@@ -191,6 +198,7 @@ export function quizGameCrudOperationsSa16() {
 
       if (createResponse.status === 204) {
         testQuestions.outputQuestion6Sa.published = true;
+        testQuestions.outputQuestion6Sa.updatedAt = expect.any(String)
       }
     });
 
@@ -324,7 +332,12 @@ export function quizGameCrudOperationsSa16() {
         .post(`${endpoints.pairGameQuiz}/pairs/connection`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
+
+        const createdResponseBody = createResponse.body;
+        gameId1 = createdResponseBody.id
     });
+
+    
 
     it('00-00 pair-game-quiz/pairs/connection POST = user1 get 403 if trying create new game before finish previous', async () => {
       const createResponse = await request(app.getHttpServer())
@@ -469,5 +482,17 @@ export function quizGameCrudOperationsSa16() {
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
     });
+
+    it('00-00 pairs/my-current/answers GET = user1 req finished game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.pairGameQuiz}/pairs/${gameId1}`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody.status).toEqual(enumStatusGameType.Finished);
+    });
+
+ 
   });
 }

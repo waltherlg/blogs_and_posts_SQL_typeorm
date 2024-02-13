@@ -11,7 +11,7 @@ export const endpoints = {
   posts: '/posts',
   auth: '/auth',
   devices: '/security/devices',
-  quizQuestions: '/quiz/questions',
+  quizQuestions: '/sa/quiz/questions',
   pairGameQuiz: '/pair-game-quiz',
 };
 

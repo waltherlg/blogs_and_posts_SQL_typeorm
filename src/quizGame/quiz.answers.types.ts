@@ -7,14 +7,14 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { QuizGames } from './quiz.game.types';
-import { Length } from 'class-validator';
+import { Length, MaxLength } from 'class-validator';
 import { StringTrimNotEmpty } from '../middlewares/validators';
 
 //TODO: выяснить, почему при отсутсвии body проходит валидацию
 export class AnswerInputModelType {
   @StringTrimNotEmpty()
-  @Length(1, 500)
-  body: string;
+  @Length(0, 500)
+  answer: string;
 }
 
 export enum enumAnswerGameStatus {

@@ -47,9 +47,9 @@ export type RequestQuestionsQueryModel = RequestQueryParamsModel & {
 };
 
 enum enumPublishedStatus {
-  all,
-  published,
-  notPublished,
+  all = 'all',
+  published = 'published',
+  notPublished = 'notPublished',
 }
 
 export const DEFAULT_QUESTIONS_QUERY_PARAMS: RequestQuestionsQueryModel = {

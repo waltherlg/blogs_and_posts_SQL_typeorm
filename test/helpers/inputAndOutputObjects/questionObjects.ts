@@ -1,7 +1,8 @@
 //TODO need fix
 export const testQuestions = {
+  //TODO: спросить как ЭТО проходит валидацию, если через постмен не проходит.
   inputQuestion1: {
-    body: 'question1',
+    body: 'questionBody1',
     correctAnswers: [
       'correct answer for question1',
       'answer1',
@@ -10,7 +11,7 @@ export const testQuestions = {
   },
   outputQuestion1Sa: {
     id: expect.any(String),
-    body: 'question1',
+    body: 'questionBody1',
     correctAnswers: [
       'correct answer for question1',
       'answer1',
@@ -18,7 +19,7 @@ export const testQuestions = {
     ],
     published: false,
     createdAt: expect.any(String),
-    updatedAt: expect.any(String),
+    updatedAt: null,
   },
   updateQuestion1: {
     body: 'updatedQuestion1',
@@ -40,8 +41,20 @@ export const testQuestions = {
     createdAt: expect.any(String),
     updatedAt: expect.any(String),
   },
+  updatedPublishedOutputQuestion1Sa: {
+    id: expect.any(String),
+    body: 'updatedQuestion1',
+    correctAnswers: [
+      'updated correct answer for question1',
+      'updatedAnswer1',
+      'universal correct answer',
+    ],
+    published: true,
+    createdAt: expect.any(String),
+    updatedAt: expect.any(String),
+  },
   inputQuestion2: {
-    body: 'question2',
+    body: 'questionBody2',
     correctAnswers: [
       'correct answer for question2',
       'answer2',
@@ -50,7 +63,7 @@ export const testQuestions = {
   },
   outputQuestion2Sa: {
     id: expect.any(String),
-    body: 'question2',
+    body: 'questionBody2',
     correctAnswers: [
       'correct answer for question2',
       'answer2',
@@ -58,10 +71,10 @@ export const testQuestions = {
     ],
     published: false,
     createdAt: expect.any(String),
-    updatedAt: expect.any(String),
+    updatedAt: null,
   },
   inputQuestion3: {
-    body: 'question3',
+    body: 'questionBody3',
     correctAnswers: [
       'correct answer for question3',
       'answer3',
@@ -70,7 +83,7 @@ export const testQuestions = {
   },
   outputQuestion3Sa: {
     id: expect.any(String),
-    body: 'question3',
+    body: 'questionBody3',
     correctAnswers: [
       'correct answer for question3',
       'answer3',
@@ -78,10 +91,10 @@ export const testQuestions = {
     ],
     published: false,
     createdAt: expect.any(String),
-    updatedAt: expect.any(String),
+    updatedAt: null,
   },
   inputQuestion4: {
-    body: 'question4',
+    body: 'questionBody4',
     correctAnswers: [
       'correct answer for question4',
       'answer4',
@@ -90,7 +103,7 @@ export const testQuestions = {
   },
   outputQuestion4Sa: {
     id: expect.any(String),
-    body: 'question4',
+    body: 'questionBody4',
     correctAnswers: [
       'correct answer for question4',
       'answer4',
@@ -98,10 +111,10 @@ export const testQuestions = {
     ],
     published: false,
     createdAt: expect.any(String),
-    updatedAt: expect.any(String),
+    updatedAt: null,
   },
   inputQuestion5: {
-    body: 'question5',
+    body: 'questionBody5',
     correctAnswers: [
       'correct answer for question5',
       'answer5',
@@ -110,7 +123,7 @@ export const testQuestions = {
   },
   outputQuestion5Sa: {
     id: expect.any(String),
-    body: 'question5',
+    body: 'questionBody5',
     correctAnswers: [
       'correct answer for question5',
       'answer5',
@@ -118,10 +131,10 @@ export const testQuestions = {
     ],
     published: false,
     createdAt: expect.any(String),
-    updatedAt: expect.any(String),
+    updatedAt: null,
   },
   inputQuestion6: {
-    body: 'question6',
+    body: 'questionBody6',
     correctAnswers: [
       'correct answer for question6',
       'answer6',
@@ -130,7 +143,7 @@ export const testQuestions = {
   },
   outputQuestion6Sa: {
     id: expect.any(String),
-    body: 'question6',
+    body: 'questionBody6',
     correctAnswers: [
       'correct answer for question6',
       'answer6',
@@ -138,10 +151,10 @@ export const testQuestions = {
     ],
     published: false,
     createdAt: expect.any(String),
-    updatedAt: expect.any(String),
+    updatedAt: null,
   },
   inputQuestion7: {
-    body: 'question7',
+    body: 'questionBody7',
     correctAnswers: [
       'correct answer for question7',
       'answer7',
@@ -150,7 +163,7 @@ export const testQuestions = {
   },
   outputQuestion7Sa: {
     id: expect.any(String),
-    body: 'question7',
+    body: 'questionBody7',
     correctAnswers: [
       'correct answer for question7',
       'answer7',
@@ -158,10 +171,10 @@ export const testQuestions = {
     ],
     published: false,
     createdAt: expect.any(String),
-    updatedAt: expect.any(String),
+    updatedAt: null,
   },
   inputQuestion8: {
-    body: 'question8',
+    body: 'questionBody8',
     correctAnswers: [
       'correct answer for question8',
       'answer8',
@@ -170,7 +183,7 @@ export const testQuestions = {
   },
   outputQuestion8Sa: {
     id: expect.any(String),
-    body: 'question8',
+    body: 'questionBody8',
     correctAnswers: [
       'correct answer for question8',
       'answer8',
@@ -178,10 +191,10 @@ export const testQuestions = {
     ],
     published: false,
     createdAt: expect.any(String),
-    updatedAt: expect.any(String),
+    updatedAt: null,
   },
   inputQuestion9: {
-    body: 'question9',
+    body: 'questionBody9',
     correctAnswers: [
       'correct answer for question9',
       'answer9',
@@ -190,7 +203,7 @@ export const testQuestions = {
   },
   outputQuestion9Sa: {
     id: expect.any(String),
-    body: 'question9',
+    body: 'questionBody9',
     correctAnswers: [
       'correct answer for question9',
       'answer9',
@@ -198,10 +211,10 @@ export const testQuestions = {
     ],
     published: false,
     createdAt: expect.any(String),
-    updatedAt: expect.any(String),
+    updatedAt: null,
   },
   inputQuestion10: {
-    body: 'question10',
+    body: 'questionBody10',
     correctAnswers: [
       'correct answer for question10',
       'answer10',
@@ -210,7 +223,7 @@ export const testQuestions = {
   },
   outputQuestion10Sa: {
     id: expect.any(String),
-    body: 'question10',
+    body: 'questionBody10',
     correctAnswers: [
       'correct answer for question10',
       'answer10',
@@ -218,6 +231,6 @@ export const testQuestions = {
     ],
     published: false,
     createdAt: expect.any(String),
-    updatedAt: expect.any(String),
+    updatedAt: null,
   },
 };

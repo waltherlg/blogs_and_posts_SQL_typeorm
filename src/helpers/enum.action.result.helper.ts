@@ -12,6 +12,7 @@ export enum ActionResult {
   QuestionNotFound = 'QUESTION_NOT_FOUND',
   CommentNotFound = 'COMMENT_NOT_FOUND',
   GameNotFound = 'GAME_NOT_FOUND',
+  InvalidIdFormat = 'INVALID_ID_FORMAT',
   UserAlreadyBanned = 'USER_ALREADY_BANNED',
   UserNotBanned = 'USER_NOT_BANNED',
   UserBannedForBlog = 'USER_BANNED_FOR_BLOG',
@@ -19,6 +20,7 @@ export enum ActionResult {
   NotEnoughQuestions = 'NOT_ENOUGH_QUESTIONS',
   UserAlreadyHasUnfinishedGame = 'USER_ALREADY_HAS_UNFINISHED_GAME',
   PlayerAnsweredAllQuestions = 'PLAYER_ANSWERED_ALL_QUESTIONS',
+  GameHasntStartedYet = 'GAME_HASNT_STARTED_YET',
   NoChangeNeeded = 'NO_CHANGE_NEEDED',
   NotOwner = 'CURRENT_USER_IS_NOT_OWNER',
   NotSaved = 'CHANGES_NOT_SAVED',
@@ -51,6 +53,19 @@ export function handleActionResult(result: ActionResult) {
       throw new CustomNotFoundException('question');
     case ActionResult.GameNotFound:
       throw new CustomNotFoundException('game');
+    case ActionResult.InvalidIdFormat:
+      throw new CustomisableException(
+        'id',
+        'id has invalid format',
+        400
+      ) 
+      
+    case ActionResult.GameHasntStartedYet:
+      throw new CustomisableException(
+        'game',
+        'the game hasn\'t started yet',
+        403
+      )  
 
     case ActionResult.NotOwner:
       throw new CustomisableException(

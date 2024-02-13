@@ -128,21 +128,14 @@ export class QuizGames extends QuestionDbType {
       const game: outputGameQuizType = {
         id: this.quizGameId,
         firstPlayerProgress: {
-          answers: null,
+          answers: [],
           player: {
             id: this.player1.userId,
             login: this.player1.login,
           },
           score: this.player1Score,
         },
-        secondPlayerProgress: {
-          answers: null,
-          player: {
-            id: null,
-            login: null,
-          },
-          score: this.player2Score,
-        },
+        secondPlayerProgress: null,
         questions: null,
         status: enumStatusGameType.PendingSecondPlayer,
         pairCreatedDate: this.pairCreatedDate.toISOString(),
@@ -166,7 +159,7 @@ export class QuizGames extends QuestionDbType {
         },
         secondPlayerProgress: {
           answers: this.answers
-            .filter((answer) => answer.playerNumber === 1)
+            .filter((answer) => answer.playerNumber === 2)
             .map((answer) => answer.returnForPlayer()),
           player: {
             id: this.player2.userId,
@@ -197,7 +190,7 @@ export class QuizGames extends QuestionDbType {
         },
         secondPlayerProgress: {
           answers: this.answers
-            .filter((answer) => answer.playerNumber === 1)
+            .filter((answer) => answer.playerNumber === 2)
             .map((answer) => answer.returnForPlayer()),
           player: {
             id: this.player2.userId,

@@ -36,6 +36,6 @@ describe('End-to-End Tests', () => {
   // onlyCommentLikesCrud13(); // только для проверки создания лайка для комментария
   // commentLikesWithUserBanCrud1301();
   // bloggerUsersControllers()
-  // questionCrudOperationsSa15();
+  questionCrudOperationsSa15();
   quizGameCrudOperationsSa16();
 });

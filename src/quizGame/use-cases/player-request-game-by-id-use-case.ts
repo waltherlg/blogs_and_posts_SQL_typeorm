@@ -26,12 +26,16 @@ export class PlayerRequestGameByIdUseCase
     const game = await this.quizGamesRepository.getGameByIdAnyStatus(
       command.gameId
     );
+    //console.log("айди юзера command.userId", command.userId, " игра в юзкейсе запроса игры по айди ", game);
+    
     if(!game){
       return ActionResult.GameNotFound
     }
-    if (game.player1.userId != command.userId && game.player2.userId != command.userId){
-      return ActionResult.NotOwner
+    if (game.player1.userId == command.userId || 
+      (game.player2 != null && game.player2.userId == command.userId)) {
+      return game.returnForPlayer()
     }
-    return game.returnForPlayer()
+    return ActionResult.NotOwner
+    
   }
 }

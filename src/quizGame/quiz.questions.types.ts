@@ -1,6 +1,7 @@
-import { IsArray, IsBoolean, Length } from 'class-validator';
-import { StringTrimNotEmpty } from '../middlewares/validators';
+import { IsArray, IsBoolean, Length, Validate } from 'class-validator';
+import { CustomIsBoolean, StringTrimNotEmpty } from '../middlewares/validators';
 import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { Transform } from 'class-transformer';
 
 export class CreateQuestionImputModelType {
   @StringTrimNotEmpty()
@@ -19,6 +20,9 @@ export class UpdateQuestionImputModelType {
 }
 
 export class PublishQuestionImputModelType {
+  @Transform((value)=> {
+    return value.obj.published
+  })
   @IsBoolean()
   published: boolean;
 }
@@ -30,7 +34,7 @@ export class QuestionDbType {
     public correctAnswers: any[],
     public published: boolean,
     public createdAt: string,
-    public updatedAt: string,
+    public updatedAt: string | null,
   ) {}
 
   returnForGame() {
@@ -47,7 +51,7 @@ export type questionOutputSaType = {
   correctAnswers: any[];
   published: boolean;
   createdAt: string;
-  updatedAt: string;
+  updatedAt: string | null;
 };
 
 @Entity({ name: 'Questions' })
@@ -62,8 +66,8 @@ export class Questions {
   published: boolean;
   @Column({ type: 'timestamptz' })
   createdAt: string;
-  @Column({ type: 'timestamptz' })
-  updatedAt: string;
+  @Column({ type: 'timestamptz', nullable: true })
+  updatedAt: string | null;
 
   returnForGame() {
     return {

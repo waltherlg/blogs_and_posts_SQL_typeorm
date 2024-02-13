@@ -43,6 +43,46 @@ export class LikeStatusValidator implements ValidatorConstraintInterface {
     return 'Invalid likeStatus';
   }
 }
+
+// @Injectable()
+// @ValidatorConstraint({name: 'customIsBoolean', async: false})
+// export class CustomIsBooleanValidator implements ValidatorConstraintInterface {
+//   validate(value: any, args: ValidationArguments) {
+//     if (typeof value !== 'boolean') {
+//       return false;
+//     }
+//     return true;
+//   }
+//   defaultMessage(args: ValidationArguments) {
+//     return 'The value must be boolean';
+//   }
+// }
+
+export function CustomIsBoolean(validationOptions?: ValidationOptions) {
+  return function (object: Record<string, any>, propertyName: string) {
+    registerDecorator({
+      name: 'CustomIsBoolean',
+      target: object.constructor,
+      propertyName: propertyName,
+      options: validationOptions,
+      validator: {
+        validate(value: any, args: ValidationArguments) {
+          if (typeof value === 'string') {
+            return false;
+          }
+          if (typeof value === 'boolean') {
+            return true;
+          }
+          return false;
+        },
+        defaultMessage(args: ValidationArguments) {
+          return `${args.property} must be a boolean`;
+        },
+      },
+    });
+  };
+}
+
 @Injectable()
 @ValidatorConstraint({ name: 'customUrl', async: false })
 export class CustomUrlValidator implements ValidatorConstraintInterface {
@@ -80,38 +120,7 @@ export function IsCustomUrl(validationOptions?: ValidationOptions) {
     });
   };
 }
-// @Injectable()
-// @ValidatorConstraint({ name: 'BlogId', async: true })
-// export class CustomBlogIdValidator implements ValidatorConstraintInterface {
-//   constructor(private readonly checkService: CheckService) {}
 
-//   async validate(blogId: any, args: ValidationArguments) {
-//     const isBlogIdString = isString(blogId);
-
-//     if (!isBlogIdString) {
-//       return true;
-//     }
-
-//     return await this.checkService.isBlogExist(blogId.toString());
-//   }
-
-//   defaultMessage(args: ValidationArguments) {
-//     return `must be existing blog`;
-//   }
-// }
-
-// export function BlogIdCustomValidator(validationOptions?: ValidationOptions) {
-//   return function (object: Record<string, any>, propertyName: string) {
-//     registerDecorator({
-//       name: 'BlogIdCustomValidator',
-//       target: object.constructor,
-//       propertyName: propertyName,
-//       options: validationOptions,
-//       constraints: [],
-//       validator: CustomBlogIdValidator,
-//     });
-//   };
-// }
 
 @ValidatorConstraint({ name: 'trimNotEmpty', async: false })
 export class TrimNotEmptyValidator implements ValidatorConstraintInterface {

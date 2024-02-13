@@ -33,9 +33,13 @@ export class PlayerAnswersQuestionGameUseCase
   ) {}
 
   async execute(command: PlayerAnswersQuestionGameCommand): Promise<any> {
-    const game: QuizGames =
-      await this.quizGamesRepository.getActiveGameByUserId(command.userId);
-
+    const game: QuizGames = await this.quizGamesRepository.getActiveGameByUserId(command.userId);
+    if(!game){
+      return ActionResult.NotOwner
+    }
+    if(game.status != enumStatusGameType.Active){
+      return ActionResult.GameHasntStartedYet
+    }
     let currentPlayerNumber;
     if (game.player1.userId === command.userId) {
       currentPlayerNumber = 1;
@@ -115,7 +119,7 @@ export class PlayerAnswersQuestionGameUseCase
 
     const result = await this.quizGamesRepository.saveGameChange(game);
     if (result) {
-      return answer.returnForPlayer();
+      return answer.returnForPlayer();      
     } else {
       return ActionResult.NotSaved;
     }

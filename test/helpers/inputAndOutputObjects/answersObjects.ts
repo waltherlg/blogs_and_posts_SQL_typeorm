@@ -1,8 +1,8 @@
 import { enumAnswerGameStatus } from '../../../src/quizGame/quiz.answers.types';
 
 export const testAnswerBody = {
-  correctAnswerInput: { body: 'universal correct answer' },
-  incorrectAnswerInput: { body: 'universal incorrect answer' },
+  correctAnswerInput: { answer: 'universal correct answer' },
+  incorrectAnswerInput: { answer: 'universal incorrect answer' },
   correctAnswerOutput: {
     questionId: expect.any(String),
     answerStatus: enumAnswerGameStatus.Correct,

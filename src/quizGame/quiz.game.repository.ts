@@ -86,7 +86,7 @@ export class QuizGamesRepository {
       .leftJoin('game.player2', 'player2')
       .leftJoin('game.questions', 'questions')
       .where('game.quizGameId = :gameId', { gameId: gameId });
-    const game = await gameQueryBuilder.getOne();
+    const game: QuizGames = await gameQueryBuilder.getOne();
     if(!game){
       return null
     }
@@ -94,7 +94,7 @@ export class QuizGamesRepository {
   }
 
   //TODO: get attive game (add answers)
-  async getActiveGameByUserId(userId) {
+async getActiveGameByUserId(userId): Promise<QuizGames | null> {
     if (!isValidUUID(userId)) {
       return null;
     }
@@ -121,8 +121,10 @@ export class QuizGamesRepository {
       .andWhere(
         `game.status = 'Active' OR game.status = 'PendingSecondPlayer'`,
       );
-    const game = await gameQueryBuilder.getOne();
-
+    const game: QuizGames = await gameQueryBuilder.getOne();
+    if(!game){
+      return null
+    }
     return game;
   }
 

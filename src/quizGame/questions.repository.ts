@@ -75,7 +75,7 @@ export class QuestionsRepository {
     }
     const result = await this.questionsRepository.update(
       { questionId: questionId },
-      { published: published },
+      { published: published, updatedAt: new Date().toISOString() },
     );
     return result.affected > 0;
   }
@@ -110,7 +110,6 @@ export class QuestionsRepository {
       .orderBy('RANDOM()')
       .limit(5)
       .getMany();
-
     return questions;
   }
 }

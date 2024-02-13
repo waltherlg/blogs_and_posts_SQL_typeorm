@@ -4,6 +4,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testQuestions } from './helpers/inputAndOutputObjects/questionObjects';
+import { addAppSettings } from '../src/helpers/settings';
 
 export function questionCrudOperationsSa15() {
   describe('question CRUD operation SA (e2e)', () => {
@@ -18,7 +19,8 @@ export function questionCrudOperationsSa15() {
         imports: [AppModule],
       }).compile();
 
-      app = moduleFixture.createNestApplication();
+      const rawApp = moduleFixture.createNestApplication();
+      app = addAppSettings(rawApp);
       await app.init();
     });
     afterAll(async () => {
@@ -157,6 +159,61 @@ export function questionCrudOperationsSa15() {
       const createdResponse = createResponse.body;
       const question = createdResponse.items[0];
       expect(question.published).toEqual(true);
+    });
+
+    it('00-00 quiz/questions POST = 201 create question2 with return', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(endpoints.quizQuestions)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testQuestions.inputQuestion2)
+        .expect(201);
+
+      const createdResponseBody = createResponse.body;
+      questionId2 = createdResponseBody.id;
+
+      expect(createdResponseBody).toEqual(testQuestions.outputQuestion2Sa);
+    });
+
+    it('01-01 quiz/questions GET = 200 return array with 2 questions', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.quizQuestions)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 2,
+        items: [
+          testQuestions.outputQuestion2Sa,
+          testQuestions.updatedPublishedOutputQuestion1Sa
+          ],
+      });
+    });
+
+    it('01-01 quiz/questions GET = 200 return array with ONLY published question1', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.quizQuestions)
+        .query({ publishedStatus: 'published' })
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 1,
+        items: [testQuestions.updatedPublishedOutputQuestion1Sa],
+      });
+    });
+
+    it('00-00 quiz/questions/:questionId/publish PUT = 400 if publish not boolean', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.quizQuestions}/${questionId1}/publish`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send({ published: "true" })
+        .expect(400);
     });
   });
 }
