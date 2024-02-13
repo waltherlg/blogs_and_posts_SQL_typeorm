@@ -14,6 +14,7 @@ import {
   testOutputBlogBody,
 } from './helpers/inputAndOutputObjects/blogsObjects';
 import { testBloggerBanBody } from './helpers/inputAndOutputObjects/usersObjects';
+import { addAppSettings } from '../src/helpers/settings';
 
 export function testBanUserForBlogByBlogger() {
   let accessTokenUser1;
@@ -40,7 +41,8 @@ export function testBanUserForBlogByBlogger() {
         imports: [AppModule],
       }).compile();
 
-      app = moduleFixture.createNestApplication();
+      const rawApp = moduleFixture.createNestApplication();
+      app = addAppSettings(rawApp);
       await app.init();
     });
     afterAll(async () => {

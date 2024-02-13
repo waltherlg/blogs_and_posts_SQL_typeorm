@@ -9,6 +9,7 @@ import {
   testOutputBlogBody,
 } from './helpers/inputAndOutputObjects/blogsObjects';
 import { testComments } from './helpers/inputAndOutputObjects/commentObjects';
+import { addAppSettings } from '../src/helpers/settings';
 export function commentCrudOperations() {
   describe('comment CRUD operation (e2e)', () => {
     let accessTokenUser1;
@@ -35,7 +36,8 @@ export function commentCrudOperations() {
         imports: [AppModule],
       }).compile();
 
-      app = moduleFixture.createNestApplication();
+      const rawApp = moduleFixture.createNestApplication();
+      app = addAppSettings(rawApp);
       await app.init();
     });
     afterAll(async () => {

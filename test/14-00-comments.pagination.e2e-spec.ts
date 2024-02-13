@@ -9,6 +9,7 @@ import {
   testOutputBlogBody,
 } from './helpers/inputAndOutputObjects/blogsObjects';
 import { testComments } from './helpers/inputAndOutputObjects/commentObjects';
+import { addAppSettings } from '../src/helpers/settings';
 export function commentPaginationTest14() {
   describe('comment CRUD operation if blog create SA (e2e)', () => {
     let accessTokenUser1;
@@ -34,7 +35,8 @@ export function commentPaginationTest14() {
         imports: [AppModule],
       }).compile();
 
-      app = moduleFixture.createNestApplication();
+      const rawApp = moduleFixture.createNestApplication();
+      app = addAppSettings(rawApp);
       await app.init();
     });
     afterAll(async () => {

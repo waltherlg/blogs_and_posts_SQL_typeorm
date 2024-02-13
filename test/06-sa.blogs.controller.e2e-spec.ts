@@ -8,6 +8,7 @@ import {
   testInputBlogBody,
   testOutputBlogBody,
 } from './helpers/inputAndOutputObjects/blogsObjects';
+import { addAppSettings } from '../src/helpers/settings';
 export function saBlogsControllerCrudAndBan() {
   describe('andpoints of SA blogs.controller (e2e)', () => {
     let accessTokenUser1;
@@ -28,7 +29,8 @@ export function saBlogsControllerCrudAndBan() {
         imports: [AppModule],
       }).compile();
 
-      app = moduleFixture.createNestApplication();
+      const rawApp = moduleFixture.createNestApplication();
+      app = addAppSettings(rawApp);
       await app.init();
     });
     afterAll(async () => {

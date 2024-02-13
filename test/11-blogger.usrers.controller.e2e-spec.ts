@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
+import { addAppSettings } from '../src/helpers/settings';
 export function bloggerUsersControllers() {
   describe('blogger.user.controller (e2e). ', () => {
     let app: INestApplication;
@@ -23,7 +24,8 @@ export function bloggerUsersControllers() {
         imports: [AppModule],
       }).compile();
 
-      app = moduleFixture.createNestApplication();
+      const rawApp = moduleFixture.createNestApplication();
+      app = addAppSettings(rawApp);
       await app.init();
     });
     afterAll(async () => {

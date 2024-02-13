@@ -4,6 +4,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testComments } from './helpers/inputAndOutputObjects/commentObjects';
+import { addAppSettings } from '../src/helpers/settings';
 export function onlyCommentLikesCrud13() {
   describe('COmment Likes Crud CRUD operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
@@ -24,7 +25,8 @@ export function onlyCommentLikesCrud13() {
         imports: [AppModule],
       }).compile();
 
-      app = moduleFixture.createNestApplication();
+      const rawApp = moduleFixture.createNestApplication();
+      app = addAppSettings(rawApp);
       await app.init();
     });
     afterAll(async () => {

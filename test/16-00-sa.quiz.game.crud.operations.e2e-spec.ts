@@ -7,6 +7,7 @@ import { testQuestions } from './helpers/inputAndOutputObjects/questionObjects';
 import { testComments } from './helpers/inputAndOutputObjects/commentObjects';
 import { testAnswerBody } from './helpers/inputAndOutputObjects/answersObjects';
 import { enumStatusGameType } from '../src/quizGame/quiz.game.types';
+import { addAppSettings } from '../src/helpers/settings';
 
 export function quizGameCrudOperationsSa16() {
   describe('quizGame CRUD operation SA (e2e)', () => {
@@ -33,7 +34,8 @@ export function quizGameCrudOperationsSa16() {
         imports: [AppModule],
       }).compile();
 
-      app = moduleFixture.createNestApplication();
+      const rawApp = moduleFixture.createNestApplication();
+      app = addAppSettings(rawApp);
       await app.init();
     });
     afterAll(async () => {

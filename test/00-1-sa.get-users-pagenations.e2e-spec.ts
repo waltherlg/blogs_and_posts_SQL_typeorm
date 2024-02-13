@@ -9,6 +9,7 @@ import {
   testUserPag,
 } from './helpers/inputAndOutputObjects/usersObjects';
 import { log } from 'console';
+import { addAppSettings } from '../src/helpers/settings';
 
 export function testSaUsersGetWithPagination() {
   describe('sa users getting with pagination (e2e)', () => {
@@ -26,7 +27,8 @@ export function testSaUsersGetWithPagination() {
         imports: [AppModule],
       }).compile();
 
-      app = moduleFixture.createNestApplication();
+      const rawApp = moduleFixture.createNestApplication();
+      app = addAppSettings(rawApp);
       await app.init();
     });
     afterAll(async () => {

@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { delayFunction, endpoints } from './helpers/routing';
+import { addAppSettings } from '../src/helpers/settings';
 
 const delay = async (ms: number) => {
   return new Promise<void>((resolve, reject) => {
@@ -32,7 +33,8 @@ export function testPostLikesCrud08() {
         imports: [AppModule],
       }).compile();
 
-      app = moduleFixture.createNestApplication();
+      const rawApp = moduleFixture.createNestApplication();
+      app = addAppSettings(rawApp);
       await app.init();
     });
     afterAll(async () => {

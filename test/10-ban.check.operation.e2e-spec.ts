@@ -4,6 +4,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testUser } from './helpers/inputAndOutputObjects/usersObjects';
+import { addAppSettings } from '../src/helpers/settings';
 export function banCheckOperation() {
   describe('Checking User Ban for Get Requests (e2e). ', () => {
     let app: INestApplication;
@@ -24,7 +25,8 @@ export function banCheckOperation() {
         imports: [AppModule],
       }).compile();
 
-      app = moduleFixture.createNestApplication();
+      const rawApp = moduleFixture.createNestApplication();
+      app = addAppSettings(rawApp);
       await app.init();
     });
     afterAll(async () => {

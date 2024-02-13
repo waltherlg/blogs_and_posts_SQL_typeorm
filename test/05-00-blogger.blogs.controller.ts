@@ -4,6 +4,7 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testUser } from './helpers/inputAndOutputObjects/usersObjects';
+import { addAppSettings } from '../src/helpers/settings';
 export function testBloggerCrudOnlyBlogs() {
   describe('Blogger CRUD operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
@@ -21,7 +22,8 @@ export function testBloggerCrudOnlyBlogs() {
         imports: [AppModule],
       }).compile();
 
-      app = moduleFixture.createNestApplication();
+      const rawApp = moduleFixture.createNestApplication();
+      app = addAppSettings(rawApp);
       await app.init();
     });
     afterAll(async () => {
