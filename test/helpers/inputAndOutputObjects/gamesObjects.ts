@@ -8,7 +8,7 @@ export let testGames = {
             id: expect.any(String),
             login: expect.any(String),
           },
-          score: expect.any(Number),
+          score: 0,
         },
         secondPlayerProgress: {
           answers: expect.any(Array),
@@ -16,7 +16,7 @@ export let testGames = {
             id: expect.any(String),
             login: expect.any(String),
           },
-          score: expect.any(Number),
+          score: 0,
         },
         questions: expect.any(Array),
         status: 'Active',
