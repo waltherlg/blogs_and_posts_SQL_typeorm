@@ -214,7 +214,10 @@ async getActiveGameByUserId(userId): Promise<QuizGames | null> {
         userId: userId,
       })
     }
+    
+    
     const games = await queryBuilder.getMany();
-    return games.map((game) => {game.returnForPlayer});
+    console.log("игры в запросе все игры ", games);
+    return games.map((game) => game.returnForPlayer());
   }
 }

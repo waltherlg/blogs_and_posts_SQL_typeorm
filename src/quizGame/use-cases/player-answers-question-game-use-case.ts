@@ -98,23 +98,37 @@ export class PlayerAnswersQuestionGameUseCase
       game[playerScores[currentPlayerNumber]]++;
     }
 
+    // if (numberOfPlayerAnswers === 4) {
+    //   if (game[playerScores[currentPlayerNumber]] > 0) {
+    //     const numberOfOpposingPlayersAnswer = answersArray.filter(
+    //       (answer) => answer.playerNumber !== currentPlayerNumber,
+    //     ).length;
+    //     if (numberOfOpposingPlayersAnswer < 5) {
+    //       game[playerScores[currentPlayerNumber]]++;
+    //     } else {
+    //       game.status = enumStatusGameType.Finished;
+    //       game.finishGameDate = new Date();
+    //     }
+    //   }
+    // }
+
     if (numberOfPlayerAnswers === 4) {
-      if (game[playerScores[currentPlayerNumber]] > 0) {
-        const numberOfOpposingPlayersAnswer = answersArray.filter(
-          (answer) => answer.playerNumber !== currentPlayerNumber,
-        ).length;
-        if (numberOfOpposingPlayersAnswer < 5) {
+      const numberOfOpposingPlayersAnswer = answersArray.filter(
+        (answer) => answer.playerNumber !== currentPlayerNumber,
+      ).length;
+      if (numberOfOpposingPlayersAnswer < 5) {
+        if (game[playerScores[currentPlayerNumber]] > 0) {
           game[playerScores[currentPlayerNumber]]++;
-        } else {
-          game.status = enumStatusGameType.Finished;
-          game.finishGameDate = new Date();
         }
+      } else {
+        game.status = enumStatusGameType.Finished;
+        game.finishGameDate = new Date();
       }
     }
 
     //console.log("количество ответов ", numberOfPlayerAnswers, " ответ ", answer);
     //console.log("game before answer push ", game);
-    game.answers.push(answer);
+    game.answers.unshift(answer);
     //console.log("game after answer push ", game);
 
     const result = await this.quizGamesRepository.saveGameChange(game);

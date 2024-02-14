@@ -356,9 +356,18 @@ export function quizGameCrudOperationsSa16() {
         .expect(200);
     });
 
+
+
     it('00-00 pair-game-quiz/pairs/connection POST = user2 join to game1', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.pairGameQuiz}/pairs/connection`)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+    });
+
+    it('00-00 pair-game-quiz/pairs/my-current GET = user2 req own game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.pairGameQuiz}/pairs/my-current`)
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(200);
     });
