@@ -1,24 +1,49 @@
 export let testGames = {
 
+    outputGameForDynamicChanges: {
+        id: expect.any(String),
+        firstPlayerProgress: {
+          answers: expect.any(Array),
+          player: {
+            id: expect.any(String),
+            login: expect.any(String),
+          },
+          score: expect.any(Number),
+        },
+        secondPlayerProgress: {
+          answers: expect.any(Array),
+          player: {
+            id: expect.any(String),
+            login: expect.any(String),
+          },
+          score: expect.any(Number),
+        },
+        questions: expect.any(Array),
+        status: 'Active',
+        pairCreatedDate: expect.any(String),
+        startGameDate: expect.any(String),
+        finishGameDate: null,
+        },
+
     outputActiveGame: {
     id: expect.any(String),
     firstPlayerProgress: {
       answers: expect.any(Array),
       player: {
-        id: expect.any(Array),
-        login: expect.any(Array),
+        id: expect.any(String),
+        login: expect.any(String),
       },
       score: expect.any(Number),
     },
     secondPlayerProgress: {
       answers: expect.any(Array),
       player: {
-        id: expect.any(Array),
-        login: expect.any(Array),
+        id: expect.any(String),
+        login: expect.any(String),
       },
       score: expect.any(Number),
     },
-    questions: expect.any(Array.length === 5),
+    questions: expect.any(Array),
     status: 'Active',
     pairCreatedDate: expect.any(String),
     startGameDate: expect.any(String),
@@ -30,8 +55,8 @@ export let testGames = {
         firstPlayerProgress: {
           answers: expect.any(Array),
           player: {
-            id: expect.any(Array),
-            login: expect.any(Array),
+            id: expect.any(String),
+            login: expect.any(String),
           },
           score: expect.any(Number),
         },
@@ -46,22 +71,22 @@ export let testGames = {
     outputFinishedGame: {
         id: expect.any(String),
         firstPlayerProgress: {
-          answers: expect.any(Array.length === 5),
+          answers: expect.any(Array),
           player: {
-            id: expect.any(Array),
-            login: expect.any(Array),
+            id: expect.any(String),
+            login: expect.any(String),
           },
           score: expect.any(Number),
         },
         secondPlayerProgress: {
-          answers: expect.any(Array.length === 5),
+          answers: expect.any(Array),
           player: {
-            id: expect.any(Array),
-            login: expect.any(Array),
+            id: expect.any(String),
+            login: expect.any(String),
           },
           score: expect.any(Number),
         },
-        questions: expect.any(Array.length === 5),
+        questions: expect.any(Array),
         status: 'Finished',
         pairCreatedDate: expect.any(String),
         startGameDate: expect.any(String),

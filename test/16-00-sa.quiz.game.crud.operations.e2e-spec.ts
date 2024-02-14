@@ -8,9 +8,10 @@ import { testComments } from './helpers/inputAndOutputObjects/commentObjects';
 import { testAnswerBody } from './helpers/inputAndOutputObjects/answersObjects';
 import { enumStatusGameType } from '../src/quizGame/quiz.game.types';
 import { addAppSettings } from '../src/helpers/settings';
+import { testGames } from './helpers/inputAndOutputObjects/gamesObjects';
 
 export function quizGameCrudOperationsSa16() {
-  describe('quizGame CRUD operation SA (e2e)', () => {
+  describe('---------- quizGame CRUD operation SA (e2e) -------------', () => {
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
@@ -241,16 +242,6 @@ export function quizGameCrudOperationsSa16() {
       });
     });
 
-    // it('01-01 quiz/questions GET = 200 return array with published question1', async () => {
-    //   const createResponse = await request(app.getHttpServer())
-    //     .get(endpoints.quizQuestions)
-    //     .set('Authorization', `Basic ${basicAuthRight}`)
-    //     .expect(200);
-    //   const createdResponse = createResponse.body;
-    //   const question = createdResponse.items[0];
-    //   expect(question.published).toEqual(true);
-    // });
-
     it('00-00 sa/users post = 201 create user1 with return', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(endpoints.saUsers)
@@ -337,9 +328,11 @@ export function quizGameCrudOperationsSa16() {
 
         const createdResponseBody = createResponse.body;
         gameId1 = createdResponseBody.id
-    });
+        expect(createdResponseBody).toEqual(testGames.outputPandingGame);
+        testGames.outputActiveGame.id = gameId1
+        testGames.outputGameForDynamicChanges.firstPlayerProgress.player.id = userId1
 
-    
+    });
 
     it('00-00 pair-game-quiz/pairs/connection POST = user1 get 403 if trying create new game before finish previous', async () => {
       const createResponse = await request(app.getHttpServer())
@@ -348,21 +341,33 @@ export function quizGameCrudOperationsSa16() {
         .expect(403);
     });
 
-    //TODO: need finish (check body)
     it('00-00 pair-game-quiz/pairs/my-current GET = user1 req own game', async () => {
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.pairGameQuiz}/pairs/my-current`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
+        const createdResponseBody = createResponse.body;
+        expect(createdResponseBody).toEqual(testGames.outputPandingGame);
     });
-
-
 
     it('00-00 pair-game-quiz/pairs/connection POST = user2 join to game1', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.pairGameQuiz}/pairs/connection`)
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(200);
+
+        const createdResponseBody = createResponse.body;
+        expect(createdResponseBody).toEqual(testGames.outputActiveGame);
+        testGames.outputActiveGame.id = gameId1
+    });
+
+    it('00-00 pair-game-quiz/pairs/my-current GET = user1 req own game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.pairGameQuiz}/pairs/my-current`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+        const createdResponseBody = createResponse.body;
+        expect(createdResponseBody).toEqual(testGames.outputGameForDynamicChanges);
     });
 
     it('00-00 pair-game-quiz/pairs/my-current GET = user2 req own game', async () => {
@@ -494,14 +499,14 @@ export function quizGameCrudOperationsSa16() {
       expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
     });
 
-    it('00-00 pairs/my-current/answers GET = user1 req finished game', async () => {
+    it('00-00 pairs/:gameId GET = user1 req finished game', async () => {
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.pairGameQuiz}/pairs/${gameId1}`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
 
       const createdResponseBody = createResponse.body;
-      expect(createdResponseBody.status).toEqual(enumStatusGameType.Finished);
+      expect(createdResponseBody).toEqual(testGames.outputFinishedGame);
     });
 
  
