@@ -150,6 +150,7 @@ export class QuizGames extends QuestionDbType {
         firstPlayerProgress: {
           answers: this.answers
             .filter((answer) => answer.playerNumber === 1)
+            .sort((a, b) => new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime())
             .map((answer) => answer.returnForPlayer()),
           player: {
             id: this.player1.userId,
@@ -160,6 +161,7 @@ export class QuizGames extends QuestionDbType {
         secondPlayerProgress: {
           answers: this.answers
             .filter((answer) => answer.playerNumber === 2)
+            .sort((a, b) => new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime())
             .map((answer) => answer.returnForPlayer()),
           player: {
             id: this.player2.userId,
@@ -181,6 +183,7 @@ export class QuizGames extends QuestionDbType {
         firstPlayerProgress: {
           answers: this.answers
             .filter((answer) => answer.playerNumber === 1)
+            .sort((a, b) => new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime())
             .map((answer) => answer.returnForPlayer()),
           player: {
             id: this.player1.userId,
@@ -191,6 +194,7 @@ export class QuizGames extends QuestionDbType {
         secondPlayerProgress: {
           answers: this.answers
             .filter((answer) => answer.playerNumber === 2)
+            .sort((a, b) => new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime())
             .map((answer) => answer.returnForPlayer()),
           player: {
             id: this.player2.userId,

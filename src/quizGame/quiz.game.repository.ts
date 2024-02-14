@@ -91,7 +91,6 @@ export class QuizGamesRepository {
     if(!game){
       return null
     }
-    console.log("getActiveGameByUserId ", game.questions);
     return game;
   }
 
@@ -127,9 +126,7 @@ async getActiveGameByUserId(userId): Promise<QuizGames | null> {
     const game: QuizGames = await gameQueryBuilder.getOne();
     if(!game){
       return null
-    }
-    console.log("getActiveGameByUserId ", game.questions);
-    
+    }    
     return game;
   }
 
