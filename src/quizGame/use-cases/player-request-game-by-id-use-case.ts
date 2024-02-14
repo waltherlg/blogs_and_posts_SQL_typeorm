@@ -31,8 +31,8 @@ export class PlayerRequestGameByIdUseCase
     if(!game){
       return ActionResult.GameNotFound
     }
-    if (game.player1.userId == command.userId || 
-      (game.player2 != null && game.player2.userId == command.userId)) {
+    if (game.player1.userId === command.userId || 
+      (game.player2 != null && game.player2.userId === command.userId)) {
       return game.returnForPlayer()
     }
     return ActionResult.NotOwner

@@ -85,11 +85,13 @@ export class QuizGamesRepository {
       .leftJoin('game.player1', 'player1')
       .leftJoin('game.player2', 'player2')
       .leftJoin('game.questions', 'questions')
-      .where('game.quizGameId = :gameId', { gameId: gameId });
+      .where('game.quizGameId = :gameId', { gameId: gameId })
+      .orderBy('questions.createdAt', 'ASC');
     const game: QuizGames = await gameQueryBuilder.getOne();
     if(!game){
       return null
     }
+    console.log("getActiveGameByUserId ", game.questions);
     return game;
   }
 
@@ -120,11 +122,14 @@ async getActiveGameByUserId(userId): Promise<QuizGames | null> {
       })
       .andWhere(
         `game.status = 'Active' OR game.status = 'PendingSecondPlayer'`,
-      );
+      )
+      .orderBy('questions.createdAt', 'ASC');
     const game: QuizGames = await gameQueryBuilder.getOne();
     if(!game){
       return null
     }
+    console.log("getActiveGameByUserId ", game.questions);
+    
     return game;
   }
 
