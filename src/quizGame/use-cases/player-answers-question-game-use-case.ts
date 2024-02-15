@@ -37,7 +37,7 @@ export class PlayerAnswersQuestionGameUseCase
     if(!game){
       return ActionResult.NotOwner
     }
-    if(game.status != enumStatusGameType.Active){
+    if(game.status !== enumStatusGameType.Active){
       return ActionResult.GameHasntStartedYet
     }
     let currentPlayerNumber;
@@ -98,33 +98,37 @@ export class PlayerAnswersQuestionGameUseCase
       game[playerScores[currentPlayerNumber]]++;
     }
 
-    // if (numberOfPlayerAnswers === 4) {
-    //   if (game[playerScores[currentPlayerNumber]] > 0) {
-    //     const numberOfOpposingPlayersAnswer = answersArray.filter(
-    //       (answer) => answer.playerNumber !== currentPlayerNumber,
-    //     ).length;
-    //     if (numberOfOpposingPlayersAnswer < 5) {
-    //       game[playerScores[currentPlayerNumber]]++;
-    //     } else {
-    //       game.status = enumStatusGameType.Finished;
-    //       game.finishGameDate = new Date();
-    //     }
-    //   }
-    // }
 
+    // current player add last answer
     if (numberOfPlayerAnswers === 4) {
       const numberOfOpposingPlayersAnswer = answersArray.filter(
         (answer) => answer.playerNumber !== currentPlayerNumber,
       ).length;
+      // if oppos player dint finish his game
       if (numberOfOpposingPlayersAnswer < 5) {
+
         if (game[playerScores[currentPlayerNumber]] > 0) {
           game[playerScores[currentPlayerNumber]]++;
         }
+
       } else {
         game.status = enumStatusGameType.Finished;
         game.finishGameDate = new Date();
       }
     }
+
+    // if (numberOfPlayerAnswers === 4) {
+    //   const numberOfOpposingPlayersAnswer = answersArray.filter(
+    //     (answer) => answer.playerNumber !== currentPlayerNumber,
+    //   ).length;
+    //   if (numberOfOpposingPlayersAnswer >= 5) {
+    //     if (game[playerScores[currentPlayerNumber]] > 0) {
+    //       game[playerScores[currentPlayerNumber]]++;
+    //     }
+    //     game.status = enumStatusGameType.Finished;
+    //     game.finishGameDate = new Date();
+    //   } 
+    // }
 
     //console.log("количество ответов ", numberOfPlayerAnswers, " ответ ", answer);
     //console.log("game before answer push ", game);
