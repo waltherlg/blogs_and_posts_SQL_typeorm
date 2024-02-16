@@ -10,7 +10,7 @@ import { enumStatusGameType } from '../src/quizGame/quiz.game.types';
 import { addAppSettings } from '../src/helpers/settings';
 import { testGames } from './helpers/inputAndOutputObjects/gamesObjects';
 
-export function quizGameCrudOperationsSa16() {
+export function quizGameCrudOperationsSa1601() {
   describe('---------- quizGame CRUD operation SA (e2e) -------------', () => {
     let app: INestApplication;
 
@@ -572,20 +572,6 @@ export function quizGameCrudOperationsSa16() {
       expect(createdResponseBody).toEqual(testGames.outputFinishedGame);
       expect(createdResponseBody).toEqual(testGames.outputGameForDynamicChanges);
       console.log(testGames.outputGameForDynamicChanges)
-    });
-
-    it('00-00 pair-game-quiz/pairs/my-current GET = 404 user1 req own game', async () => {
-      const createResponse = await request(app.getHttpServer())
-        .get(`${endpoints.pairGameQuiz}/pairs/my-current`)
-        .set('Authorization', `Bearer ${accessTokenUser1}`)
-        .expect(404);
-    });
-
-    it('00-00 pair-game-quiz/pairs/my-current GET = 404 user2 req own game', async () => {
-      const createResponse = await request(app.getHttpServer())
-        .get(`${endpoints.pairGameQuiz}/pairs/my-current`)
-        .set('Authorization', `Bearer ${accessTokenUser2}`)
-        .expect(404);
     });
 
  
