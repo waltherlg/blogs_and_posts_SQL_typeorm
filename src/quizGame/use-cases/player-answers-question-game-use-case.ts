@@ -112,18 +112,34 @@ export class PlayerAnswersQuestionGameUseCase
     //   }
     // }
 
+    // if (numberOfPlayerAnswers === 4) {
+    //   const numberOfOpposingPlayersAnswer = answersArray.filter(
+    //     (answer) => answer.playerNumber !== currentPlayerNumber,
+    //   ).length;
+    //   if (numberOfOpposingPlayersAnswer < 5) {
+    //     if (game[playerScores[currentPlayerNumber]] > 0) {
+    //       game[playerScores[currentPlayerNumber]]++;
+    //     }
+    //   } else {
+    //     game.status = enumStatusGameType.Finished;
+    //     game.finishGameDate = new Date();
+    //   }
+    // }
+
     if (numberOfPlayerAnswers === 4) {
       const numberOfOpposingPlayersAnswer = answersArray.filter(
         (answer) => answer.playerNumber !== currentPlayerNumber,
       ).length;
-      if (numberOfOpposingPlayersAnswer < 5) {
-        if (game[playerScores[currentPlayerNumber]] > 0) {
-          game[playerScores[currentPlayerNumber]]++;
-        }
-      } else {
+      if (numberOfOpposingPlayersAnswer === 5) {
         game.status = enumStatusGameType.Finished;
         game.finishGameDate = new Date();
-      }
+        if (game.player1Score > 0 && game.player1Score > game.player2Score) {
+          game.player1Score ++
+        }
+        if (game.player2Score > 0 && game.player2Score > game.player1Score) {
+          game.player2Score ++
+        }
+      } 
     }
 
     //console.log("количество ответов ", numberOfPlayerAnswers, " ответ ", answer);
