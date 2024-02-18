@@ -18,6 +18,7 @@ import {
   enumAnswerGameStatus,
 } from '../quiz.answers.types';
 import { QuizAnswersRepository } from '../quiz.answers.repository';
+import { swapPlayerNumber } from '../../helpers/helpers.functions';
 
 export class PlayerAnswersQuestionGameCommand {
   constructor(public userId: string, public answerBody: string) {}
@@ -81,14 +82,6 @@ export class PlayerAnswersQuestionGameUseCase
       game,
     );
 
-    // if (answerStatus === enumAnswerGameStatus.Correct) {
-    //   if (currentPlayerNumber === 1) {
-    //     game.player1Score++;
-    //   } else {
-    //     game.player2Score++;
-    //   }
-    // }
-
     const playerScores = {
       1: 'player1Score',
       2: 'player2Score',
@@ -98,55 +91,21 @@ export class PlayerAnswersQuestionGameUseCase
       game[playerScores[currentPlayerNumber]]++;
     }
 
-
-    // if (numberOfPlayerAnswers === 4) {
-    //   const numberOfOpposingPlayersAnswer = answersArray.filter(
-    //     (answer) => answer.playerNumber !== currentPlayerNumber,
-    //   ).length;
-    //   if (numberOfOpposingPlayersAnswer < 5) {
-    //     if (game[playerScores[currentPlayerNumber]] > 0) {
-    //       game[playerScores[currentPlayerNumber]]++;
-    //     }
-    //   } else {
-    //     game.status = enumStatusGameType.Finished;
-    //     game.finishGameDate = new Date();
-    //   }
-    // }
-
-    // current player add last answer
     if (numberOfPlayerAnswers === 4) {
       const numberOfOpposingPlayersAnswer = answersArray.filter(
         (answer) => answer.playerNumber !== currentPlayerNumber,
       ).length;
+
       if (numberOfOpposingPlayersAnswer === 5) {
         game.status = enumStatusGameType.Finished;
         game.finishGameDate = new Date();
-        if (game.player1Score > 0 && game.player1Score > game.player2Score) {
-          game.player1Score ++
+        const OpposingPlayerNumber = swapPlayerNumber(currentPlayerNumber)
+        if(game[playerScores[OpposingPlayerNumber]] > 0){
+          game[playerScores[OpposingPlayerNumber]] ++
         }
-        if (game.player2Score > 0 && game.player2Score > game.player1Score) {
-          game.player2Score ++
-        }
-      } 
+      }
     }
-
-    // if (numberOfPlayerAnswers === 4) {
-    //   const numberOfOpposingPlayersAnswer = answersArray.filter(
-    //     (answer) => answer.playerNumber !== currentPlayerNumber,
-    //   ).length;
-    //   if (numberOfOpposingPlayersAnswer >= 5) {
-    //     if (game[playerScores[currentPlayerNumber]] > 0) {
-    //       game[playerScores[currentPlayerNumber]]++;
-    //     }
-    //     game.status = enumStatusGameType.Finished;
-    //     game.finishGameDate = new Date();
-    //   } 
-    // }
-
-    //console.log("количество ответов ", numberOfPlayerAnswers, " ответ ", answer);
-    //console.log("game before answer push ", game);
     game.answers.unshift(answer);
-    //console.log("game after answer push ", game);
 
     const result = await this.quizGamesRepository.saveGameChange(game);
     if (result) {

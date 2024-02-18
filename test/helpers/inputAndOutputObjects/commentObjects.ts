@@ -100,6 +100,12 @@ export const testComments = {
     loginOrEmail: 'user4',
     password: 'qwerty',
   },
+  outputUser4Sa: {
+    id: expect.any(String),
+    login: 'user4',
+    email: 'ruslan@gmail-4.com',
+    createdAt: expect.any(String),
+  },
 
   inputUser5: {
     login: 'user5',
