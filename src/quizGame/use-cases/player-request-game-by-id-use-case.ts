@@ -12,7 +12,6 @@ import { QuizGamesRepository } from '../quiz.game.repository';
 export class PlayerRequestGameByIdCommand {
   constructor(public gameId: string, public userId: string) {}
 }
-//TODO need finish
 @CommandHandler(PlayerRequestGameByIdCommand)
 export class PlayerRequestGameByIdUseCase
   implements ICommandHandler<PlayerRequestGameByIdCommand>
@@ -26,7 +25,6 @@ export class PlayerRequestGameByIdUseCase
     const game = await this.quizGamesRepository.getGameByIdAnyStatus(
       command.gameId
     );
-    //console.log("айди юзера command.userId", command.userId, " игра в юзкейсе запроса игры по айди ", game);
     
     if(!game){
       return ActionResult.GameNotFound

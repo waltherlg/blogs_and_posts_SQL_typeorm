@@ -16,21 +16,17 @@ import { QuizGamesRepository } from '../quiz.game.repository';
 export class PlayerRequestActiveGameCommand {
   constructor(public userId: string) {}
 }
-//TODO need finish
 @CommandHandler(PlayerRequestActiveGameCommand)
 export class PlayerRequestActiveGameUseCase
   implements ICommandHandler<PlayerRequestActiveGameCommand>
 {
   constructor(
-    private readonly questionRepository: QuestionsRepository,
     private readonly quizGamesRepository: QuizGamesRepository,
   ) {}
 
   async execute(command: PlayerRequestActiveGameCommand): Promise<any> {
     const game: QuizGames =
       await this.quizGamesRepository.getActiveGameByUserId(command.userId);
-    // console.log("игра в юзкейсе запроса активной игры ", game);
-    // console.log("ответы в вопросах в игре ", game.questions[0].correctAnswers)
     if (!game) {
       return ActionResult.GameNotFound;
     }

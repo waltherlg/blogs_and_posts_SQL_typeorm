@@ -167,7 +167,7 @@ export class BlogsQueryRepository {
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
 
-    const queryBuilder = this.blogsRepository.createQueryBuilder('blog'); // TODO: разобраться с тем как выглядит документ, выходящий из бд
+    const queryBuilder = this.blogsRepository.createQueryBuilder('blog');
     queryBuilder
       .select([
         'blog.blogId',

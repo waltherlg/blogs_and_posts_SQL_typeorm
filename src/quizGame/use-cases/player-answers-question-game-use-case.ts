@@ -23,7 +23,6 @@ import { swapPlayerNumber } from '../../helpers/helpers.functions';
 export class PlayerAnswersQuestionGameCommand {
   constructor(public userId: string, public answerBody: string) {}
 }
-//TODO затычка, просто создает ответ и отправляет его в игру
 @CommandHandler(PlayerAnswersQuestionGameCommand)
 export class PlayerAnswersQuestionGameUseCase
   implements ICommandHandler<PlayerAnswersQuestionGameCommand>

@@ -31,13 +31,6 @@ export class PublicQuizGameController {
   @UseGuards(JwtAuthGuard)
   @Post('pairs/connection')
   @HttpCode(200)
-  //TODO
-  // 1. Я как зарегестрированный пользователь могу соревноваться в квизе попарно
-  // (с другим зарегестрированным пользователем)
-  // 2. Я нажимают кнопку: соревноваться (join)
-  // 3. Если есть игрок в ожидании - создаётся пара: я + этот игрок
-  // 4. Если нет, я становлюсь игроком в ожидании и могу стать парой для
-  // следующего, кто нажмёт соревноваться
   async ConnectOrCreateGame(@Req() request) {
     //TODO: разобраться с типизацией, почему результат не может быть стринг
     const result = await this.commandBus.execute(
@@ -54,10 +47,6 @@ export class PublicQuizGameController {
   @UseGuards(JwtAuthGuard)
   @Get('pairs/my-current')
   @HttpCode(200)
-  //TODO
-  //Эндпоинт GET /pair-game-quiz/pairs/my-current
-  // возвращает активную игру текущего пользователя (того, кто делает запрос)
-  // в статусе "PendingSecondPlayer" или "Active".
   async ReturnActiveGame(@Req() request) {
     const result = await this.commandBus.execute(
       new PlayerRequestActiveGameCommand(request.user.userId),

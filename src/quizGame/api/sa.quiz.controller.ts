@@ -94,7 +94,6 @@ export class SaQuizController {
 
   @Put('questions/:questionId/publish')
   @HttpCode(204)
-  //TODO
   async publishQuestionById(
     @Param('questionId') questionId: string,
     @Body() publish: PublishQuestionImputModelType,

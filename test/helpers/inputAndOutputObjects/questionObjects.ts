@@ -1,6 +1,5 @@
-//TODO need fix
+
 export const testQuestions = {
-  //TODO: спросить как ЭТО проходит валидацию, если через постмен не проходит.
   inputQuestion1: {
     body: 'questionBody1',
     correctAnswers: [
