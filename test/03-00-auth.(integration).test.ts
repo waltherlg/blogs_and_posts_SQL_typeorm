@@ -101,9 +101,9 @@ export function testAuthOperations() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      const refreshTokenCookie = (createResponse.headers['set-cookie'] as unknown as string[]).find(
-        (cookie) => cookie.startsWith('refreshToken='),
-      );
+      const refreshTokenCookie = (
+        createResponse.headers['set-cookie'] as unknown as string[]
+      ).find((cookie) => cookie.startsWith('refreshToken='));
 
       expect(refreshTokenCookie).toBeDefined();
       expect(refreshTokenCookie).toContain('HttpOnly');
@@ -183,9 +183,9 @@ export function testAuthOperations() {
         });
         expect(createResponse.headers['set-cookie']).toBeDefined();
 
-        refreshTokenCookie = (createResponse.headers['set-cookie'] as unknown as string[]).find(
-          (cookie) => cookie.startsWith('refreshToken='),
-        );
+        refreshTokenCookie = (
+          createResponse.headers['set-cookie'] as unknown as string[]
+        ).find((cookie) => cookie.startsWith('refreshToken='));
 
         expect(refreshTokenCookie).toBeDefined();
         expect(refreshTokenCookie).toContain('HttpOnly');
@@ -206,9 +206,9 @@ export function testAuthOperations() {
         });
         expect(createResponse.headers['set-cookie']).toBeDefined();
 
-        refreshTokenCookie2 = (createResponse.headers['set-cookie'] as unknown as string[]).find(
-          (cookie) => cookie.startsWith('refreshToken='),
-        );
+        refreshTokenCookie2 = (
+          createResponse.headers['set-cookie'] as unknown as string[]
+        ).find((cookie) => cookie.startsWith('refreshToken='));
 
         expect(refreshTokenCookie2).toBeDefined();
         expect(refreshTokenCookie2).toContain('HttpOnly');
@@ -226,9 +226,9 @@ export function testAuthOperations() {
         const createdResponse = createResponse.body;
         expect(createResponse.headers['set-cookie']).toBeDefined();
 
-        refreshTokenNotValidCookie = (createResponse.headers['set-cookie'] as unknown as string[]).find(
-          (cookie) => cookie.startsWith('refreshToken='),
-        );
+        refreshTokenNotValidCookie = (
+          createResponse.headers['set-cookie'] as unknown as string[]
+        ).find((cookie) => cookie.startsWith('refreshToken='));
 
         expect(refreshTokenCookie2).toBeDefined();
         expect(refreshTokenNotValidCookie).not.toBe(refreshTokenCookie2);

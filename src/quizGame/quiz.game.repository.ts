@@ -65,7 +65,7 @@ export class QuizGamesRepository {
     return game;
   }
 
-  async getGameByIdAnyStatus(gameId): Promise<QuizGames | null>{
+  async getGameByIdAnyStatus(gameId): Promise<QuizGames | null> {
     if (!isValidUUID(gameId)) {
       return null;
     }
@@ -88,14 +88,14 @@ export class QuizGamesRepository {
       .where('game.quizGameId = :gameId', { gameId: gameId })
       .orderBy('questions.createdAt', 'ASC');
     const game: QuizGames = await gameQueryBuilder.getOne();
-    if(!game){
-      return null
+    if (!game) {
+      return null;
     }
     return game;
   }
 
   //TODO: get attive game (add answers)
-async getActiveGameByUserId(userId): Promise<QuizGames | null> {
+  async getActiveGameByUserId(userId): Promise<QuizGames | null> {
     if (!isValidUUID(userId)) {
       return null;
     }
@@ -119,14 +119,12 @@ async getActiveGameByUserId(userId): Promise<QuizGames | null> {
       .where('(game.player1Id = :userId  OR game.player2Id = :userId)', {
         userId: userId,
       })
-      .andWhere(
-        `game.status = 'Active' OR game.status = 'PendingSecondPlayer'`,
-      )
+      .andWhere(`game.status = 'Active' OR game.status = 'PendingSecondPlayer'`)
       .orderBy('questions.createdAt', 'ASC');
     const game: QuizGames = await gameQueryBuilder.getOne();
-    if(!game){
-      return null
-    }    
+    if (!game) {
+      return null;
+    }
     return game;
   }
 
@@ -194,32 +192,34 @@ async getActiveGameByUserId(userId): Promise<QuizGames | null> {
     return !!game;
   }
 
-  async getAllGames(userId?){
-    const queryBuilder = this.quizGamesRepository.createQueryBuilder('game')
+  async getAllGames(userId?) {
+    const queryBuilder = this.quizGamesRepository.createQueryBuilder('game');
     queryBuilder
-    .select([
-      'game',
-      'answers',
-      'player1.userId',
-      'player1.login',
-      'player2.userId',
-      'player2.login',
-      'questions',
-    ])
-    .leftJoin('game.answers', 'answers')
-    .leftJoin('game.player1', 'player1')
-    .leftJoin('game.player2', 'player2')
-    .leftJoin('game.questions', 'questions')
+      .select([
+        'game',
+        'answers',
+        'player1.userId',
+        'player1.login',
+        'player2.userId',
+        'player2.login',
+        'questions',
+      ])
+      .leftJoin('game.answers', 'answers')
+      .leftJoin('game.player1', 'player1')
+      .leftJoin('game.player2', 'player2')
+      .leftJoin('game.questions', 'questions');
 
-    if(userId){
-      queryBuilder.where('(game.player1Id = :userId  OR game.player2Id = :userId)', {
-        userId: userId,
-      })
+    if (userId) {
+      queryBuilder.where(
+        '(game.player1Id = :userId  OR game.player2Id = :userId)',
+        {
+          userId: userId,
+        },
+      );
     }
-    
-    
+
     const games = await queryBuilder.getMany();
-    console.log("игры в запросе все игры ", games);
+    console.log('игры в запросе все игры ', games);
     return games.map((game) => game.returnForPlayer());
   }
 }

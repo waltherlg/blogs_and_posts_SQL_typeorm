@@ -19,7 +19,10 @@ import { validate as isValidUUID } from 'uuid';
 import { PlayerRequestActiveGameCommand } from '../use-cases/player-request-active-game-use-case';
 import { AnswerInputModelType } from '../quiz.answers.types';
 import { PlayerAnswersQuestionGameCommand } from '../use-cases/player-answers-question-game-use-case';
-import { PlayerRequestGameByIdCommand, PlayerRequestGameByIdUseCase } from '../use-cases/player-request-game-by-id-use-case';
+import {
+  PlayerRequestGameByIdCommand,
+  PlayerRequestGameByIdUseCase,
+} from '../use-cases/player-request-game-by-id-use-case';
 import { request } from 'express';
 import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard';
 import { PlayerRequestAllGamesCommand } from '../use-cases/somebody-request-all-games-use-case';
@@ -58,9 +61,11 @@ export class PublicQuizGameController {
   @UseGuards(OptionalJwtAuthGuard)
   @Get('pairs')
   @HttpCode(200)
-  async getAllGame(@Req() request){
-    const games = await this.commandBus.execute(new PlayerRequestAllGamesCommand(request.user.userId))
-    return games
+  async getAllGame(@Req() request) {
+    const games = await this.commandBus.execute(
+      new PlayerRequestAllGamesCommand(request.user.userId),
+    );
+    return games;
   }
 
   @UseGuards(JwtAuthGuard)
@@ -68,11 +73,13 @@ export class PublicQuizGameController {
   @HttpCode(200)
   async getGameById(@Req() request, @Param('gameId') gameId) {
     if (!isValidUUID(gameId)) {
-      handleActionResult(ActionResult.InvalidIdFormat)
-    } 
-    const result = await this.commandBus.execute(new PlayerRequestGameByIdCommand(gameId, request.user.userId))
-    handleActionResult(result)
-    return result
+      handleActionResult(ActionResult.InvalidIdFormat);
+    }
+    const result = await this.commandBus.execute(
+      new PlayerRequestGameByIdCommand(gameId, request.user.userId),
+    );
+    handleActionResult(result);
+    return result;
   }
 
   @UseGuards(JwtAuthGuard)

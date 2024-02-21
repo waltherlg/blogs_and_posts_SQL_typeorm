@@ -25,7 +25,10 @@ import {
   RequestQuestionsQueryModel,
 } from 'src/models/types';
 import { CheckService } from '../../other.services/check.service';
-import { CustomNotFoundException, CustomisableException } from '../../exceptions/custom.exceptions';
+import {
+  CustomNotFoundException,
+  CustomisableException,
+} from '../../exceptions/custom.exceptions';
 import {
   ActionResult,
   handleActionResult,
@@ -98,8 +101,12 @@ export class SaQuizController {
     @Param('questionId') questionId: string,
     @Body() publish: PublishQuestionImputModelType,
   ) {
-    if(typeof publish.published === 'string'){
-      throw new CustomisableException('published', 'value must be a boolean', 400)
+    if (typeof publish.published === 'string') {
+      throw new CustomisableException(
+        'published',
+        'value must be a boolean',
+        400,
+      );
     }
     const publishResult: ActionResult = await this.commandBus.execute(
       new SaPublishQuestionByIdCommand(questionId, publish.published),

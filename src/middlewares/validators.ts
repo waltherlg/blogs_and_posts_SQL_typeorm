@@ -121,7 +121,6 @@ export function IsCustomUrl(validationOptions?: ValidationOptions) {
   };
 }
 
-
 @ValidatorConstraint({ name: 'trimNotEmpty', async: false })
 export class TrimNotEmptyValidator implements ValidatorConstraintInterface {
   validate(value: any, args: ValidationArguments) {

@@ -51,11 +51,7 @@ export class DTOFactory {
     );
     return userEntity;
   }
-
-  
 }
-
-
 
 type createUserDataType = {
   login: string;

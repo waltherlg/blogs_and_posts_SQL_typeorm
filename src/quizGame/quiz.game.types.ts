@@ -150,7 +150,10 @@ export class QuizGames extends QuestionDbType {
         firstPlayerProgress: {
           answers: this.answers
             .filter((answer) => answer.playerNumber === 1)
-            .sort((a, b) => new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime())
+            .sort(
+              (a, b) =>
+                new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime(),
+            )
             .map((answer) => answer.returnForPlayer()),
           player: {
             id: this.player1.userId,
@@ -161,7 +164,10 @@ export class QuizGames extends QuestionDbType {
         secondPlayerProgress: {
           answers: this.answers
             .filter((answer) => answer.playerNumber === 2)
-            .sort((a, b) => new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime())
+            .sort(
+              (a, b) =>
+                new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime(),
+            )
             .map((answer) => answer.returnForPlayer()),
           player: {
             id: this.player2.userId,
@@ -169,7 +175,12 @@ export class QuizGames extends QuestionDbType {
           },
           score: this.player2Score,
         },
-        questions: this.questions.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()).map((question) => question.returnForGame()),
+        questions: this.questions
+          .sort(
+            (a, b) =>
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+          )
+          .map((question) => question.returnForGame()),
         status: this.status,
         pairCreatedDate: this.pairCreatedDate.toISOString(),
         startGameDate: this.startGameDate.toISOString(),
@@ -183,7 +194,10 @@ export class QuizGames extends QuestionDbType {
         firstPlayerProgress: {
           answers: this.answers
             .filter((answer) => answer.playerNumber === 1)
-            .sort((a, b) => new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime())
+            .sort(
+              (a, b) =>
+                new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime(),
+            )
             .map((answer) => answer.returnForPlayer()),
           player: {
             id: this.player1.userId,
@@ -194,7 +208,10 @@ export class QuizGames extends QuestionDbType {
         secondPlayerProgress: {
           answers: this.answers
             .filter((answer) => answer.playerNumber === 2)
-            .sort((a, b) => new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime())
+            .sort(
+              (a, b) =>
+                new Date(a.addedAt).getTime() - new Date(b.addedAt).getTime(),
+            )
             .map((answer) => answer.returnForPlayer()),
           player: {
             id: this.player2.userId,
@@ -202,7 +219,12 @@ export class QuizGames extends QuestionDbType {
           },
           score: this.player2Score,
         },
-        questions: this.questions.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()).map((question) => question.returnForGame()),
+        questions: this.questions
+          .sort(
+            (a, b) =>
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+          )
+          .map((question) => question.returnForGame()),
         status: this.status,
         pairCreatedDate: this.pairCreatedDate.toISOString(),
         startGameDate: this.startGameDate.toISOString(),

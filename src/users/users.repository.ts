@@ -23,18 +23,18 @@ export class UsersRepository {
 
   async createUser(userDTO: Users) {
     const queryRunner = this.dataSource.createQueryRunner();
-  await queryRunner.connect();
-  await queryRunner.startTransaction();
-  try {
-    const result = await queryRunner.manager.save(userDTO);
-    await queryRunner.commitTransaction();
-    return result.userId;
-  } catch (e) {
-    await queryRunner.rollbackTransaction();
-    throw e;
-  } finally {
-    await queryRunner.release();
-  }
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const result = await queryRunner.manager.save(userDTO);
+      await queryRunner.commitTransaction();
+      return result.userId;
+    } catch (e) {
+      await queryRunner.rollbackTransaction();
+      throw e;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async getUserForLoginByLoginOrEmail(

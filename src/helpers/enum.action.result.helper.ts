@@ -54,18 +54,14 @@ export function handleActionResult(result: ActionResult) {
     case ActionResult.GameNotFound:
       throw new CustomNotFoundException('game');
     case ActionResult.InvalidIdFormat:
-      throw new CustomisableException(
-        'id',
-        'id has invalid format',
-        400
-      ) 
-      
+      throw new CustomisableException('id', 'id has invalid format', 400);
+
     case ActionResult.GameHasntStartedYet:
       throw new CustomisableException(
         'game',
-        'the game hasn\'t started yet',
-        403
-      )  
+        "the game hasn't started yet",
+        403,
+      );
 
     case ActionResult.NotOwner:
       throw new CustomisableException(

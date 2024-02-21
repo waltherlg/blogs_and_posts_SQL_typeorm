@@ -33,12 +33,13 @@ export class PlayerAnswersQuestionGameUseCase
   ) {}
 
   async execute(command: PlayerAnswersQuestionGameCommand): Promise<any> {
-    const game: QuizGames = await this.quizGamesRepository.getActiveGameByUserId(command.userId);
-    if(!game){
-      return ActionResult.NotOwner
+    const game: QuizGames =
+      await this.quizGamesRepository.getActiveGameByUserId(command.userId);
+    if (!game) {
+      return ActionResult.NotOwner;
     }
-    if(game.status !== enumStatusGameType.Active){
-      return ActionResult.GameHasntStartedYet
+    if (game.status !== enumStatusGameType.Active) {
+      return ActionResult.GameHasntStartedYet;
     }
     let currentPlayerNumber;
     if (game.player1.userId === command.userId) {
@@ -98,9 +99,9 @@ export class PlayerAnswersQuestionGameUseCase
       if (numberOfOpposingPlayersAnswer === 5) {
         game.status = enumStatusGameType.Finished;
         game.finishGameDate = new Date();
-        const OpposingPlayerNumber = swapPlayerNumber(currentPlayerNumber)
-        if(game[playerScores[OpposingPlayerNumber]] > 0){
-          game[playerScores[OpposingPlayerNumber]] ++
+        const OpposingPlayerNumber = swapPlayerNumber(currentPlayerNumber);
+        if (game[playerScores[OpposingPlayerNumber]] > 0) {
+          game[playerScores[OpposingPlayerNumber]]++;
         }
       }
     }
@@ -108,7 +109,7 @@ export class PlayerAnswersQuestionGameUseCase
 
     const result = await this.quizGamesRepository.saveGameChange(game);
     if (result) {
-      return answer.returnForPlayer();      
+      return answer.returnForPlayer();
     } else {
       return ActionResult.NotSaved;
     }

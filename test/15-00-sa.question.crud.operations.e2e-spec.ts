@@ -187,8 +187,8 @@ export function questionCrudOperationsSa15() {
         totalCount: 2,
         items: [
           testQuestions.outputQuestion2Sa,
-          testQuestions.updatedPublishedOutputQuestion1Sa
-          ],
+          testQuestions.updatedPublishedOutputQuestion1Sa,
+        ],
       });
     });
 
@@ -212,7 +212,7 @@ export function questionCrudOperationsSa15() {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.quizQuestions}/${questionId1}/publish`)
         .set('Authorization', `Basic ${basicAuthRight}`)
-        .send({ published: "true" })
+        .send({ published: 'true' })
         .expect(400);
     });
   });

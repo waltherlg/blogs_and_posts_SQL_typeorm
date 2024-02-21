@@ -1,4 +1,3 @@
-
 export const testQuestions = {
   inputQuestion1: {
     body: 'questionBody1',

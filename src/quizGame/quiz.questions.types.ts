@@ -20,8 +20,8 @@ export class UpdateQuestionImputModelType {
 }
 
 export class PublishQuestionImputModelType {
-  @Transform((value)=> {
-    return value.obj.published
+  @Transform((value) => {
+    return value.obj.published;
   })
   @IsBoolean()
   published: boolean;

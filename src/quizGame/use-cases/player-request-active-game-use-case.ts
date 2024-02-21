@@ -20,9 +20,7 @@ export class PlayerRequestActiveGameCommand {
 export class PlayerRequestActiveGameUseCase
   implements ICommandHandler<PlayerRequestActiveGameCommand>
 {
-  constructor(
-    private readonly quizGamesRepository: QuizGamesRepository,
-  ) {}
+  constructor(private readonly quizGamesRepository: QuizGamesRepository) {}
 
   async execute(command: PlayerRequestActiveGameCommand): Promise<any> {
     const game: QuizGames =

@@ -23,17 +23,18 @@ export class PlayerRequestGameByIdUseCase
 
   async execute(command: PlayerRequestGameByIdCommand): Promise<any> {
     const game = await this.quizGamesRepository.getGameByIdAnyStatus(
-      command.gameId
+      command.gameId,
     );
-    
-    if(!game){
-      return ActionResult.GameNotFound
+
+    if (!game) {
+      return ActionResult.GameNotFound;
     }
-    if (game.player1.userId === command.userId || 
-      (game.player2 != null && game.player2.userId === command.userId)) {
-      return game.returnForPlayer()
+    if (
+      game.player1.userId === command.userId ||
+      (game.player2 != null && game.player2.userId === command.userId)
+    ) {
+      return game.returnForPlayer();
     }
-    return ActionResult.NotOwner
-    
+    return ActionResult.NotOwner;
   }
 }

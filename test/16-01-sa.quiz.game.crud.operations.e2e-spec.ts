@@ -74,7 +74,7 @@ export function quizGameCrudOperationsSa1601() {
 
       if (createResponse.status === 204) {
         testQuestions.outputQuestion1Sa.published = true;
-        testQuestions.outputQuestion1Sa.updatedAt = expect.any(String)
+        testQuestions.outputQuestion1Sa.updatedAt = expect.any(String);
       }
     });
 
@@ -100,7 +100,7 @@ export function quizGameCrudOperationsSa1601() {
 
       if (createResponse.status === 204) {
         testQuestions.outputQuestion2Sa.published = true;
-        testQuestions.outputQuestion2Sa.updatedAt = expect.any(String)
+        testQuestions.outputQuestion2Sa.updatedAt = expect.any(String);
       }
     });
 
@@ -126,7 +126,7 @@ export function quizGameCrudOperationsSa1601() {
 
       if (createResponse.status === 204) {
         testQuestions.outputQuestion3Sa.published = true;
-        testQuestions.outputQuestion3Sa.updatedAt = expect.any(String)
+        testQuestions.outputQuestion3Sa.updatedAt = expect.any(String);
       }
     });
 
@@ -152,7 +152,7 @@ export function quizGameCrudOperationsSa1601() {
 
       if (createResponse.status === 204) {
         testQuestions.outputQuestion4Sa.published = true;
-        testQuestions.outputQuestion4Sa.updatedAt = expect.any(String)
+        testQuestions.outputQuestion4Sa.updatedAt = expect.any(String);
       }
     });
 
@@ -178,7 +178,7 @@ export function quizGameCrudOperationsSa1601() {
 
       if (createResponse.status === 204) {
         testQuestions.outputQuestion5Sa.published = true;
-        testQuestions.outputQuestion5Sa.updatedAt = expect.any(String)
+        testQuestions.outputQuestion5Sa.updatedAt = expect.any(String);
       }
     });
 
@@ -204,7 +204,7 @@ export function quizGameCrudOperationsSa1601() {
 
       if (createResponse.status === 204) {
         testQuestions.outputQuestion6Sa.published = true;
-        testQuestions.outputQuestion6Sa.updatedAt = expect.any(String)
+        testQuestions.outputQuestion6Sa.updatedAt = expect.any(String);
       }
     });
 
@@ -347,21 +347,22 @@ export function quizGameCrudOperationsSa1601() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      await delayFunction(1000)
+      await delayFunction(1000);
     });
 
     it('00-00 pair-game-quiz/pair/connection POST = user3 create new game', async () => {
       const createResponse = await request(app.getHttpServer())
-      .post(`${endpoints.pairGameQuiz}/pairs/connection`)
-      .set('Authorization', `Bearer ${accessTokenUser3}`)
-      .expect(200);
+        .post(`${endpoints.pairGameQuiz}/pairs/connection`)
+        .set('Authorization', `Bearer ${accessTokenUser3}`)
+        .expect(200);
 
       const createdResponseBody = createResponse.body;
-      gameId2 = createdResponseBody.id
+      gameId2 = createdResponseBody.id;
       expect(createdResponseBody).toEqual(testGames.outputPandingGame);
-      testGames.outputActiveGame.id = gameId2
-      testGames.outputGameForDynamicChanges2.firstPlayerProgress.player.id = userId3
-    })
+      testGames.outputActiveGame.id = gameId2;
+      testGames.outputGameForDynamicChanges2.firstPlayerProgress.player.id =
+        userId3;
+    });
 
     it('00-00 pair-game-quiz/pairs/connection POST = user4 join to game2', async () => {
       const createResponse = await request(app.getHttpServer())
@@ -369,12 +370,13 @@ export function quizGameCrudOperationsSa1601() {
         .set('Authorization', `Bearer ${accessTokenUser4}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody).toEqual(testGames.outputActiveGame);
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testGames.outputActiveGame);
 
-        testGames.outputGameForDynamicChanges2.secondPlayerProgress.player.id = userId4
-        testGames.outputGameForDynamicChanges2.status = enumStatusGameType.Active
-        testGames.outputGameForDynamicChanges2.startGameDate = expect.any(String)
+      testGames.outputGameForDynamicChanges2.secondPlayerProgress.player.id =
+        userId4;
+      testGames.outputGameForDynamicChanges2.status = enumStatusGameType.Active;
+      testGames.outputGameForDynamicChanges2.startGameDate = expect.any(String);
     });
 
     it('00-00 pairs/my-current/answers POST = user3 add incorrectAnswer 1 in game', async () => {
@@ -422,8 +424,10 @@ export function quizGameCrudOperationsSa1601() {
         .get(`${endpoints.pairGameQuiz}/pairs/my-current`)
         .set('Authorization', `Bearer ${accessTokenUser3}`)
         .expect(200);
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody).toEqual(testGames.outputGameForDynamicChanges);
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(
+        testGames.outputGameForDynamicChanges,
+      );
     });
 
     it('00-00 pairs/my-current/answers POST = user4 add incorrectAnswer 1 in game', async () => {
@@ -464,9 +468,11 @@ export function quizGameCrudOperationsSa1601() {
         .send(testAnswerBody.correctAnswerInput)
         .set('Authorization', `Bearer ${accessTokenUser4}`)
         .expect(200);
-        testGames.outputGameForDynamicChanges2.secondPlayerProgress.score ++
-        testGames.outputGameForDynamicChanges2.status = enumStatusGameType.Finished
-        testGames.outputGameForDynamicChanges2.finishGameDate = expect.any(String)
+      testGames.outputGameForDynamicChanges2.secondPlayerProgress.score++;
+      testGames.outputGameForDynamicChanges2.status =
+        enumStatusGameType.Finished;
+      testGames.outputGameForDynamicChanges2.finishGameDate =
+        expect.any(String);
     });
 
     it('00-00 pairs/:gameId GET = user3 req finished game', async () => {
@@ -477,10 +483,10 @@ export function quizGameCrudOperationsSa1601() {
 
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(testGames.outputFinishedGame);
-      expect(createdResponseBody).toEqual(testGames.outputGameForDynamicChanges2);
-      console.log(testGames.outputGameForDynamicChanges2)
+      expect(createdResponseBody).toEqual(
+        testGames.outputGameForDynamicChanges2,
+      );
+      console.log(testGames.outputGameForDynamicChanges2);
     });
-
- 
   });
 }
