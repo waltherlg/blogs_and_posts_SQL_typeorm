@@ -73,7 +73,7 @@ export function testSecurityDevices() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      refreshTokenCookie = createResponse.headers['set-cookie'].find((cookie) =>
+      refreshTokenCookie = (createResponse.headers['set-cookie'] as unknown as string[]).find((cookie) =>
         cookie.startsWith('refreshToken='),
       );
 
@@ -93,7 +93,7 @@ export function testSecurityDevices() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      const refreshTokenCookie = createResponse.headers['set-cookie'].find(
+      const refreshTokenCookie = (createResponse.headers['set-cookie'] as unknown as string[]).find(
         (cookie) => cookie.startsWith('refreshToken='),
       );
 
@@ -113,7 +113,7 @@ export function testSecurityDevices() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      const refreshTokenCookie = createResponse.headers['set-cookie'].find(
+      const refreshTokenCookie = (createResponse.headers['set-cookie'] as unknown as string[]).find(
         (cookie) => cookie.startsWith('refreshToken='),
       );
 
@@ -133,7 +133,7 @@ export function testSecurityDevices() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      refreshTokenCookie = createResponse.headers['set-cookie'].find((cookie) =>
+      refreshTokenCookie = (createResponse.headers['set-cookie'] as unknown as string[]).find((cookie) =>
         cookie.startsWith('refreshToken='),
       );
 

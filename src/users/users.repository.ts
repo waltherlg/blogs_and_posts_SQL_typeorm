@@ -21,7 +21,7 @@ export class UsersRepository {
   //   return result.userId;
   // }
 
-  async createUser(userDTO: UserDBType) {
+  async createUser(userDTO: Users) {
     const queryRunner = this.dataSource.createQueryRunner();
   await queryRunner.connect();
   await queryRunner.startTransaction();

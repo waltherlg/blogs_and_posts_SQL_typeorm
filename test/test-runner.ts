@@ -21,9 +21,9 @@ import { quizGameCrudOperationsSa1601 } from './16-01-sa.quiz.game.crud.operatio
 
 describe('End-to-End Tests', () => {
   // testSaUsersCrud();
-  // testSaUsersGetWithPagination();
-  // testSecurityDevices();
-  // testAuthOperations();
+  testSaUsersGetWithPagination();
+  testSecurityDevices();
+  testAuthOperations();
   // testAuthValidations();
   // testBloggerCrudOnlyBlogs();
   // testBanUserForBlogByBlogger();
@@ -39,7 +39,8 @@ describe('End-to-End Tests', () => {
   // bloggerUsersControllers()
 
   // questionCrudOperationsSa15();
+
+  // don't run 16 and 1601 together
   // quizGameCrudOperationsSa16();
-  
-  quizGameCrudOperationsSa1601()
+  // quizGameCrudOperationsSa1601()
 });

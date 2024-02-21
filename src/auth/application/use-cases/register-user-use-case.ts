@@ -27,7 +27,7 @@ export class RegisterUserUseCase
         //minutes: 3
       }),
     };
-    const userDTO = await this.dtoFactory.createUserDTO(registerUserData);
+    const userDTO = await this.dtoFactory.createUserEntity(registerUserData);
     try {
       await this.emailManager.sendEmailConfirmationMessage(registerUserData);
     } catch (e) {
