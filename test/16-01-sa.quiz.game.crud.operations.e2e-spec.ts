@@ -11,7 +11,7 @@ import { addAppSettings } from '../src/helpers/settings';
 import { testGames } from './helpers/inputAndOutputObjects/gamesObjects';
 
 export function quizGameCrudOperationsSa1601() {
-  describe('---------- quizGame CRUD operation SA (e2e) -------------', () => {
+  describe('---------- quizGame CRUD operation SA (e2e) ----------------------- quizGame CRUD operation SA (e2e) -------------quizGameCrudOperationsSa1601', () => {
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');

@@ -12,9 +12,12 @@ import {
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { UserDBType } from './users.types';
 
+
+//TODO: Спросить, можно ли наследовать энтити от класса
 @Entity({ name: 'Users' })
-export class Users {
+export class Users extends UserDBType {
   @PrimaryColumn('uuid')
   userId: string;
   @Column()

@@ -18,8 +18,10 @@ export class CreateUserUseCase implements ICommandHandler<CreateUserCommand> {
       ...command.userCreateInputDto,
       isConfirmed: true,
     };
-    const userDTO = await this.dtoFactory.createUserDTO(userCreateModel);
-    const newUsersId = await this.usersRepository.createUser(userDTO);
+    // const userDTO = await this.dtoFactory.createUserDTO(userCreateModel);
+    // const newUsersId = await this.usersRepository.createUser(userDTO);
+    const userEntity = await this.dtoFactory.createUserEntity(userCreateModel);
+    const newUsersId = await this.usersRepository.createUser(userEntity);
     return newUsersId;
   }
 }

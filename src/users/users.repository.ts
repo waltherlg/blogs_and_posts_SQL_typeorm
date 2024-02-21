@@ -16,9 +16,25 @@ export class UsersRepository {
     private readonly usersRepository: Repository<Users>,
   ) {}
 
+  // async createUser(userDTO: UserDBType) {
+  //   const result = await this.usersRepository.save(userDTO);
+  //   return result.userId;
+  // }
+
   async createUser(userDTO: UserDBType) {
-    const result = await this.usersRepository.save(userDTO);
+    const queryRunner = this.dataSource.createQueryRunner();
+  await queryRunner.connect();
+  await queryRunner.startTransaction();
+  try {
+    const result = await queryRunner.manager.save(userDTO);
+    await queryRunner.commitTransaction();
     return result.userId;
+  } catch (e) {
+    await queryRunner.rollbackTransaction();
+    throw e;
+  } finally {
+    await queryRunner.release();
+  }
   }
 
   async getUserForLoginByLoginOrEmail(
