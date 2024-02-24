@@ -6,6 +6,7 @@ import { CommentLikeDbType, PostLikeDbType } from './db.likes.types';
 import { CommentLikes, PostLikes } from './like.entity';
 import { Posts } from '../posts/post.entity';
 import { Comments } from '../comments/comment.entity';
+import { In } from "typeorm";
 
 @Injectable()
 export class LikesRepository {
@@ -75,6 +76,7 @@ export class LikesRepository {
     return commentLikeObject;
   }
 
+  //TODO: перестроить метод, что бы выполнялся одним запросом
   async recountLikesAfterUserBanChange(userId) {
     if (!isValidUUID(userId)) {
       return null;
@@ -87,6 +89,15 @@ export class LikesRepository {
         .where('postLike.userId = :userId', { userId: userId });
 
       const postIdArray = await postLikeQueryBuilder.getRawMany();
+      //---------новая функция-------------------------------------
+      // const postLikesArr = await this.postLikesRepository
+      // .createQueryBuilder('postLike')
+      // .leftJoin('postLike.Users', 'user')
+      // .where('user.isUserBanned = false')
+      // .andWhereInIds(postIdArray)
+      // .getMany();
+      // console.log("postLikesObjectsArr ", postLikesArr);
+      //----------------------------------
 
       const postLikesPromises = postIdArray.map((postId) =>
         this.countAndSetPostLikesAndDislikesForSpecificPost(postId.postId),
@@ -100,6 +111,26 @@ export class LikesRepository {
         .where('commentLike.userId = :userId', { userId: userId });
 
       const commentIdArray = await commentLikeQueryBuilder.getRawMany();
+
+
+      //----------------------
+      //console.log("commentIdArray ", commentIdArray);
+      const commentIds = commentIdArray.map(obj => obj.commentId);
+      //console.log("commentIds ", commentIds)
+      const commentLikesArrQB = this.commentLikesRepository
+      .createQueryBuilder('commentLike')
+      .leftJoin('commentLike.Users', 'user')
+      .where('user.isUserBanned = false')
+      .andWhere('commentLike.commentId IN (:...commentIds)', { commentIds: commentIds })
+      const commentLikesArr = await commentLikesArrQB.getMany();
+      //console.log("commentLikesArr ", commentLikesArr);
+      //------------------------
+      // Нужно достать все комменты с коммент айди.
+      const commentQueryBuilder = this.commentsRepository
+      .createQueryBuilder('comment')
+
+
+
 
       const commentLikesPromises = commentIdArray.map((commentId) =>
         this.countAndSetCommentLikesAndDislikesForSpecificComment(
