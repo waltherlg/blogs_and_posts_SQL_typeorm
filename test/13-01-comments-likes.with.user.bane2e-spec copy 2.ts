@@ -6,7 +6,7 @@ import { endpoints } from './helpers/routing';
 import { testComments } from './helpers/inputAndOutputObjects/commentObjects';
 import { addAppSettings } from '../src/helpers/settings';
 export function commentLikesWithUserBanCrud1301() {
-  // create and login users 1 - 3
+  // create and login users 1 - 4
   // user1 create blog, and create post
   // user1 create comment1 for post1
   // user2 create comment2 for post1
@@ -30,6 +30,7 @@ export function commentLikesWithUserBanCrud1301() {
   // unban user2
   // now comment1 have 1 like and 2 dislike
   // now comment2 have 1 like and 1 dislike
+  // - ban user4
   describe('COmment Likes Crud CRUD operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
 
@@ -56,6 +57,8 @@ export function commentLikesWithUserBanCrud1301() {
 
     let userId2;
     let userId3;
+    let userId4;
+    
 
     let BlogId1User1: string;
     let createdPostId: string;
@@ -140,6 +143,32 @@ export function commentLikesWithUserBanCrud1301() {
         .expect(200);
       const createdResponse = createResponse.body;
       accessTokenUser3 = createdResponse.accessToken;
+      expect(createdResponse).toEqual({
+        accessToken: expect.any(String),
+      });
+      expect(createResponse.headers['set-cookie']).toBeDefined();
+    });
+
+    it('00-00 sa/users post = 201 create user4 with return', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(endpoints.saUsers)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testComments.inputUser4)
+        .expect(201);
+
+      const createdResponseBody = createResponse.body;
+      userId4 = createdResponseBody.id;
+
+      expect(createdResponseBody).toEqual(testComments.outputUser4Sa);
+    });
+
+    it('00-00 login = 204 login user4', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.auth}/login`)
+        .send(testComments.loginUser4)
+        .expect(200);
+      const createdResponse = createResponse.body;
+      accessTokenUser4 = createdResponse.accessToken;
       expect(createdResponse).toEqual({
         accessToken: expect.any(String),
       });
@@ -569,6 +598,17 @@ export function commentLikesWithUserBanCrud1301() {
           },
         ],
       });
+    });
+
+    it('01-06 sa/users/:userId/ban UPDATE = 204 ban user4', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId4}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send({
+          isBanned: true,
+          banReason: 'some ban reason for user4',
+        })
+        .expect(204);
     });
   });
 }

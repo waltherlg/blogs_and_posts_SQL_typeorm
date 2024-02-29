@@ -76,20 +76,21 @@ export class LikesRepository {
     return commentLikeObject;
   }
 
-  //TODO: перестроить метод, что бы выполнялся одним запросом
+  //TODO: переделать под транзакцию
   async recountLikesAfterUserBanChange(userId) {
     if (!isValidUUID(userId)) {
       return null;
     }
     try {
+
       const postLikeQueryBuilder =
         this.postLikesRepository.createQueryBuilder('postLike');
       postLikeQueryBuilder
         .select('postLike.postId', 'postId')
         .where('postLike.userId = :userId', { userId: userId });
       const postIdArray = await postLikeQueryBuilder.getMany();
+
       if (postIdArray.length > 0) {
-        console.log('пустой массив это тру');
         console.log('массив сущностий с айдишками поста ', postIdArray);
         const postIds = postIdArray.map((obj) => obj.postId);
         console.log('массив айдишек поста ', postIds);
@@ -145,6 +146,10 @@ export class LikesRepository {
         .select('commentLike.commentId', 'commentId')
         .where('commentLike.userId = :userId', { userId: userId });
       const commentIdArray = await commentLikeQueryBuilder.getRawMany();
+      console.log('commentIdArray.length ', commentIdArray.length);
+      
+      if (commentIdArray.length > 0){
+        console.log("commentIdArray ", commentIdArray);
       const commentIds = commentIdArray.map((obj) => obj.commentId);
       const commentLikesArrQB = this.commentLikesRepository
         .createQueryBuilder('commentLike')
@@ -155,7 +160,6 @@ export class LikesRepository {
         });
       // достаем все лайки к комментам по коментАйди
       const commentLikesArr: CommentLikes[] = await commentLikesArrQB.getMany();
-
       const commentStats = commentLikesArr.reduce((acc, comment) => {
         const { commentId, status } = comment;
         if (!acc[commentId]) {
@@ -171,19 +175,21 @@ export class LikesRepository {
           commentIds: commentIds,
         });
       const commentsArr = await commentQueryBuilder.getMany();
-
       const updatedComments = commentsArr.map((comment) => {
         comment.likesCount = commentStats[comment.commentId].Like;
         comment.dislikesCount = commentStats[comment.commentId].Dislike;
         return comment;
       });
-
       const isCommentsUpdated = await this.commentsRepository.save(
         updatedComments,
       );
+      }
 
       return true;
     } catch (error) {
+      //TODO: remove before prod
+      console.log(error);
+      
       return false;
     }
   }
