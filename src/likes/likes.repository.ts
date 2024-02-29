@@ -88,51 +88,45 @@ export class LikesRepository {
         .select('postLike.postId', 'postId')
         .where('postLike.userId = :userId', { userId: userId });
       const postIdArray = await postLikeQueryBuilder.getMany();
-      if(postIdArray.length > 0){
+      if (postIdArray.length > 0) {
         console.log('пустой массив это тру');
-      console.log('массив сущностий с айдишками поста ', postIdArray);
-      const postIds = postIdArray.map((obj) => obj.postId);
-      console.log('массив айдишек поста ', postIds);
-      //get all likes for posts by postIds array for recount
-      const postLikesArrQB = this.postLikesRepository
-      .createQueryBuilder('postLike')
-      .leftJoin('postLike.Users', 'user')
-      .where('user.isUserBanned = false')
-      .andWhere('postLike.postId IN (:...postIds)', {
-        postIds: postIds,
-      });
-      const postLikesArr: PostLikes[] = await postLikesArrQB.getMany();
-      console.log('postLikesArr ', postLikesArr);
-      const postStats = postLikesArr.reduce((acc, post) => {
-        const { postId, status } = post;
-        if (!acc[postId]) {
-          acc[postId] = { Like: 0, Dislike: 0, None: 0 };
-        }
-        acc[postId][status]++;
-        return acc;
-      }, {});
-      console.log('postStats ', postStats);
-      const postQueryBuilder = this.postsRepository
-      .createQueryBuilder('post')
-      .where('post.postId IN (:...postIds)', {
-        postIds: postIds,
-      });
-    const postsArr = await postQueryBuilder.getMany();
-    console.log('postsArr ', postsArr);
-    const updatedPosts = postsArr.map((post) => {
-      post.likesCount = postStats[post.postId].Like;
-      post.dislikesCount = postStats[post.postId].Dislike;
-      return post;
-    });
-    console.log('updatedPosts ', updatedPosts);
-    const isPostsUpdated = await this.postsRepository.save(
-      updatedPosts,
-    );
-
-
+        console.log('массив сущностий с айдишками поста ', postIdArray);
+        const postIds = postIdArray.map((obj) => obj.postId);
+        console.log('массив айдишек поста ', postIds);
+        //get all likes for posts by postIds array for recount
+        const postLikesArrQB = this.postLikesRepository
+          .createQueryBuilder('postLike')
+          .leftJoin('postLike.Users', 'user')
+          .where('user.isUserBanned = false')
+          .andWhere('postLike.postId IN (:...postIds)', {
+            postIds: postIds,
+          });
+        const postLikesArr: PostLikes[] = await postLikesArrQB.getMany();
+        console.log('postLikesArr ', postLikesArr);
+        const postStats = postLikesArr.reduce((acc, post) => {
+          const { postId, status } = post;
+          if (!acc[postId]) {
+            acc[postId] = { Like: 0, Dislike: 0, None: 0 };
+          }
+          acc[postId][status]++;
+          return acc;
+        }, {});
+        console.log('postStats ', postStats);
+        const postQueryBuilder = this.postsRepository
+          .createQueryBuilder('post')
+          .where('post.postId IN (:...postIds)', {
+            postIds: postIds,
+          });
+        const postsArr = await postQueryBuilder.getMany();
+        console.log('postsArr ', postsArr);
+        const updatedPosts = postsArr.map((post) => {
+          post.likesCount = postStats[post.postId].Like;
+          post.dislikesCount = postStats[post.postId].Dislike;
+          return post;
+        });
+        console.log('updatedPosts ', updatedPosts);
+        const isPostsUpdated = await this.postsRepository.save(updatedPosts);
       }
-      
-
 
       // перерасчет количества лайков разделен на этапы:
       //1-й - мы достаем массив айдишек тех Комментов,

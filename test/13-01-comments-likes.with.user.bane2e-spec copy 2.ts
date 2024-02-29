@@ -27,13 +27,11 @@ export function commentLikesWithUserBanCrud1301() {
   // comment2 not show
   // unban user3
   // now comment1 have 2 dislike
-  // unban user2 
+  // unban user2
   // now comment1 have 1 like and 2 dislike
-  // now comment2 have 1 like and 1 dislike 
+  // now comment2 have 1 like and 1 dislike
   describe('COmment Likes Crud CRUD operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
-
-
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
 
