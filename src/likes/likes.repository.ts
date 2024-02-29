@@ -89,32 +89,32 @@ export class LikesRepository {
         .where('postLike.userId = :userId', { userId: userId });
 
       const postIdArray = await postLikeQueryBuilder.getRawMany();
-      //---------новая функция-------------------------------------
-      // const postLikesArr = await this.postLikesRepository
-      // .createQueryBuilder('postLike')
-      // .leftJoin('postLike.Users', 'user')
-      // .where('user.isUserBanned = false')
-      // .andWhereInIds(postIdArray)
-      // .getMany();
-      // console.log("postLikesObjectsArr ", postLikesArr);
-      //----------------------------------
 
       const postLikesPromises = postIdArray.map((postId) =>
         this.countAndSetPostLikesAndDislikesForSpecificPost(postId.postId),
       );
       const postLikesResults = await Promise.all(postLikesPromises);
 
+
+      // перерасчет количества лайков разделен на этапы:
+      //1-й - мы достаем массив айдишек тех Комментов,
+      // где что то ставил забаненый или разбаненый пользователь это commentIdArray.
+      // То ест достаем коммент айди из комментлайков
+      //2-й - мы достаем массив ВСЕХ комменталайков на основе массива комментАйди,
+      // ВСЕХ, потому что нам надо пересчитать ВСЕ лайки в этих комментах
+      // но на этот раз массив где пользователь НЕ ЗАБАНЕН, потому что,
+      // НАМ нужно пересчитать лайки только от НЕЗАБАНЕНЫХ пользователей.
+      // 3-й Мы достаем из БД все комменты, на основе массива комментайдис
+      // мапим сущности комментов, выставляя новые количества лайков и дизлаков
+      // сохранаяем сущности.
       const commentLikeQueryBuilder =
         this.commentLikesRepository.createQueryBuilder('commentLike');
       commentLikeQueryBuilder
         .select('commentLike.commentId', 'commentId')
+        .leftJoin('commentLike.Users', 'user')
         .where('commentLike.userId = :userId', { userId: userId });
       const commentIdArray = await commentLikeQueryBuilder.getRawMany();
-
-      //----------------------
-      //console.log("commentIdArray ", commentIdArray);
       const commentIds = commentIdArray.map((obj) => obj.commentId);
-      //console.log("commentIds ", commentIds)
       const commentLikesArrQB = this.commentLikesRepository
         .createQueryBuilder('commentLike')
         .leftJoin('commentLike.Users', 'user')
@@ -124,7 +124,7 @@ export class LikesRepository {
         });
       // достаем все лайки к комментам по коментАйди
       const commentLikesArr: CommentLikes[] = await commentLikesArrQB.getMany();
-      //console.log("commentLikesArr ", commentLikesArr);
+      console.log("commentLikesArr ", commentLikesArr);
 
       const commentStats = commentLikesArr.reduce((acc, comment) => {
         const { commentId, status } = comment;
@@ -134,8 +134,6 @@ export class LikesRepository {
         acc[commentId][status]++;
         return acc;
       }, {});
-      //console.log("commentStats ", commentStats);
-      //------------------------
       // Нужно достать все комменты с коммент айди.
       const commentQueryBuilder = this.commentsRepository
         .createQueryBuilder('comment')
@@ -143,27 +141,16 @@ export class LikesRepository {
           commentIds: commentIds,
         });
       const commentsArr = await commentQueryBuilder.getMany();
-      // console.log('commentsArr ', commentsArr);
 
       const updatedComments = commentsArr.map((comment) => {
         comment.likesCount = commentStats[comment.commentId].Like;
         comment.dislikesCount = commentStats[comment.commentId].Dislike;
         return comment;
       });
-      // console.log("updatedComments ", updatedComments);
 
       const isCommentsUpdated = await this.commentsRepository.save(
         updatedComments,
       );
-      // console.log('isCommentsUpdated ', isCommentsUpdated);
-
-      // пробуем выключить этот маппинг и попробовать код выше
-      // const commentLikesPromises = commentIdArray.map((commentId) =>
-      //   this.countAndSetCommentLikesAndDislikesForSpecificComment(
-      //     commentId.commentId,
-      //   ),
-      // );
-      // const commentLikeResults = await Promise.all(commentLikesPromises);
 
       return true;
     } catch (error) {

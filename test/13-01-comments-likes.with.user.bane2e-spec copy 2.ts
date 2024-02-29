@@ -6,13 +6,36 @@ import { endpoints } from './helpers/routing';
 import { testComments } from './helpers/inputAndOutputObjects/commentObjects';
 import { addAppSettings } from '../src/helpers/settings';
 export function commentLikesWithUserBanCrud1301() {
+  // create and login users 1 - 3
+  // user1 create blog, and create post
+  // user1 create comment1 for post1
+  // user2 create comment2 for post1
+  // user1 Like comment1
+  // user2 Like comment1
+  // user3 Dislike comment1
+  // now comment1 have 2 like and 1 dislike
+  // user1 Like comment2
+  // user3 dislike comment2
+  // now comment2 have 1 like and 1 dislike
+
+  // user1 Dislike comment1
+  // - ban user3
+  // now comment1 have 1 like and 1 dislike
+  // now comment2 have 1 like
+  // - ban user2
+  // now comment1 have 1 dislike
+  // comment2 not show
+  // unban user3
+  // now comment1 have 2 dislike
+  // unban user2 
+  // now comment1 have 1 like and 2 dislike
+  // now comment2 have 1 like and 1 dislike 
   describe('COmment Likes Crud CRUD operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
 
+
+
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
-    const basicAuthWrongPassword =
-      Buffer.from('admin:12345').toString('base64');
-    const basicAuthWrongLogin = Buffer.from('12345:qwerty').toString('base64');
 
     let accessTokenUser1: any;
     let accessTokenUser2: any;
