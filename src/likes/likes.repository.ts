@@ -111,7 +111,6 @@ export class LikesRepository {
         this.commentLikesRepository.createQueryBuilder('commentLike');
       commentLikeQueryBuilder
         .select('commentLike.commentId', 'commentId')
-        .leftJoin('commentLike.Users', 'user')
         .where('commentLike.userId = :userId', { userId: userId });
       const commentIdArray = await commentLikeQueryBuilder.getRawMany();
       const commentIds = commentIdArray.map((obj) => obj.commentId);
