@@ -219,7 +219,6 @@ export class QuizGamesRepository {
     }
 
     const games = await queryBuilder.getMany();
-    console.log('игры в запросе все игры ', games);
     return games.map((game) => game.returnForPlayer());
   }
 }

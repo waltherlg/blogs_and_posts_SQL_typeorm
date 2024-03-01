@@ -486,7 +486,6 @@ export function quizGameCrudOperationsSa1601() {
       expect(createdResponseBody).toEqual(
         testGames.outputGameForDynamicChanges2,
       );
-      console.log(testGames.outputGameForDynamicChanges2);
     });
   });
 }

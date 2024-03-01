@@ -57,10 +57,7 @@ export class PlayerAnswersQuestionGameUseCase
       return ActionResult.PlayerAnsweredAllQuestions;
     }
 
-    //console.log("curentPlayerAnswersArray ", currentPlayerAnswers, "numberOfPlayerAnswers ", numberOfPlayerAnswers);
-
     const currentQuestion = game.questions[numberOfPlayerAnswers];
-    //console.log("currentQuestion ", currentQuestion);
 
     let answerStatus;
     const correctAnswersArray = currentQuestion.correctAnswers;

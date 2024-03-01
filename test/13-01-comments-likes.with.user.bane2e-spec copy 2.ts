@@ -58,7 +58,6 @@ export function commentLikesWithUserBanCrud1301() {
     let userId2;
     let userId3;
     let userId4;
-    
 
     let BlogId1User1: string;
     let createdPostId: string;

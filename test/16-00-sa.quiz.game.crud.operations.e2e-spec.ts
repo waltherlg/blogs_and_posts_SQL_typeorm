@@ -589,7 +589,6 @@ export function quizGameCrudOperationsSa16() {
       expect(createdResponseBody).toEqual(
         testGames.outputGameForDynamicChanges,
       );
-      console.log(testGames.outputGameForDynamicChanges);
     });
 
     it('00-00 pair-game-quiz/pairs/my-current GET = 404 user1 req own game', async () => {
