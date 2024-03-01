@@ -7,6 +7,10 @@ import { validate as isValidUUID } from 'uuid';
 import { Users } from './user.entity';
 import { PlayerDtoType } from '../quizGame/quiz.game.types';
 import { userMapper } from './helpers/user.mapper';
+import { CommentLikes, PostLikes } from 'src/likes/like.entity';
+import { Posts } from 'src/posts/post.entity';
+import { Comments } from 'src/comments/comment.entity';
+import { UserDevices } from 'src/usersDevices/user.device.entity';
 
 @Injectable()
 export class UsersRepository {
@@ -14,6 +18,16 @@ export class UsersRepository {
     @InjectDataSource() protected dataSource: DataSource,
     @InjectRepository(Users)
     private readonly usersRepository: Repository<Users>,
+    @InjectRepository(PostLikes)
+    private readonly postLikesRepository: Repository<PostLikes>,
+    @InjectRepository(Posts)
+    private readonly postsRepository: Repository<Posts>,
+    @InjectRepository(CommentLikes)
+    private readonly commentLikesRepository: Repository<CommentLikes>,
+    @InjectRepository(Comments)
+    private readonly commentsRepository: Repository<Comments>,
+    @InjectRepository(UserDevices)
+    private readonly userDevicesRepository: Repository<UserDevices>
   ) {}
 
   // async createUser(userDTO: UserDBType) {
@@ -146,6 +160,7 @@ export class UsersRepository {
     return result.affected > 0;
   }
 
+
   async changeUserBanStatus(userBanDto): Promise<boolean> {
     if (!isValidUUID(userBanDto.userId)) {
       return false;
@@ -159,6 +174,137 @@ export class UsersRepository {
       },
     );
     return result.affected > 0;
+  }
+
+  async banChangeUserWithRecountLikes(userBanDto) {
+    const userId = userBanDto.userId
+    if (!isValidUUID(userId)) {
+      return null;
+    }
+    try {
+
+      if(userBanDto.isBanned === true){
+        const resultOfDeletingDevices = await this.userDevicesRepository.delete({ userId });
+      }
+      
+      const banResult = await this.usersRepository.update(
+        { userId: userBanDto.userId },
+        {
+          isUserBanned: userBanDto.isBanned,
+          banDate: userBanDto.banDate,
+          banReason: userBanDto.banReason,
+        },
+      );
+
+      const postLikeQueryBuilder =
+        this.postLikesRepository.createQueryBuilder('postLike');
+      postLikeQueryBuilder
+        .select('postLike.postId', 'postId')
+        .where('postLike.userId = :userId', { userId: userId });
+      const postIdArray = await postLikeQueryBuilder.getMany();
+
+      if (postIdArray.length > 0) {
+        console.log('массив сущностий с айдишками поста ', postIdArray);
+        const postIds = postIdArray.map((obj) => obj.postId);
+        console.log('массив айдишек поста ', postIds);
+        //get all likes for posts by postIds array for recount
+        const postLikesArrQB = this.postLikesRepository
+          .createQueryBuilder('postLike')
+          .leftJoin('postLike.Users', 'user')
+          .where('user.isUserBanned = false')
+          .andWhere('postLike.postId IN (:...postIds)', {
+            postIds: postIds,
+          });
+        const postLikesArr: PostLikes[] = await postLikesArrQB.getMany();
+        console.log('postLikesArr ', postLikesArr);
+        const postStats = postLikesArr.reduce((acc, post) => {
+          const { postId, status } = post;
+          if (!acc[postId]) {
+            acc[postId] = { Like: 0, Dislike: 0, None: 0 };
+          }
+          acc[postId][status]++;
+          return acc;
+        }, {});
+        console.log('postStats ', postStats);
+        const postQueryBuilder = this.postsRepository
+          .createQueryBuilder('post')
+          .where('post.postId IN (:...postIds)', {
+            postIds: postIds,
+          });
+        const postsArr = await postQueryBuilder.getMany();
+        console.log('postsArr ', postsArr);
+        const updatedPosts = postsArr.map((post) => {
+          post.likesCount = postStats[post.postId].Like;
+          post.dislikesCount = postStats[post.postId].Dislike;
+          return post;
+        });
+        console.log('updatedPosts ', updatedPosts);
+        const isPostsUpdated = await this.postsRepository.save(updatedPosts);
+      }
+
+      // перерасчет количества лайков разделен на этапы:
+      //1-й - мы достаем массив айдишек тех Комментов,
+      // где что то ставил забаненый или разбаненый пользователь это commentIdArray.
+      // То ест достаем коммент айди из комментлайков
+      //2-й - мы достаем массив ВСЕХ комменталайков на основе массива комментАйди,
+      // ВСЕХ, потому что нам надо пересчитать ВСЕ лайки в этих комментах
+      // но на этот раз массив где пользователь НЕ ЗАБАНЕН, потому что,
+      // НАМ нужно пересчитать лайки только от НЕЗАБАНЕНЫХ пользователей.
+      // 3-й Мы достаем из БД все комменты, на основе массива комментайдис
+      // мапим сущности комментов, выставляя новые количества лайков и дизлаков
+      // сохранаяем сущности.
+      const commentLikeQueryBuilder =
+        this.commentLikesRepository.createQueryBuilder('commentLike');
+      commentLikeQueryBuilder
+        .select('commentLike.commentId', 'commentId')
+        .where('commentLike.userId = :userId', { userId: userId });
+      const commentIdArray = await commentLikeQueryBuilder.getRawMany();
+      console.log('commentIdArray.length ', commentIdArray.length);
+      
+      if (commentIdArray.length > 0){
+        console.log("commentIdArray ", commentIdArray);
+      const commentIds = commentIdArray.map((obj) => obj.commentId);
+      const commentLikesArrQB = this.commentLikesRepository
+        .createQueryBuilder('commentLike')
+        .leftJoin('commentLike.Users', 'user')
+        .where('user.isUserBanned = false')
+        .andWhere('commentLike.commentId IN (:...commentIds)', {
+          commentIds: commentIds,
+        });
+      // достаем все лайки к комментам по коментАйди
+      const commentLikesArr: CommentLikes[] = await commentLikesArrQB.getMany();
+      const commentStats = commentLikesArr.reduce((acc, comment) => {
+        const { commentId, status } = comment;
+        if (!acc[commentId]) {
+          acc[commentId] = { Like: 0, Dislike: 0, None: 0 };
+        }
+        acc[commentId][status]++;
+        return acc;
+      }, {});
+      // Нужно достать все комменты с коммент айди.
+      const commentQueryBuilder = this.commentsRepository
+        .createQueryBuilder('comment')
+        .where('comment.commentId IN (:...commentIds)', {
+          commentIds: commentIds,
+        });
+      const commentsArr = await commentQueryBuilder.getMany();
+      const updatedComments = commentsArr.map((comment) => {
+        comment.likesCount = commentStats[comment.commentId].Like;
+        comment.dislikesCount = commentStats[comment.commentId].Dislike;
+        return comment;
+      });
+      const isCommentsUpdated = await this.commentsRepository.save(
+        updatedComments,
+      );
+      }
+
+      return true;
+    } catch (error) {
+      //TODO: remove before prod
+      console.log(error);
+      
+      return false;
+    }
   }
 
   async isEmailExists(email: string): Promise<boolean> {

@@ -40,15 +40,20 @@ export class UserBanStatusChangeUseCase
       userBanDto.isBanned = true;
       userBanDto.banReason = banReason;
       userBanDto.banDate = new Date();
-      await this.usersDevicesRepository.deleteAllUserDevicesById(userId);
+      // await this.usersDevicesRepository.deleteAllUserDevicesById(userId);
     }
 
-    const isBanStatusChanged = await this.usersRepository.changeUserBanStatus(
-      userBanDto,
-    );
-    const isLikesRecounted =
-      await this.likesRepository.recountLikesAfterUserBanChange(userId);
-    if (isBanStatusChanged && isLikesRecounted) {
+    // const isBanStatusChanged = await this.usersRepository.changeUserBanStatus(
+    //   userBanDto,
+    // );
+    // const isLikesRecounted =
+    //   await this.likesRepository.recountLikesAfterUserBanChange(userId);
+
+    const isBanChangeTransactionSuccessful = await this.usersRepository.banChangeUserWithRecountLikes(userBanDto)
+
+    if(isBanChangeTransactionSuccessful) {
+
+    // if (isBanStatusChanged && isLikesRecounted) {
       return true;
     } else {
       return false;
