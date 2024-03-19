@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { QueryBuilder, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import {
   QuizGameDbType,
@@ -220,5 +220,38 @@ export class QuizGamesRepository {
 
     const games = await queryBuilder.getMany();
     return games.map((game) => game.returnForPlayer());
+  }
+
+  //TODO: in progress
+  async GetCurrentUserStatistic(userId){
+    if (!isValidUUID(userId)) {
+      return null;
+    }
+    const queryBuilder = this.quizGamesRepository.createQueryBuilder('game')
+    queryBuilder
+    .select([
+      'game',
+      'answers',
+      'player1.userId',
+      'player1.login',
+      'player2.userId',
+      'player2.login',
+      'questions',
+    ])
+    .leftJoin('game.answers', 'answers')
+    .leftJoin('game.player1', 'player1')
+    .leftJoin('game.player2', 'player2')
+    .leftJoin('game.questions', 'questions')
+    .where('(game.player1Id = :userId  OR game.player2Id = :userId)',
+      {
+        userId: userId,
+      },
+    );
+
+    const games = await queryBuilder.getMany();
+
+    //заглушки
+    return 'user statistic'
+
   }
 }

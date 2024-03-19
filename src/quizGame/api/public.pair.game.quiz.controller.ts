@@ -26,6 +26,7 @@ import {
 import { request } from 'express';
 import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard';
 import { PlayerRequestAllGamesCommand } from '../use-cases/somebody-request-all-games-use-case';
+import { PlayerRequestOwnStatisticCommand } from '../use-cases/player-request-own-statistic-use-case';
 
 @Controller('pair-game-quiz')
 export class PublicQuizGameController {
@@ -163,7 +164,11 @@ export class PublicQuizGameController {
 @UseGuards(JwtAuthGuard)
 @Get('users/my-statistic')
 @HttpCode(200)
-async returnCurrentUsetStatistic(){
+async returnCurrentUsetStatistic(@Req() request){
+  const result = await this.commandBus.execute(new PlayerRequestOwnStatisticCommand(request.user.userId))
+  handleActionResult(result)
+  return result
+  //const result = await this.
   //example
   // {
   //   "sumScore": 0,
