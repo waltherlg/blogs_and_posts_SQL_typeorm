@@ -5,6 +5,7 @@ import {
   HttpCode,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -27,10 +28,14 @@ import { request } from 'express';
 import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard';
 import { PlayerRequestAllGamesCommand } from '../use-cases/somebody-request-all-games-use-case';
 import { PlayerRequestOwnStatisticCommand } from '../use-cases/player-request-own-statistic-use-case';
+import { DEFAULT_QUERY_PARAMS, RequestQueryParamsModel } from 'src/models/types';
+import { QuizGamesRepository } from '../quiz.game.repository';
 
 @Controller('pair-game-quiz')
 export class PublicQuizGameController {
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+    private readonly quizGamesRepository: QuizGamesRepository) {}
 
   @UseGuards(JwtAuthGuard)
   @Post('pairs/connection')
@@ -97,11 +102,19 @@ export class PublicQuizGameController {
     return result;
   }
 
-  //TODO: 
+  //TODO: WTF?!?
   @UseGuards(JwtAuthGuard)
   @Get('pairs/my')
   @HttpCode(200)
-  async returnAllGamesForCurrentUser(){
+  async returnAllGamesForCurrentUser(
+    //@Query() queryParams: RequestQueryParamsModel,
+    @Req() request){
+      return 'got'
+      // const mergedQueryParams = { ...DEFAULT_QUERY_PARAMS, ...queryParams };
+      // const games = await this.quizGamesRepository.getAllGamesForCurrentUser(mergedQueryParams, request.user.userId)
+      // return games
+
+
     // query params
     // sortBy Default value : pairCreatedDate
     // sortDirectionDefault value: desc Available values : asc, desc

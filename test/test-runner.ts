@@ -35,12 +35,12 @@ describe('End-to-End Tests', () => {
   // testCommentLikesCrud();
   // commentPaginationTest14()
   // onlyCommentLikesCrud13(); // только для проверки создания лайка для комментария
-  commentLikesWithUserBanCrud1301();
+  // commentLikesWithUserBanCrud1301();
   // bloggerUsersControllers()
 
   // questionCrudOperationsSa15();
 
   //--------- don't run 16 and 1601 together
   // quizGameCrudOperationsSa16();
-  // quizGameCrudOperationsSa1601()
+  quizGameCrudOperationsSa1601()
 });
