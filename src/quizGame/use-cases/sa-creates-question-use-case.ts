@@ -9,7 +9,6 @@ import { QuestionsRepository } from '../questions.repository';
 export class SaCreateQuestionCommand {
   constructor(public questionCreateInputDto: CreateQuestionImputModelType) {}
 }
-//TODO need finish
 @CommandHandler(SaCreateQuestionCommand)
 export class SaCreateQuestionUseCase
   implements ICommandHandler<SaCreateQuestionCommand>

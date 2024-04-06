@@ -75,20 +75,6 @@ export class PublicQuizGameController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('pairs/:gameId')
-  @HttpCode(200)
-  async getGameById(@Req() request, @Param('gameId') gameId) {
-    if (!isValidUUID(gameId)) {
-      handleActionResult(ActionResult.InvalidIdFormat);
-    }
-    const result = await this.commandBus.execute(
-      new PlayerRequestGameByIdCommand(gameId, request.user.userId),
-    );
-    handleActionResult(result);
-    return result;
-  }
-
-  @UseGuards(JwtAuthGuard)
   @Post('pairs/my-current/answers')
   @HttpCode(200)
   async putAnswers(@Req() request, @Body() answerBody: AnswerInputModelType) {
@@ -102,17 +88,18 @@ export class PublicQuizGameController {
     return result;
   }
 
-  //TODO: WTF?!?
+  //TODO: WTF?!? от смены порядка эндпоинтов путается постмен 
+  // (если поменять с эндпоинтом  @Get('pairs/:gameId'), 
+  // то в 'pairs/my' my будет восприниматья как ури параметр )
   @UseGuards(JwtAuthGuard)
   @Get('pairs/my')
   @HttpCode(200)
   async returnAllGamesForCurrentUser(
-    //@Query() queryParams: RequestQueryParamsModel,
+    @Query() queryParams: RequestQueryParamsModel,
     @Req() request){
-      return 'got'
-      // const mergedQueryParams = { ...DEFAULT_QUERY_PARAMS, ...queryParams };
-      // const games = await this.quizGamesRepository.getAllGamesForCurrentUser(mergedQueryParams, request.user.userId)
-      // return games
+      const mergedQueryParams = { ...DEFAULT_QUERY_PARAMS, ...queryParams };
+      const games = await this.quizGamesRepository.getAllGamesForCurrentUser(mergedQueryParams, request.user.userId)
+      return games
 
 
     // query params
@@ -171,6 +158,20 @@ export class PublicQuizGameController {
     //     }
     //   ]
     // }
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('pairs/:gameId')
+  @HttpCode(200)
+  async getGameById(@Req() request, @Param('gameId') gameId) {
+    if (!isValidUUID(gameId)) {
+      handleActionResult(ActionResult.InvalidIdFormat);
+    }
+    const result = await this.commandBus.execute(
+      new PlayerRequestGameByIdCommand(gameId, request.user.userId),
+    );
+    handleActionResult(result);
+    return result;
   }
 
 // TODO
