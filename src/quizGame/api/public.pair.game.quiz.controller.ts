@@ -88,9 +88,6 @@ export class PublicQuizGameController {
     return result;
   }
 
-  //TODO: WTF?!? от смены порядка эндпоинтов путается постмен 
-  // (если поменять с эндпоинтом  @Get('pairs/:gameId'), 
-  // то в 'pairs/my' my будет восприниматья как ури параметр )
   @UseGuards(JwtAuthGuard)
   @Get('pairs/my')
   @HttpCode(200)
@@ -160,20 +157,6 @@ export class PublicQuizGameController {
     // }
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('pairs/:gameId')
-  @HttpCode(200)
-  async getGameById(@Req() request, @Param('gameId') gameId) {
-    if (!isValidUUID(gameId)) {
-      handleActionResult(ActionResult.InvalidIdFormat);
-    }
-    const result = await this.commandBus.execute(
-      new PlayerRequestGameByIdCommand(gameId, request.user.userId),
-    );
-    handleActionResult(result);
-    return result;
-  }
-
 // TODO
 @UseGuards(JwtAuthGuard)
 @Get('users/my-statistic')
@@ -192,6 +175,23 @@ async returnCurrentUsetStatistic(@Req() request){
   //   "lossesCount": 0,
   //   "drawsCount": 0
   // }
+}
+
+  //TODO: WTF?!? от смены порядка эндпоинтов путается постмен 
+  // (если поменять местами этот эндпоинт с предыдущими, 
+  // то например в 'pairs/my' my будет восприниматья как ури параметр )
+@UseGuards(JwtAuthGuard)
+@Get('pairs/:gameId')
+@HttpCode(200)
+async getGameById(@Req() request, @Param('gameId') gameId) {
+  if (!isValidUUID(gameId)) {
+    handleActionResult(ActionResult.InvalidIdFormat);
+  }
+  const result = await this.commandBus.execute(
+    new PlayerRequestGameByIdCommand(gameId, request.user.userId),
+  );
+  handleActionResult(result);
+  return result;
 }
 
 }

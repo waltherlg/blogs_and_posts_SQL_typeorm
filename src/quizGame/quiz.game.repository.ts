@@ -252,9 +252,18 @@ export class QuizGamesRepository {
     );
 
     const games = await queryBuilder.getMany();
+    console.log("games from user statistic ", games);
+    
+    let userStatistic = {
+    sumScore: 0,
+    avgScores: 0,
+    gamesCount: 0,
+    winsCount: 0,
+    lossesCount: 0,
+    drawsCount: 0
+    }
+    return userStatistic
 
-    //заглушки
-    return 'user statistic'
   }
 
   async getAllGamesForCurrentUser(mergedQueryParams, userId): Promise<PaginationOutputModel<outputGameQuizType>> | null{
