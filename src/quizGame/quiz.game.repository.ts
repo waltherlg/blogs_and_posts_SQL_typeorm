@@ -296,6 +296,9 @@ export class QuizGamesRepository {
     .offset(skipPage)
     .getMany()
 
+    console.log(" games ", games);
+    
+
     const gamesForOutput = games.map((game) => game.returnForPlayer())
 
     const pageCount = Math.ceil(gamesCount / pageSize)

@@ -12,6 +12,13 @@ export const DEFAULT_QUERY_PARAMS: RequestQueryParamsModel = {
   pageSize: '10',
 };
 
+export const DEFAULT_GAMES_QUERY_PARAMS: RequestQueryParamsModel = {
+  sortBy: 'pairCreatedDate',
+  sortDirection: 'DESC',
+  pageNumber: '1',
+  pageSize: '10',
+};
+
 export type RequestBlogsQueryModel = {
   searchNameTerm: string;
 } & RequestQueryParamsModel;

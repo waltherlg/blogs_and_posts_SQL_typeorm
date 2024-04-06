@@ -28,7 +28,7 @@ import { request } from 'express';
 import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard';
 import { PlayerRequestAllGamesCommand } from '../use-cases/somebody-request-all-games-use-case';
 import { PlayerRequestOwnStatisticCommand } from '../use-cases/player-request-own-statistic-use-case';
-import { DEFAULT_QUERY_PARAMS, RequestQueryParamsModel } from 'src/models/types';
+import { DEFAULT_GAMES_QUERY_PARAMS, DEFAULT_QUERY_PARAMS, RequestQueryParamsModel } from 'src/models/types';
 import { QuizGamesRepository } from '../quiz.game.repository';
 
 @Controller('pair-game-quiz')
@@ -97,7 +97,7 @@ export class PublicQuizGameController {
   async returnAllGamesForCurrentUser(
     @Query() queryParams: RequestQueryParamsModel,
     @Req() request){
-      const mergedQueryParams = { ...DEFAULT_QUERY_PARAMS, ...queryParams };
+      const mergedQueryParams = { ...DEFAULT_GAMES_QUERY_PARAMS, ...queryParams };
       const games = await this.quizGamesRepository.getAllGamesForCurrentUser(mergedQueryParams, request.user.userId)
       return games
 
