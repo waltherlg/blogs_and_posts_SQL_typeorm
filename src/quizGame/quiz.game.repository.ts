@@ -254,10 +254,8 @@ export class QuizGamesRepository {
     const games = await queryBuilder.getMany();
     console.log("games from user statistic ", games);
 
-    games.forEach((game) => {
-      
-    })
     
+
     let userStatistic = {
     sumScore: 0,
     avgScores: 0,
@@ -266,9 +264,41 @@ export class QuizGamesRepository {
     lossesCount: 0,
     drawsCount: 0
     }
+
+    function updateStatistics(playerStatus) {
+      switch (playerStatus) {
+          case 'win':
+              userStatistic.winsCount++;
+              break;
+          case 'lose':
+              userStatistic.lossesCount++;
+              break;
+          case 'draw':
+              userStatistic.drawsCount++;
+              break;
+          default:
+              console.log("wrong status");
+      }
+
+    games.forEach((game) => {
+      const currentGameStatistic = game.getStatisticForCurrentGameAndUser(userId)     
+      userStatistic.sumScore += currentGameStatistic.score
+      updateStatistics(currentGameStatistic.gameStatus)
+    })
+    userStatistic.gamesCount = games.length
+    if (userStatistic.gamesCount !== 0) {
+      let avgScore = userStatistic.sumScore / userStatistic.gamesCount;
+      userStatistic.avgScores = parseFloat(avgScore.toFixed(2));
+
+      if (userStatistic.avgScores % 1 === 0) {
+          userStatistic.avgScores = Math.round(userStatistic.avgScores);
+      }
+    } else {
+        userStatistic.avgScores = 0;
+    }
     return userStatistic
 
-  }
+  }}
 
   async getAllGamesForCurrentUser(mergedQueryParams, userId): Promise<PaginationOutputModel<outputGameQuizType>> | null{
     if (!isValidUUID(userId)) {

@@ -244,6 +244,8 @@ export class QuizGames extends QuestionDbType {
     }}
 
   getStatisticForCurrentGameAndUser(playerId){
+
+    
     let currentUserStatistic = {
       score: 0,
       gameStatus: 'None'
@@ -256,7 +258,8 @@ export class QuizGames extends QuestionDbType {
     else if(playerId === this.player2.userId){
       currentPlayerNumber = 2
     } else {
-      return 0
+      //TODO: можно ли возвращать нал
+      return null
     }
     const playerScores = {
       1: this.player1Score,
@@ -272,8 +275,7 @@ export class QuizGames extends QuestionDbType {
   } else {
     currentUserStatistic.gameStatus = 'lose';
   }
-
-    
+  return currentUserStatistic
   }
 
   numberOfCurrentPlayer(playerId){
