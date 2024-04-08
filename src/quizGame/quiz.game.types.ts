@@ -233,6 +233,58 @@ export class QuizGames extends QuestionDbType {
       return game;
     }
   }
+
+  private swapPlayerNumber = (num) => {
+    if (num === 1) {
+      return 2;
+    } else if (num === 2) {
+      return 1;
+    } else {
+      return 0
+    }}
+
+  getStatisticForCurrentGameAndUser(playerId){
+    let currentUserStatistic = {
+      score: 0,
+      gameStatus: 'None'
+    }
+
+    let currentPlayerNumber = 0
+    if(playerId === this.player1.userId){
+      currentPlayerNumber = 1
+    }
+    else if(playerId === this.player2.userId){
+      currentPlayerNumber = 2
+    } else {
+      return 0
+    }
+    const playerScores = {
+      1: this.player1Score,
+      2: this.player2Score
+  };
+
+  currentUserStatistic.score = playerScores[currentPlayerNumber]
+
+    if (playerScores[currentPlayerNumber] > playerScores[this.swapPlayerNumber(currentPlayerNumber)]) {
+      currentUserStatistic.gameStatus = 'win';
+  } else if ( (playerScores[currentPlayerNumber] === playerScores[this.swapPlayerNumber(currentPlayerNumber)]) ){
+    currentUserStatistic.gameStatus = 'draw'
+  } else {
+    currentUserStatistic.gameStatus = 'lose';
+  }
+
+    
+  }
+
+  numberOfCurrentPlayer(playerId){
+    if(playerId === this.player1.userId){
+      return 1
+    }
+    if(playerId === this.player2.userId){
+      return 2
+    }
+    return 0
+  }
 }
 
 // @Entity({name: 'QuizGames'})

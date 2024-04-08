@@ -253,6 +253,10 @@ export class QuizGamesRepository {
 
     const games = await queryBuilder.getMany();
     console.log("games from user statistic ", games);
+
+    games.forEach((game) => {
+      
+    })
     
     let userStatistic = {
     sumScore: 0,
