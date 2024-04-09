@@ -2,7 +2,7 @@
 
 
 export const testGames = {
-  outputGameForDynamicChanges: {
+  outputGameForDynamicChanges1: {
     id: expect.any(String),
     firstPlayerProgress: {
       answers: expect.any(Array),
@@ -28,6 +28,31 @@ export const testGames = {
   },
 
   outputGameForDynamicChanges2: {
+    id: expect.any(String),
+    firstPlayerProgress: {
+      answers: expect.any(Array),
+      player: {
+        id: expect.any(String),
+        login: expect.any(String),
+      },
+      score: 0,
+    },
+    secondPlayerProgress: {
+      answers: expect.any(Array),
+      player: {
+        id: expect.any(String),
+        login: expect.any(String),
+      },
+      score: 0,
+    },
+    questions: expect.any(Array),
+    status: 'Active',
+    pairCreatedDate: expect.any(String),
+    startGameDate: expect.any(String),
+    finishGameDate: null,
+  },
+
+  outputGameForDynamicChanges3: {
     id: expect.any(String),
     firstPlayerProgress: {
       answers: expect.any(Array),

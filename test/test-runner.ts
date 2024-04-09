@@ -18,6 +18,7 @@ import { commentLikesWithUserBanCrud1301 } from './13-01-comments-likes.with.use
 import { questionCrudOperationsSa15 } from './15-00-sa.question.crud.operations.e2e-spec';
 import { quizGameCrudOperationsSa16 } from './16-00-sa.quiz.game.crud.operations.e2e-spec';
 import { quizGameCrudOperationsSa1601 } from './16-01-sa.quiz.game.crud.operations.e2e-spec';
+import { quizGameStatisticOperations17 } from './17-00-quiz.game.statistic.operations.e2e-spec';
 
 describe('End-to-End Tests', () => {
   // testSaUsersCrud();
@@ -40,6 +41,7 @@ describe('End-to-End Tests', () => {
 
   // questionCrudOperationsSa15();
 
-  // quizGameCrudOperationsSa16();
-  // quizGameCrudOperationsSa1601()
+  quizGameCrudOperationsSa16();
+  quizGameCrudOperationsSa1601()
+  quizGameStatisticOperations17()
 });

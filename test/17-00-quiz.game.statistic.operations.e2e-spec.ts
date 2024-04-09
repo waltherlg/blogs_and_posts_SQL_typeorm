@@ -10,8 +10,8 @@ import { enumStatusGameType } from '../src/quizGame/quiz.game.types';
 import { addAppSettings } from '../src/helpers/settings';
 import { testGames } from './helpers/inputAndOutputObjects/gamesObjects';
 
-export function quizGameCrudOperationsSa16() {
-  describe('---------- quizGame CRUD operation SA (e2e) -------------quizGameCrudOperationsSa16', () => {
+export function quizGameStatisticOperations17() {
+  describe('---------- quizGame Statistic check operation SA (e2e) -------------quizGameStatisticOperations17', () => {
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
@@ -29,6 +29,8 @@ export function quizGameCrudOperationsSa16() {
     let accessTokenUser2;
     let accessTokenUser3;
     let gameId1;
+
+    // game3 user1 - 5 user2 - 2
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -300,27 +302,8 @@ export function quizGameCrudOperationsSa16() {
       gameId1 = createdResponseBody.id;
       expect(createdResponseBody).toEqual(testGames.outputPandingGame);
       testGames.outputActiveGame.id = gameId1;
-      testGames.outputGameForDynamicChanges1.firstPlayerProgress.player.id =
+      testGames.outputGameForDynamicChanges3.firstPlayerProgress.player.id =
         userId1;
-    });
-
-    it('00-00 pair-game-quiz/pairs/connection POST = user1 get 403 if trying create new game before finish previous', async () => {
-      const createResponse = await request(app.getHttpServer())
-        .post(`${endpoints.pairGameQuiz}/pairs/connection`)
-        .set('Authorization', `Bearer ${accessTokenUser1}`)
-        .expect(403);
-    });
-
-    it('00-00 pair-game-quiz/pairs/my-current GET = user1 req own game', async () => {
-      const createResponse = await request(app.getHttpServer())
-        .get(`${endpoints.pairGameQuiz}/pairs/my-current`)
-        .set('Authorization', `Bearer ${accessTokenUser1}`)
-        .expect(200);
-      const createdResponseBody = createResponse.body;
-      expect(createdResponseBody).toEqual(testGames.outputPandingGame);
-      expect(createdResponseBody.firstPlayerProgress.player.id).toEqual(
-        userId1,
-      );
     });
 
     it('00-00 pair-game-quiz/pairs/connection POST = user2 join to game1', async () => {
@@ -332,40 +315,10 @@ export function quizGameCrudOperationsSa16() {
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(testGames.outputActiveGame);
 
-      testGames.outputGameForDynamicChanges1.secondPlayerProgress.player.id =
+      testGames.outputGameForDynamicChanges3.secondPlayerProgress.player.id =
         userId2;
-      testGames.outputGameForDynamicChanges1.status = enumStatusGameType.Active;
-      testGames.outputGameForDynamicChanges1.startGameDate = expect.any(String);
-    });
-
-    it('00-00 pair-game-quiz/pairs/my-current GET = user1 req own game', async () => {
-      const createResponse = await request(app.getHttpServer())
-        .get(`${endpoints.pairGameQuiz}/pairs/my-current`)
-        .set('Authorization', `Bearer ${accessTokenUser1}`)
-        .expect(200);
-      const createdResponseBody = createResponse.body;
-      expect(createdResponseBody).toEqual(
-        testGames.outputGameForDynamicChanges1,
-      );
-    });
-
-    it('00-00 pair-game-quiz/pairs/my-current GET = user2 req own game', async () => {
-      const createResponse = await request(app.getHttpServer())
-        .get(`${endpoints.pairGameQuiz}/pairs/my-current`)
-        .set('Authorization', `Bearer ${accessTokenUser2}`)
-        .expect(200);
-
-      const createdResponseBody = createResponse.body;
-      expect(createdResponseBody).toEqual(
-        testGames.outputGameForDynamicChanges1,
-      );
-    });
-
-    it('00-00 pair-game-quiz/pairs/my-current POST = user2 get 403 if trying connect to new game before finish previous', async () => {
-      const createResponse = await request(app.getHttpServer())
-        .post(`${endpoints.pairGameQuiz}/pairs/connection`)
-        .set('Authorization', `Bearer ${accessTokenUser2}`)
-        .expect(403);
+      testGames.outputGameForDynamicChanges3.status = enumStatusGameType.Active;
+      testGames.outputGameForDynamicChanges3.startGameDate = expect.any(String);
     });
 
     it('00-00 pairs/my-current/answers POST = user1 add correctAnswer 1 in game', async () => {
@@ -374,7 +327,7 @@ export function quizGameCrudOperationsSa16() {
         .send(testAnswerBody.correctAnswerInput)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
-      testGames.outputGameForDynamicChanges1.firstPlayerProgress.score++;
+      testGames.outputGameForDynamicChanges3.firstPlayerProgress.score++;
     });
 
     it('00-00 pair-game-quiz/pairs/my-current GET = user1 req own game', async () => {
@@ -384,7 +337,7 @@ export function quizGameCrudOperationsSa16() {
         .expect(200);
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(
-        testGames.outputGameForDynamicChanges1,
+        testGames.outputGameForDynamicChanges3,
       );
     });
 
@@ -406,7 +359,7 @@ export function quizGameCrudOperationsSa16() {
         .expect(200);
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(
-        testGames.outputGameForDynamicChanges1,
+        testGames.outputGameForDynamicChanges3,
       );
     });
 
@@ -419,7 +372,7 @@ export function quizGameCrudOperationsSa16() {
 
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
-      testGames.outputGameForDynamicChanges1.secondPlayerProgress.score++;
+      testGames.outputGameForDynamicChanges3.secondPlayerProgress.score++;
     });
 
     it('00-00 pair-game-quiz/pairs/my-current GET = user2 req own game', async () => {
@@ -429,7 +382,7 @@ export function quizGameCrudOperationsSa16() {
         .expect(200);
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(
-        testGames.outputGameForDynamicChanges1,
+        testGames.outputGameForDynamicChanges3,
       );
     });
 
@@ -442,7 +395,7 @@ export function quizGameCrudOperationsSa16() {
 
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
-      testGames.outputGameForDynamicChanges1.firstPlayerProgress.score++;
+      testGames.outputGameForDynamicChanges3.firstPlayerProgress.score++;
     });
 
     it('00-00 pair-game-quiz/pairs/my-current GET = user1 req own game', async () => {
@@ -452,7 +405,7 @@ export function quizGameCrudOperationsSa16() {
         .expect(200);
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(
-        testGames.outputGameForDynamicChanges1,
+        testGames.outputGameForDynamicChanges3,
       );
     });
 
@@ -465,7 +418,7 @@ export function quizGameCrudOperationsSa16() {
 
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
-      testGames.outputGameForDynamicChanges1.secondPlayerProgress.score++;
+      testGames.outputGameForDynamicChanges3.secondPlayerProgress.score++;
     });
 
     it('00-00 pair-game-quiz/pairs/my-current GET = user2 req own game', async () => {
@@ -475,7 +428,7 @@ export function quizGameCrudOperationsSa16() {
         .expect(200);
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(
-        testGames.outputGameForDynamicChanges1,
+        testGames.outputGameForDynamicChanges3,
       );
     });
 
@@ -488,7 +441,7 @@ export function quizGameCrudOperationsSa16() {
 
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
-      testGames.outputGameForDynamicChanges1.firstPlayerProgress.score++;
+      testGames.outputGameForDynamicChanges3.firstPlayerProgress.score++;
     });
 
     it('00-00 pairs/my-current/answers POST = user2 add incorrectAnswer 3 in game', async () => {
@@ -522,8 +475,8 @@ export function quizGameCrudOperationsSa16() {
 
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
-      testGames.outputGameForDynamicChanges1.firstPlayerProgress.score++;
-      testGames.outputGameForDynamicChanges1.firstPlayerProgress.score++;
+      testGames.outputGameForDynamicChanges3.firstPlayerProgress.score++;
+      testGames.outputGameForDynamicChanges3.firstPlayerProgress.score++;
     });
 
     it('00-00 pairs/my-current/answers POST = 403 if user1 answered all questions', async () => {
@@ -543,9 +496,9 @@ export function quizGameCrudOperationsSa16() {
 
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
-      testGames.outputGameForDynamicChanges1.status =
+      testGames.outputGameForDynamicChanges3.status =
         enumStatusGameType.Finished;
-      testGames.outputGameForDynamicChanges1.finishGameDate = expect.any(String);
+      testGames.outputGameForDynamicChanges3.finishGameDate = expect.any(String);
     });
 
     it('00-00 pairs/:gameId GET = user1 req finished game', async () => {
@@ -557,7 +510,7 @@ export function quizGameCrudOperationsSa16() {
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual(testGames.outputFinishedGame);
       expect(createdResponseBody).toEqual(
-        testGames.outputGameForDynamicChanges1,
+        testGames.outputGameForDynamicChanges3,
       );
     });
 
