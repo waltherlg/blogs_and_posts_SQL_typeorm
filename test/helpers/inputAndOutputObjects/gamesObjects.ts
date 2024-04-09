@@ -77,6 +77,31 @@ export const testGames = {
     finishGameDate: null,
   },
 
+  outputGameForDynamicChanges4: {
+    id: expect.any(String),
+    firstPlayerProgress: {
+      answers: expect.any(Array),
+      player: {
+        id: expect.any(String),
+        login: expect.any(String),
+      },
+      score: 0,
+    },
+    secondPlayerProgress: {
+      answers: expect.any(Array),
+      player: {
+        id: expect.any(String),
+        login: expect.any(String),
+      },
+      score: 0,
+    },
+    questions: expect.any(Array),
+    status: 'Active',
+    pairCreatedDate: expect.any(String),
+    startGameDate: expect.any(String),
+    finishGameDate: null,
+  },
+
   outputActiveGame: {
     id: expect.any(String),
     firstPlayerProgress: {

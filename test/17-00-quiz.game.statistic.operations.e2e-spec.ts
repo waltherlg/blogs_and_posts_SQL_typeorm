@@ -301,7 +301,8 @@ export function quizGameStatisticOperations17() {
       const createdResponseBody = createResponse.body;
       gameId1 = createdResponseBody.id;
       expect(createdResponseBody).toEqual(testGames.outputPandingGame);
-      testGames.outputActiveGame.id = gameId1;
+      //testGames.outputActiveGame.id = gameId1;
+      testGames.outputGameForDynamicChanges3.id = gameId1;
       testGames.outputGameForDynamicChanges3.firstPlayerProgress.player.id =
         userId1;
     });
@@ -313,12 +314,14 @@ export function quizGameStatisticOperations17() {
         .expect(200);
 
       const createdResponseBody = createResponse.body;
-      expect(createdResponseBody).toEqual(testGames.outputActiveGame);
+     // expect(createdResponseBody).toEqual(testGames.outputActiveGame);
 
       testGames.outputGameForDynamicChanges3.secondPlayerProgress.player.id =
         userId2;
       testGames.outputGameForDynamicChanges3.status = enumStatusGameType.Active;
       testGames.outputGameForDynamicChanges3.startGameDate = expect.any(String);
+      expect(createdResponseBody).toEqual(testGames.outputGameForDynamicChanges3);
+
     });
 
     it('00-00 pairs/my-current/answers POST = user1 add correctAnswer 1 in game', async () => {
