@@ -10,8 +10,8 @@ import { enumStatusGameType } from '../src/quizGame/quiz.game.types';
 import { addAppSettings } from '../src/helpers/settings';
 import { testGames } from './helpers/inputAndOutputObjects/gamesObjects';
 
-export function quizGameCrudOperationsSa16() {
-  describe('---------- quizGame CRUD operation SA (e2e) -------------quizGameCrudOperationsSa16', () => {
+export function quizGameStatisticOperations17() {
+  describe('---------- quizGame CRUD operation SA (e2e) -------------quizGameStatisticOperations17', () => {
     let app: INestApplication;
 
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
@@ -29,8 +29,6 @@ export function quizGameCrudOperationsSa16() {
     let accessTokenUser2;
     let accessTokenUser3;
     let gameId1;
-
-    let testGamesCopy = JSON.parse(JSON.stringify(testGames));
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -296,32 +294,6 @@ export function quizGameCrudOperationsSa16() {
       expect(createResponse.headers['set-cookie']).toBeDefined();
     });
 
-    it('00-00 sa/users post = 201 create user3 with return', async () => {
-      const createResponse = await request(app.getHttpServer())
-        .post(endpoints.saUsers)
-        .set('Authorization', `Basic ${basicAuthRight}`)
-        .send(testComments.inputUser3)
-        .expect(201);
-
-      const createdResponseBody = createResponse.body;
-      userId3 = createdResponseBody.id;
-
-      expect(createdResponseBody).toEqual(testComments.outputUser3Sa);
-    });
-
-    it('00-00 login = 204 login user3', async () => {
-      const createResponse = await request(app.getHttpServer())
-        .post(`${endpoints.auth}/login`)
-        .send(testComments.loginUser3)
-        .expect(200);
-      const createdResponse = createResponse.body;
-      accessTokenUser3 = createdResponse.accessToken;
-      expect(createdResponse).toEqual({
-        accessToken: expect.any(String),
-      });
-      expect(createResponse.headers['set-cookie']).toBeDefined();
-    });
-
     it('00-00 pair-game-quiz/pairs/connection POST = user1 create new game', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.pairGameQuiz}/pairs/connection`)
@@ -334,13 +306,6 @@ export function quizGameCrudOperationsSa16() {
       testGames.outputActiveGame.id = gameId1;
       testGames.outputGameForDynamicChanges.firstPlayerProgress.player.id =
         userId1;
-    });
-
-    it('00-00 pair-game-quiz/pairs/connection POST = user1 get 403 if trying create new game before finish previous', async () => {
-      const createResponse = await request(app.getHttpServer())
-        .post(`${endpoints.pairGameQuiz}/pairs/connection`)
-        .set('Authorization', `Bearer ${accessTokenUser1}`)
-        .expect(403);
     });
 
     it('00-00 pair-game-quiz/pairs/my-current GET = user1 req own game', async () => {

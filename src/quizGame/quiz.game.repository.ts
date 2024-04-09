@@ -265,6 +265,9 @@ export class QuizGamesRepository {
     drawsCount: 0
     }
 
+    console.log('userStatistic ', userStatistic);
+    
+
     function updateStatistics(playerStatus) {
       switch (playerStatus) {
           case 'win':
@@ -278,7 +281,7 @@ export class QuizGamesRepository {
               break;
           default:
               console.log("wrong status");
-      }
+      }}
 
     games.forEach((game) => {
       const currentGameStatistic = game.getStatisticForCurrentGameAndUser(userId)     
@@ -296,9 +299,13 @@ export class QuizGamesRepository {
     } else {
         userStatistic.avgScores = 0;
     }
+
+
+    console.log('userStatistic ', userStatistic);
+    
     return userStatistic
 
-  }}
+  }
 
   async getAllGamesForCurrentUser(mergedQueryParams, userId): Promise<PaginationOutputModel<outputGameQuizType>> | null{
     if (!isValidUUID(userId)) {

@@ -259,7 +259,9 @@ export class QuizGames extends QuestionDbType {
       currentPlayerNumber = 2
     } else {
       //TODO: можно ли возвращать нал
-      return null
+      // return null
+      console.log('wrong player');
+      
     }
     const playerScores = {
       1: this.player1Score,
