@@ -40,7 +40,6 @@ describe('End-to-End Tests', () => {
 
   // questionCrudOperationsSa15();
 
-  //--------- don't run 16 and 1601 together
-  quizGameCrudOperationsSa16();
-  quizGameCrudOperationsSa1601()
+  // quizGameCrudOperationsSa16();
+  // quizGameCrudOperationsSa1601()
 });
