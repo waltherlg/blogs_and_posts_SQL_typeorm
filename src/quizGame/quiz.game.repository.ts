@@ -337,8 +337,9 @@ export class QuizGamesRepository {
     const gamesCount = await queryBuilder.getCount();
 
     const games = await queryBuilder
-      .orderBy(`"${sortBy}"`, sortDirection)
-      .limit(pageSize)
+      .orderBy(`game.${sortBy}`, sortDirection)
+      //.limit(pageSize)
+      .take(pageSize)
       .offset(skipPage)
       .getMany();
 
