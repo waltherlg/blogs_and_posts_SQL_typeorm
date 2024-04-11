@@ -160,7 +160,7 @@ export class UsersRepository {
     return result.affected > 0;
   }
 
-//TODO: remove if not need
+  //TODO: remove if not need
   async changeUserBanStatus(userBanDto): Promise<boolean> {
     if (!isValidUUID(userBanDto.userId)) {
       return false;
@@ -227,20 +227,20 @@ export class UsersRepository {
           acc[postId][status]++;
           return acc;
         }, {});
-        
+
         const postQueryBuilder = this.postsRepository
           .createQueryBuilder('post')
           .where('post.postId IN (:...postIds)', {
             postIds: postIds,
           });
         const postsArr = await postQueryBuilder.getMany();
-        
+
         const updatedPosts = postsArr.map((post) => {
           post.likesCount = postStats[post.postId].Like;
           post.dislikesCount = postStats[post.postId].Dislike;
           return post;
         });
-        
+
         const isPostsUpdated = await this.postsRepository.save(updatedPosts);
       }
 

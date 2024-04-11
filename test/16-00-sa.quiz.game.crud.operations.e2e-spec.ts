@@ -545,7 +545,8 @@ export function quizGameCrudOperationsSa16() {
       expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
       testGames.outputGameForDynamicChanges1.status =
         enumStatusGameType.Finished;
-      testGames.outputGameForDynamicChanges1.finishGameDate = expect.any(String);
+      testGames.outputGameForDynamicChanges1.finishGameDate =
+        expect.any(String);
     });
 
     it('00-00 pairs/:gameId GET = user1 req finished game', async () => {

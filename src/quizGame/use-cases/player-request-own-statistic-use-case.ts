@@ -12,13 +12,13 @@ export class PlayerRequestOwnStatisticUseCase
   constructor(private readonly quizGamesRepository: QuizGamesRepository) {}
 
   async execute(command: PlayerRequestOwnStatisticCommand): Promise<any> {
-    
-    
-    const result = await this.quizGamesRepository.GetCurrentUserStatistic(command.userId);
+    const result = await this.quizGamesRepository.GetCurrentUserStatistic(
+      command.userId,
+    );
     console.log('PlayerRequestOwnStatisticCommand ', result);
     if (!result) {
       return ActionResult.GameNotFound;
     }
-    return result
+    return result;
   }
 }

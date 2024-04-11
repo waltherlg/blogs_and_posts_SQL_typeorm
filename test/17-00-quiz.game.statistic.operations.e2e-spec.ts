@@ -29,7 +29,7 @@ export function quizGameStatisticOperations17() {
     let accessTokenUser2;
     let accessTokenUser3;
     let gameId1;
-    let gameId4
+    let gameId4;
 
     // game3 user1 - 5 user2 - 2
     // game4 user1 - 0 user2 - 2
@@ -316,14 +316,15 @@ export function quizGameStatisticOperations17() {
         .expect(200);
 
       const createdResponseBody = createResponse.body;
-     // expect(createdResponseBody).toEqual(testGames.outputActiveGame);
+      // expect(createdResponseBody).toEqual(testGames.outputActiveGame);
 
       testGames.outputGameForDynamicChanges3.secondPlayerProgress.player.id =
         userId2;
       testGames.outputGameForDynamicChanges3.status = enumStatusGameType.Active;
       testGames.outputGameForDynamicChanges3.startGameDate = expect.any(String);
-      expect(createdResponseBody).toEqual(testGames.outputGameForDynamicChanges3);
-
+      expect(createdResponseBody).toEqual(
+        testGames.outputGameForDynamicChanges3,
+      );
     });
 
     it('00-00 pairs/my-current/answers POST = user1 add correctAnswer 1 in game', async () => {
@@ -503,7 +504,8 @@ export function quizGameStatisticOperations17() {
       expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
       testGames.outputGameForDynamicChanges3.status =
         enumStatusGameType.Finished;
-      testGames.outputGameForDynamicChanges3.finishGameDate = expect.any(String);
+      testGames.outputGameForDynamicChanges3.finishGameDate =
+        expect.any(String);
     });
 
     it('00-00 pairs/:gameId GET = user1 req finished game', async () => {
@@ -539,16 +541,15 @@ export function quizGameStatisticOperations17() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody)
-        .toEqual({
-          sumScore: 5,
-          avgScores: 5,
-          gamesCount: 1,
-          winsCount: 1,
-          lossesCount: 0,
-          drawsCount: 0
-          });
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual({
+        sumScore: 5,
+        avgScores: 5,
+        gamesCount: 1,
+        winsCount: 1,
+        lossesCount: 0,
+        drawsCount: 0,
+      });
     });
 
     it('00-00 pair-game-quiz/users/my-statistic GET = user2 req own statistic', async () => {
@@ -557,19 +558,16 @@ export function quizGameStatisticOperations17() {
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody)
-        .toEqual({
-          sumScore: 2,
-          avgScores: 2,
-          gamesCount: 1,
-          winsCount: 0,
-          lossesCount: 1,
-          drawsCount: 0
-          });
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual({
+        sumScore: 2,
+        avgScores: 2,
+        gamesCount: 1,
+        winsCount: 0,
+        lossesCount: 1,
+        drawsCount: 0,
+      });
     });
-
-
 
     it('00-00 pair-game-quiz/pairs/connection POST = user1 create new game4', async () => {
       const createResponse = await request(app.getHttpServer())
@@ -593,13 +591,15 @@ export function quizGameStatisticOperations17() {
         .expect(200);
 
       const createdResponseBody = createResponse.body;
-     // expect(createdResponseBody).toEqual(testGames.outputActiveGame);
+      // expect(createdResponseBody).toEqual(testGames.outputActiveGame);
 
       testGames.outputGameForDynamicChanges4.secondPlayerProgress.player.id =
         userId2;
       testGames.outputGameForDynamicChanges4.status = enumStatusGameType.Active;
       testGames.outputGameForDynamicChanges4.startGameDate = expect.any(String);
-      expect(createdResponseBody).toEqual(testGames.outputGameForDynamicChanges4);
+      expect(createdResponseBody).toEqual(
+        testGames.outputGameForDynamicChanges4,
+      );
     });
 
     it('00-00 pairs/my-current/answers POST = user1 add incorrectAnswer 1 in game', async () => {
@@ -718,16 +718,15 @@ export function quizGameStatisticOperations17() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody)
-        .toEqual({
-          sumScore: 5,
-          avgScores: 2.5,
-          gamesCount: 2,
-          winsCount: 1,
-          lossesCount: 1,
-          drawsCount: 0
-          });
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual({
+        sumScore: 5,
+        avgScores: 2.5,
+        gamesCount: 2,
+        winsCount: 1,
+        lossesCount: 1,
+        drawsCount: 0,
+      });
     });
 
     it('00-00 pair-game-quiz/users/my-statistic GET = user2 req own statistic', async () => {
@@ -736,18 +735,15 @@ export function quizGameStatisticOperations17() {
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        expect(createdResponseBody)
-        .toEqual({
-          sumScore: 4,
-          avgScores: 2,
-          gamesCount: 2,
-          winsCount: 1,
-          lossesCount: 1,
-          drawsCount: 0
-          });
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual({
+        sumScore: 4,
+        avgScores: 2,
+        gamesCount: 2,
+        winsCount: 1,
+        lossesCount: 1,
+        drawsCount: 0,
+      });
     });
-
-
   });
 }

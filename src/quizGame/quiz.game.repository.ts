@@ -226,88 +226,86 @@ export class QuizGamesRepository {
   }
 
   //TODO: in progress
-  async GetCurrentUserStatistic(userId){
+  async GetCurrentUserStatistic(userId) {
     if (!isValidUUID(userId)) {
       return null;
     }
-    const queryBuilder = this.quizGamesRepository.createQueryBuilder('game')
+    const queryBuilder = this.quizGamesRepository.createQueryBuilder('game');
     queryBuilder
-    .select([
-      'game',
-      'answers',
-      'player1.userId',
-      'player1.login',
-      'player2.userId',
-      'player2.login',
-      'questions',
-    ])
-    .leftJoin('game.answers', 'answers')
-    .leftJoin('game.player1', 'player1')
-    .leftJoin('game.player2', 'player2')
-    .leftJoin('game.questions', 'questions')
-    .where('(game.player1Id = :userId  OR game.player2Id = :userId)',
-      {
+      .select([
+        'game',
+        'answers',
+        'player1.userId',
+        'player1.login',
+        'player2.userId',
+        'player2.login',
+        'questions',
+      ])
+      .leftJoin('game.answers', 'answers')
+      .leftJoin('game.player1', 'player1')
+      .leftJoin('game.player2', 'player2')
+      .leftJoin('game.questions', 'questions')
+      .where('(game.player1Id = :userId  OR game.player2Id = :userId)', {
         userId: userId,
-      },
-    );
+      });
 
     const games = await queryBuilder.getMany();
-    console.log("games from user statistic ", games);
+    console.log('games from user statistic ', games);
 
-    
-
-    let userStatistic = {
-    sumScore: 0,
-    avgScores: 0,
-    gamesCount: 0,
-    winsCount: 0,
-    lossesCount: 0,
-    drawsCount: 0
-    }
+    const userStatistic = {
+      sumScore: 0,
+      avgScores: 0,
+      gamesCount: 0,
+      winsCount: 0,
+      lossesCount: 0,
+      drawsCount: 0,
+    };
 
     console.log('userStatistic ', userStatistic);
-    
 
     function updateStatistics(playerStatus) {
       switch (playerStatus) {
-          case 'win':
-              userStatistic.winsCount++;
-              break;
-          case 'lose':
-              userStatistic.lossesCount++;
-              break;
-          case 'draw':
-              userStatistic.drawsCount++;
-              break;
-          default:
-              console.log("wrong status");
-      }}
+        case 'win':
+          userStatistic.winsCount++;
+          break;
+        case 'lose':
+          userStatistic.lossesCount++;
+          break;
+        case 'draw':
+          userStatistic.drawsCount++;
+          break;
+        default:
+          console.log('wrong status');
+      }
+    }
 
     games.forEach((game) => {
-      const currentGameStatistic = game.getStatisticForCurrentGameAndUser(userId)     
-      userStatistic.sumScore += currentGameStatistic.score
-      updateStatistics(currentGameStatistic.gameStatus)
-    })
-    userStatistic.gamesCount = games.length
+      const currentGameStatistic =
+        game.getStatisticForCurrentGameAndUser(userId);
+      userStatistic.sumScore += currentGameStatistic.score;
+      updateStatistics(currentGameStatistic.gameStatus);
+    });
+    userStatistic.gamesCount = games.length;
     if (userStatistic.gamesCount !== 0) {
-      let avgScore = userStatistic.sumScore / userStatistic.gamesCount;
+      const avgScore = userStatistic.sumScore / userStatistic.gamesCount;
       userStatistic.avgScores = parseFloat(avgScore.toFixed(2));
 
       if (userStatistic.avgScores % 1 === 0) {
-          userStatistic.avgScores = Math.round(userStatistic.avgScores);
+        userStatistic.avgScores = Math.round(userStatistic.avgScores);
       }
     } else {
-        userStatistic.avgScores = 0;
+      userStatistic.avgScores = 0;
     }
 
-
     console.log('userStatistic ', userStatistic);
-    
-    return userStatistic
 
+    return userStatistic;
   }
 
-  async getAllGamesForCurrentUser(mergedQueryParams, userId): Promise<PaginationOutputModel<outputGameQuizType>> | null{
+  async getAllGamesForCurrentUser(
+    mergedQueryParams,
+    userId,
+  ): Promise<PaginationOutputModel<outputGameQuizType>> | null {
     if (!isValidUUID(userId)) {
       return null;
     }
@@ -317,49 +315,45 @@ export class QuizGamesRepository {
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
 
-    const queryBuilder = this.quizGamesRepository.createQueryBuilder('game')
+    const queryBuilder = this.quizGamesRepository.createQueryBuilder('game');
     queryBuilder
-    .select([
-      'game',
-      'answers',
-      'player1.userId',
-      'player1.login',
-      'player2.userId',
-      'player2.login',
-      'questions',
-    ])
-    .leftJoin('game.answers', 'answers')
-    .leftJoin('game.player1', 'player1')
-    .leftJoin('game.player2', 'player2')
-    .leftJoin('game.questions', 'questions')
-    .where('(game.player1Id = :userId  OR game.player2Id = :userId)',
-      {
+      .select([
+        'game',
+        'answers',
+        'player1.userId',
+        'player1.login',
+        'player2.userId',
+        'player2.login',
+        'questions',
+      ])
+      .leftJoin('game.answers', 'answers')
+      .leftJoin('game.player1', 'player1')
+      .leftJoin('game.player2', 'player2')
+      .leftJoin('game.questions', 'questions')
+      .where('(game.player1Id = :userId  OR game.player2Id = :userId)', {
         userId: userId,
-      },
-    );
+      });
 
     const gamesCount = await queryBuilder.getCount();
 
     const games = await queryBuilder
-    .orderBy(`"${sortBy}"`, sortDirection)
-    .limit(pageSize)
-    .offset(skipPage)
-    .getMany()
+      .orderBy(`"${sortBy}"`, sortDirection)
+      .limit(pageSize)
+      .offset(skipPage)
+      .getMany();
 
-    console.log(" games ", games);
-    
+    console.log(' games ', games);
 
-    const gamesForOutput = games.map((game) => game.returnForPlayer())
+    const gamesForOutput = games.map((game) => game.returnForPlayer());
 
-    const pageCount = Math.ceil(gamesCount / pageSize)
+    const pageCount = Math.ceil(gamesCount / pageSize);
     const outputGames = {
       pagesCount: pageCount,
       page: +pageNumber,
       pageSize: +pageSize,
       totalCount: gamesCount,
       items: gamesForOutput,
-    }
-    return outputGames
-
+    };
+    return outputGames;
   }
 }

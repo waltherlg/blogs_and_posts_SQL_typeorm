@@ -108,20 +108,20 @@ export class LikesRepository {
           acc[postId][status]++;
           return acc;
         }, {});
-        
+
         const postQueryBuilder = this.postsRepository
           .createQueryBuilder('post')
           .where('post.postId IN (:...postIds)', {
             postIds: postIds,
           });
         const postsArr = await postQueryBuilder.getMany();
-        
+
         const updatedPosts = postsArr.map((post) => {
           post.likesCount = postStats[post.postId].Like;
           post.dislikesCount = postStats[post.postId].Dislike;
           return post;
         });
-        
+
         const isPostsUpdated = await this.postsRepository.save(updatedPosts);
       }
 

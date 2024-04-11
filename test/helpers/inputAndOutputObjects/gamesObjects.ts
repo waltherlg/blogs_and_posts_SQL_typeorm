@@ -1,6 +1,3 @@
-
-
-
 export const testGames = {
   outputGameForDynamicChanges1: {
     id: expect.any(String),

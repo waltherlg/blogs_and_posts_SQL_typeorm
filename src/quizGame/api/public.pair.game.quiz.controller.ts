@@ -28,14 +28,19 @@ import { request } from 'express';
 import { OptionalJwtAuthGuard } from '../../auth/guards/optional-jwt-auth.guard';
 import { PlayerRequestAllGamesCommand } from '../use-cases/somebody-request-all-games-use-case';
 import { PlayerRequestOwnStatisticCommand } from '../use-cases/player-request-own-statistic-use-case';
-import { DEFAULT_GAMES_QUERY_PARAMS, DEFAULT_QUERY_PARAMS, RequestQueryParamsModel } from 'src/models/types';
+import {
+  DEFAULT_GAMES_QUERY_PARAMS,
+  DEFAULT_QUERY_PARAMS,
+  RequestQueryParamsModel,
+} from 'src/models/types';
 import { QuizGamesRepository } from '../quiz.game.repository';
 
 @Controller('pair-game-quiz')
 export class PublicQuizGameController {
   constructor(
     private readonly commandBus: CommandBus,
-    private readonly quizGamesRepository: QuizGamesRepository) {}
+    private readonly quizGamesRepository: QuizGamesRepository,
+  ) {}
 
   @UseGuards(JwtAuthGuard)
   @Post('pairs/connection')
@@ -93,11 +98,14 @@ export class PublicQuizGameController {
   @HttpCode(200)
   async returnAllGamesForCurrentUser(
     @Query() queryParams: RequestQueryParamsModel,
-    @Req() request){
-      const mergedQueryParams = { ...DEFAULT_GAMES_QUERY_PARAMS, ...queryParams };
-      const games = await this.quizGamesRepository.getAllGamesForCurrentUser(mergedQueryParams, request.user.userId)
-      return games
-
+    @Req() request,
+  ) {
+    const mergedQueryParams = { ...DEFAULT_GAMES_QUERY_PARAMS, ...queryParams };
+    const games = await this.quizGamesRepository.getAllGamesForCurrentUser(
+      mergedQueryParams,
+      request.user.userId,
+    );
+    return games;
 
     // query params
     // sortBy Default value : pairCreatedDate
@@ -157,41 +165,42 @@ export class PublicQuizGameController {
     // }
   }
 
-// TODO
-@UseGuards(JwtAuthGuard)
-@Get('users/my-statistic')
-@HttpCode(200)
-async returnCurrentUsetStatistic(@Req() request){
-  const result = await this.commandBus.execute(new PlayerRequestOwnStatisticCommand(request.user.userId))
-  handleActionResult(result)
-  return result
-  //const result = await this.
-  //example
-  // {
-  //   "sumScore": 0,
-  //   "avgScores": 0,
-  //   "gamesCount": 0,
-  //   "winsCount": 0,
-  //   "lossesCount": 0,
-  //   "drawsCount": 0
-  // }
-}
-
-  //TODO: WTF?!? от смены порядка эндпоинтов путается постмен 
-  // (если поменять местами этот эндпоинт с предыдущими, 
-  // то например в 'pairs/my' my будет восприниматья как ури параметр )
-@UseGuards(JwtAuthGuard)
-@Get('pairs/:gameId')
-@HttpCode(200)
-async getGameById(@Req() request, @Param('gameId') gameId) {
-  if (!isValidUUID(gameId)) {
-    handleActionResult(ActionResult.InvalidIdFormat);
+  // TODO
+  @UseGuards(JwtAuthGuard)
+  @Get('users/my-statistic')
+  @HttpCode(200)
+  async returnCurrentUsetStatistic(@Req() request) {
+    const result = await this.commandBus.execute(
+      new PlayerRequestOwnStatisticCommand(request.user.userId),
+    );
+    handleActionResult(result);
+    return result;
+    //const result = await this.
+    //example
+    // {
+    //   "sumScore": 0,
+    //   "avgScores": 0,
+    //   "gamesCount": 0,
+    //   "winsCount": 0,
+    //   "lossesCount": 0,
+    //   "drawsCount": 0
+    // }
   }
-  const result = await this.commandBus.execute(
-    new PlayerRequestGameByIdCommand(gameId, request.user.userId),
-  );
-  handleActionResult(result);
-  return result;
-}
 
+  //TODO: WTF?!? от смены порядка эндпоинтов путается постмен
+  // (если поменять местами этот эндпоинт с предыдущими,
+  // то например в 'pairs/my' my будет восприниматья как ури параметр )
+  @UseGuards(JwtAuthGuard)
+  @Get('pairs/:gameId')
+  @HttpCode(200)
+  async getGameById(@Req() request, @Param('gameId') gameId) {
+    if (!isValidUUID(gameId)) {
+      handleActionResult(ActionResult.InvalidIdFormat);
+    }
+    const result = await this.commandBus.execute(
+      new PlayerRequestGameByIdCommand(gameId, request.user.userId),
+    );
+    handleActionResult(result);
+    return result;
+  }
 }
