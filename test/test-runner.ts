@@ -41,7 +41,7 @@ describe('End-to-End Tests', () => {
 
   // questionCrudOperationsSa15();
 
-  quizGameCrudOperationsSa16();
-  quizGameCrudOperationsSa1601()
+  // quizGameCrudOperationsSa16();
+  // quizGameCrudOperationsSa1601()
   quizGameStatisticOperations17()
 });

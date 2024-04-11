@@ -29,8 +29,10 @@ export function quizGameStatisticOperations17() {
     let accessTokenUser2;
     let accessTokenUser3;
     let gameId1;
+    let gameId4
 
     // game3 user1 - 5 user2 - 2
+    // game4 user1 - 0 user2 - 2
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -530,5 +532,222 @@ export function quizGameStatisticOperations17() {
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(404);
     });
+
+    it('00-00 pair-game-quiz/users/my-statistic GET = user1 req own statistic', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.pairGameQuiz}/users/my-statistic`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+
+        const createdResponseBody = createResponse.body;
+        expect(createdResponseBody)
+        .toEqual({
+          sumScore: 5,
+          avgScores: 5,
+          gamesCount: 1,
+          winsCount: 1,
+          lossesCount: 0,
+          drawsCount: 0
+          });
+    });
+
+    it('00-00 pair-game-quiz/users/my-statistic GET = user2 req own statistic', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.pairGameQuiz}/users/my-statistic`)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+
+        const createdResponseBody = createResponse.body;
+        expect(createdResponseBody)
+        .toEqual({
+          sumScore: 2,
+          avgScores: 2,
+          gamesCount: 1,
+          winsCount: 0,
+          lossesCount: 1,
+          drawsCount: 0
+          });
+    });
+
+
+
+    it('00-00 pair-game-quiz/pairs/connection POST = user1 create new game4', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/connection`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+      gameId4 = createdResponseBody.id;
+      expect(createdResponseBody).toEqual(testGames.outputPandingGame);
+      //testGames.outputActiveGame.id = gameId1;
+      testGames.outputGameForDynamicChanges4.id = gameId4;
+      testGames.outputGameForDynamicChanges4.firstPlayerProgress.player.id =
+        userId1;
+    });
+
+    it('00-00 pair-game-quiz/pairs/connection POST = user2 join to game4', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/connection`)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+     // expect(createdResponseBody).toEqual(testGames.outputActiveGame);
+
+      testGames.outputGameForDynamicChanges4.secondPlayerProgress.player.id =
+        userId2;
+      testGames.outputGameForDynamicChanges4.status = enumStatusGameType.Active;
+      testGames.outputGameForDynamicChanges4.startGameDate = expect.any(String);
+      expect(createdResponseBody).toEqual(testGames.outputGameForDynamicChanges4);
+    });
+
+    it('00-00 pairs/my-current/answers POST = user1 add incorrectAnswer 1 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .send(testAnswerBody.incorrectAnswerInput)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
+    });
+
+    it('00-00 pairs/my-current/answers POST = user2 add incorrectAnswer 1 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .send(testAnswerBody.incorrectAnswerInput)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
+    });
+
+    it('00-00 pairs/my-current/answers POST = user1 add incorrectAnswer 2 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .send(testAnswerBody.incorrectAnswerInput)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
+    });
+
+    it('00-00 pairs/my-current/answers POST = user2 add incorrectAnswer 2 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .send(testAnswerBody.incorrectAnswerInput)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
+    });
+
+    it('00-00 pairs/my-current/answers POST = user1 add incorrectAnswer 3 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .send(testAnswerBody.incorrectAnswerInput)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
+    });
+
+    it('00-00 pairs/my-current/answers POST = user2 add correctAnswer 3 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .send(testAnswerBody.correctAnswerInput)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
+    });
+
+    it('00-00 pairs/my-current/answers POST = user1 add incorrectAnswer 4 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .send(testAnswerBody.incorrectAnswerInput)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
+    });
+
+    it('00-00 pairs/my-current/answers POST = user2 add correctAnswer 4 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .send(testAnswerBody.correctAnswerInput)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.correctAnswerOutput);
+    });
+
+    it('00-00 pairs/my-current/answers POST = user1 add incorrectAnswer 5 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .send(testAnswerBody.incorrectAnswerInput)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
+    });
+
+    it('00-00 pairs/my-current/answers POST = user2 add incorrectAnswer 5 in game', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/my-current/answers`)
+        .send(testAnswerBody.incorrectAnswerInput)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+      expect(createdResponseBody).toEqual(testAnswerBody.incorrectAnswerOutput);
+    });
+
+    it('00-00 pair-game-quiz/users/my-statistic GET = user1 req own statistic', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.pairGameQuiz}/users/my-statistic`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+
+        const createdResponseBody = createResponse.body;
+        expect(createdResponseBody)
+        .toEqual({
+          sumScore: 5,
+          avgScores: 2.5,
+          gamesCount: 2,
+          winsCount: 1,
+          lossesCount: 1,
+          drawsCount: 0
+          });
+    });
+
+    it('00-00 pair-game-quiz/users/my-statistic GET = user2 req own statistic', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.pairGameQuiz}/users/my-statistic`)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+
+        const createdResponseBody = createResponse.body;
+        expect(createdResponseBody)
+        .toEqual({
+          sumScore: 4,
+          avgScores: 2,
+          gamesCount: 2,
+          winsCount: 1,
+          lossesCount: 1,
+          drawsCount: 0
+          });
+    });
+
+
   });
 }
