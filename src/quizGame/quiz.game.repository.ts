@@ -11,6 +11,7 @@ import {
 import { QuizAnswers, QuizAnwswerDbType } from './quiz.answers.types';
 import { PaginationOutputModel } from 'src/models/types';
 import { sortDirectionFixer } from 'src/helpers/helpers.functions';
+import { topPlayerOutputType } from './quiz.game.statistic.type';
 
 @Injectable()
 export class QuizGamesRepository {
@@ -359,7 +360,10 @@ export class QuizGamesRepository {
     return outputGames;
   }
 
-  async getTopPlayers(mergedQueryParams){
+  async getTopPlayers(mergedQueryParams):Promise <PaginationOutputModel<topPlayerOutputType>>{
+    const pageNumber = +mergedQueryParams.pageNumber;
+    const pageSize = +mergedQueryParams.pageSize;
+    const skipPage = (pageNumber - 1) * pageSize;
 
   }
 }
