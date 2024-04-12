@@ -1,5 +1,4 @@
-import { IsArray, IsBoolean, Length } from 'class-validator';
-import { StringTrimNotEmpty } from '../middlewares/validators';
+
 import {
   Entity,
   PrimaryColumn,
@@ -9,13 +8,11 @@ import {
   ManyToMany,
   JoinTable,
   OneToMany,
-  OneToOne,
 } from 'typeorm';
 import { Users } from '../users/user.entity';
 import { QuestionDbType, Questions } from './quiz.questions.types';
 import {
   QuizAnswers,
-  QuizAnwswerDbType,
   enumAnswerGameStatus,
 } from './quiz.answers.types';
 import { UserDBType } from '../users/users.types';
@@ -293,113 +290,3 @@ export class QuizGames extends QuestionDbType {
     return 0;
   }
 }
-
-// @Entity({name: 'QuizGames'})
-// export class QuizGames {
-//   @PrimaryColumn('uuid')
-//   quizGameId: string;
-//   @Column()
-//   status: string
-//   @Column({ type: 'timestamptz' })
-//   pairCreatedDate: Date
-//   @Column({ type: 'timestamptz' })
-//   startGameDate: Date
-//   @Column({ type: 'timestamptz' })
-//   finishGameDate: Date
-
-//   @OneToOne(() => Users)
-//   @JoinColumn({ name: 'player1Id' })
-//   player1: Users;
-//   @Column('uuid')
-//   player1Id: string;
-
-//   @ManyToMany(() => QuizAnswers)
-//   @JoinColumn({ name: 'gameIndicatorPlayer1', referencedColumnName: 'gameIndicator' })
-//   player1Answers: QuizAnswers[];
-//   @Column('uuid', { unique: true })
-//   gameIndicatorPlayer1: string;
-//   @Column()
-//   player1Score: number;
-
-//   @OneToOne(() => Users)
-//   @JoinColumn({ name: 'player2Id' })
-//   player2: Users;
-//   @Column('uuid')
-//   player2Id: string;
-
-//   @ManyToMany(() => QuizAnswers )
-//   @JoinColumn({ name: 'gameIndicatorPlayer2', referencedColumnName: 'gameIndicator' })
-//   player2Answers: QuizAnswers[];
-//   @Column('uuid', { unique: true })
-//   gameIndicatorPlayer2: string;
-//   @Column()
-//   player2Score: number;
-
-//   @ManyToMany(()=> Questions)
-//   @JoinColumn({name: 'question1Id'})
-//   Questions1: Questions;
-//   @Column('uuid')
-//   question1Id: string;
-//   @ManyToMany(()=> Questions)
-//   @JoinColumn({name: 'question2Id'})
-//   Questions2: Questions;
-//   @Column('uuid')
-//   question2Id: string;
-//   @ManyToMany(()=> Questions)
-//   @JoinColumn({name: 'question3Id'})
-//   Questions3: Questions;
-//   @Column('uuid')
-//   question3Id: string;
-//   @ManyToMany(()=> Questions)
-//   @JoinColumn({name: 'question4Id'})
-//   Questions4: Questions;
-//   @Column('uuid')
-//   question4Id: string;
-//   @ManyToMany(()=> Questions)
-//   @JoinColumn({name: 'question5Id'})
-//   Questions5: Questions;
-//   @Column('uuid')
-//   question5Id: string;
-// }
-
-// port type outputGameQuizType = {
-//   id: "string",
-//   "firstPlayerProgress": {
-//     "answers": [
-//       {
-//         "questionId": "string",
-//         "answerStatus": "Correct",
-//         "addedAt": "2023-12-05T04:56:59.947Z"
-//       }
-//     ],
-//     "player": {
-//       "id": "string",
-//       "login": "string"
-//     },
-//     "score": 0
-//   },
-//   "secondPlayerProgress": {
-//     "answers": [
-//       {
-//         "questionId": "string",
-//         "answerStatus": "Correct",
-//         "addedAt": "2023-12-05T04:56:59.947Z"
-//       }
-//     ],
-//     "player": {
-//       "id": "string",
-//       "login": "string"
-//     },
-//     "score": 0
-//   },
-//   "questions": [
-//     {
-//       "id": "string",
-//       "body": "string"
-//     }
-//   ],
-//   "status": "PendingSecondPlayer",
-//   "pairCreatedDate": "2023-12-05T04:56:59.947Z",
-//   "startGameDate": "2023-12-05T04:56:59.947Z",
-//   "finishGameDate": "2023-12-05T04:56:59.947Z"
-// }e

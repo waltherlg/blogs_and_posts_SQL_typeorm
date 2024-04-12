@@ -225,7 +225,8 @@ export class QuizGamesRepository {
     return games.map((game) => game.returnForPlayer());
   }
 
-  //TODO: in progress
+  
+  //TODO: addTypes
   async GetCurrentUserStatistic(userId) {
     if (!isValidUUID(userId)) {
       return null;
@@ -356,5 +357,9 @@ export class QuizGamesRepository {
       items: gamesForOutput,
     };
     return outputGames;
+  }
+
+  async getTopPlayers(mergedQueryParams){
+
   }
 }
