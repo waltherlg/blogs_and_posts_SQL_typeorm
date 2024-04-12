@@ -106,66 +106,14 @@ export class PublicQuizGameController {
       request.user.userId,
     );
     return games;
-
-    // query params
-    // sortBy Default value : pairCreatedDate
-    // sortDirectionDefault value: desc Available values : asc, desc
-    // pageNumberDefault value : 1
-    // pageSizeDefault value : 10
-
-    // example output
-    // {
-    //   "pagesCount": 0,
-    //   "page": 0,
-    //   "pageSize": 0,
-    //   "totalCount": 0,
-    //   "items": [
-    //     {
-    //       "id": "string",
-    //       "firstPlayerProgress": {
-    //         "answers": [
-    //           {
-    //             "questionId": "string",
-    //             "answerStatus": "Correct",
-    //             "addedAt": "2024-03-19T04:24:08.757Z"
-    //           }
-    //         ],
-    //         "player": {
-    //           "id": "string",
-    //           "login": "string"
-    //         },
-    //         "score": 0
-    //       },
-    //       "secondPlayerProgress": {
-    //         "answers": [
-    //           {
-    //             "questionId": "string",
-    //             "answerStatus": "Correct",
-    //             "addedAt": "2024-03-19T04:24:08.757Z"
-    //           }
-    //         ],
-    //         "player": {
-    //           "id": "string",
-    //           "login": "string"
-    //         },
-    //         "score": 0
-    //       },
-    //       "questions": [
-    //         {
-    //           "id": "string",
-    //           "body": "string"
-    //         }
-    //       ],
-    //       "status": "PendingSecondPlayer",
-    //       "pairCreatedDate": "2024-03-19T04:24:08.758Z",
-    //       "startGameDate": "2024-03-19T04:24:08.758Z",
-    //       "finishGameDate": "2024-03-19T04:24:08.758Z"
-    //     }
-    //   ]
-    // }
   }
 
-  // TODO
+  @Get('users/top')
+  @HttpCode(200)
+  async getUsersTop(@Query() queryParams: RequestQueryParamsModel){
+
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get('users/my-statistic')
   @HttpCode(200)
@@ -175,16 +123,6 @@ export class PublicQuizGameController {
     );
     handleActionResult(result);
     return result;
-    //const result = await this.
-    //example
-    // {
-    //   "sumScore": 0,
-    //   "avgScores": 0,
-    //   "gamesCount": 0,
-    //   "winsCount": 0,
-    //   "lossesCount": 0,
-    //   "drawsCount": 0
-    // }
   }
 
   //TODO: WTF?!? от смены порядка эндпоинтов путается постмен
