@@ -1,3 +1,5 @@
+import { Users } from "src/users/user.entity";
+import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 
 export type topPlayerOutputType = 
@@ -14,4 +16,26 @@ export type topPlayerOutputType =
 type playerInTopPlayerOutputType = {
     id: string;
     login: string;
+}
+
+@Entity({name: 'PlayerStatistic'})
+export class PlayerStatistic {
+    @PrimaryColumn('uuid')
+    userId: string;
+    @Column()
+    sumScore: number;
+    @Column()
+    avgScores: number;
+    @Column()
+    gamesCount: number;
+    @Column()
+    winsCount: number;
+    @Column()
+    lossesCount: number;
+    @Column()
+    drawsCount: number;
+
+    @OneToOne(() => Users, (u) => u.PlayerStatistic)
+    @JoinColumn({name: 'userId'})
+    Users: Users
 }

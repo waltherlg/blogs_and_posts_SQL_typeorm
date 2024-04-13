@@ -13,6 +13,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { UserDBType } from './users.types';
+import { PlayerStatistic } from 'src/quizGame/quiz.game.statistic.type';
 
 //TODO: Спросить, можно ли наследовать энтити от класса
 @Entity({ name: 'Users' })
@@ -53,4 +54,7 @@ export class Users extends UserDBType {
   @OneToMany(() => BlogBannedUsers, (b) => b.Users, { cascade: ['remove'] }) // рабочее
   @JoinColumn({ name: 'userId' })
   BlogBannedUsers: BlogBannedUsers[];
+  @OneToOne(() => PlayerStatistic, (p) => p.userId)
+  @JoinColumn({name: 'userId'})
+  PlayerStatistic: PlayerStatistic
 }

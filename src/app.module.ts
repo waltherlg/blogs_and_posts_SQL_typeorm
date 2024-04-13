@@ -111,6 +111,7 @@ import { QuizAnswersRepository } from './quizGame/quiz.answers.repository';
 import { PlayerRequestGameByIdUseCase } from './quizGame/use-cases/player-request-game-by-id-use-case';
 import { PlayerRequestAllGamesUseCase } from './quizGame/use-cases/somebody-request-all-games-use-case';
 import { PlayerRequestOwnStatisticUseCase } from './quizGame/use-cases/player-request-own-statistic-use-case';
+import { PlayerStatistic } from './quizGame/quiz.game.statistic.type';
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
@@ -163,6 +164,7 @@ const useCases = [
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
     TypeOrmModule.forFeature([
+      PlayerStatistic,
       Users,
       UserDevices,
       Blogs,
