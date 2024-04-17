@@ -57,7 +57,7 @@ export class Users extends UserDBType {
   //TODO: спросить, как сделать миграцию, которая добавляет зависимость, если в БД уже есть записи
   // в моем случае миграция не удавалась, потому что айдишки УЖЕ были у ползователей,
   // и они пытались ссылаться на таблицу статистики, несмотря на наличие nullable: true
-  @OneToOne(() => PlayerStatistic, (p) => p.Users, { cascade: ['remove'], nullable: true })
+  @OneToOne(() => PlayerStatistic, (p) => p.Users, { cascade: ['remove'], nullable: true, onDelete: 'SET NULL' })
   @JoinColumn({ name: 'userId' })
   PlayerStatistic: PlayerStatistic | null;
 }
