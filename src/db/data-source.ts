@@ -9,6 +9,7 @@ import { CommentLikes, PostLikes } from '../likes/like.entity';
 import { Questions } from '../quizGame/quiz.questions.types';
 import { QuizAnswers } from '../quizGame/quiz.answers.types';
 import { QuizGames } from '../quizGame/quiz.game.types';
+import { PlayerStatistic } from '../quizGame/quiz.game.statistic.type';
 
 export default new DataSource({
   type: 'postgres',
@@ -30,6 +31,7 @@ export default new DataSource({
     Questions,
     QuizAnswers,
     QuizGames,
+    PlayerStatistic,
   ],
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
   migrationsTableName: 'custom_migration_table',

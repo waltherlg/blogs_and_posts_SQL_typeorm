@@ -164,7 +164,6 @@ const useCases = [
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
     TypeOrmModule.forFeature([
-      PlayerStatistic,
       Users,
       UserDevices,
       Blogs,
@@ -176,6 +175,7 @@ const useCases = [
       Questions,
       QuizGames,
       QuizAnswers,
+      PlayerStatistic,
     ]),
     CqrsModule,
     ThrottlerModule.forRoot({

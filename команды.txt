@@ -1,10 +1,10 @@
 yarn typeorm-ts-node-esm migration:generate ./src/db/migrations/merged_player -d ./src/db/data-source.ts
 
-yarn typeorm migration:generate -d ./src/db/data-source.ts ./src/db/migrations/nulleble_apdatedat_in_question_entity
+yarn typeorm migration:generate -d ./src/db/data-source.ts ./src/db/migrations/add_player_statistic_entity_without_dep
 
 yarn typeorm migration:create ./src/db/migrations/PostRefactoring
 
-yarn typeorm migration:run -- -d ./src/db/data-source.ts
+-- это работает yarn typeorm migration:run -- -d ./src/db/data-source.ts
 
 yarn typeorm-ts-node-esm migration:run -- -d ./src/db/data-source.ts
 

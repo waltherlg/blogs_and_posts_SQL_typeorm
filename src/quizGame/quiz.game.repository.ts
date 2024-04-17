@@ -360,10 +360,10 @@ export class QuizGamesRepository {
     return outputGames;
   }
 
-  async getTopPlayers(mergedQueryParams):Promise <PaginationOutputModel<topPlayerOutputType>>{
-    const pageNumber = +mergedQueryParams.pageNumber;
-    const pageSize = +mergedQueryParams.pageSize;
-    const skipPage = (pageNumber - 1) * pageSize;
+  // async getTopPlayers(mergedQueryParams):Promise <PaginationOutputModel<topPlayerOutputType>>{
+  //   const pageNumber = +mergedQueryParams.pageNumber;
+  //   const pageSize = +mergedQueryParams.pageSize;
+  //   const skipPage = (pageNumber - 1) * pageSize;
 
-  }
+  // }
 }
