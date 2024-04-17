@@ -36,7 +36,7 @@ export class PlayerStatistic {
     @Column()
     drawsCount: number;
 
-    // @OneToOne(() => Users, (u) => u.PlayerStatistic)
-    // @JoinColumn({name: 'userId'})
-    // Users: Users
+    @OneToOne(() => Users, (u) => u.PlayerStatistic)
+    @JoinColumn({name: 'userId'})
+    Users: Users
 }

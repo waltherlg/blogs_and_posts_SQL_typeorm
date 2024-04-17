@@ -54,7 +54,10 @@ export class Users extends UserDBType {
   @OneToMany(() => BlogBannedUsers, (b) => b.Users, { cascade: ['remove'] }) // рабочее
   @JoinColumn({ name: 'userId' })
   BlogBannedUsers: BlogBannedUsers[];
-  // @OneToOne(() => PlayerStatistic, (p) => p.Users, { cascade: ['remove'] })
-  // @JoinColumn({ name: 'userId' })
-  // PlayerStatistic: PlayerStatistic;
+  //TODO: спросить, как сделать миграцию, которая добавляет зависимость, если в БД уже есть записи
+  // в моем случае миграция не удавалась, потому что айдишки УЖЕ были у ползователей,
+  // и они пытались ссылаться на таблицу статистики, несмотря на наличие nullable: true
+  @OneToOne(() => PlayerStatistic, (p) => p.Users, { cascade: ['remove'], nullable: true })
+  @JoinColumn({ name: 'userId' })
+  PlayerStatistic: PlayerStatistic | null;
 }
