@@ -21,7 +21,12 @@ type playerInTopPlayerOutputType = {
 
 @Entity({name: 'PlayerStatistic'})
 export class PlayerStatistic {
-    @PrimaryColumn('uuid')
+    @PrimaryGeneratedColumn('uuid')
+    playerStatisticId: string;
+    @OneToOne(() => Users, (u) => u.PlayerStatistic)
+    @JoinColumn({name: 'userId'})
+    Users: Users   
+    @Column('uuid')
     userId: string;
     @Column()
     sumScore: number;
@@ -35,8 +40,4 @@ export class PlayerStatistic {
     lossesCount: number;
     @Column()
     drawsCount: number;
-
-    @OneToOne(() => Users, (u) => u.PlayerStatistic)
-    @JoinColumn({name: 'userId'})
-    Users: Users
 }

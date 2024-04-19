@@ -1,6 +1,7 @@
 yarn typeorm-ts-node-esm migration:generate ./src/db/migrations/merged_player -d ./src/db/data-source.ts
 
--- это работает yarn typeorm migration:generate -d ./src/db/data-source.ts ./src/db/migrations/user_player_statistic_set_null_on_delete
+-- это работает 
+yarn typeorm migration:generate -d ./src/db/data-source.ts ./src/db/migrations/try_add_statistic
 
 yarn typeorm migration:create ./src/db/migrations/PostRefactoring
 
