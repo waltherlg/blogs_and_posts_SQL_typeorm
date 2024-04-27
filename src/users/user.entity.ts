@@ -46,11 +46,9 @@ export class Users extends UserDBType {
   @Column({ type: 'timestamptz', nullable: true })
   expirationDateOfRecoveryCode: Date | null;
 
-  @OneToMany(() => UserDevices, (d) => d.Users, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
+  @OneToMany(() => UserDevices, (d) => d.Users)
   UserDevices: UserDevices[];
-  @OneToMany(() => Comments, (c) => c.Users, { cascade: ['remove'] })
-  @JoinColumn({ name: 'userId' })
+  @OneToMany(() => Comments, (c) => c.Users)
   Comments: Comments[];
   @OneToMany(() => BlogBannedUsers, (b) => b.Users, { cascade: ['remove'] }) // рабочее
   @JoinColumn({ name: 'userId' })

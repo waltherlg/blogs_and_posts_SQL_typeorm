@@ -26,7 +26,7 @@ export class Comments {
   content: string;
   @Column()
   createdAt: string;
-  @ManyToOne(() => Users, (u) => u.Comments)
+  @ManyToOne(() => Users, (u) => u.Comments, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   Users: Users;
   @Column('uuid')

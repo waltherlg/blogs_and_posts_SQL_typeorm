@@ -12,7 +12,7 @@ import {
 export class UserDevices {
   @PrimaryColumn('uuid')
   deviceId: string;
-  @ManyToOne(() => Users, (u) => u.UserDevices)
+  @ManyToOne(() => Users, (u) => u.UserDevices, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   Users: Users;
   @Column('uuid')
