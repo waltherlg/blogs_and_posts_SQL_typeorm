@@ -15,6 +15,7 @@ import {
 import { UserDBType } from './users.types';
 import { PlayerStatistic } from '../quizGame/quiz.game.statistic.type';
 
+//TODO: start refactoring entity
 //TODO: Спросить, можно ли наследовать энтити от класса
 @Entity({ name: 'Users' })
 export class Users extends UserDBType {
