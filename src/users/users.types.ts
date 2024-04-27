@@ -1,3 +1,5 @@
+import { PlayerStatistic } from "../quizGame/quiz.game.statistic.type";
+
 export type CommentsLikeType = {
   commentsId: string;
   createdAt: Date;
@@ -25,6 +27,7 @@ export class UserDBType {
     public isConfirmed: boolean,
     public passwordRecoveryCode: string | null,
     public expirationDateOfRecoveryCode: Date | null,
+    public playerStatistic: PlayerStatistic
   ) {}
 }
 

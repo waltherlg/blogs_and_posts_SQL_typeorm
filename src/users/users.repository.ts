@@ -11,6 +11,7 @@ import { CommentLikes, PostLikes } from 'src/likes/like.entity';
 import { Posts } from 'src/posts/post.entity';
 import { Comments } from 'src/comments/comment.entity';
 import { UserDevices } from 'src/usersDevices/user.device.entity';
+import { PlayerStatistic } from '../quizGame/quiz.game.statistic.type';
 
 @Injectable()
 export class UsersRepository {
@@ -28,6 +29,8 @@ export class UsersRepository {
     private readonly commentsRepository: Repository<Comments>,
     @InjectRepository(UserDevices)
     private readonly userDevicesRepository: Repository<UserDevices>,
+    @InjectRepository(PlayerStatistic)
+    private readonly playerStatisticRepository: Repository<PlayerStatistic>,
   ) {}
 
   // async createUser(userDTO: UserDBType) {
@@ -39,8 +42,11 @@ export class UsersRepository {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-    try {
+   try {
       const result = await queryRunner.manager.save(userDTO);
+      const statisticResult = await queryRunner.manager.save(userDTO.playerStatistic)
+      
+      
       await queryRunner.commitTransaction();
       return result.userId;
     } catch (e) {

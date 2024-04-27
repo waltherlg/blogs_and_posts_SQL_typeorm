@@ -45,7 +45,7 @@ export class Users extends UserDBType {
   @Column({ type: 'timestamptz', nullable: true })
   expirationDateOfRecoveryCode: Date | null;
 
-  @OneToMany(() => UserDevices, (d) => d.Users, { cascade: ['remove'] })
+  @OneToMany(() => UserDevices, (d) => d.Users, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })
   UserDevices: UserDevices[];
   @OneToMany(() => Comments, (c) => c.Users, { cascade: ['remove'] })
@@ -54,12 +54,6 @@ export class Users extends UserDBType {
   @OneToMany(() => BlogBannedUsers, (b) => b.Users, { cascade: ['remove'] }) // рабочее
   @JoinColumn({ name: 'userId' })
   BlogBannedUsers: BlogBannedUsers[];
-  //TODO: спросить, как сделать миграцию, которая добавляет зависимость, если в БД уже есть записи
-  // в моем случае миграция не удавалась, потому что айдишки УЖЕ были у ползователей,
-  // и они пытались ссылаться на таблицу статистики, несмотря на наличие nullable: true
-  //@OneToOne(() => PlayerStatistic, { cascade: ['remove'], nullable: true, onDelete: 'SET NULL' })
-  // TODO: спросить по какому принципу создаются foreign kye
-  @OneToOne(() => PlayerStatistic, (p) => p.Users, { nullable: true, cascade: true, onDelete: 'CASCADE' })
-  //@JoinColumn({ name: 'userId' })
+  @OneToOne(() => PlayerStatistic, (p) => p.Users, { eager: true, nullable: true})
   PlayerStatistic: PlayerStatistic | null;
 }

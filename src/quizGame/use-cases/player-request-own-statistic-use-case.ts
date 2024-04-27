@@ -15,7 +15,6 @@ export class PlayerRequestOwnStatisticUseCase
     const result = await this.quizGamesRepository.GetCurrentUserStatistic(
       command.userId,
     );
-    console.log('PlayerRequestOwnStatisticCommand ', result);
     if (!result) {
       return ActionResult.GameNotFound;
     }

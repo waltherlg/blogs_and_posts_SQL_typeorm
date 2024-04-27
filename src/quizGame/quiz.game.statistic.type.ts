@@ -19,11 +19,23 @@ type playerInTopPlayerOutputType = {
     login: string;
 }
 
+export class PlayerStatisticDbType {
+    constructor(
+        public userId: string,
+        public sumScore: number,
+        public avgScores: number,
+        public gamesCount: number,
+        public winsCount: number,
+        public lossesCount: number,
+        public drawsCount: number,
+    ){}
+}
+
 @Entity({name: 'PlayerStatistic'})
-export class PlayerStatistic {
+export class PlayerStatistic extends PlayerStatisticDbType {
     @PrimaryGeneratedColumn('uuid')
     playerStatisticId: string;
-    @OneToOne(() => Users, (u) => u.PlayerStatistic)
+    @OneToOne(() => Users, (u) => u.PlayerStatistic, { onDelete: 'CASCADE', onUpdate: 'CASCADE' })
     @JoinColumn({name: 'userId'})
     Users: Users   
     @Column('uuid')

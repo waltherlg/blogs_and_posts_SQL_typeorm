@@ -112,6 +112,7 @@ import { PlayerRequestGameByIdUseCase } from './quizGame/use-cases/player-reques
 import { PlayerRequestAllGamesUseCase } from './quizGame/use-cases/somebody-request-all-games-use-case';
 import { PlayerRequestOwnStatisticUseCase } from './quizGame/use-cases/player-request-own-statistic-use-case';
 import { PlayerStatistic } from './quizGame/quiz.game.statistic.type';
+import { PlayerStatisticRepository } from './quizGame/quiz.player.statistic.repository';
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
@@ -245,6 +246,7 @@ const useCases = [
     QuestionsQueryRepository,
     QuizGamesRepository,
     QuizAnswersRepository,
+    PlayerStatisticRepository,
     LocalStrategy,
     JwtStrategy,
     RefreshTokenStrategy,

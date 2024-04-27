@@ -109,15 +109,18 @@ export class QuizGamesRepository {
       .select([
         'game',
         'answers',
-        'player1.userId',
-        'player1.login',
-        'player2.userId',
-        'player2.login',
+        'player1',
+        'PlayerStatistic1',
+        'player2',
+        'PlayerStatistic2',
         'questions',
       ])
       .leftJoin('game.answers', 'answers')
       .leftJoin('game.player1', 'player1')
       .leftJoin('game.player2', 'player2')
+      .leftJoin('player1.PlayerStatistic', 'PlayerStatistic1')
+      .leftJoin('player2.PlayerStatistic', 'PlayerStatistic2')
+    
       .leftJoin('game.questions', 'questions')
 
       .where('(game.player1Id = :userId  OR game.player2Id = :userId)', {
@@ -126,6 +129,7 @@ export class QuizGamesRepository {
       .andWhere(`game.status = 'Active' OR game.status = 'PendingSecondPlayer'`)
       .orderBy('questions.createdAt', 'ASC');
     const game: QuizGames = await gameQueryBuilder.getOne();
+    
     if (!game) {
       return null;
     }
@@ -252,7 +256,6 @@ export class QuizGamesRepository {
       });
 
     const games = await queryBuilder.getMany();
-    console.log('games from user statistic ', games);
 
     const userStatistic = {
       sumScore: 0,
@@ -262,8 +265,6 @@ export class QuizGamesRepository {
       lossesCount: 0,
       drawsCount: 0,
     };
-
-    console.log('userStatistic ', userStatistic);
 
     function updateStatistics(playerStatus) {
       switch (playerStatus) {
@@ -298,8 +299,6 @@ export class QuizGamesRepository {
     } else {
       userStatistic.avgScores = 0;
     }
-
-    console.log('userStatistic ', userStatistic);
 
     return userStatistic;
   }
@@ -344,8 +343,6 @@ export class QuizGamesRepository {
       .take(pageSize)
       .offset(skipPage)
       .getMany();
-
-    console.log(' games ', games);
 
     const gamesForOutput = games.map((game) => game.returnForPlayer());
 
