@@ -21,9 +21,9 @@ import { quizGameCrudOperationsSa1601 } from './16-01-sa.quiz.game.crud.operatio
 import { quizGameStatisticOperations17 } from './17-00-quiz.game.statistic.operations.e2e-spec';
 
 describe('End-to-End Tests', () => {
-  // testSaUsersCrud();
-  // testSaUsersGetWithPagination();
-  // testSecurityDevices();
+  testSaUsersCrud();
+  testSaUsersGetWithPagination();
+  testSecurityDevices();
   // testAuthOperations();
   // testAuthValidations();
   // testBloggerCrudOnlyBlogs();
@@ -39,9 +39,9 @@ describe('End-to-End Tests', () => {
   // commentLikesWithUserBanCrud1301();
   // bloggerUsersControllers()
 
-  questionCrudOperationsSa15();
+  // questionCrudOperationsSa15();
 
-  quizGameCrudOperationsSa16();
-  quizGameCrudOperationsSa1601()
-  quizGameStatisticOperations17();
+  // quizGameCrudOperationsSa16();
+  // quizGameCrudOperationsSa1601()
+  // quizGameStatisticOperations17();
 });
