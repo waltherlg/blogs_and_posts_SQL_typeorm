@@ -35,8 +35,7 @@ export class Blogs {
   @OneToMany(() => BlogBannedUsers, (b) => b.Blogs)
   @JoinColumn({ name: 'blogId' })
   BlogBannedUsers: BlogBannedUsers[];
-  @OneToMany(() => Posts, (p) => p.Blogs, { cascade: ['remove'] })
-  @JoinColumn({ name: 'blogId' })
+  @OneToMany(() => Posts, (p) => p.Blogs)
   Posts: Posts[];
 }
 
