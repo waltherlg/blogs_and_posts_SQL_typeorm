@@ -37,7 +37,12 @@ export class UsersQueryRepository {
       },
       where: { userId },
     });
-    return result[0];
+    const user = result[0];
+    return {
+        email: user.email,
+        login: user.login,
+        userId: user.userId,
+    }
   }
 
   async getUserById(userId): Promise<UserTypeOutput | null> {

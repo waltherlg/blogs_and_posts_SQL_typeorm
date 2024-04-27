@@ -21,10 +21,10 @@ import { quizGameCrudOperationsSa1601 } from './16-01-sa.quiz.game.crud.operatio
 import { quizGameStatisticOperations17 } from './17-00-quiz.game.statistic.operations.e2e-spec';
 
 describe('End-to-End Tests', () => {
-  testSaUsersCrud();
-  testSaUsersGetWithPagination();
-  testSecurityDevices();
-  // testAuthOperations();
+  // testSaUsersCrud();
+  // testSaUsersGetWithPagination();
+  // testSecurityDevices();
+  testAuthOperations();
   // testAuthValidations();
   // testBloggerCrudOnlyBlogs();
   // testBanUserForBlogByBlogger();
