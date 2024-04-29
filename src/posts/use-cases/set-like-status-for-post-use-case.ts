@@ -43,7 +43,6 @@ export class SetLikeStatusForPostUseCase
     if (!blog) {
       return ActionResult.BlogNotFound;
     }
-
     const isUserBannedForBlog = await this.checkService.isUserBannedForBlog(
       blog.blogId,
       userId,
@@ -51,13 +50,13 @@ export class SetLikeStatusForPostUseCase
     if (isUserBannedForBlog) {
       return ActionResult.UserBannedForBlog;
     }
+    
 
     //check is user already liked post
     const likeObject = await this.likesRepository.getPostLikeObject(
       userId,
       postId,
     );
-
     //if user never set likestatus, create it
     if (!likeObject) {
       const likerLogin = await this.usersRepository.getUserLoginById(userId);
@@ -91,6 +90,10 @@ export class SetLikeStatusForPostUseCase
       return ActionResult.NoChangeNeeded;
     }
 
+
+
+
+//////////////////////////////
     const islikeUpdated = await this.likesRepository.updatePostLike(
       postId,
       userId,

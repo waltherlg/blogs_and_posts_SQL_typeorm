@@ -114,7 +114,9 @@ export function testAuthValidations() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      const refreshTokenCookie = createResponse.headers['set-cookie'].find(
+      const refreshTokenCookie = (
+        createResponse.headers['set-cookie'] as unknown as string[]
+      ).find(
         (cookie) => cookie.startsWith('refreshToken='),
       );
 
@@ -195,7 +197,9 @@ export function testAuthValidations() {
         });
         expect(createResponse.headers['set-cookie']).toBeDefined();
 
-        refreshTokenCookie = createResponse.headers['set-cookie'].find(
+        refreshTokenCookie = (
+          createResponse.headers['set-cookie'] as unknown as string[]
+        ).find(
           (cookie) => cookie.startsWith('refreshToken='),
         );
 
@@ -218,7 +222,9 @@ export function testAuthValidations() {
         });
         expect(createResponse.headers['set-cookie']).toBeDefined();
 
-        refreshTokenCookie2 = createResponse.headers['set-cookie'].find(
+        refreshTokenCookie2 = (
+          createResponse.headers['set-cookie'] as unknown as string[]
+        ).find(
           (cookie) => cookie.startsWith('refreshToken='),
         );
 

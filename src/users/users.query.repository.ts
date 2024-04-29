@@ -321,7 +321,7 @@ export class UsersQueryRepository {
     const bannedUsersForOutput = bannedUsers.map((bannedUser) => {
       return {
         id: bannedUser.userId,
-        //login: bannedUser.login,
+        login: bannedUser.login,
         banInfo: {
           isBanned: true,
           banDate: bannedUser.banDate,

@@ -24,7 +24,7 @@ describe('End-to-End Tests', () => {
   // testSaUsersCrud();
   // testSaUsersGetWithPagination();
   // testSecurityDevices();
-  testAuthOperations();
+  // testAuthOperations();
   // testAuthValidations();
   // testBloggerCrudOnlyBlogs();
   // testBanUserForBlogByBlogger();
@@ -43,5 +43,5 @@ describe('End-to-End Tests', () => {
 
   // quizGameCrudOperationsSa16();
   // quizGameCrudOperationsSa1601()
-  // quizGameStatisticOperations17();
+  quizGameStatisticOperations17();
 });

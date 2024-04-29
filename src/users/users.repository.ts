@@ -377,11 +377,14 @@ export class UsersRepository {
 
   async getUserLoginById(userId): Promise<string | null> {
     const user = await this.usersRepository.findOne({
-      select: {
-        login: true,
-      },
+      //TODO: спросить - почему если раскоментить ниже, приложение выдает ошибку
+      // select: {
+      //   login: true,
+      // },
       where: { userId },
     });
+    console.log('юзер где нужно достать логин ', user);
+    
     if (user) {
       return user.login;
     } else {
