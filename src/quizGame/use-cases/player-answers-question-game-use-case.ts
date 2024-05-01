@@ -19,6 +19,7 @@ import {
 } from '../quiz.answers.types';
 import { QuizAnswersRepository } from '../quiz.answers.repository';
 import { swapPlayerNumber } from '../../helpers/helpers.functions';
+import { log } from 'console';
 
 export class PlayerAnswersQuestionGameCommand {
   constructor(public userId: string, public answerBody: string) {}
@@ -35,6 +36,8 @@ export class PlayerAnswersQuestionGameUseCase
   async execute(command: PlayerAnswersQuestionGameCommand): Promise<any> {
     const game: QuizGames =
       await this.quizGamesRepository.getActiveGameByUserId(command.userId);
+      //console.log("игра во время ответа игрока ", game);
+      
     if (!game) {
       return ActionResult.NotOwner;
     }
@@ -78,6 +81,10 @@ export class PlayerAnswersQuestionGameUseCase
       new Date(),
       game,
     );
+    const player = {
+      1: 'player1',
+      2: 'player2'
+    }
 
     const playerScores = {
       1: 'player1Score',
@@ -86,6 +93,7 @@ export class PlayerAnswersQuestionGameUseCase
 
     if (answerStatus === enumAnswerGameStatus.Correct) {
       game[playerScores[currentPlayerNumber]]++;
+      game[player[currentPlayerNumber]].PlayerStatistic.sumScore++;
     }
 
     if (numberOfPlayerAnswers === 4) {
@@ -100,6 +108,10 @@ export class PlayerAnswersQuestionGameUseCase
         if (game[playerScores[OpposingPlayerNumber]] > 0) {
           game[playerScores[OpposingPlayerNumber]]++;
         }
+        game.player1.PlayerStatistic.gamesCount++
+        game.player2.PlayerStatistic.gamesCount++
+        console.log('game.player1.PlayerStatistic.gamesCount++ ', game.player1.PlayerStatistic.gamesCount);
+        
       }
     }
     game.answers.unshift(answer);

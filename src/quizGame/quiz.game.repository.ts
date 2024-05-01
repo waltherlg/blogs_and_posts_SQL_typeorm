@@ -11,13 +11,15 @@ import {
 import { QuizAnswers, QuizAnwswerDbType } from './quiz.answers.types';
 import { PaginationOutputModel } from 'src/models/types';
 import { sortDirectionFixer } from 'src/helpers/helpers.functions';
-import { topPlayerOutputType } from './quiz.game.statistic.type';
+import { PlayerStatistic, topPlayerOutputType } from './quiz.game.statistic.type';
 
 @Injectable()
 export class QuizGamesRepository {
   constructor(
     @InjectRepository(QuizGames)
     private readonly quizGamesRepository: Repository<QuizGames>, //private readonly quizAnswersRepository: Repository<QuizAnswers>
+    @InjectRepository(PlayerStatistic)
+    private readonly playerStatisticRepository: Repository<PlayerStatistic>,
   ) {}
 
   async createQuizGame(quizGameDto: QuizGameDbType): Promise<string> {
@@ -27,7 +29,10 @@ export class QuizGamesRepository {
   }
 
   async saveGameChange(game: QuizGames): Promise<boolean> {
+    console.log('saveGameChange ', game);
+    
     const result = await this.quizGamesRepository.save(game);
+    const resultStatisticSave = await this.playerStatisticRepository.save([game.player1.PlayerStatistic, game.player2.PlayerStatistic])
 
     if (result) {
       return true;
@@ -129,10 +134,43 @@ export class QuizGamesRepository {
       .andWhere(`game.status = 'Active' OR game.status = 'PendingSecondPlayer'`)
       .orderBy('questions.createdAt', 'ASC');
     const game: QuizGames = await gameQueryBuilder.getOne();
+    console.log('getActiveGameByUserId ', game);
+    
     
     if (!game) {
       return null;
     }
+    return game;
+  }
+
+  async getActiveGameByUserIdTest(userId): Promise<QuizGames | null> {
+    if (!isValidUUID(userId)) {
+      return null;
+    }
+    const gameIdQueryBuilder =
+      this.quizGamesRepository.createQueryBuilder('game');
+    gameIdQueryBuilder
+      .select([
+        'game',
+      ])
+      .leftJoin('game.player1', 'player1')
+      .leftJoin('game.player2', 'player2')
+    
+      .where('(game.player1Id = :userId  OR game.player2Id = :userId)', {
+        userId: userId,
+      })
+      .andWhere(`game.status = 'Active' OR game.status = 'PendingSecondPlayer'`)
+    const gameId: QuizGames = await gameIdQueryBuilder.getOne();
+    if (!gameId) {
+      return null;
+    }
+    console.log('gameId ', gameId);
+    
+    const game = await this.quizGamesRepository.findOne({
+      where: {
+        quizGameId: gameId.quizGameId
+      }
+    })
     return game;
   }
 

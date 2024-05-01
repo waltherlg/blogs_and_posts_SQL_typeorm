@@ -19,6 +19,7 @@ import { questionCrudOperationsSa15 } from './15-00-sa.question.crud.operations.
 import { quizGameCrudOperationsSa16 } from './16-00-sa.quiz.game.crud.operations.e2e-spec';
 import { quizGameCrudOperationsSa1601 } from './16-01-sa.quiz.game.crud.operations.e2e-spec';
 import { quizGameStatisticOperations17 } from './17-00-quiz.game.statistic.operations.e2e-spec';
+import { onlyQuizGameCreateSa1602 } from './16-02-only.quiz.game.create.e2e-spec copy';
 
 describe('End-to-End Tests', () => {
   // testSaUsersCrud();
@@ -43,5 +44,6 @@ describe('End-to-End Tests', () => {
 
   // quizGameCrudOperationsSa16();
   // quizGameCrudOperationsSa1601()
-  quizGameStatisticOperations17();
+  onlyQuizGameCreateSa1602()
+  // quizGameStatisticOperations17();
 });
