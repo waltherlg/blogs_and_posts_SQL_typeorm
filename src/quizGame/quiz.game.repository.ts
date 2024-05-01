@@ -32,6 +32,8 @@ export class QuizGamesRepository {
     console.log('saveGameChange ', game);
     
     const result = await this.quizGamesRepository.save(game);
+    game.player1.PlayerStatistic.recountAvgScore()
+    game.player2.PlayerStatistic.recountAvgScore()
     const resultStatisticSave = await this.playerStatisticRepository.save([game.player1.PlayerStatistic, game.player2.PlayerStatistic])
 
     if (result) {

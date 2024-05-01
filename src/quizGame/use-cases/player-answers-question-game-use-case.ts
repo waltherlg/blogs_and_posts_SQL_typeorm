@@ -108,9 +108,20 @@ export class PlayerAnswersQuestionGameUseCase
         if (game[playerScores[OpposingPlayerNumber]] > 0) {
           game[playerScores[OpposingPlayerNumber]]++;
         }
+        if(game[playerScores[currentPlayerNumber]] === game[playerScores[OpposingPlayerNumber]]){
+          game.player1.PlayerStatistic.drawsCount++
+          game.player2.PlayerStatistic.drawsCount++
+        }
+        if(game[playerScores[currentPlayerNumber]] > game[playerScores[OpposingPlayerNumber]]){
+          game[player[currentPlayerNumber]].PlayerStatistic.winsCount++
+          game[player[OpposingPlayerNumber]].PlayerStatistic.lossesCount++
+        }
+        if(game[playerScores[currentPlayerNumber]] < game[playerScores[OpposingPlayerNumber]]){
+          game[player[currentPlayerNumber]].PlayerStatistic.lossesCount++
+          game[player[OpposingPlayerNumber]].PlayerStatistic.winsCount++
+        }
         game.player1.PlayerStatistic.gamesCount++
         game.player2.PlayerStatistic.gamesCount++
-        console.log('game.player1.PlayerStatistic.gamesCount++ ', game.player1.PlayerStatistic.gamesCount);
         
       }
     }

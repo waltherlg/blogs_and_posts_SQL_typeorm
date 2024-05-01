@@ -52,4 +52,12 @@ export class PlayerStatistic extends PlayerStatisticDbType {
     lossesCount: number;
     @Column()
     drawsCount: number;
+
+    recountAvgScore() {
+        if (this.gamesCount !== 0) {
+            this.avgScores = this.sumScore / this.gamesCount;
+        } else {
+            this.avgScores = 0;
+        }
+    }
 }
