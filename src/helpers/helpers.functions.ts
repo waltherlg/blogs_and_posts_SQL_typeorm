@@ -28,3 +28,10 @@ export const swapPlayerNumber = (num) => {
     );
   }
 };
+
+export const sortQueryParamsUserTopFixer = (sortData) => {
+  if(typeof sortData === 'string'){
+    
+  }
+  
+}

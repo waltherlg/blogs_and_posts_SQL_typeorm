@@ -115,8 +115,11 @@ export class PublicQuizGameController {
   @Get('users/top')
   @HttpCode(200)
   async getUsersTop(@Query() queryParams: RequestTopPlayersQueryParamsModel){
+    console.log(queryParams);
+    
     const mergedQueryParams = {...DEFAULT_TOP_PLAYERS_QUERY_PARAMS, ...queryParams}
     const topPlayers = await this.playerStatisticQueryRepository.getTopPlayers(mergedQueryParams)
+    return topPlayers
     // {
     //   "pagesCount": 0,
     //   "page": 0,

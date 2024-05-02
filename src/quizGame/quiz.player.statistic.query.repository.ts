@@ -13,6 +13,7 @@ export class PlayerStatisticQueryRepository {
 
   async getTopPlayers(queryParams: RequestTopPlayersQueryParamsModel): Promise<PaginationOutputModel<topPlayerOutputType>>{
     const queryBuilder = this.playerStatisticQueryRepository.createQueryBuilder('statistic');
+    
     queryBuilder.select([
       'statistic',
       'player.login'
