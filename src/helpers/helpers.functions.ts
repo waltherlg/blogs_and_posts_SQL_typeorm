@@ -1,4 +1,5 @@
 import { CustomisableException } from '../exceptions/custom.exceptions';
+import { enumDirForStat } from '../quizGame/quiz.game.statistic.type';
 
 export const sortDirectionFixer = (sortDirection) => {
   const sortDirUp = sortDirection.toUpperCase();
@@ -29,9 +30,20 @@ export const swapPlayerNumber = (num) => {
   }
 };
 
-export const sortQueryParamsUserTopFixer = (sortData) => {
-  if(typeof sortData === 'string'){
-    
-  }
-  
+
+export const sortQueryParamsUserTopFixer = (strings) => {
+  let newSortParam = [];
+  strings.forEach(function(string) {
+      var words = string.split(" ");
+      var firstWord = words[0];
+      var secondWord = words[1];
+      if (Object.values(enumDirForStat).includes(firstWord) && (secondWord === "desc" || secondWord === "asc")) {
+          var obj = {
+              sortBy: firstWord,
+              sortDir: secondWord.toUpperCase() // Преобразуем в "DESC" или "ASC"
+          };
+          newSortParam.push(obj);
+      }
+  });
+  return newSortParam;
 }

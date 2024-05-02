@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PlayerStatistic, topPlayerOutputType } from './quiz.game.statistic.type';
 import { PaginationOutputModel, RequestTopPlayersQueryParamsModel } from '../models/types';
+import { sortQueryParamsUserTopFixer } from '../helpers/helpers.functions';
 
 @Injectable()
 export class PlayerStatisticQueryRepository {
@@ -11,8 +12,14 @@ export class PlayerStatisticQueryRepository {
     private readonly playerStatisticQueryRepository: Repository<PlayerStatistic>,
   ) {}
 
-  async getTopPlayers(queryParams: RequestTopPlayersQueryParamsModel): Promise<PaginationOutputModel<topPlayerOutputType>>{
+  async getTopPlayers(mergedQueryParams: RequestTopPlayersQueryParamsModel): Promise<PaginationOutputModel<topPlayerOutputType>>{
     const queryBuilder = this.playerStatisticQueryRepository.createQueryBuilder('statistic');
+    const sortQueryParam = sortQueryParamsUserTopFixer(mergedQueryParams.sort)
+    console.log(sortQueryParam);
+
+    const pageNumber = +mergedQueryParams.pageNumber;
+    const pageSize = +mergedQueryParams.pageSize;
+    const skipPage = (pageNumber - 1) * pageSize;
     
     queryBuilder.select([
       'statistic',
