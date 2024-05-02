@@ -61,3 +61,12 @@ export class PlayerStatistic extends PlayerStatisticDbType {
         }
     }
 }
+
+export enum enumDirForStat {
+    sumScore = "sumScore",
+    avgScores = "avgScores",
+    gamesCount = "gamesCount",
+    winsCount = "winsCount",
+    lossesCount = "lossesCount",
+    drawsCount = "drawsCount"
+}
