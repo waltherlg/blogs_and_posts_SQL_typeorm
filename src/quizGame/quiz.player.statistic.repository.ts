@@ -10,5 +10,9 @@ export class PlayerStatisticRepository {
     private readonly playerStatisticRepository: Repository<PlayerStatistic>,
   ) {}
 
+  async getTopPlayers(){
+    
+  }
+
   
 }

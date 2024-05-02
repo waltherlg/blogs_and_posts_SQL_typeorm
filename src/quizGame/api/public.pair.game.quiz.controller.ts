@@ -31,15 +31,19 @@ import { PlayerRequestOwnStatisticCommand } from '../use-cases/player-request-ow
 import {
   DEFAULT_GAMES_QUERY_PARAMS,
   DEFAULT_QUERY_PARAMS,
+  DEFAULT_TOP_PLAYERS_QUERY_PARAMS,
   RequestQueryParamsModel,
+  RequestTopPlayersQueryParamsModel,
 } from 'src/models/types';
 import { QuizGamesRepository } from '../quiz.game.repository';
+import { PlayerStatisticQueryRepository } from '../quiz.player.statistic.query.repository';
 
 @Controller('pair-game-quiz')
 export class PublicQuizGameController {
   constructor(
     private readonly commandBus: CommandBus,
     private readonly quizGamesRepository: QuizGamesRepository,
+    private readonly playerStatisticQueryRepository: PlayerStatisticQueryRepository,
   ) {}
 
   @UseGuards(JwtAuthGuard)
@@ -110,7 +114,9 @@ export class PublicQuizGameController {
 
   @Get('users/top')
   @HttpCode(200)
-  async getUsersTop(@Query() queryParams: RequestQueryParamsModel){
+  async getUsersTop(@Query() queryParams: RequestTopPlayersQueryParamsModel){
+    const mergedQueryParams = {...DEFAULT_TOP_PLAYERS_QUERY_PARAMS, ...queryParams}
+    const topPlayers = await this.playerStatisticQueryRepository.getTopPlayers(mergedQueryParams)
     // {
     //   "pagesCount": 0,
     //   "page": 0,
