@@ -30,6 +30,7 @@ export function quizGameStatisticOperations17() {
     let accessTokenUser3;
     let gameId1;
     let gameId4;
+    let gameId5;
 
     // game3 user1 - 5 user2 - 2
     // game4 user1 - 0 user2 - 2
@@ -744,6 +745,21 @@ export function quizGameStatisticOperations17() {
         lossesCount: 1,
         drawsCount: 0,
       });
+    });
+
+    it('00-00 pair-game-quiz/pairs/connection POST = user2 create new game5', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/connection`)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+      gameId4 = createdResponseBody.id;
+      expect(createdResponseBody).toEqual(testGames.outputPandingGame);
+      //testGames.outputActiveGame.id = gameId1;
+      testGames.outputGameForDynamicChanges5.id = gameId5;
+      testGames.outputGameForDynamicChanges5.secondPlayerProgress.player.id =
+        userId2;
     });
   });
 }

@@ -19,7 +19,7 @@ export type RequestTopPlayersQueryParamsModel = {
 };
 
 export const DEFAULT_TOP_PLAYERS_QUERY_PARAMS: RequestTopPlayersQueryParamsModel = {
-  sort: ["avgScores desc", "sumScore desc"],
+  sort: [],
   pageNumber: '1',
   pageSize: '10',
 };

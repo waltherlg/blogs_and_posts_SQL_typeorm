@@ -36,17 +36,27 @@ export const sortQueryParamsUserTopFixer = (strings) => {
   if(typeof(strings) === 'string'){
     strings = [strings]
   }
+  console.log("strings ", strings);
+  
   strings.forEach(function(string) {
-      var words = string.split(" ");
-      var firstWord = words[0];
-      var secondWord = words[1];
-      if (Object.values(enumDirForStat).includes(firstWord) && (secondWord === "desc" || secondWord === "asc")) {
-          var obj = {
+      let words = string.split(" ");
+      let firstWord = words[0];
+      let secondWord
+      if (Object.values(enumDirForStat).includes(firstWord)) {
+        if(!words[1]){
+          secondWord = "DESC"
+        } else {
+          secondWord = sortDirectionFixer(words[1])
+        }
+          let obj = {
               sortBy: firstWord,
-              sortDir: secondWord.toUpperCase() // Преобразуем в "DESC" или "ASC"
+              sortDir: secondWord
           };
           newSortParam.push(obj);
       }
   });
+  if(newSortParam.length === 0){
+    newSortParam = [{sortBy: "avgScores", sortDir:"DESC"}, {sortBy: "sumScore", sortDir:"DESC"}]
+  }
   return newSortParam;
 }
