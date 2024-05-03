@@ -33,6 +33,9 @@ export const swapPlayerNumber = (num) => {
 
 export const sortQueryParamsUserTopFixer = (strings) => {
   let newSortParam = [];
+  if(typeof(strings) === 'string'){
+    strings = [strings]
+  }
   strings.forEach(function(string) {
       var words = string.split(" ");
       var firstWord = words[0];
