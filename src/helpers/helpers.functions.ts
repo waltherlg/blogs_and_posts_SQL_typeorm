@@ -36,7 +36,6 @@ export const sortQueryParamsUserTopFixer = (strings) => {
   if(typeof(strings) === 'string'){
     strings = [strings]
   }
-  console.log("strings ", strings);
   
   strings.forEach(function(string) {
       let words = string.split(" ");

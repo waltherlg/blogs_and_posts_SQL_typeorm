@@ -118,7 +118,6 @@ export class PublicQuizGameController {
     
     
     const mergedQueryParams = {...DEFAULT_TOP_PLAYERS_QUERY_PARAMS, ...queryParams}
-    console.log('mergedQueryParams in controller ', mergedQueryParams);
     const topPlayers = await this.playerStatisticQueryRepository.getTopPlayers(mergedQueryParams)
     return topPlayers
   }

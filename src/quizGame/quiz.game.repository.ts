@@ -29,8 +29,6 @@ export class QuizGamesRepository {
   }
 
   async saveGameChange(game: QuizGames): Promise<boolean> {
-    console.log('saveGameChange ', game);
-    
     const result = await this.quizGamesRepository.save(game);
     game.player1.PlayerStatistic.recountAvgScore()
     game.player2.PlayerStatistic.recountAvgScore()
@@ -136,7 +134,6 @@ export class QuizGamesRepository {
       .andWhere(`game.status = 'Active' OR game.status = 'PendingSecondPlayer'`)
       .orderBy('questions.createdAt', 'ASC');
     const game: QuizGames = await gameQueryBuilder.getOne();
-    console.log('getActiveGameByUserId ', game);
     
     
     if (!game) {
@@ -166,7 +163,6 @@ export class QuizGamesRepository {
     if (!gameId) {
       return null;
     }
-    console.log('gameId ', gameId);
     
     const game = await this.quizGamesRepository.findOne({
       where: {

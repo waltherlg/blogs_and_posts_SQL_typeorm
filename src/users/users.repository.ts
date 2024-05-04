@@ -383,7 +383,6 @@ export class UsersRepository {
       // },
       where: { userId },
     });
-    console.log('юзер где нужно достать логин ', user);
     
     if (user) {
       return user.login;

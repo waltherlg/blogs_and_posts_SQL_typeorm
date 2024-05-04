@@ -754,12 +754,25 @@ export function quizGameStatisticOperations17() {
         .expect(200);
 
       const createdResponseBody = createResponse.body;
-      gameId4 = createdResponseBody.id;
+      gameId5 = createdResponseBody.id;
       expect(createdResponseBody).toEqual(testGames.outputPandingGame);
-      //testGames.outputActiveGame.id = gameId1;
       testGames.outputGameForDynamicChanges5.id = gameId5;
       testGames.outputGameForDynamicChanges5.secondPlayerProgress.player.id =
         userId2;
+    });
+
+    it('00-00 pair-game-quiz/pairs/connection POST = user1 join game5', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.pairGameQuiz}/pairs/connection`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+
+      const createdResponseBody = createResponse.body;
+      gameId5 = createdResponseBody.id;
+      expect(createdResponseBody).toEqual(testGames.outputPandingGame);
+      testGames.outputGameForDynamicChanges5.id = gameId5;
+      testGames.outputGameForDynamicChanges5.secondPlayerProgress.player.id =
+        userId1;
     });
   });
 }

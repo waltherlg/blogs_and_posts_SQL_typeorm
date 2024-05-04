@@ -15,12 +15,10 @@ export class PlayerStatisticQueryRepository {
   async getTopPlayers(mergedQueryParams: RequestTopPlayersQueryParamsModel): Promise<PaginationOutputModel<topPlayerOutputType>>{
     const queryBuilder = this.playerStatisticQueryRepository.createQueryBuilder('statistic');
     const sortQueryParam = sortQueryParamsUserTopFixer(mergedQueryParams.sort)
-    console.log('--sortQueryParam in repository ', sortQueryParam);
 
     const pageNumber = +mergedQueryParams.pageNumber;
     const pageSize = +mergedQueryParams.pageSize;
     const skipPage = (pageNumber - 1) * pageSize;
-    console.log("sortQueryParam[1].sortBy ", sortQueryParam[0].sortBy);
 
     queryBuilder.select([
       'statistic',
