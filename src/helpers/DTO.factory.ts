@@ -8,7 +8,7 @@ import { PlayerStatistic } from '../quizGame/quiz.game.statistic.type';
 @Injectable()
 export class DTOFactory {
   constructor(private readonly bcryptService: BcryptService) {}
-  
+
   // async createUserDTO(createUserData: createUserDataType) {
   //   const passwordHash = await this.bcryptService.hashPassword(
   //     createUserData.password,
@@ -36,7 +36,7 @@ export class DTOFactory {
     const passwordHash = await this.bcryptService.hashPassword(
       createUserData.password,
     );
-    const userId = uuidv4()
+    const userId = uuidv4();
     const playerStatisticEntity: PlayerStatistic = new PlayerStatistic(
       userId,
       0,
@@ -44,9 +44,8 @@ export class DTOFactory {
       0,
       0,
       0,
-      0
-    )
-
+      0,
+    );
 
     const userEntity: Users = new Users(
       userId,

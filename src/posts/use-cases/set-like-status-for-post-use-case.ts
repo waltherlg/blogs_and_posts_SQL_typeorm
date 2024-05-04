@@ -50,7 +50,6 @@ export class SetLikeStatusForPostUseCase
     if (isUserBannedForBlog) {
       return ActionResult.UserBannedForBlog;
     }
-    
 
     //check is user already liked post
     const likeObject = await this.likesRepository.getPostLikeObject(
@@ -90,10 +89,7 @@ export class SetLikeStatusForPostUseCase
       return ActionResult.NoChangeNeeded;
     }
 
-
-
-
-//////////////////////////////
+    //////////////////////////////
     const islikeUpdated = await this.likesRepository.updatePostLike(
       postId,
       userId,

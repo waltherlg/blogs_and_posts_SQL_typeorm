@@ -39,10 +39,10 @@ export class UsersQueryRepository {
     });
     const user = result[0];
     return {
-        email: user.email,
-        login: user.login,
-        userId: user.userId,
-    }
+      email: user.email,
+      login: user.login,
+      userId: user.userId,
+    };
   }
 
   async getUserById(userId): Promise<UserTypeOutput | null> {

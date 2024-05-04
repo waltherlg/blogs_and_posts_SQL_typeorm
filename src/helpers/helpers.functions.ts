@@ -30,32 +30,42 @@ export const swapPlayerNumber = (num) => {
   }
 };
 
-
 export const sortQueryParamsUserTopFixer = (strings) => {
   let newSortParam = [];
-  if(typeof(strings) === 'string'){
-    strings = [strings]
+  if (typeof strings === 'string') {
+    strings = [strings];
   }
-  
-  strings.forEach(function(string) {
-      let words = string.split(" ");
-      let firstWord = words[0];
-      let secondWord
-      if (Object.values(enumDirForStat).includes(firstWord)) {
-        if(!words[1]){
-          secondWord = "DESC"
-        } else {
-          secondWord = sortDirectionFixer(words[1])
-        }
-          let obj = {
-              sortBy: firstWord,
-              sortDir: secondWord
-          };
-          newSortParam.push(obj);
+
+  strings.forEach(function (string) {
+    const words = string.split(' ');
+    const firstWord = words[0];
+    let secondWord;
+    if (Object.values(enumDirForStat).includes(firstWord)) {
+      if (!words[1]) {
+        secondWord = 'DESC';
+      } else {
+        secondWord = sortDirectionFixer(words[1]);
       }
+      const obj = {
+        sortBy: firstWord,
+        sortDir: secondWord,
+      };
+      newSortParam.push(obj);
+    }
   });
-  if(newSortParam.length === 0){
-    newSortParam = [{sortBy: "avgScores", sortDir:"DESC"}, {sortBy: "sumScore", sortDir:"DESC"}]
+  if (newSortParam.length === 0) {
+    newSortParam = [
+      { sortBy: 'avgScores', sortDir: 'DESC' },
+      { sortBy: 'sumScore', sortDir: 'DESC' },
+    ];
   }
   return newSortParam;
-}
+};
+
+export const delayFunction = async (ms: number) => {
+  return new Promise<void>((resolve, reject) => {
+    setTimeout(() => {
+      resolve();
+    }, ms);
+  });
+};

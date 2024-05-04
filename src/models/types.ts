@@ -18,11 +18,12 @@ export type RequestTopPlayersQueryParamsModel = {
   pageSize: string;
 };
 
-export const DEFAULT_TOP_PLAYERS_QUERY_PARAMS: RequestTopPlayersQueryParamsModel = {
-  sort: [],
-  pageNumber: '1',
-  pageSize: '10',
-};
+export const DEFAULT_TOP_PLAYERS_QUERY_PARAMS: RequestTopPlayersQueryParamsModel =
+  {
+    sort: [],
+    pageNumber: '1',
+    pageSize: '10',
+  };
 
 export const DEFAULT_GAMES_QUERY_PARAMS: RequestQueryParamsModel = {
   sortBy: 'pairCreatedDate',

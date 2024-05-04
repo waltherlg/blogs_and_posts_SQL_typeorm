@@ -108,9 +108,9 @@ export function testBanUserForBlogByBlogger() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      const refreshTokenCookie = (createResponse.headers['set-cookie'] as unknown as string[]).find(
-        (cookie) => cookie.startsWith('refreshToken='),
-      );
+      const refreshTokenCookie = (
+        createResponse.headers['set-cookie'] as unknown as string[]
+      ).find((cookie) => cookie.startsWith('refreshToken='));
 
       expect(refreshTokenCookie).toBeDefined();
       expect(refreshTokenCookie).toContain('HttpOnly');
@@ -128,9 +128,9 @@ export function testBanUserForBlogByBlogger() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      const refreshTokenCookie = (createResponse.headers['set-cookie'] as unknown as string[]).find(
-        (cookie) => cookie.startsWith('refreshToken='),
-      );
+      const refreshTokenCookie = (
+        createResponse.headers['set-cookie'] as unknown as string[]
+      ).find((cookie) => cookie.startsWith('refreshToken='));
 
       expect(refreshTokenCookie).toBeDefined();
       expect(refreshTokenCookie).toContain('HttpOnly');
@@ -174,9 +174,9 @@ export function testBanUserForBlogByBlogger() {
         accessToken: expect.any(String),
       });
       expect(createResponse.headers['set-cookie']).toBeDefined();
-      const refreshTokenCookie = (createResponse.headers['set-cookie'] as unknown as string[]).find(
-        (cookie) => cookie.startsWith('refreshToken='),
-      );
+      const refreshTokenCookie = (
+        createResponse.headers['set-cookie'] as unknown as string[]
+      ).find((cookie) => cookie.startsWith('refreshToken='));
 
       expect(refreshTokenCookie).toBeDefined();
       expect(refreshTokenCookie).toContain('HttpOnly');

@@ -2,16 +2,28 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryBuilder, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import {
   QuizGameDbType,
   QuizGames,
   enumStatusGameType,
   outputGameQuizType,
 } from './quiz.game.types';
-import { QuizAnswers, QuizAnwswerDbType } from './quiz.answers.types';
+import {
+  QuizAnswers,
+  QuizAnwswerDbType,
+  enumAnswerGameStatus,
+} from './quiz.answers.types';
 import { PaginationOutputModel } from 'src/models/types';
-import { sortDirectionFixer } from 'src/helpers/helpers.functions';
-import { PlayerStatistic, topPlayerOutputType } from './quiz.game.statistic.type';
+import {
+  delayFunction,
+  sortDirectionFixer,
+  swapPlayerNumber,
+} from 'src/helpers/helpers.functions';
+import {
+  PlayerStatistic,
+  topPlayerOutputType,
+} from './quiz.game.statistic.type';
 
 @Injectable()
 export class QuizGamesRepository {
@@ -30,9 +42,12 @@ export class QuizGamesRepository {
 
   async saveGameChange(game: QuizGames): Promise<boolean> {
     const result = await this.quizGamesRepository.save(game);
-    game.player1.PlayerStatistic.recountAvgScore()
-    game.player2.PlayerStatistic.recountAvgScore()
-    const resultStatisticSave = await this.playerStatisticRepository.save([game.player1.PlayerStatistic, game.player2.PlayerStatistic])
+    game.player1.PlayerStatistic.recountAvgScore();
+    game.player2.PlayerStatistic.recountAvgScore();
+    const resultStatisticSave = await this.playerStatisticRepository.save([
+      game.player1.PlayerStatistic,
+      game.player2.PlayerStatistic,
+    ]);
 
     if (result) {
       return true;
@@ -125,7 +140,7 @@ export class QuizGamesRepository {
       .leftJoin('game.player2', 'player2')
       .leftJoin('player1.PlayerStatistic', 'PlayerStatistic1')
       .leftJoin('player2.PlayerStatistic', 'PlayerStatistic2')
-    
+
       .leftJoin('game.questions', 'questions')
 
       .where('(game.player1Id = :userId  OR game.player2Id = :userId)', {
@@ -134,41 +149,10 @@ export class QuizGamesRepository {
       .andWhere(`game.status = 'Active' OR game.status = 'PendingSecondPlayer'`)
       .orderBy('questions.createdAt', 'ASC');
     const game: QuizGames = await gameQueryBuilder.getOne();
-    
-    
+
     if (!game) {
       return null;
     }
-    return game;
-  }
-
-  async getActiveGameByUserIdTest(userId): Promise<QuizGames | null> {
-    if (!isValidUUID(userId)) {
-      return null;
-    }
-    const gameIdQueryBuilder =
-      this.quizGamesRepository.createQueryBuilder('game');
-    gameIdQueryBuilder
-      .select([
-        'game',
-      ])
-      .leftJoin('game.player1', 'player1')
-      .leftJoin('game.player2', 'player2')
-    
-      .where('(game.player1Id = :userId  OR game.player2Id = :userId)', {
-        userId: userId,
-      })
-      .andWhere(`game.status = 'Active' OR game.status = 'PendingSecondPlayer'`)
-    const gameId: QuizGames = await gameIdQueryBuilder.getOne();
-    if (!gameId) {
-      return null;
-    }
-    
-    const game = await this.quizGamesRepository.findOne({
-      where: {
-        quizGameId: gameId.quizGameId
-      }
-    })
     return game;
   }
 
@@ -266,7 +250,6 @@ export class QuizGamesRepository {
     return games.map((game) => game.returnForPlayer());
   }
 
-  
   //TODO: addTypes
   async GetCurrentUserStatistic(userId) {
     if (!isValidUUID(userId)) {
@@ -393,10 +376,113 @@ export class QuizGamesRepository {
     return outputGames;
   }
 
-  // async getTopPlayers(mergedQueryParams):Promise <PaginationOutputModel<topPlayerOutputType>>{
-  //   const pageNumber = +mergedQueryParams.pageNumber;
-  //   const pageSize = +mergedQueryParams.pageSize;
-  //   const skipPage = (pageNumber - 1) * pageSize;
+  async finishGameAfter10sec(gameId, userId) {
+    if (!isValidUUID(gameId)) {
+      return null;
+    }
+    const gameQueryBuilder =
+      this.quizGamesRepository.createQueryBuilder('game');
+    gameQueryBuilder
+      .select([
+        'game',
+        'answers',
+        'player1',
+        'PlayerStatistic1',
+        'player2',
+        'PlayerStatistic2',
+        'questions',
+      ])
+      .leftJoin('game.answers', 'answers')
+      .leftJoin('game.player1', 'player1')
+      .leftJoin('game.player2', 'player2')
+      .leftJoin('player1.PlayerStatistic', 'PlayerStatistic1')
+      .leftJoin('player2.PlayerStatistic', 'PlayerStatistic2')
+      .leftJoin('game.questions', 'questions')
 
-  // }
+      .where('(game.quizGameId = :gameId)', {
+        gameId: gameId,
+      })
+      .orderBy('questions.createdAt', 'ASC');
+
+    await delayFunction(10000);
+
+    const game: QuizGames = await gameQueryBuilder.getOne();
+    if (!game) {
+      return null;
+    }
+    if (game.status !== enumStatusGameType.Active) {
+      return;
+    }
+    let currentPlayerNumber;
+    if (game.player1.userId === userId) {
+      currentPlayerNumber = 1;
+    } else {
+      currentPlayerNumber = 2;
+    }
+    const answersArray = game.answers;
+    const currentPlayerAnswers = answersArray.filter(
+      (answer) => answer.playerNumber === currentPlayerNumber,
+    );
+    const numberOfPlayerAnswers = currentPlayerAnswers.length;
+
+    for (let index = numberOfPlayerAnswers; index < 5; index++) {
+      const currentQuestion = game.questions[numberOfPlayerAnswers];
+      const answer: QuizAnswers = new QuizAnswers(
+        uuidv4(),
+        currentPlayerNumber,
+        currentQuestion.questionId,
+        "Oops, didn't make it in time",
+        enumAnswerGameStatus.Incorrect,
+        new Date(),
+        game,
+      );
+      game.answers.unshift(answer);
+    }
+
+    const player = {
+      1: 'player1',
+      2: 'player2',
+    };
+
+    const playerScores = {
+      1: 'player1Score',
+      2: 'player2Score',
+    };
+    const OpposingPlayerNumber = swapPlayerNumber(currentPlayerNumber);
+
+    game.status = enumStatusGameType.Finished;
+    game.finishGameDate = new Date();
+
+    if (game[playerScores[OpposingPlayerNumber]] > 0) {
+      game[playerScores[OpposingPlayerNumber]]++;
+      game[player[OpposingPlayerNumber]].PlayerStatistic.sumScore++;
+    }
+    if (
+      game[playerScores[currentPlayerNumber]] ===
+      game[playerScores[OpposingPlayerNumber]]
+    ) {
+      game.player1.PlayerStatistic.drawsCount++;
+      game.player2.PlayerStatistic.drawsCount++;
+    }
+    if (
+      game[playerScores[currentPlayerNumber]] >
+      game[playerScores[OpposingPlayerNumber]]
+    ) {
+      game[player[currentPlayerNumber]].PlayerStatistic.winsCount++;
+      game[player[OpposingPlayerNumber]].PlayerStatistic.lossesCount++;
+    }
+    if (
+      game[playerScores[currentPlayerNumber]] <
+      game[playerScores[OpposingPlayerNumber]]
+    ) {
+      game[player[currentPlayerNumber]].PlayerStatistic.lossesCount++;
+      game[player[OpposingPlayerNumber]].PlayerStatistic.winsCount++;
+    }
+    game.player1.PlayerStatistic.gamesCount++;
+    game.player2.PlayerStatistic.gamesCount++;
+    console.log('game change after 10 sec ', game);
+    
+    const result = await this.saveGameChange(game);
+    return result
+  }
 }

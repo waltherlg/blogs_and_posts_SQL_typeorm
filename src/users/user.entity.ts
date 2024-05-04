@@ -53,6 +53,9 @@ export class Users extends UserDBType {
   @OneToMany(() => BlogBannedUsers, (b) => b.Users, { cascade: ['remove'] }) // рабочее
   @JoinColumn({ name: 'userId' })
   BlogBannedUsers: BlogBannedUsers[];
-  @OneToOne(() => PlayerStatistic, (p) => p.Users, { eager: true, nullable: true})
+  @OneToOne(() => PlayerStatistic, (p) => p.Users, {
+    eager: true,
+    nullable: true,
+  })
   PlayerStatistic: PlayerStatistic | null;
 }

@@ -1,25 +1,11 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import {
-  CreateQuestionImputModelType,
-  QuestionDbType,
-} from '../quiz.questions.types';
-import { QuestionsRepository } from '../questions.repository';
-import {
-  QuizGameDbType,
-  QuizGames,
-  enumStatusGameType,
-} from '../quiz.game.types';
+import { QuizGames, enumStatusGameType } from '../quiz.game.types';
 import { v4 as uuidv4 } from 'uuid';
 import { ActionResult } from 'src/helpers/enum.action.result.helper';
 import { QuizGamesRepository } from '../quiz.game.repository';
-import {
-  QuizAnswers,
-  QuizAnwswerDbType,
-  enumAnswerGameStatus,
-} from '../quiz.answers.types';
+import { QuizAnswers, enumAnswerGameStatus } from '../quiz.answers.types';
 import { QuizAnswersRepository } from '../quiz.answers.repository';
 import { swapPlayerNumber } from '../../helpers/helpers.functions';
-import { log } from 'console';
 
 export class PlayerAnswersQuestionGameCommand {
   constructor(public userId: string, public answerBody: string) {}
@@ -36,8 +22,8 @@ export class PlayerAnswersQuestionGameUseCase
   async execute(command: PlayerAnswersQuestionGameCommand): Promise<any> {
     const game: QuizGames =
       await this.quizGamesRepository.getActiveGameByUserId(command.userId);
-      //console.log("игра во время ответа игрока ", game);
-      
+    //console.log("игра во время ответа игрока ", game);
+
     if (!game) {
       return ActionResult.NotOwner;
     }
@@ -81,10 +67,11 @@ export class PlayerAnswersQuestionGameUseCase
       new Date(),
       game,
     );
+
     const player = {
       1: 'player1',
-      2: 'player2'
-    }
+      2: 'player2',
+    };
 
     const playerScores = {
       1: 'player1Score',
@@ -100,35 +87,56 @@ export class PlayerAnswersQuestionGameUseCase
       const numberOfOpposingPlayersAnswer = answersArray.filter(
         (answer) => answer.playerNumber !== currentPlayerNumber,
       ).length;
-
+      const OpposingPlayerNumber = swapPlayerNumber(currentPlayerNumber);
+      
       if (numberOfOpposingPlayersAnswer === 5) {
         game.status = enumStatusGameType.Finished;
         game.finishGameDate = new Date();
-        const OpposingPlayerNumber = swapPlayerNumber(currentPlayerNumber);
+
         if (game[playerScores[OpposingPlayerNumber]] > 0) {
           game[playerScores[OpposingPlayerNumber]]++;
           game[player[OpposingPlayerNumber]].PlayerStatistic.sumScore++;
         }
-        if(game[playerScores[currentPlayerNumber]] === game[playerScores[OpposingPlayerNumber]]){
-          game.player1.PlayerStatistic.drawsCount++
-          game.player2.PlayerStatistic.drawsCount++
+        if (
+          game[playerScores[currentPlayerNumber]] ===
+          game[playerScores[OpposingPlayerNumber]]
+        ) {
+          game.player1.PlayerStatistic.drawsCount++;
+          game.player2.PlayerStatistic.drawsCount++;
         }
-        if(game[playerScores[currentPlayerNumber]] > game[playerScores[OpposingPlayerNumber]]){
-          game[player[currentPlayerNumber]].PlayerStatistic.winsCount++
-          game[player[OpposingPlayerNumber]].PlayerStatistic.lossesCount++
+        if (
+          game[playerScores[currentPlayerNumber]] >
+          game[playerScores[OpposingPlayerNumber]]
+        ) {
+          game[player[currentPlayerNumber]].PlayerStatistic.winsCount++;
+          game[player[OpposingPlayerNumber]].PlayerStatistic.lossesCount++;
         }
-        if(game[playerScores[currentPlayerNumber]] < game[playerScores[OpposingPlayerNumber]]){
-          game[player[currentPlayerNumber]].PlayerStatistic.lossesCount++
-          game[player[OpposingPlayerNumber]].PlayerStatistic.winsCount++
+        if (
+          game[playerScores[currentPlayerNumber]] <
+          game[playerScores[OpposingPlayerNumber]]
+        ) {
+          game[player[currentPlayerNumber]].PlayerStatistic.lossesCount++;
+          game[player[OpposingPlayerNumber]].PlayerStatistic.winsCount++;
         }
-        game.player1.PlayerStatistic.gamesCount++
-        game.player2.PlayerStatistic.gamesCount++
-        
+        game.player1.PlayerStatistic.gamesCount++;
+        game.player2.PlayerStatistic.gamesCount++;
+      } else {
+        game.answers.unshift(answer);
+        const result = await this.quizGamesRepository.saveGameChange(game);
+        this.quizGamesRepository.finishGameAfter10sec(
+          game.quizGameId,
+          game[player[OpposingPlayerNumber]].userId,
+        );
+        if (result) {
+          return answer.returnForPlayer();
+        } else {
+          return ActionResult.NotSaved;
+        }
       }
     }
     game.answers.unshift(answer);
-
     const result = await this.quizGamesRepository.saveGameChange(game);
+
     if (result) {
       return answer.returnForPlayer();
     } else {

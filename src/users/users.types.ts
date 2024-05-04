@@ -1,4 +1,4 @@
-import { PlayerStatistic } from "../quizGame/quiz.game.statistic.type";
+import { PlayerStatistic } from '../quizGame/quiz.game.statistic.type';
 
 export type CommentsLikeType = {
   commentsId: string;
@@ -27,7 +27,7 @@ export class UserDBType {
     public isConfirmed: boolean,
     public passwordRecoveryCode: string | null,
     public expirationDateOfRecoveryCode: Date | null,
-    public playerStatistic: PlayerStatistic
+    public playerStatistic: PlayerStatistic,
   ) {}
 }
 

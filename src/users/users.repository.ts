@@ -42,11 +42,12 @@ export class UsersRepository {
     const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
-   try {
+    try {
       const result = await queryRunner.manager.save(userDTO);
-      const statisticResult = await queryRunner.manager.save(userDTO.playerStatistic)
-      
-      
+      const statisticResult = await queryRunner.manager.save(
+        userDTO.playerStatistic,
+      );
+
       await queryRunner.commitTransaction();
       return result.userId;
     } catch (e) {
@@ -383,7 +384,7 @@ export class UsersRepository {
       // },
       where: { userId },
     });
-    
+
     if (user) {
       return user.login;
     } else {

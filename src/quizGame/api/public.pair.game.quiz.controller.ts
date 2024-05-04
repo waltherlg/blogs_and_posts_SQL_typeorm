@@ -114,12 +114,15 @@ export class PublicQuizGameController {
 
   @Get('users/top')
   @HttpCode(200)
-  async getUsersTop(@Query() queryParams: RequestTopPlayersQueryParamsModel){
-    
-    
-    const mergedQueryParams = {...DEFAULT_TOP_PLAYERS_QUERY_PARAMS, ...queryParams}
-    const topPlayers = await this.playerStatisticQueryRepository.getTopPlayers(mergedQueryParams)
-    return topPlayers
+  async getUsersTop(@Query() queryParams: RequestTopPlayersQueryParamsModel) {
+    const mergedQueryParams = {
+      ...DEFAULT_TOP_PLAYERS_QUERY_PARAMS,
+      ...queryParams,
+    };
+    const topPlayers = await this.playerStatisticQueryRepository.getTopPlayers(
+      mergedQueryParams,
+    );
+    return topPlayers;
   }
 
   @UseGuards(JwtAuthGuard)

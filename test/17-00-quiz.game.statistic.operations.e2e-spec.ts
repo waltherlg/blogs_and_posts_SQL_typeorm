@@ -769,16 +769,16 @@ export function quizGameStatisticOperations17() {
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
 
-        const createdResponseBody = createResponse.body;
-        // expect(createdResponseBody).toEqual(testGames.outputActiveGame);
-  
-        testGames.outputGameForDynamicChanges5.secondPlayerProgress.player.id =
-          userId1;
-        testGames.outputGameForDynamicChanges5.status = enumStatusGameType.Active;
-        testGames.outputGameForDynamicChanges5.startGameDate = expect.any(String);
-        expect(createdResponseBody).toEqual(
-          testGames.outputGameForDynamicChanges5,
-        );
+      const createdResponseBody = createResponse.body;
+      // expect(createdResponseBody).toEqual(testGames.outputActiveGame);
+
+      testGames.outputGameForDynamicChanges5.secondPlayerProgress.player.id =
+        userId1;
+      testGames.outputGameForDynamicChanges5.status = enumStatusGameType.Active;
+      testGames.outputGameForDynamicChanges5.startGameDate = expect.any(String);
+      expect(createdResponseBody).toEqual(
+        testGames.outputGameForDynamicChanges5,
+      );
     });
 
     it('00-00 pairs/my-current/answers POST = user2 as firstPlayer add correctAnswer 1 in game', async () => {
@@ -916,8 +916,8 @@ export function quizGameStatisticOperations17() {
 
     it('01-00 users/top GET = get top plsyers (user1 user2)', async () => {
       const createResponse = await request(app.getHttpServer())
-      .get(`${endpoints.pairGameQuiz}/users/top`)
-      .expect(200)
+        .get(`${endpoints.pairGameQuiz}/users/top`)
+        .expect(200);
 
       const createdResponseBody = createResponse.body;
       expect(createdResponseBody).toEqual({
@@ -929,14 +929,14 @@ export function quizGameStatisticOperations17() {
           {
             sumScore: 7,
             avgScores: 2.33,
-              gamesCount: 3,
-              winsCount: 2,
-              lossesCount: 1,
-              drawsCount: 0,
-              player: {
-                  id: userId2,
-                  login: "user2"
-              }
+            gamesCount: 3,
+            winsCount: 2,
+            lossesCount: 1,
+            drawsCount: 0,
+            player: {
+              id: userId2,
+              login: 'user2',
+            },
           },
           {
             sumScore: 7,
@@ -946,23 +946,23 @@ export function quizGameStatisticOperations17() {
             lossesCount: 2,
             drawsCount: 0,
             player: {
-                id: userId1,
-                login: "user1"
-            }
-        },
-        {
-          sumScore: 0,
-          avgScores: 0,
-          gamesCount: 0,
-          winsCount: 0,
-          lossesCount: 0,
-          drawsCount: 0,
-          player: {
+              id: userId1,
+              login: 'user1',
+            },
+          },
+          {
+            sumScore: 0,
+            avgScores: 0,
+            gamesCount: 0,
+            winsCount: 0,
+            lossesCount: 0,
+            drawsCount: 0,
+            player: {
               id: userId3,
-              login: "user3"
-          }
-      },
-      ],
+              login: 'user3',
+            },
+          },
+        ],
       });
     });
   });

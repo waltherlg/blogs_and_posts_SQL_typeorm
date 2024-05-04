@@ -116,9 +116,7 @@ export function testAuthValidations() {
       expect(createResponse.headers['set-cookie']).toBeDefined();
       const refreshTokenCookie = (
         createResponse.headers['set-cookie'] as unknown as string[]
-      ).find(
-        (cookie) => cookie.startsWith('refreshToken='),
-      );
+      ).find((cookie) => cookie.startsWith('refreshToken='));
 
       expect(refreshTokenCookie).toBeDefined();
       expect(refreshTokenCookie).toContain('HttpOnly');
@@ -199,9 +197,7 @@ export function testAuthValidations() {
 
         refreshTokenCookie = (
           createResponse.headers['set-cookie'] as unknown as string[]
-        ).find(
-          (cookie) => cookie.startsWith('refreshToken='),
-        );
+        ).find((cookie) => cookie.startsWith('refreshToken='));
 
         expect(refreshTokenCookie).toBeDefined();
         expect(refreshTokenCookie).toContain('HttpOnly');
@@ -224,9 +220,7 @@ export function testAuthValidations() {
 
         refreshTokenCookie2 = (
           createResponse.headers['set-cookie'] as unknown as string[]
-        ).find(
-          (cookie) => cookie.startsWith('refreshToken='),
-        );
+        ).find((cookie) => cookie.startsWith('refreshToken='));
 
         expect(refreshTokenCookie2).toBeDefined();
         expect(refreshTokenCookie2).toContain('HttpOnly');

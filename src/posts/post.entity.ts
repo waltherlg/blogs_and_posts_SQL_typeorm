@@ -21,7 +21,10 @@ export class Posts {
   shortDescription: string;
   @Column()
   content: string;
-  @ManyToOne(() => Blogs, (b) => b.Posts, { onDelete: 'CASCADE', onUpdate: 'CASCADE'})
+  @ManyToOne(() => Blogs, (b) => b.Posts, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   @JoinColumn({ name: 'blogId' })
   Blogs: Blogs;
   @Column('uuid')
