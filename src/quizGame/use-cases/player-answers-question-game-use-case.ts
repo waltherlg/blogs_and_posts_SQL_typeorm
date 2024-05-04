@@ -107,6 +107,7 @@ export class PlayerAnswersQuestionGameUseCase
         const OpposingPlayerNumber = swapPlayerNumber(currentPlayerNumber);
         if (game[playerScores[OpposingPlayerNumber]] > 0) {
           game[playerScores[OpposingPlayerNumber]]++;
+          game[player[OpposingPlayerNumber]].PlayerStatistic.sumScore++;
         }
         if(game[playerScores[currentPlayerNumber]] === game[playerScores[OpposingPlayerNumber]]){
           game.player1.PlayerStatistic.drawsCount++

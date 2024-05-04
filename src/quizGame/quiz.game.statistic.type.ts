@@ -42,7 +42,7 @@ export class PlayerStatistic extends PlayerStatisticDbType {
     userId: string;
     @Column()
     sumScore: number;
-    @Column()
+    @Column({ type: 'float' })
     avgScores: number;
     @Column()
     gamesCount: number;
@@ -55,7 +55,12 @@ export class PlayerStatistic extends PlayerStatisticDbType {
 
     recountAvgScore() {
         if (this.gamesCount !== 0) {
-            this.avgScores = this.sumScore / this.gamesCount;
+            const avgScore = this.sumScore / this.gamesCount
+            this.avgScores = parseFloat(avgScore.toFixed(2));
+            if (this.avgScores % 1 === 0) {
+                this.avgScores = Math.round(this.avgScores);
+              }
+
         } else {
             this.avgScores = 0;
         }
