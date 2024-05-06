@@ -221,4 +221,13 @@ export class BloggerBlogsController {
     );
     handleActionResult(result);
   }
+
+  //TODO:
+  @Get(':blogId/posts')
+  @HttpCode(200)
+  async getAllPostsForCurrentBlog(
+    @Param('blogId') blogId,
+    @Query() queryParams: RequestBlogsQueryModel) {
+    const mergedQueryParams = { ...DEFAULT_BLOGS_QUERY_PARAMS, ...queryParams }
+  }
 }
