@@ -127,6 +127,8 @@ export class BlogsQueryRepository {
       // .skip(skipPage)
       // .take(pageSize)
       .getRawMany();
+      console.log(blogs);
+      
 
     const blogsForOutput = blogs.map((blog) => {
       return {
@@ -138,12 +140,12 @@ export class BlogsQueryRepository {
         isMembership: blog.isMembership,
         blogOwnerInfo: {
           userId: blog.userId,
-          userLogin: blog.login,
+          userLogin: blog.user_login,
         },
-        banInfo: {
-          isBanned: blog.isBlogBanned,
-          banDate: blog.blogBanDate,
-        },
+        // banInfo: {
+        //   isBanned: blog.isBlogBanned,
+        //   banDate: blog.blogBanDate,
+        // },
       };
     });
 
