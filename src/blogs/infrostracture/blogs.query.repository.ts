@@ -121,7 +121,7 @@ export class BlogsQueryRepository {
     const blogsCount = await queryBuilder.getCount();
 
     const blogs = await queryBuilder
-      .orderBy(`blog.${sortBy}`, sortDirection)
+      .orderBy(`blog.${sortBy} COLLATE "C"`, sortDirection)
       .limit(pageSize)
       .offset(skipPage)
       // .skip(skipPage)
@@ -189,12 +189,16 @@ export class BlogsQueryRepository {
     }
 
     const [blogs, blogsCount] = await queryBuilder
-      .orderBy(`blog.${sortBy}`, sortDirection)
+      .orderBy(`blog.${sortBy} COLLATE "C"`, sortDirection)
       .limit(pageSize)
       .offset(skipPage)
-      // .skip(skipPage)
+      // .skip(skipPage)d
       // .take(pageSize)
       .getManyAndCount();
+
+
+      
+      
 
     const pageCount = Math.ceil(blogsCount / pageSize);
 
@@ -208,7 +212,8 @@ export class BlogsQueryRepository {
         isMembership: blog.isMembership,
       };
     });
-
+      console.log("blogs ", blogs);
+      console.log("blogsForOutput ", blogsForOutput);
     const outputBlogs = {
       pagesCount: pageCount,
       page: +pageNumber,
