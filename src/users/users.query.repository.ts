@@ -268,10 +268,9 @@ export class UsersQueryRepository {
         login: user.login,
         email: user.email,
         createdAt: user.createdAt,
-        c: {
+        banInfo: {
           banDate: user.banDate,
           banReason: user.banReason,
-          isBanned: user.isUserBanned
         }
       };
     });
