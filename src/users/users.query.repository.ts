@@ -211,6 +211,9 @@ export class UsersQueryRepository {
       'user.login',
       'user.email',
       'user.createdAt',
+      'user.banDate',
+      'user.banReason',
+      'user.isUserBanned'
     ]);
 
     if (searchLoginTerm !== '' || searchEmailTerm !== '') {
@@ -265,6 +268,11 @@ export class UsersQueryRepository {
         login: user.login,
         email: user.email,
         createdAt: user.createdAt,
+        c: {
+          banDate: user.banDate,
+          banReason: user.banReason,
+          isBanned: user.isUserBanned
+        }
       };
     });
 
