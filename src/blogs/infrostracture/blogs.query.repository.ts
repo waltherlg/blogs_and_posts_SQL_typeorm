@@ -121,12 +121,14 @@ export class BlogsQueryRepository {
     const blogsCount = await queryBuilder.getCount();
 
     const blogs = await queryBuilder
-      .orderBy(`blog.${sortBy}`, sortDirection)
+      .orderBy(`blog.${sortBy} COLLATE "C"`, sortDirection)
       .limit(pageSize)
       .offset(skipPage)
       // .skip(skipPage)
       // .take(pageSize)
       .getRawMany();
+      console.log(blogs);
+      
 
     const blogsForOutput = blogs.map((blog) => {
       return {
@@ -138,12 +140,12 @@ export class BlogsQueryRepository {
         isMembership: blog.isMembership,
         blogOwnerInfo: {
           userId: blog.userId,
-          userLogin: blog.login,
+          userLogin: blog.user_login,
         },
-        banInfo: {
-          isBanned: blog.isBlogBanned,
-          banDate: blog.blogBanDate,
-        },
+        // banInfo: {
+        //   isBanned: blog.isBlogBanned,
+        //   banDate: blog.blogBanDate,
+        // },
       };
     });
 
@@ -187,12 +189,16 @@ export class BlogsQueryRepository {
     }
 
     const [blogs, blogsCount] = await queryBuilder
-      .orderBy(`blog.${sortBy}`, sortDirection)
+      .orderBy(`blog.${sortBy} COLLATE "C"`, sortDirection)
       .limit(pageSize)
       .offset(skipPage)
-      // .skip(skipPage)
+      // .skip(skipPage)d
       // .take(pageSize)
       .getManyAndCount();
+
+
+      
+      
 
     const pageCount = Math.ceil(blogsCount / pageSize);
 
@@ -206,7 +212,8 @@ export class BlogsQueryRepository {
         isMembership: blog.isMembership,
       };
     });
-
+      console.log("blogs ", blogs);
+      console.log("blogsForOutput ", blogsForOutput);
     const outputBlogs = {
       pagesCount: pageCount,
       page: +pageNumber,

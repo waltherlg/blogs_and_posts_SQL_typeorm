@@ -19,6 +19,26 @@ export const testInputBlogBody = {
     description: 'Description4',
     websiteUrl: 'https://www.someweb.com',
   },
+  Tim: {
+    name: 'Tim',
+    description: 'description',
+    websiteUrl: 'https://someurl.com',
+  },
+  Tima: {
+    name: 'Tima',
+    description: 'description',
+    websiteUrl: 'https://someurl.com',
+  },
+  Timma: {
+    name: 'Timma',
+    description: 'description',
+    websiteUrl: 'https://someurl.com',
+  },
+  timm: {
+    name: 'timm',
+    description: 'description',
+    websiteUrl: 'https://someurl.com',
+  },
 };
 
 export const testOutputBlogBody = {
@@ -51,6 +71,38 @@ export const testOutputBlogBody = {
     name: 'Blog4',
     description: 'Description4',
     websiteUrl: 'https://www.someweb.com',
+    createdAt: expect.any(String),
+    isMembership: false,
+  },
+  Tim: {
+    id: expect.any(String),
+    name: 'Tim',
+    description: 'description',
+    websiteUrl: 'https://someurl.com',
+    createdAt: expect.any(String),
+    isMembership: false,
+  },
+  Tima: {
+    id: expect.any(String),
+    name: 'Tima',
+    description: 'description',
+    websiteUrl: 'https://someurl.com',
+    createdAt: expect.any(String),
+    isMembership: false,
+  },
+  Timma: {
+    id: expect.any(String),
+    name: 'Timma',
+    description: 'description',
+    websiteUrl: 'https://someurl.com',
+    createdAt: expect.any(String),
+    isMembership: false,
+  },
+  timm: {
+    id: expect.any(String),
+    name: 'timm',
+    description: 'description',
+    websiteUrl: 'https://someurl.com',
     createdAt: expect.any(String),
     isMembership: false,
   },

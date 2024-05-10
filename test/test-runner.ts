@@ -20,6 +20,7 @@ import { quizGameCrudOperationsSa16 } from './16-00-sa.quiz.game.crud.operations
 import { quizGameCrudOperationsSa1601 } from './16-01-sa.quiz.game.crud.operations.e2e-spec';
 import { quizGameStatisticOperations17 } from './17-00-quiz.game.statistic.operations.e2e-spec';
 import { onlyQuizGameCreateSa1602 } from './16-02-only.quiz.game.create.e2e-spec copy';
+import { testBloggerPaginationTest0502 } from './05-02-blogger.blogs.pagination.check-e2e-spec';
 
 describe('End-to-End Tests', () => {
   // testSaUsersCrud();
@@ -29,6 +30,7 @@ describe('End-to-End Tests', () => {
   // testAuthValidations();
   testBloggerCrudOnlyBlogs();
   // testBanUserForBlogByBlogger();
+  testBloggerPaginationTest0502()
   // saBlogsControllerCrudAndBan();
   // postCrudOperationsByBlogger07();
   // testPostLikesCrud08();
@@ -44,5 +46,5 @@ describe('End-to-End Tests', () => {
   // quizGameCrudOperationsSa16();
   // quizGameCrudOperationsSa1601()
   // onlyQuizGameCreateSa1602();
-  quizGameStatisticOperations17();
+  // quizGameStatisticOperations17();
 });
