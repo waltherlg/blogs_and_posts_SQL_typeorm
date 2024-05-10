@@ -271,6 +271,7 @@ export class UsersQueryRepository {
         banInfo: {
           banDate: user.banDate,
           banReason: user.banReason,
+          isBanned: user.isUserBanned
         }
       };
     });
