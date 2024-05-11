@@ -21,6 +21,7 @@ import { quizGameCrudOperationsSa1601 } from './16-01-sa.quiz.game.crud.operatio
 import { quizGameStatisticOperations17 } from './17-00-quiz.game.statistic.operations.e2e-spec';
 import { onlyQuizGameCreateSa1602 } from './16-02-only.quiz.game.create.e2e-spec copy';
 import { testBloggerPaginationTest0502 } from './05-02-blogger.blogs.pagination.check-e2e-spec';
+import { banCheckOperation } from './10-ban.check.operation.e2e-spec';
 
 describe('End-to-End Tests', () => {
   // testSaUsersCrud();
@@ -28,15 +29,16 @@ describe('End-to-End Tests', () => {
   // testSecurityDevices();
   // testAuthOperations();
   // testAuthValidations();
-  testBloggerCrudOnlyBlogs();
+  // testBloggerCrudOnlyBlogs();
   // testBanUserForBlogByBlogger();
-  testBloggerPaginationTest0502()
+  // testBloggerPaginationTest0502()
   // saBlogsControllerCrudAndBan();
   // postCrudOperationsByBlogger07();
   // testPostLikesCrud08();
   // commentCrudOperations(); // this comment CRUD if blog create blogger
   // saCommentCrudOperations();
   // testCommentLikesCrud();
+  banCheckOperation()
   // commentPaginationTest14()
   // onlyCommentLikesCrud13(); // только для проверки создания лайка для комментария
   // commentLikesWithUserBanCrud1301();

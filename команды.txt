@@ -13,4 +13,6 @@ yarn typeorm-ts-node-esm migration:revert -- -d ./src/db/data-source.ts
 
 ssh -R 80:localhost:3000 serveo.net
 
+ssh -R 80:localhost:3000 localhost.run
+
 --

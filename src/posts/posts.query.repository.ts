@@ -91,6 +91,7 @@ export class PostsQueryRepository {
     const queryBuilder = this.postsRepository.createQueryBuilder('post');
     queryBuilder
       .leftJoin('post.Blogs', 'blog')
+      .leftJoin('blog.Users', 'user')
       .select('post.postId', 'postId')
       .addSelect('post.title', 'title')
       .addSelect('post.shortDescription', 'shortDescription')
@@ -99,7 +100,8 @@ export class PostsQueryRepository {
       .addSelect('blog.name', 'blogName')
       .addSelect('post.createdAt', 'createdAt')
       .addSelect('post.likesCount', 'likesCount')
-      .addSelect('post.dislikesCount', 'dislikesCount');
+      .addSelect('post.dislikesCount', 'dislikesCount')
+      .where('user.isUserBanned = false');
 
     const postCount = await queryBuilder.getCount();
 
@@ -119,6 +121,7 @@ export class PostsQueryRepository {
       .addSelect('user.login', 'login')
       .addSelect('postLike.status', 'status')
       .addSelect('user.isUserBanned', 'isUserBanned')
+      .where(`user.isUserBanned = false`)
       .orderBy('postLike.addedAt', 'DESC')
       .getRawMany();
 

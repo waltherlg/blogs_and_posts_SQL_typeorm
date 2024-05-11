@@ -57,6 +57,18 @@ export type NewCreatedUserTypeOutput = {
   createdAt: string;
 };
 
+export type NewCreatedUserTypeOutputSa = {
+  id: string;
+  login: string;
+  email: string;
+  createdAt: string;
+  banInfo: {
+    isBanned: boolean;
+    banDate: string | null;
+    banReason: string | null;
+  }
+};
+
 export type PasswordRecoveryModel = {
   email: string;
   passwordRecoveryCode: string;

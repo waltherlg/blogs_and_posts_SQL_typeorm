@@ -403,7 +403,7 @@ export function banCheckOperation() {
       });
     });
 
-    /*
+    
     it('01-02 posts/postId/comments POST = 201 user1 create new comment', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(`${endpoints.posts}/${PostId1User1}/comments`)
@@ -694,6 +694,5 @@ export function banCheckOperation() {
         }]
       });
     });
-    */
   });
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import {
   NewCreatedUserTypeOutput,
+  NewCreatedUserTypeOutputSa,
   UserTypeOutput,
   UserTypeOutputForSa,
 } from './users.types';
@@ -99,6 +100,28 @@ export class UsersQueryRepository {
     };
   }
 
+  async getNewCreatedUserByIdForSa(
+    userId,
+  ): Promise<NewCreatedUserTypeOutputSa | null> {
+    if (!isValidUUID(userId)) {
+      return null;
+    }
+    const user = await this.usersRepository.findOne({
+      where: { userId },
+    });
+    return {
+      id: user.userId,
+      login: user.login,
+      email: user.email,
+      createdAt: user.createdAt,
+      banInfo: {
+        isBanned: user.isUserBanned,
+        banDate: user.banDate,
+        banReason: user.banReason,
+      },
+    };
+  }
+
   async getAllUsers(
     mergedQueryParams,
   ): Promise<PaginationOutputModel<UserTypeOutput>> {
@@ -161,7 +184,7 @@ export class UsersQueryRepository {
     }
 
     const [users, usersCount] = await queryBuilder
-      .orderBy(`user.${sortBy}`, sortDirection)
+      .orderBy(`user.${sortBy} COLLATE "C"`, sortDirection)
       .skip(skipPage)
       .take(pageSize)
       .getManyAndCount();
@@ -275,6 +298,9 @@ export class UsersQueryRepository {
         }
       };
     });
+
+    console.log("--- outUsers --- ", outUsers );
+    
 
     const pageCount = Math.ceil(usersCount / pageSize);
 

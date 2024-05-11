@@ -93,7 +93,7 @@ export class UsersController {
     const newUsersId = await this.commandBus.execute(
       new CreateUserCommand(userCreateInputDto),
     );
-    const user = await this.usersQueryRepository.getNewCreatedUserById(
+    const user = await this.usersQueryRepository.getNewCreatedUserByIdForSa(
       newUsersId,
     );
     return user;
