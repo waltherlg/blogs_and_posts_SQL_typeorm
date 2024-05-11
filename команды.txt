@@ -1,7 +1,7 @@
 yarn typeorm-ts-node-esm migration:generate ./src/db/migrations/merged_player -d ./src/db/data-source.ts
 
 -- это работает 
-yarn typeorm migration:generate -d ./src/db/data-source.ts ./src/db/migrations/float_to_avgScore
+yarn typeorm migration:generate -d ./src/db/data-source.ts ./src/db/migrations/add_relations_users_blogs
 
 yarn typeorm migration:create ./src/db/migrations/PostRefactoring
 

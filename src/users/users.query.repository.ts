@@ -278,7 +278,7 @@ export class UsersQueryRepository {
     }
 
     const [users, usersCount] = await queryBuilder
-      .orderBy(`user.${sortBy}`, sortDirection)
+      .orderBy(`user.${sortBy} COLLATE "C"`, sortDirection)
       // .skip(skipPage)
       // .take(pageSize)
       .limit(pageSize)
@@ -292,16 +292,12 @@ export class UsersQueryRepository {
         email: user.email,
         createdAt: user.createdAt,
         banInfo: {
+          isBanned: user.isUserBanned,
           banDate: user.banDate,
           banReason: user.banReason,
-          isBanned: user.isUserBanned
         }
       };
     });
-
-    console.log("--- outUsers --- ", outUsers );
-    
-
     const pageCount = Math.ceil(usersCount / pageSize);
 
     const outputUsers: PaginationOutputModel<UserTypeOutputForSa> = {

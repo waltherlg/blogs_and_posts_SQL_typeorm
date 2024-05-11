@@ -36,6 +36,7 @@ export function banCheckOperation() {
     let BlogId1User1: string;
     let PostId1User1: string;
     let createdCommentId: string;
+    let createdCommentId2
 
     let userId1: string;
     let userId2: string;
@@ -49,7 +50,7 @@ export function banCheckOperation() {
         .expect(204);
     });
 
-    it('00-00 auth/registration = 204 register user1', async () => {
+    it('01-00 auth/registration = 204 register user1', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.saUsers}`)
         .set('Authorization', `Basic ${basicAuthRight}`)
@@ -63,7 +64,7 @@ export function banCheckOperation() {
       userId1 = createdResponse.id;
     });
 
-    it('00-00 login user1 = 204 login user1', async () => {
+    it('02-00 login user1 = 204 login user1', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.auth}/login`)
         .send({
@@ -78,7 +79,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('00-00 auth/registration = 204 register user2', async () => {
+    it('03-00 auth/registration = 204 register user2', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.saUsers}`)
         .set('Authorization', `Basic ${basicAuthRight}`)
@@ -92,7 +93,7 @@ export function banCheckOperation() {
       userId2 = createdResponse.id;
     });
 
-    it('00-00 login user2 = 204 login user2', async () => {
+    it('04-00 login user2 = 204 login user2', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.auth}/login`)
         .send({
@@ -107,7 +108,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('00-00 auth/registration = 204 register user3', async () => {
+    it('05-00 auth/registration = 204 register user3', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.saUsers}`)
         .set('Authorization', `Basic ${basicAuthRight}`)
@@ -121,7 +122,7 @@ export function banCheckOperation() {
       userId3 = createdResponse.id;
     });
 
-    it('00-00 login user3 = 204 login user3', async () => {
+    it('06-00 login user3 = 204 login user3', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.auth}/login`)
         .send({
@@ -136,7 +137,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('00-00 auth/registration = 204 register user4', async () => {
+    it('07-00 auth/registration = 204 register user4', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.saUsers}`)
         .set('Authorization', `Basic ${basicAuthRight}`)
@@ -150,7 +151,7 @@ export function banCheckOperation() {
       userId4 = createdResponse.id;
     });
 
-    it('00-00 login user4 = 204 login user4', async () => {
+    it('08-00 login user4 = 204 login user4', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.auth}/login`)
         .send({
@@ -165,7 +166,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('00-00 auth/registration = 204 register user5', async () => {
+    it('09-00 auth/registration = 204 register user5', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.saUsers}`)
         .set('Authorization', `Basic ${basicAuthRight}`)
@@ -179,7 +180,7 @@ export function banCheckOperation() {
       userId5 = createdResponse.id;
     });
 
-    it('00-00 login user5 = 204 login user5', async () => {
+    it('10-00 login user5 = 204 login user5', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.auth}/login`)
         .send({
@@ -194,7 +195,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('01-02 blogger/blogs POST = 201 user1 create new blog', async () => {
+    it('11-00 blogger/blogs POST = 201 user1 create new blog', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(endpoints.bloggerBlogs)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
@@ -220,7 +221,7 @@ export function banCheckOperation() {
 
     let BlogId1User2: string;
 
-    it('01-02 blogger/blogs POST = 201 user2 create new blog', async () => {
+    it('12-02 blogger/blogs POST = 201 user2 create new blog', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(endpoints.bloggerBlogs)
         .set('Authorization', `Bearer ${accessTokenUser2}`)
@@ -244,7 +245,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('01-02 blogger/blogId/posts POST = 201 user1 create new post', async () => {
+    it('13-02 blogger/blogId/posts POST = 201 user1 create new post', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(`${endpoints.bloggerBlogs}/${BlogId1User1}/posts`)
         //.post(`${endpoints.posts}/${createdPostId}/comments`)
@@ -278,7 +279,7 @@ export function banCheckOperation() {
 
     let PostId1User2: string;
 
-    it('01-02 blogger/blogId/posts POST = 201 user2 create new post', async () => {
+    it('14-02 blogger/blogId/posts POST = 201 user2 create new post', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(`${endpoints.bloggerBlogs}/${BlogId1User2}/posts`)
         //.post(`${endpoints.posts}/${createdPostId}/comments`)
@@ -310,7 +311,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('01-08 sa/users/userId/ban PUT = 204 ban user2', async () => {
+    it('15-08 sa/users/userId/ban PUT = 204 ban user2', async () => {
       await request(app.getHttpServer())
         .put(`${endpoints.saUsers}/${userId2}/ban`)
         .set('Authorization', `Basic ${basicAuthRight}`)
@@ -349,7 +350,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('01-08 sa/users/userId/ban PUT = 204 ban user2', async () => {
+    it('16-08 sa/users/userId/ban PUT = 204 unBan user2', async () => {
       await request(app.getHttpServer())
         .put(`${endpoints.saUsers}/${userId2}/ban`)
         .set('Authorization', `Basic ${basicAuthRight}`)
@@ -357,7 +358,22 @@ export function banCheckOperation() {
         .expect(204);
     });
 
-    it('01-05 /posts GET = 200 return all Posts with pagination', async () => {
+    it('16-00 login user2 = 204 login user2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.auth}/login`)
+        .send({
+          loginOrEmail: 'user2',
+          password: 'qwerty',
+        })
+        .expect(200);
+      const createdResponse = createResponse.body;
+      accessTokenUser2 = createdResponse.accessToken;
+      expect(createdResponse).toEqual({
+        accessToken: expect.any(String),
+      });
+    });
+
+    it('01-05 /posts GET = 200 return 2 Posts with pagination', async () => {
       const createResponse = await request(app.getHttpServer())
         .get(endpoints.posts)
         .expect(200);
@@ -404,7 +420,7 @@ export function banCheckOperation() {
     });
 
     
-    it('01-02 posts/postId/comments POST = 201 user1 create new comment', async () => {
+    it('17-02 posts/postId/comments POST = 201 user1 create new comment', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(`${endpoints.posts}/${PostId1User1}/comments`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
@@ -432,7 +448,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('01-02 posts/postId/comments POST = 201 user2 create new comment', async () => {
+    it('18-02 posts/postId/comments POST = 201 user2 create new comment', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(`${endpoints.posts}/${PostId1User1}/comments`)
         .set('Authorization', `Bearer ${accessTokenUser2}`)
@@ -442,7 +458,7 @@ export function banCheckOperation() {
         .expect(201);
 
       const createdResponse = testsResponse.body;
-      createdCommentId = createdResponse.id;
+      createdCommentId2 = createdResponse.id;
 
       expect(createdResponse).toEqual({
         id: expect.any(String),
@@ -460,7 +476,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('01-06 /comments/commentId/like-status UPDATE = 204 like from user2', async () => {
+    it('19-06 /comments/commentId/like-status UPDATE = 204 like from user2', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.comments}/${createdCommentId}/like-status`)
         .set('Authorization', `Bearer ${accessTokenUser2}`)
@@ -470,7 +486,7 @@ export function banCheckOperation() {
         .expect(204);
     });
 
-    it('01-06 /comments/commentId/like-status UPDATE = 204 like from user3', async () => {
+    it('20-06 /comments/commentId/like-status UPDATE = 204 like from user3', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.comments}/${createdCommentId}/like-status`)
         .set('Authorization', `Bearer ${accessTokenUser3}`)
@@ -480,7 +496,7 @@ export function banCheckOperation() {
         .expect(204);
     });
 
-    it('01-06 /comments/commentId/like-status UPDATE = 204 Dislike from user4', async () => {
+    it('21-06 /comments/commentId/like-status UPDATE = 204 Dislike from user4', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.comments}/${createdCommentId}/like-status`)
         .set('Authorization', `Bearer ${accessTokenUser4}`)
@@ -490,7 +506,7 @@ export function banCheckOperation() {
         .expect(204);
     });
 
-    it('01-06 /comments/commentId/like-status UPDATE = 204 Dislike from user5', async () => {
+    it('22-06 /comments/commentId/like-status UPDATE = 204 Dislike from user5', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.comments}/${createdCommentId}/like-status`)
         .set('Authorization', `Bearer ${accessTokenUser5}`)
@@ -500,7 +516,7 @@ export function banCheckOperation() {
         .expect(204);
     });
 
-    it('01-07 /comments GET = 200 return post for unauth user with 2 like and 2 dislike', async () => {
+    it('23-07 /comments GET = 200 return commment for unauth user with 2 like and 2 dislike', async () => {
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.comments}/${createdCommentId}`)
         .expect(200);
@@ -522,7 +538,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('01-06 /comments/commentId/like-status UPDATE = 204 Like from user4', async () => {
+    it('24-06 /comments/commentId/like-status UPDATE = 204 Like from user4', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.comments}/${createdCommentId}/like-status`)
         .set('Authorization', `Bearer ${accessTokenUser4}`)
@@ -532,7 +548,7 @@ export function banCheckOperation() {
         .expect(204);
     });
 
-    it('01-06 /comments/commentId/like-status UPDATE = 204 Like from user5', async () => {
+    it('25-06 /comments/commentId/like-status UPDATE = 204 Like from user5', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.comments}/${createdCommentId}/like-status`)
         .set('Authorization', `Bearer ${accessTokenUser5}`)
@@ -542,7 +558,7 @@ export function banCheckOperation() {
         .expect(204);
     });
 
-    it('01-07 /comments GET = 200 return post for auth user2 with 4 like and 3 last liked users', async () => {
+    it('26-07 /comments GET = 200 return post for auth user2 with 4 like and 3 last liked users', async () => {
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.comments}/${createdCommentId}`)
         .set('Authorization', `Bearer ${accessTokenUser2}`)
@@ -565,7 +581,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('01-06 /comments/commentId/like-status UPDATE = 204 Dislike from user5', async () => {
+    it('27-06 /comments/commentId/like-status UPDATE = 204 Dislike from user5', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.comments}/${createdCommentId}/like-status`)
         .set('Authorization', `Bearer ${accessTokenUser5}`)
@@ -575,7 +591,7 @@ export function banCheckOperation() {
         .expect(204);
     });
 
-    it('01-06 /comments/commentId/like-status UPDATE = 204 None from user2', async () => {
+    it('28-06 /comments/commentId/like-status UPDATE = 204 None from user2', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.comments}/${createdCommentId}/like-status`)
         .set('Authorization', `Bearer ${accessTokenUser2}`)
@@ -585,7 +601,7 @@ export function banCheckOperation() {
         .expect(204);
     });
 
-    it('01-07 /comments GET = 200 return comment for auth user5 with 2 like and 1 dislike, 2 last liked users, and my status Dislike', async () => {
+    it('29-07 /comments GET = 200 return comment for auth user5 with 2 like and 1 dislike, 2 last liked users, and my status Dislike', async () => {
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.comments}/${createdCommentId}`)
         .set('Authorization', `Bearer ${accessTokenUser5}`)
@@ -608,7 +624,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('01-07 posts/postId/comments GET = 200 user5 get comments by postId with status Dislike', async () => {
+    it('30-07 posts/postId/comments GET = 200 user5 get comments by postId with status Dislike', async () => {
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.posts}/${PostId1User1}/comments`)
         .set('Authorization', `Bearer ${accessTokenUser5}`)
@@ -637,7 +653,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('01-07 posts/postId/comments GET = 200 user4 get comments by postId with status Like', async () => {
+    it('31-07 posts/postId/comments GET = 200 user4 get comments by postId with status Like', async () => {
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.posts}/${PostId1User1}/comments`)
         .set('Authorization', `Bearer ${accessTokenUser4}`)
@@ -666,7 +682,7 @@ export function banCheckOperation() {
       });
     });
 
-    it('01-07 posts/postId/comments GET = 200 user2 get comments by postId with status None', async () => {
+    it('32-07 posts/postId/comments GET = 200 user2 get comments by postId with status None', async () => {
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.posts}/${PostId1User1}/comments`)
         .set('Authorization', `Bearer ${accessTokenUser2}`)

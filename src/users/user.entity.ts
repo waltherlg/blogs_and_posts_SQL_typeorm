@@ -1,4 +1,4 @@
-import { BlogBannedUsers } from '../blogs/blog.entity';
+import { BlogBannedUsers, Blogs } from '../blogs/blog.entity';
 import { Comments } from '../comments/comment.entity';
 import { UserDevices } from '../usersDevices/user.device.entity';
 import {
@@ -45,6 +45,9 @@ export class Users extends UserDBType {
   passwordRecoveryCode: string | null;
   @Column({ type: 'timestamptz', nullable: true })
   expirationDateOfRecoveryCode: Date | null;
+  
+  @OneToMany(() => Blogs, (b) => b.Users)
+  Blogs: Blogs
 
   @OneToMany(() => UserDevices, (d) => d.Users)
   UserDevices: UserDevices[];
