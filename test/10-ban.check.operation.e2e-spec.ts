@@ -9,6 +9,26 @@ export function banCheckOperation() {
   describe('Checking User Ban for Get Requests (e2e). ', () => {
     let app: INestApplication;
 
+
+    // likes for comment ban check
+    // user2 like - likes 1 dislikes 0
+    // user3 like - likes 2 dislikes 0
+    // user4 disl - likes 2 dislikes 1
+    // user5 disl - likes 2 dislikes 2
+    // user4 like - likes 3 dislikes 1
+    // user5 like - likes 4 dislikes 0
+    // user5 disl - likes 3 dislikes 1
+    // user2 none - likes 2 dislikes 1
+    // user2 like - likes 3 dislikes 1
+    // after ban user2 - likes 2 dislikes 1
+    // after ban user5 - likes 2 dislikes 0
+    // after ban user4 - likes 1 dislikes 0
+    // after ban user3 - likes 0 dislikes 0
+    // after unban user3 - likes 1 dislikes 0
+    // after unban user2,5,4 likes 3 dislikes 1
+
+    //likes for post ban check
+
     const basicAuthRight = Buffer.from('admin:qwerty').toString('base64');
     const basicAuthWrongPassword =
       Buffer.from('admin:12345').toString('base64');
@@ -538,6 +558,81 @@ export function banCheckOperation() {
       });
     });
 
+    it('15-08 sa/users/userId/ban PUT = 204 ban user2', async () => {
+      await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId2}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testUser.inputBanUser)
+        .expect(204);
+    });
+
+    it('23-07 /comments GET = 200 return commment for unauth user with 1 like (after ban user2) and 2 dislike', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.comments}/${createdCommentId}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        id: expect.any(String),
+        content: 'some comment for post1',
+        commentatorInfo: {
+          userId: expect.any(String),
+          userLogin: 'user1',
+        },
+        createdAt: expect.any(String),
+        likesInfo: {
+          likesCount: 1,
+          dislikesCount: 2,
+          myStatus: 'None',
+        },
+      });
+    });
+
+    it('16-08 sa/users/userId/ban PUT = 204 unBan user2', async () => {
+      await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId2}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testUser.inputUnbanUser)
+        .expect(204);
+    });
+
+    it('16-00 login user2 = 204 login user2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.auth}/login`)
+        .send({
+          loginOrEmail: 'user2',
+          password: 'qwerty',
+        })
+        .expect(200);
+      const createdResponse = createResponse.body;
+      accessTokenUser2 = createdResponse.accessToken;
+      expect(createdResponse).toEqual({
+        accessToken: expect.any(String),
+      });
+    });
+
+    it('23-07 /comments GET = 200 return commment for unauth user with 2 like (after unban user2) and 2 dislike', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.comments}/${createdCommentId}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        id: expect.any(String),
+        content: 'some comment for post1',
+        commentatorInfo: {
+          userId: expect.any(String),
+          userLogin: 'user1',
+        },
+        createdAt: expect.any(String),
+        likesInfo: {
+          likesCount: 2,
+          dislikesCount: 2,
+          myStatus: 'None',
+        },
+      });
+    });
+
     it('24-06 /comments/commentId/like-status UPDATE = 204 Like from user4', async () => {
       const createResponse = await request(app.getHttpServer())
         .put(`${endpoints.comments}/${createdCommentId}/like-status`)
@@ -623,6 +718,14 @@ export function banCheckOperation() {
         },
       });
     });
+
+    it('29-09 /comments/commentId DELETE = user2 delete own comment', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .delete(`${endpoints.comments}/${createdCommentId2}`)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(204);
+    });
+
 
     it('30-07 posts/postId/comments GET = 200 user5 get comments by postId with status Dislike', async () => {
       const createResponse = await request(app.getHttpServer())
@@ -710,5 +813,391 @@ export function banCheckOperation() {
         }]
       });
     });
+
+    it('28-06 /comments/commentId/like-status UPDATE = 204 Like from user2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.comments}/${createdCommentId}/like-status`)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .send({
+          likeStatus: 'Like',
+        })
+        .expect(204);
+    });
+
+    it('33-00 /comments GET = 200 return comment for unauth user with 3 like and 1 dislike', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.comments}/${createdCommentId}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        id: expect.any(String),
+        content: 'some comment for post1',
+        commentatorInfo: {
+          userId: expect.any(String),
+          userLogin: 'user1',
+        },
+        createdAt: expect.any(String),
+        likesInfo: {
+          likesCount: 3,
+          dislikesCount: 1,
+          myStatus: 'None',
+        },
+      });
+    });
+
+    it('15-08 sa/users/userId/ban PUT = 204 ban user2', async () => {
+      await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId2}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testUser.inputBanUser)
+        .expect(204);
+    });
+
+    it('33-00 /comments GET = 200 return comment for unauth user with 2 like and 1 dislike', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.comments}/${createdCommentId}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        id: expect.any(String),
+        content: 'some comment for post1',
+        commentatorInfo: {
+          userId: expect.any(String),
+          userLogin: 'user1',
+        },
+        createdAt: expect.any(String),
+        likesInfo: {
+          likesCount: 2,
+          dislikesCount: 1,
+          myStatus: 'None',
+        },
+      });
+    });
+
+    it('15-08 sa/users/userId/ban PUT = 204 ban user5', async () => {
+      await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId5}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testUser.inputBanUser)
+        .expect(204);
+    });
+
+    it('33-00 /comments GET = 200 return comment for unauth user with 2 like and 0 dislike', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.comments}/${createdCommentId}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        id: expect.any(String),
+        content: 'some comment for post1',
+        commentatorInfo: {
+          userId: expect.any(String),
+          userLogin: 'user1',
+        },
+        createdAt: expect.any(String),
+        likesInfo: {
+          likesCount: 2,
+          dislikesCount: 0,
+          myStatus: 'None',
+        },
+      });
+    });
+
+    it('15-08 sa/users/userId/ban PUT = 204 ban user4', async () => {
+      await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId4}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testUser.inputBanUser)
+        .expect(204);
+    });
+
+    it('33-00 /comments GET = 200 return comment for unauth user with 1 like and 0 dislike', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.comments}/${createdCommentId}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        id: expect.any(String),
+        content: 'some comment for post1',
+        commentatorInfo: {
+          userId: expect.any(String),
+          userLogin: 'user1',
+        },
+        createdAt: expect.any(String),
+        likesInfo: {
+          likesCount: 1,
+          dislikesCount: 0,
+          myStatus: 'None',
+        },
+      });
+    });
+
+    it('15-08 sa/users/userId/ban PUT = 204 ban user3', async () => {
+      await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId3}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testUser.inputBanUser)
+        .expect(204);
+    });
+
+    it('33-00 /comments GET = 200 return comment for unauth user with 0 like and 0 dislike', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.comments}/${createdCommentId}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        id: expect.any(String),
+        content: 'some comment for post1',
+        commentatorInfo: {
+          userId: expect.any(String),
+          userLogin: 'user1',
+        },
+        createdAt: expect.any(String),
+        likesInfo: {
+          likesCount: 0,
+          dislikesCount: 0,
+          myStatus: 'None',
+        },
+      });
+    });
+
+    it('15-08 sa/users/userId/ban PUT = 204 unban user3', async () => {
+      await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId3}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testUser.inputUnbanUser)
+        .expect(204);
+    });
+
+    it('33-00 /comments GET = 200 return comment for unauth user with 1 like and 0 dislike', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.comments}/${createdCommentId}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        id: expect.any(String),
+        content: 'some comment for post1',
+        commentatorInfo: {
+          userId: expect.any(String),
+          userLogin: 'user1',
+        },
+        createdAt: expect.any(String),
+        likesInfo: {
+          likesCount: 1,
+          dislikesCount: 0,
+          myStatus: 'None',
+        },
+      });
+    });
+
+    it('15-08 sa/users/userId/ban PUT = 204 unban user2', async () => {
+      await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId2}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testUser.inputUnbanUser)
+        .expect(204);
+    });
+
+    it('15-08 sa/users/userId/ban PUT = 204 unban user5', async () => {
+      await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId5}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testUser.inputUnbanUser)
+        .expect(204);
+    });
+
+    it('15-08 sa/users/userId/ban PUT = 204 unban user4', async () => {
+      await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId4}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testUser.inputUnbanUser)
+        .expect(204);
+    });
+
+    it('33-00 /comments GET = 200 return comment for unauth user with 3 like and 1 dislike', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.comments}/${createdCommentId}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        id: expect.any(String),
+        content: 'some comment for post1',
+        commentatorInfo: {
+          userId: expect.any(String),
+          userLogin: 'user1',
+        },
+        createdAt: expect.any(String),
+        likesInfo: {
+          likesCount: 3,
+          dislikesCount: 1,
+          myStatus: 'None',
+        },
+      });
+    });
+
+    it('01-05 /posts/postId GET = 200 return Posts1', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.posts}/${PostId1User1}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual(
+          {
+            id: expect.any(String),
+            title: 'newCreatedPost',
+            shortDescription: 'newPostsShortDescription',
+            content: 'some content',
+            blogId: expect.any(String),
+            blogName: 'BlogForPosts',
+            createdAt: expect.any(String),
+            extendedLikesInfo: {
+              likesCount: 0,
+              dislikesCount: 0,
+              myStatus: 'None',
+              newestLikes: [],
+            },
+          },
+      );
+    });
+
+    it('16-00 login user2 = 204 login user2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.auth}/login`)
+        .send({
+          loginOrEmail: 'user2',
+          password: 'qwerty',
+        })
+        .expect(200);
+      const createdResponse = createResponse.body;
+      accessTokenUser2 = createdResponse.accessToken;
+      expect(createdResponse).toEqual({
+        accessToken: expect.any(String),
+      });
+    });
+
+    it('16-00 login user3 = 204 login user3', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.auth}/login`)
+        .send({
+          loginOrEmail: 'user3',
+          password: 'qwerty',
+        })
+        .expect(200);
+      const createdResponse = createResponse.body;
+      accessTokenUser3 = createdResponse.accessToken;
+      expect(createdResponse).toEqual({
+        accessToken: expect.any(String),
+      });
+    });
+
+    it('16-00 login user4 = 204 login user4', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.auth}/login`)
+        .send({
+          loginOrEmail: 'user4',
+          password: 'qwerty',
+        })
+        .expect(200);
+      const createdResponse = createResponse.body;
+      accessTokenUser4 = createdResponse.accessToken;
+      expect(createdResponse).toEqual({
+        accessToken: expect.any(String),
+      });
+    });
+
+    it('16-00 login user5 = 204 login user5', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .post(`${endpoints.auth}/login`)
+        .send({
+          loginOrEmail: 'user5',
+          password: 'qwerty',
+        })
+        .expect(200);
+      const createdResponse = createResponse.body;
+      accessTokenUser5 = createdResponse.accessToken;
+      expect(createdResponse).toEqual({
+        accessToken: expect.any(String),
+      });
+    });
+
+    it('28-06 posts/postId/like-status UPDATE = 204 Like from user2', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .put(`${endpoints.posts}/${PostId1User1}/like-status`)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .send({
+          likeStatus: 'Like',
+        })
+        .expect(204);
+    });
+
+    it('01-05 /posts/postId GET = 200 return Posts1 with 1 like', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.posts}/${PostId1User1}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual(
+          {
+            id: expect.any(String),
+            title: 'newCreatedPost',
+            shortDescription: 'newPostsShortDescription',
+            content: 'some content',
+            blogId: expect.any(String),
+            blogName: 'BlogForPosts',
+            createdAt: expect.any(String),
+            extendedLikesInfo: {
+              likesCount: 1,
+              dislikesCount: 0,
+              myStatus: 'None',
+              newestLikes: [
+                expect.any(Object)
+              ],
+            },
+          },
+      );
+    });
+
+    it('15-08 sa/users/userId/ban PUT = 204 ban user2', async () => {
+      await request(app.getHttpServer())
+        .put(`${endpoints.saUsers}/${userId2}/ban`)
+        .set('Authorization', `Basic ${basicAuthRight}`)
+        .send(testUser.inputBanUser)
+        .expect(204);
+    });
+
+    it('01-05 /posts/postId GET = 200 return Posts1 with 0 like', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(`${endpoints.posts}/${PostId1User1}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual(
+          {
+            id: expect.any(String),
+            title: 'newCreatedPost',
+            shortDescription: 'newPostsShortDescription',
+            content: 'some content',
+            blogId: expect.any(String),
+            blogName: 'BlogForPosts',
+            createdAt: expect.any(String),
+            extendedLikesInfo: {
+              likesCount: 0,
+              dislikesCount: 0,
+              myStatus: 'None',
+              newestLikes: [],
+            },
+          },
+      );
+    });
+    
+
+
   });
 }

@@ -213,7 +213,10 @@ export class UsersRepository {
       postLikeQueryBuilder
         .select('postLike.postId', 'postId')
         .where('postLike.userId = :userId', { userId: userId });
-      const postIdArray = await postLikeQueryBuilder.getMany();
+      const postIdArray = await postLikeQueryBuilder.getRawMany();
+      
+      //console.log('postIdArray ', postIdArray, ' userId ', userId);
+      
 
       if (postIdArray.length > 0) {
         const postIds = postIdArray.map((obj) => obj.postId);
@@ -225,8 +228,21 @@ export class UsersRepository {
           .andWhere('postLike.postId IN (:...postIds)', {
             postIds: postIds,
           });
-        const postLikesArr: PostLikes[] = await postLikesArrQB.getMany();
-        const postStats = postLikesArr.reduce((acc, post) => {
+
+        const postLikesArr = await postLikesArrQB.getMany();
+
+        let postLikeArrForCount = []
+        if(postLikesArr.length === 0){
+          for (let index = 0; index < postIds.length; index++) {
+            let postLike = {postId: postIds[index], status: 'None'}
+            postLikeArrForCount.push(postLike)
+          }
+        } else {
+          postLikeArrForCount = postLikesArr
+        }
+
+
+        const postStats = postLikeArrForCount.reduce((acc, post) => {
           const { postId, status } = post;
           if (!acc[postId]) {
             acc[postId] = { Like: 0, Dislike: 0, None: 0 };
@@ -247,6 +263,9 @@ export class UsersRepository {
           post.dislikesCount = postStats[post.postId].Dislike;
           return post;
         });
+        //console.log('updatedPosts ', updatedPosts);
+        
+        
 
         const isPostsUpdated = await this.postsRepository.save(updatedPosts);
       }
@@ -268,9 +287,13 @@ export class UsersRepository {
         .select('commentLike.commentId', 'commentId')
         .where('commentLike.userId = :userId', { userId: userId });
       const commentIdArray = await commentLikeQueryBuilder.getRawMany();
+      //console.log('commentIdArray ', commentIdArray);
+      
 
       if (commentIdArray.length > 0) {
         const commentIds = commentIdArray.map((obj) => obj.commentId);
+        //console.log('commentIds ', commentIds);
+        
         const commentLikesArrQB = this.commentLikesRepository
           .createQueryBuilder('commentLike')
           .leftJoin('commentLike.Users', 'user')
@@ -278,10 +301,28 @@ export class UsersRepository {
           .andWhere('commentLike.commentId IN (:...commentIds)', {
             commentIds: commentIds,
           });
+
+          type CommentLikesRepl = {
+            commentId: string;
+            status: string
+          }
+
         // достаем все лайки к комментам по коментАйди
-        const commentLikesArr: CommentLikes[] =
+        let commentLikesArr =
           await commentLikesArrQB.getMany();
-        const commentStats = commentLikesArr.reduce((acc, comment) => {
+          //console.log('commentLikesArr ', commentLikesArr);
+        
+        let commentLikeArrForCount = []
+        if(commentLikesArr.length === 0){
+          for (let index = 0; index < commentIds.length; index++) {
+            let commentLike = {commentId: commentIds[index], status: 'None'}
+            commentLikeArrForCount.push(commentLike)
+          }
+        } else {
+          commentLikeArrForCount = commentLikesArr
+        }
+          
+        const commentStats = commentLikeArrForCount.reduce((acc, comment) => {
           const { commentId, status } = comment;
           if (!acc[commentId]) {
             acc[commentId] = { Like: 0, Dislike: 0, None: 0 };
@@ -289,6 +330,8 @@ export class UsersRepository {
           acc[commentId][status]++;
           return acc;
         }, {});
+        //console.log('commentStats ', commentStats);
+        
         // Нужно достать все комменты с коммент айди.
         const commentQueryBuilder = this.commentsRepository
           .createQueryBuilder('comment')
@@ -296,6 +339,8 @@ export class UsersRepository {
             commentIds: commentIds,
           });
         const commentsArr = await commentQueryBuilder.getMany();
+       // console.log('commentsArr ', commentsArr);
+        
         const updatedComments = commentsArr.map((comment) => {
           comment.likesCount = commentStats[comment.commentId].Like;
           comment.dislikesCount = commentStats[comment.commentId].Dislike;
@@ -360,6 +405,7 @@ export class UsersRepository {
   }
 
   async isUserBanned(userId): Promise<boolean> {
+    
     if (!isValidUUID(userId)) {
       return false;
     }
@@ -369,8 +415,9 @@ export class UsersRepository {
       },
       where: { userId },
     });
+    
     if (result.length > 0) {
-      const isUserBanned = result[0].isConfirmed;
+      const isUserBanned = result[0].isUserBanned;
       return isUserBanned;
     }
     return false;
