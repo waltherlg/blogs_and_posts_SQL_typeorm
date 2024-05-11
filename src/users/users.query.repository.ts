@@ -325,11 +325,16 @@ export class UsersQueryRepository {
     const queryBuilder =
       this.blogBannedUsersRepository.createQueryBuilder('blogBannedUsers');
     queryBuilder
+      .select([
+        'blogBannedUsers',
+        'user.login'
+      ])
+      
+      // .select('blogBannedUsers.userId', 'userId')
+      // .addSelect('user.login', 'login')
+      // .addSelect('blogBannedUsers.banDate', 'banDate')
+      // .addSelect('blogBannedUsers.banReason', 'banReason')
       .leftJoin('blogBannedUsers.Users', 'user')
-      .select('blogBannedUsers.userId', 'userId')
-      .addSelect('user.login', 'login')
-      .addSelect('blogBannedUsers.banDate', 'banDate')
-      .addSelect('blogBannedUsers.banReason', 'banReason')
       .where('blogBannedUsers.blogId = :blogId', { blogId: blogId });
 
     if (searchLoginTerm !== '') {
@@ -344,15 +349,16 @@ export class UsersQueryRepository {
       .orderBy(`blogBannedUsers.${sortBy} COLLATE "C"`, sortDirection)
       .limit(pageSize)
       .offset(skipPage)
-      .getRawMany();
+      .getMany();
 
-      console.log('bannedUsers ', bannedUsers);
+      //console.log('bannedUsers ', bannedUsers);
+      
       
 
     const bannedUsersForOutput = bannedUsers.map((bannedUser) => {
       return {
         id: bannedUser.userId,
-        login: bannedUser.login,
+        login: bannedUser.Users.login,
         banInfo: {
           isBanned: true,
           banDate: bannedUser.banDate,
@@ -370,6 +376,8 @@ export class UsersQueryRepository {
       totalCount: bannedUsersCount,
       items: bannedUsersForOutput,
     };
+    //console.log('outputBannedUsers ', outputBannedUsers);
+    
     return outputBannedUsers;
   }
 }

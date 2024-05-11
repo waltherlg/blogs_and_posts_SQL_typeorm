@@ -41,7 +41,7 @@ export class BloggerUsersController {
     @Param('userId') userId: string,
     @Body() banUserDto: BanUserForBlogInputModelType,
   ) {
-    try {
+    
       const result = await this.commandBus.execute(
         new BanUserForSpecificBlogCommand(
           request.user.userId,
@@ -50,9 +50,7 @@ export class BloggerUsersController {
         ),
       );
       handleActionResult(result);
-    } catch (error) {
-      console.log(error);
-    }
+    
   }
 
   @Get('blog/:blogId')
@@ -62,18 +60,25 @@ export class BloggerUsersController {
     @Param('blogId') blogId: string,
     @Query() queryParams: RequestBannedUsersQueryModel,
   ) {
+    console.log('start');
+    
     if (!(await this.checkService.isBlogExist(blogId))) {
       throw new CustomNotFoundException('blog');
     }
+    console.log('после проверки существования блога');
+    
     if (
       !(await this.checkService.isUserOwnerOfBlog(request.user.userId, blogId))
     ) {
+      
+      
       throw new CustomisableException(
         'blogId',
         'you are not owner of this blog',
         403,
       );
     }
+console.log('после проверки является ли пользователь собственником блога');
     const mergedQueryParams = {
       ...DEFAULT_BANNED_USERS_QUERY_PARAMS,
       ...queryParams,
