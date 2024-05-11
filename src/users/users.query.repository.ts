@@ -341,12 +341,13 @@ export class UsersQueryRepository {
     const bannedUsersCount = await queryBuilder.getCount();
 
     const bannedUsers = await queryBuilder
-      .orderBy(`"${sortBy}"`, sortDirection)
-      .take(pageSize)
-      .skip(skipPage)
+      .orderBy(`blogBannedUsers.${sortBy} COLLATE "C"`, sortDirection)
       .limit(pageSize)
       .offset(skipPage)
       .getRawMany();
+
+      console.log('bannedUsers ', bannedUsers);
+      
 
     const bannedUsersForOutput = bannedUsers.map((bannedUser) => {
       return {

@@ -69,6 +69,11 @@ export const testUser = {
     login: 'user1',
     email: 'ruslan@gmail-1.com',
     createdAt: expect.any(String),
+    banInfo: {
+      isBanned: false,
+      banDate: null,
+      banReason: null,
+    },
   },
   outputUser2: {
     id: expect.any(String),
@@ -86,18 +91,33 @@ export const testUser = {
     login: 'user2',
     email: 'ruslan@gmail-2.com',
     createdAt: expect.any(String),
+    banInfo: {
+      isBanned: false,
+      banDate: null,
+      banReason: null,
+    },
   },
   outputUser3Sa: {
     id: expect.any(String),
     login: 'user3',
     email: 'ruslan@gmail-3.com',
     createdAt: expect.any(String),
+    banInfo: {
+      isBanned: false,
+      banDate: null,
+      banReason: null,
+    },
   },
   outputUser4Sa: {
     id: expect.any(String),
     login: 'user4',
     email: 'ruslan@gmail-4.com',
     createdAt: expect.any(String),
+    banInfo: {
+      isBanned: false,
+      banDate: null,
+      banReason: null,
+    },
   },
   outputUser1Banned: {
     id: expect.any(String),

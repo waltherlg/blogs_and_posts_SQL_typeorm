@@ -45,7 +45,6 @@ export class BlogsRepository {
     const result = await this.blogsRepository.findOne({
       where: [{ blogId: blogId }],
     });
-
     return result;
   }
 
