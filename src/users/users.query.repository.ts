@@ -345,11 +345,23 @@ export class UsersQueryRepository {
 
     const bannedUsersCount = await queryBuilder.getCount();
 
-    const bannedUsers = await queryBuilder
-      .orderBy(`blogBannedUsers.${sortBy} COLLATE "C"`, sortDirection)
+    let bannedUsers
+
+    //костыль
+    if(sortBy === 'login'){
+      bannedUsers = await queryBuilder
+      .orderBy(`user.login COLLATE "C"`, sortDirection)
       .limit(pageSize)
       .offset(skipPage)
       .getMany();
+    } else {
+    bannedUsers = await queryBuilder
+      .orderBy(`blogBannedUsers.${sortBy} COLLATE "C"`, sortDirection)
+      .limit(pageSize)
+      .offset(skipPage)
+      .getMany(); 
+    }
+
 
       //console.log('bannedUsers ', bannedUsers);
       
