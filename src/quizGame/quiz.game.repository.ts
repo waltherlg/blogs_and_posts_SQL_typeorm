@@ -118,7 +118,6 @@ export class QuizGamesRepository {
     return game;
   }
 
-  //TODO: get attive game (add answers)
   async getActiveGameByUserId(userId): Promise<QuizGames | null> {
     if (!isValidUUID(userId)) {
       return null;
@@ -156,7 +155,6 @@ export class QuizGamesRepository {
     return game;
   }
 
-  //TODO: need maping
   async getGameForConnectUseCase(gameId, userId) {
     if (!isValidUUID(gameId)) {
       return null;

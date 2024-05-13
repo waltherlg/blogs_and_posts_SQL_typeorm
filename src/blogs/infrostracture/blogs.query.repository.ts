@@ -98,7 +98,6 @@ export class BlogsQueryRepository {
   }
 
   async getAllBlogsForSa(mergedQueryParams) {
-    //TODO: нужно проверить на работоспособность
     const searchNameTerm = mergedQueryParams.searchNameTerm;
     const sortBy = mergedQueryParams.sortBy;
     const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
