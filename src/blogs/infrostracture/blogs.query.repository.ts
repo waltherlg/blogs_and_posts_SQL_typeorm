@@ -68,7 +68,7 @@ export class BlogsQueryRepository {
 
     const blogsCount = await queryBuilder.getCount();
     const blogs = await queryBuilder
-      .orderBy(`blog.${sortBy}`, sortDirection)
+      .orderBy(`blog.${sortBy} COLLATE "C"`, sortDirection)
       .limit(pageSize)
       .offset(skipPage)
       // .skip(skipPage)
