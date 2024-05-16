@@ -14,7 +14,9 @@ import {
 import { BlogsQueryRepository } from '../infrostracture/blogs.query.repository';
 import {
   DEFAULT_BLOGS_QUERY_PARAMS,
+  DEFAULT_QUERY_PARAMS,
   RequestBlogsQueryModel,
+  RequestQueryParamsModel,
 } from '../../models/types';
 import { IsBoolean, MaxLength, MinLength } from 'class-validator';
 import { CheckService } from '../../other.services/check.service';
@@ -229,5 +231,15 @@ export class BloggerBlogsController {
     @Param('blogId') blogId,
     @Query() queryParams: RequestBlogsQueryModel) {
     const mergedQueryParams = { ...DEFAULT_BLOGS_QUERY_PARAMS, ...queryParams }
+  }
+
+  @Get('comments')
+  @HttpCode(200)
+  async getAllCommentsForAllPostsForAllBlogs(
+    @Req() request,
+    @Query() queryParams: RequestQueryParamsModel
+  ){
+    const mergedQueryParams = { ...DEFAULT_QUERY_PARAMS, ...queryParams}
+    
   }
 }
