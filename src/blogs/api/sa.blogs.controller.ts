@@ -95,11 +95,11 @@ export class SaBlogsController {
     handleActionResult(result);
   }
 
-  @Get()
-  async getAllBlogs(@Query() queryParams: RequestBlogsQueryModel) {
-    const mergedQueryParams = { ...DEFAULT_BLOGS_QUERY_PARAMS, ...queryParams };
-    return await this.blogsQueryRepository.getAllBlogs(mergedQueryParams);
-  }
+  // @Get()
+  // async getAllBlogs(@Query() queryParams: RequestBlogsQueryModel) {
+  //   const mergedQueryParams = { ...DEFAULT_BLOGS_QUERY_PARAMS, ...queryParams };
+  //   return await this.blogsQueryRepository.getAllBlogs(mergedQueryParams);
+  // }
 
   @Post()
   async createBlog(@Body() blogCreateInputModel: CreateBlogInputModelType) {

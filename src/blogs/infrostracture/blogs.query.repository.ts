@@ -141,10 +141,10 @@ export class BlogsQueryRepository {
           userId: blog.userId,
           userLogin: blog.user_login,
         },
-        // banInfo: {
-        //   isBanned: blog.isBlogBanned,
-        //   banDate: blog.blogBanDate,
-        // },
+        banInfo: {
+          isBanned: blog.isBlogBanned,
+          banDate: blog.blogBanDate,
+        },
       };
     });
 
