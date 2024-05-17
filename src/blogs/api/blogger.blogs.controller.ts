@@ -240,6 +240,7 @@ export class BloggerBlogsController {
     @Query() queryParams: RequestQueryParamsModel
   ){
     const mergedQueryParams = { ...DEFAULT_QUERY_PARAMS, ...queryParams}
-    
+    const comments = await this.commentsQueryRepository.getAllCommentForBlogger(request.user.userId, mergedQueryParams)
+    return comments
   }
 }

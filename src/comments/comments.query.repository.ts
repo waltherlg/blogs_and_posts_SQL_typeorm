@@ -8,6 +8,7 @@ import { sortDirectionFixer } from 'src/helpers/helpers.functions';
 import { Comments } from './comment.entity';
 import { CommentLikes } from '../likes/like.entity';
 import { Posts } from '../posts/post.entity';
+import { RequestQueryParamsModel } from '../models/types';
 @Injectable()
 export class CommentsQueryRepository {
   constructor(
@@ -186,5 +187,42 @@ export class CommentsQueryRepository {
       },
     });
     return commentLikeObject;
+  }
+
+  async getAllCommentForBlogger(userId, mergedQueryParams: RequestQueryParamsModel){
+    const sortBy = mergedQueryParams.sortBy;
+    const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
+    const pageNumber = +mergedQueryParams.pageNumber;
+    const pageSize = +mergedQueryParams.pageSize;
+    const skipPage = (pageNumber - 1) * pageSize;
+
+    const queryBuilder = this.commentsRepository.createQueryBuilder('comment');
+    queryBuilder
+      .leftJoin('comment.Users', 'user')
+      .leftJoinAndSelect('comment.Posts', 'post')
+      .leftJoinAndSelect('post.Blogs', 'blog')
+      .select('comment.commentId', 'commentId')
+      .addSelect('comment.postId', 'postId')
+      .addSelect('comment.content', 'content')
+      .addSelect('comment.createdAt', 'createdAt')
+      .addSelect('comment.userId', 'userId')
+      .addSelect('comment.likesCount', 'likesCount')
+      .addSelect('comment.dislikesCount', 'dislikesCount')
+      .addSelect('user.login', 'login')
+      .where('blog.userId = :userId', { userId: userId })
+      .andWhere('user.isUserBanned = false')
+      //.andWhere('blog.isBlogBanned = false');
+
+      const commentCount = await queryBuilder.getCount()
+
+      const comments = await queryBuilder
+      .orderBy(`comment.${sortBy} COLLATE "C"`, sortDirection)
+      // .skip(skipPage)
+      // .take(pageSize)
+      .limit(pageSize)
+      .offset(skipPage)
+      .getRawMany();
+
+      return comments
   }
 }
