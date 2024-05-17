@@ -24,7 +24,7 @@ export class SaCreateBlogUseCase
       command.blogCreateInputModel.name,
       false,
       null,
-      '00000000-0000-0000-0000-000000000000',
+      null,
       command.blogCreateInputModel.description,
       command.blogCreateInputModel.websiteUrl,
       new Date().toISOString(),

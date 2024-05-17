@@ -62,7 +62,7 @@ export function commentPaginationTest14() {
       const createdResponseBody = createResponse.body;
       userId1 = createdResponseBody.id;
 
-      expect(createdResponseBody).toEqual(testComments.outputUser1Sa);
+      expect(createdResponseBody).toEqual(testComments.outputUser1SaAfterCreate);
     });
 
     it('00-00 login = 204 login user1', async () => {
@@ -88,7 +88,7 @@ export function commentPaginationTest14() {
       const createdResponseBody = createResponse.body;
       userId2 = createdResponseBody.id;
 
-      expect(createdResponseBody).toEqual(testComments.outputUser2Sa);
+      expect(createdResponseBody).toEqual(testComments.outputUser2SaAfterCreate);
     });
 
     it('00-00 login = 204 login user2', async () => {
@@ -114,7 +114,7 @@ export function commentPaginationTest14() {
       const createdResponseBody = createResponse.body;
       userId2 = createdResponseBody.id;
 
-      expect(createdResponseBody).toEqual(testComments.outputUser3Sa);
+      expect(createdResponseBody).toEqual(testComments.outputUser3SaAfterCreate);
     });
 
     it('00-00 login = 204 login user3', async () => {

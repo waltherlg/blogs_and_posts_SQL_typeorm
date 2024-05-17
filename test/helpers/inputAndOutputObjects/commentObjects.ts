@@ -21,6 +21,17 @@ export const testComments = {
     email: 'ruslan@gmail-1.com',
     createdAt: expect.any(String),
   },
+  outputUser1SaAfterCreate: {
+    id: expect.any(String),
+    login: 'user1',
+    email: 'ruslan@gmail-1.com',
+    createdAt: expect.any(String),
+    banInfo: {
+      isBanned: false,
+      banDate: null,
+      banReason: null,
+    },
+  },
   loginUser1: {
     loginOrEmail: 'user1',
     password: 'qwerty',
@@ -47,6 +58,17 @@ export const testComments = {
     login: 'user2',
     email: 'ruslan@gmail-2.com',
     createdAt: expect.any(String),
+  },
+  outputUser2SaAfterCreate: {
+    id: expect.any(String),
+    login: 'user2',
+    email: 'ruslan@gmail-2.com',
+    createdAt: expect.any(String),
+    banInfo: {
+      isBanned: false,
+      banDate: null,
+      banReason: null,
+    },
   },
   loginUser2: {
     loginOrEmail: 'user2',
@@ -75,6 +97,17 @@ export const testComments = {
     email: 'ruslan@gmail-3.com',
     createdAt: expect.any(String),
   },
+  outputUser3SaAfterCreate: {
+    id: expect.any(String),
+    login: 'user3',
+    email: 'ruslan@gmail-3.com',
+    createdAt: expect.any(String),
+    banInfo: {
+      isBanned: false,
+      banDate: null,
+      banReason: null,
+    },
+  },
   loginUser3: {
     loginOrEmail: 'user3',
     password: 'qwerty',
@@ -86,6 +119,17 @@ export const testComments = {
     email: 'ruslan@gmail-4.com',
   },
   outputUser4: {
+    id: expect.any(String),
+    login: 'user4',
+    email: 'ruslan@gmail-4.com',
+    createdAt: expect.any(String),
+    banInfo: {
+      isBanned: false,
+      banDate: null,
+      banReason: null,
+    },
+  },
+  outputUser4SaAfterCreate: {
     id: expect.any(String),
     login: 'user4',
     email: 'ruslan@gmail-4.com',
@@ -113,6 +157,17 @@ export const testComments = {
     email: 'ruslan@gmail-5.com',
   },
   outputUser5: {
+    id: expect.any(String),
+    login: 'user5',
+    email: 'ruslan@gmail-5.com',
+    createdAt: expect.any(String),
+    banInfo: {
+      isBanned: false,
+      banDate: null,
+      banReason: null,
+    },
+  },
+  outputUser5SaAfterCreate: {
     id: expect.any(String),
     login: 'user5',
     email: 'ruslan@gmail-5.com',
