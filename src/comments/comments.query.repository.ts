@@ -199,8 +199,8 @@ export class CommentsQueryRepository {
     const queryBuilder = this.commentsRepository.createQueryBuilder('comment');
     queryBuilder
       .leftJoin('comment.Users', 'user')
-      .leftJoinAndSelect('comment.Posts', 'post')
-      .leftJoinAndSelect('post.Blogs', 'blog')
+      .leftJoin('comment.Posts', 'post')
+      .leftJoin('post.Blogs', 'blog')
       .select('comment.commentId', 'commentId')
       .addSelect('comment.postId', 'postId')
       .addSelect('comment.content', 'content')
@@ -209,6 +209,11 @@ export class CommentsQueryRepository {
       .addSelect('comment.likesCount', 'likesCount')
       .addSelect('comment.dislikesCount', 'dislikesCount')
       .addSelect('user.login', 'login')
+      .addSelect('blog.blogId', 'blogId')
+      .addSelect('blog.name', 'blogName')
+      .addSelect('post.postId', 'postId')
+      .addSelect('post.title', 'postTitle')
+
       .where('blog.userId = :userId', { userId: userId })
       .andWhere('user.isUserBanned = false')
       //.andWhere('blog.isBlogBanned = false');
@@ -223,6 +228,69 @@ export class CommentsQueryRepository {
       .offset(skipPage)
       .getRawMany();
 
-      return comments
+      console.log('comments ', comments );
+      
+
+      let usersLikeObjectsForThisComments;
+    if (userId) {
+      //если пришел userId то нужно узнать его лайкстатус для каждого коммента
+      //нужен массив из айдишек комментов, которые вернул основной запрос
+      const arrayOfCommentsId = comments.map((comment) => {
+        return comment.commentId;
+      });
+
+      // нужно найти все лайки где есть айди пользователя и коммент айди из массива выше
+      usersLikeObjectsForThisComments = await this.commentLikesRepository
+        .createQueryBuilder('commentLikes')
+        .where('commentLikes.userId = :userId', { userId: userId })
+        .andWhere('commentLikes.commentId IN (:...commentIds)', {
+          commentIds: arrayOfCommentsId,
+        })
+        .getMany();
+    }
+
+    const commentsForOutput = comments.map((comment) => {
+      let myStatus = 'None';
+      if (userId) {
+        const foundLike = usersLikeObjectsForThisComments.find(
+          (commentLikeObject) =>
+            commentLikeObject.commentId === comment.commentId,
+        );
+        if (foundLike) {
+          myStatus = foundLike.status;
+        }
+      }
+      return {
+        id: comment.commentId,
+        content: comment.content,
+        commentatorInfo: {
+          userId: comment.userId,
+          userLogin: comment.login,
+        },
+        createdAt: comment.createdAt,
+        likesInfo: {
+          likesCount: parseInt(comment.likesCount),
+          dislikesCount: parseInt(comment.dislikesCount),
+          myStatus: myStatus,
+        },
+        postInfo: {
+          id: comment.postId,
+          title: comment.postTitle,
+          blogId: comment.blogId,
+          blogName: comment.blogName
+        }
+      };
+    });
+
+    const pageCount = Math.ceil(commentCount / pageSize);
+
+    const outputComments = {
+      pagesCount: pageCount,
+      page: +pageNumber,
+      pageSize: +pageSize,
+      totalCount: commentCount,
+      items: commentsForOutput,
+    };
+    return outputComments;
   }
 }
