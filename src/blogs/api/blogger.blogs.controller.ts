@@ -229,18 +229,22 @@ export class BloggerBlogsController {
   @HttpCode(200)
   async getAllPostsForCurrentBlog(
     @Param('blogId') blogId,
-    @Query() queryParams: RequestBlogsQueryModel) {
-    const mergedQueryParams = { ...DEFAULT_BLOGS_QUERY_PARAMS, ...queryParams }
+    @Query() queryParams: RequestBlogsQueryModel,
+  ) {
+    const mergedQueryParams = { ...DEFAULT_BLOGS_QUERY_PARAMS, ...queryParams };
   }
 
   @Get('comments')
   @HttpCode(200)
   async getAllCommentsForAllPostsForAllBlogs(
     @Req() request,
-    @Query() queryParams: RequestQueryParamsModel
-  ){
-    const mergedQueryParams = { ...DEFAULT_QUERY_PARAMS, ...queryParams}
-    const comments = await this.commentsQueryRepository.getAllCommentForBlogger(request.user.userId, mergedQueryParams)
-    return comments
+    @Query() queryParams: RequestQueryParamsModel,
+  ) {
+    const mergedQueryParams = { ...DEFAULT_QUERY_PARAMS, ...queryParams };
+    const comments = await this.commentsQueryRepository.getAllCommentForBlogger(
+      request.user.userId,
+      mergedQueryParams,
+    );
+    return comments;
   }
 }

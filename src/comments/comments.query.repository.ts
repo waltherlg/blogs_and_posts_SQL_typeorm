@@ -189,7 +189,10 @@ export class CommentsQueryRepository {
     return commentLikeObject;
   }
 
-  async getAllCommentForBlogger(userId, mergedQueryParams: RequestQueryParamsModel){
+  async getAllCommentForBlogger(
+    userId,
+    mergedQueryParams: RequestQueryParamsModel,
+  ) {
     const sortBy = mergedQueryParams.sortBy;
     const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
     const pageNumber = +mergedQueryParams.pageNumber;
@@ -215,20 +218,20 @@ export class CommentsQueryRepository {
       .addSelect('post.title', 'postTitle')
 
       .where('blog.userId = :userId', { userId: userId })
-      .andWhere('user.isUserBanned = false')
-      //.andWhere('blog.isBlogBanned = false');
+      .andWhere('user.isUserBanned = false');
+    //.andWhere('blog.isBlogBanned = false');
 
-      const commentCount = await queryBuilder.getCount()
+    const commentCount = await queryBuilder.getCount();
 
-      const comments = await queryBuilder
+    const comments = await queryBuilder
       .orderBy(`comment.${sortBy} COLLATE "C"`, sortDirection)
       // .skip(skipPage)
       // .take(pageSize)
       .limit(pageSize)
       .offset(skipPage)
-      .getRawMany();      
+      .getRawMany();
 
-      let usersLikeObjectsForThisComments;
+    let usersLikeObjectsForThisComments;
     if (userId) {
       //если пришел userId то нужно узнать его лайкстатус для каждого коммента
       //нужен массив из айдишек комментов, которые вернул основной запрос
@@ -274,8 +277,8 @@ export class CommentsQueryRepository {
           id: comment.postId,
           title: comment.postTitle,
           blogId: comment.blogId,
-          blogName: comment.blogName
-        }
+          blogName: comment.blogName,
+        },
       };
     });
 

@@ -88,7 +88,7 @@ export class PlayerAnswersQuestionGameUseCase
         (answer) => answer.playerNumber !== currentPlayerNumber,
       ).length;
       const OpposingPlayerNumber = swapPlayerNumber(currentPlayerNumber);
-      
+
       if (numberOfOpposingPlayersAnswer === 5) {
         game.status = enumStatusGameType.Finished;
         game.finishGameDate = new Date();

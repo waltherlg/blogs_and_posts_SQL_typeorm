@@ -38,7 +38,7 @@ describe('End-to-End Tests', () => {
   // commentCrudOperations(); // this comment CRUD if blog create blogger
   // saCommentCrudOperations();
   // testCommentLikesCrud();
-  banCheckOperation() //like check
+  banCheckOperation(); //like check
   // commentPaginationTest14()
   // onlyCommentLikesCrud13(); // только для проверки создания лайка для комментария
   // commentLikesWithUserBanCrud1301();

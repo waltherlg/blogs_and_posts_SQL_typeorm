@@ -15,7 +15,6 @@ import {
 import { UserDBType } from './users.types';
 import { PlayerStatistic } from '../quizGame/quiz.game.statistic.type';
 
-
 //TODO: Спросить, можно ли наследовать энтити от класса
 @Entity({ name: 'Users' })
 export class Users extends UserDBType {
@@ -45,9 +44,9 @@ export class Users extends UserDBType {
   passwordRecoveryCode: string | null;
   @Column({ type: 'timestamptz', nullable: true })
   expirationDateOfRecoveryCode: Date | null;
-  
+
   @OneToMany(() => Blogs, (b) => b.Users)
-  Blogs: Blogs
+  Blogs: Blogs;
 
   @OneToMany(() => UserDevices, (d) => d.Users)
   UserDevices: UserDevices[];

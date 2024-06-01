@@ -66,7 +66,7 @@ export type NewCreatedUserTypeOutputSa = {
     isBanned: boolean;
     banDate: string | null;
     banReason: string | null;
-  }
+  };
 };
 
 export type PasswordRecoveryModel = {

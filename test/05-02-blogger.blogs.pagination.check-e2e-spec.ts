@@ -5,7 +5,10 @@ import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testUser } from './helpers/inputAndOutputObjects/usersObjects';
 import { addAppSettings } from '../src/helpers/settings';
-import { testInputBlogBody, testOutputBlogBody } from './helpers/inputAndOutputObjects/blogsObjects';
+import {
+  testInputBlogBody,
+  testOutputBlogBody,
+} from './helpers/inputAndOutputObjects/blogsObjects';
 export function testBloggerPaginationTest0502() {
   describe('Blogger Pagination test "if all is ok" (e2e). ', () => {
     let app: INestApplication;
@@ -17,10 +20,10 @@ export function testBloggerPaginationTest0502() {
 
     let accessTokenUser1: any;
     let accessTokenUser2: any;
-    let TimBlogId
-    let TimaBlogId
-    let TimmaBlogId
-    let timmBlogId
+    let TimBlogId;
+    let TimaBlogId;
+    let TimmaBlogId;
+    let timmBlogId;
 
     beforeAll(async () => {
       const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -151,14 +154,16 @@ export function testBloggerPaginationTest0502() {
       expect(createdResponseOfFirstBlog).toEqual(testOutputBlogBody.timm);
     });
 
-
-
-
-
     it('01-07 blogger/blogs GET = 200 return users1 blogs with pagination', async () => {
       const createResponse = await request(app.getHttpServer())
         .get(endpoints.bloggerBlogs)
-        .query({pageSize: 5, pageNumber: 1, searchNameTerm: 'Tim', sortDirection: 'asc', sortBy: 'name'})
+        .query({
+          pageSize: 5,
+          pageNumber: 1,
+          searchNameTerm: 'Tim',
+          sortDirection: 'asc',
+          sortBy: 'name',
+        })
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .expect(200);
       const createdResponse = createResponse.body;
@@ -172,7 +177,7 @@ export function testBloggerPaginationTest0502() {
           testOutputBlogBody.Tim,
           testOutputBlogBody.Tima,
           testOutputBlogBody.Timma,
-          testOutputBlogBody.timm
+          testOutputBlogBody.timm,
         ],
       });
     });

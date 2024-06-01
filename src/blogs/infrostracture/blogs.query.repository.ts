@@ -126,7 +126,6 @@ export class BlogsQueryRepository {
       // .skip(skipPage)
       // .take(pageSize)
       .getRawMany();
-      
 
     const blogsForOutput = blogs.map((blog) => {
       return {
@@ -193,10 +192,6 @@ export class BlogsQueryRepository {
       // .skip(skipPage)d
       // .take(pageSize)
       .getManyAndCount();
-
-
-      
-      
 
     const pageCount = Math.ceil(blogsCount / pageSize);
 

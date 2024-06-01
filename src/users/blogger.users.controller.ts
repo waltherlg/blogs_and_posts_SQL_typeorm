@@ -41,16 +41,14 @@ export class BloggerUsersController {
     @Param('userId') userId: string,
     @Body() banUserDto: BanUserForBlogInputModelType,
   ) {
-    
-      const result = await this.commandBus.execute(
-        new BanUserForSpecificBlogCommand(
-          request.user.userId,
-          userId,
-          banUserDto,
-        ),
-      );
-      handleActionResult(result);
-    
+    const result = await this.commandBus.execute(
+      new BanUserForSpecificBlogCommand(
+        request.user.userId,
+        userId,
+        banUserDto,
+      ),
+    );
+    handleActionResult(result);
   }
 
   @Get('blog/:blogId')
@@ -60,16 +58,13 @@ export class BloggerUsersController {
     @Param('blogId') blogId: string,
     @Query() queryParams: RequestBannedUsersQueryModel,
   ) {
-    
     if (!(await this.checkService.isBlogExist(blogId))) {
       throw new CustomNotFoundException('blog');
     }
-    
+
     if (
       !(await this.checkService.isUserOwnerOfBlog(request.user.userId, blogId))
     ) {
-      
-      
       throw new CustomisableException(
         'blogId',
         'you are not owner of this blog',

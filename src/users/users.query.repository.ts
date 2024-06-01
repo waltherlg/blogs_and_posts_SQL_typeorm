@@ -236,7 +236,7 @@ export class UsersQueryRepository {
       'user.createdAt',
       'user.banDate',
       'user.banReason',
-      'user.isUserBanned'
+      'user.isUserBanned',
     ]);
 
     if (searchLoginTerm !== '' || searchEmailTerm !== '') {
@@ -295,7 +295,7 @@ export class UsersQueryRepository {
           isBanned: user.isUserBanned,
           banDate: user.banDate,
           banReason: user.banReason,
-        }
+        },
       };
     });
     const pageCount = Math.ceil(usersCount / pageSize);
@@ -325,11 +325,8 @@ export class UsersQueryRepository {
     const queryBuilder =
       this.blogBannedUsersRepository.createQueryBuilder('blogBannedUsers');
     queryBuilder
-      .select([
-        'blogBannedUsers',
-        'user.login'
-      ])
-      
+      .select(['blogBannedUsers', 'user.login'])
+
       // .select('blogBannedUsers.userId', 'userId')
       // .addSelect('user.login', 'login')
       // .addSelect('blogBannedUsers.banDate', 'banDate')
@@ -345,27 +342,24 @@ export class UsersQueryRepository {
 
     const bannedUsersCount = await queryBuilder.getCount();
 
-    let bannedUsers
+    let bannedUsers;
 
     //костыль
-    if(sortBy === 'login'){
+    if (sortBy === 'login') {
       bannedUsers = await queryBuilder
-      .orderBy(`user.login COLLATE "C"`, sortDirection)
-      .limit(pageSize)
-      .offset(skipPage)
-      .getMany();
+        .orderBy(`user.login COLLATE "C"`, sortDirection)
+        .limit(pageSize)
+        .offset(skipPage)
+        .getMany();
     } else {
-    bannedUsers = await queryBuilder
-      .orderBy(`blogBannedUsers.${sortBy} COLLATE "C"`, sortDirection)
-      .limit(pageSize)
-      .offset(skipPage)
-      .getMany(); 
+      bannedUsers = await queryBuilder
+        .orderBy(`blogBannedUsers.${sortBy} COLLATE "C"`, sortDirection)
+        .limit(pageSize)
+        .offset(skipPage)
+        .getMany();
     }
 
-
-      //console.log('bannedUsers ', bannedUsers);
-      
-      
+    //console.log('bannedUsers ', bannedUsers);
 
     const bannedUsersForOutput = bannedUsers.map((bannedUser) => {
       return {
@@ -389,7 +383,7 @@ export class UsersQueryRepository {
       items: bannedUsersForOutput,
     };
     //console.log('outputBannedUsers ', outputBannedUsers);
-    
+
     return outputBannedUsers;
   }
 }

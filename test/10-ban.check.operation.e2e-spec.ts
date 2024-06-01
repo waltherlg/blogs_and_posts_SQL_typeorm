@@ -9,7 +9,6 @@ export function banCheckOperation() {
   describe('Checking User Ban for Get Requests (e2e). ', () => {
     let app: INestApplication;
 
-
     // likes for comment ban check
     // user2 like - likes 1 dislikes 0
     // user3 like - likes 2 dislikes 0
@@ -56,7 +55,7 @@ export function banCheckOperation() {
     let BlogId1User1: string;
     let PostId1User1: string;
     let createdCommentId: string;
-    let createdCommentId2
+    let createdCommentId2;
 
     let userId1: string;
     let userId2: string;
@@ -439,7 +438,6 @@ export function banCheckOperation() {
       });
     });
 
-    
     it('17-02 posts/postId/comments POST = 201 user1 create new comment', async () => {
       const testsResponse = await request(app.getHttpServer())
         .post(`${endpoints.posts}/${PostId1User1}/comments`)
@@ -726,7 +724,6 @@ export function banCheckOperation() {
         .expect(204);
     });
 
-
     it('30-07 posts/postId/comments GET = 200 user5 get comments by postId with status Dislike', async () => {
       const createResponse = await request(app.getHttpServer())
         .get(`${endpoints.posts}/${PostId1User1}/comments`)
@@ -739,20 +736,22 @@ export function banCheckOperation() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [{
-          id: expect.any(String),
-        content: 'some comment for post1',
-        commentatorInfo: {
-          userId: expect.any(String),
-          userLogin: 'user1',
-        },
-        createdAt: expect.any(String),
-        likesInfo: {
-          likesCount: 2,
-          dislikesCount: 1,
-          myStatus: 'Dislike',
-        },
-        }]
+        items: [
+          {
+            id: expect.any(String),
+            content: 'some comment for post1',
+            commentatorInfo: {
+              userId: expect.any(String),
+              userLogin: 'user1',
+            },
+            createdAt: expect.any(String),
+            likesInfo: {
+              likesCount: 2,
+              dislikesCount: 1,
+              myStatus: 'Dislike',
+            },
+          },
+        ],
       });
     });
 
@@ -768,20 +767,22 @@ export function banCheckOperation() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [{
-          id: expect.any(String),
-        content: 'some comment for post1',
-        commentatorInfo: {
-          userId: expect.any(String),
-          userLogin: 'user1',
-        },
-        createdAt: expect.any(String),
-        likesInfo: {
-          likesCount: 2,
-          dislikesCount: 1,
-          myStatus: 'Like',
-        },
-        }]
+        items: [
+          {
+            id: expect.any(String),
+            content: 'some comment for post1',
+            commentatorInfo: {
+              userId: expect.any(String),
+              userLogin: 'user1',
+            },
+            createdAt: expect.any(String),
+            likesInfo: {
+              likesCount: 2,
+              dislikesCount: 1,
+              myStatus: 'Like',
+            },
+          },
+        ],
       });
     });
 
@@ -797,20 +798,22 @@ export function banCheckOperation() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [{
-          id: expect.any(String),
-        content: 'some comment for post1',
-        commentatorInfo: {
-          userId: expect.any(String),
-          userLogin: 'user1',
-        },
-        createdAt: expect.any(String),
-        likesInfo: {
-          likesCount: 2,
-          dislikesCount: 1,
-          myStatus: 'None',
-        },
-        }]
+        items: [
+          {
+            id: expect.any(String),
+            content: 'some comment for post1',
+            commentatorInfo: {
+              userId: expect.any(String),
+              userLogin: 'user1',
+            },
+            createdAt: expect.any(String),
+            likesInfo: {
+              likesCount: 2,
+              dislikesCount: 1,
+              myStatus: 'None',
+            },
+          },
+        ],
       });
     });
 
@@ -1048,23 +1051,21 @@ export function banCheckOperation() {
         .expect(200);
       const createdResponse = createResponse.body;
 
-      expect(createdResponse).toEqual(
-          {
-            id: expect.any(String),
-            title: 'newCreatedPost',
-            shortDescription: 'newPostsShortDescription',
-            content: 'some content',
-            blogId: expect.any(String),
-            blogName: 'BlogForPosts',
-            createdAt: expect.any(String),
-            extendedLikesInfo: {
-              likesCount: 0,
-              dislikesCount: 0,
-              myStatus: 'None',
-              newestLikes: [],
-            },
-          },
-      );
+      expect(createdResponse).toEqual({
+        id: expect.any(String),
+        title: 'newCreatedPost',
+        shortDescription: 'newPostsShortDescription',
+        content: 'some content',
+        blogId: expect.any(String),
+        blogName: 'BlogForPosts',
+        createdAt: expect.any(String),
+        extendedLikesInfo: {
+          likesCount: 0,
+          dislikesCount: 0,
+          myStatus: 'None',
+          newestLikes: [],
+        },
+      });
     });
 
     it('16-00 login user2 = 204 login user2', async () => {
@@ -1143,25 +1144,21 @@ export function banCheckOperation() {
         .expect(200);
       const createdResponse = createResponse.body;
 
-      expect(createdResponse).toEqual(
-          {
-            id: expect.any(String),
-            title: 'newCreatedPost',
-            shortDescription: 'newPostsShortDescription',
-            content: 'some content',
-            blogId: expect.any(String),
-            blogName: 'BlogForPosts',
-            createdAt: expect.any(String),
-            extendedLikesInfo: {
-              likesCount: 1,
-              dislikesCount: 0,
-              myStatus: 'None',
-              newestLikes: [
-                expect.any(Object)
-              ],
-            },
-          },
-      );
+      expect(createdResponse).toEqual({
+        id: expect.any(String),
+        title: 'newCreatedPost',
+        shortDescription: 'newPostsShortDescription',
+        content: 'some content',
+        blogId: expect.any(String),
+        blogName: 'BlogForPosts',
+        createdAt: expect.any(String),
+        extendedLikesInfo: {
+          likesCount: 1,
+          dislikesCount: 0,
+          myStatus: 'None',
+          newestLikes: [expect.any(Object)],
+        },
+      });
     });
 
     it('15-08 sa/users/userId/ban PUT = 204 ban user2', async () => {
@@ -1178,26 +1175,21 @@ export function banCheckOperation() {
         .expect(200);
       const createdResponse = createResponse.body;
 
-      expect(createdResponse).toEqual(
-          {
-            id: expect.any(String),
-            title: 'newCreatedPost',
-            shortDescription: 'newPostsShortDescription',
-            content: 'some content',
-            blogId: expect.any(String),
-            blogName: 'BlogForPosts',
-            createdAt: expect.any(String),
-            extendedLikesInfo: {
-              likesCount: 0,
-              dislikesCount: 0,
-              myStatus: 'None',
-              newestLikes: [],
-            },
-          },
-      );
+      expect(createdResponse).toEqual({
+        id: expect.any(String),
+        title: 'newCreatedPost',
+        shortDescription: 'newPostsShortDescription',
+        content: 'some content',
+        blogId: expect.any(String),
+        blogName: 'BlogForPosts',
+        createdAt: expect.any(String),
+        extendedLikesInfo: {
+          likesCount: 0,
+          dislikesCount: 0,
+          myStatus: 'None',
+          newestLikes: [],
+        },
+      });
     });
-    
-
-
   });
 }
