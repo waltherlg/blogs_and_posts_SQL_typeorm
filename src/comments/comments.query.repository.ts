@@ -226,10 +226,7 @@ export class CommentsQueryRepository {
       // .take(pageSize)
       .limit(pageSize)
       .offset(skipPage)
-      .getRawMany();
-
-      console.log('comments ', comments );
-      
+      .getRawMany();      
 
       let usersLikeObjectsForThisComments;
     if (userId) {

@@ -126,7 +126,6 @@ export class BlogsQueryRepository {
       // .skip(skipPage)
       // .take(pageSize)
       .getRawMany();
-      console.log(blogs);
       
 
     const blogsForOutput = blogs.map((blog) => {
@@ -211,8 +210,6 @@ export class BlogsQueryRepository {
         isMembership: blog.isMembership,
       };
     });
-      console.log("blogs ", blogs);
-      console.log("blogsForOutput ", blogsForOutput);
     const outputBlogs = {
       pagesCount: pageCount,
       page: +pageNumber,

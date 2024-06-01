@@ -60,12 +60,10 @@ export class BloggerUsersController {
     @Param('blogId') blogId: string,
     @Query() queryParams: RequestBannedUsersQueryModel,
   ) {
-    console.log('start');
     
     if (!(await this.checkService.isBlogExist(blogId))) {
       throw new CustomNotFoundException('blog');
     }
-    console.log('после проверки существования блога');
     
     if (
       !(await this.checkService.isUserOwnerOfBlog(request.user.userId, blogId))
@@ -78,7 +76,6 @@ export class BloggerUsersController {
         403,
       );
     }
-console.log('после проверки является ли пользователь собственником блога');
     const mergedQueryParams = {
       ...DEFAULT_BANNED_USERS_QUERY_PARAMS,
       ...queryParams,
