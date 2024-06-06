@@ -115,6 +115,7 @@ import { PlayerStatistic } from './quizGame/quiz.game.statistic.type';
 import { PlayerStatisticRepository } from './quizGame/quiz.player.statistic.repository';
 import { PlayerStatisticQueryRepository } from './quizGame/quiz.player.statistic.query.repository';
 import { BloggerGetAllPostsByBlogIdUseCase } from './blogs/application/use-cases/blogger-get-all-posts-by-blogid-use-case';
+import { S3StorageAdapter } from './adapters/fileStorageAdapter';
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
@@ -233,6 +234,7 @@ const useCases = [
     DTOFactory,
     EmailManager,
     EmailAdapter,
+    S3StorageAdapter,
     TestRepository,
     BlogsRepository,
     BlogsQueryRepository,
