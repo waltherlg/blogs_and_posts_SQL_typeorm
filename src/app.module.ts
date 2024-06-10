@@ -164,7 +164,7 @@ const useCases = [
   PlayerRequestGameByIdUseCase,
   PlayerRequestAllGamesUseCase,
   PlayerRequestOwnStatisticUseCase,
-  BloggerUploadWallpaperForBlogUseCase
+  BloggerUploadWallpaperForBlogUseCase,
 ];
 
 @Module({

@@ -1,11 +1,11 @@
 //import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { Injectable } from "@nestjs/common";
+import { Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
-import { CustomisableException } from "../exceptions/custom.exceptions";
+import { CustomisableException } from '../exceptions/custom.exceptions';
 dotenv.config();
-const accessKey = process.env.YANDEX_CLOUD_KEY
-const kyeId = process.env.YANDEX_CLOUD_KEY_ID
-const bucketName = process.env.YANDEX_CLOUD_BUCKET_NAME
+const accessKey = process.env.YANDEX_CLOUD_KEY;
+const kyeId = process.env.YANDEX_CLOUD_KEY_ID;
+const bucketName = process.env.YANDEX_CLOUD_BUCKET_NAME;
 
 // @Injectable()
 // export class S3StorageAdapter {
@@ -41,10 +41,8 @@ const bucketName = process.env.YANDEX_CLOUD_BUCKET_NAME
 //         console.log(error);
 //         throw new CustomisableException('uploadFile', 'unable upload this file', 418)
 //     }
-    
 
-
-// }  
+// }
 
 // async saveBlogWallpaper(
 //     userId: string,
@@ -56,4 +54,3 @@ const bucketName = process.env.YANDEX_CLOUD_BUCKET_NAME
 //     return uploadResult
 // }
 // }
-

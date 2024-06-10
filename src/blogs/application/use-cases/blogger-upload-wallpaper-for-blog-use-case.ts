@@ -8,20 +8,20 @@ import { v4 as uuidv4 } from 'uuid';
 
 //TODO: in progress
 export class BloggerUploadWallpaperForBlogCommand {
-  constructor(
-    public userId,
-  ) {}
+  constructor(public userId) {}
 }
 
-
 @CommandHandler(BloggerUploadWallpaperForBlogCommand)
-export class BloggerUploadWallpaperForBlogUseCase implements ICommandHandler<BloggerUploadWallpaperForBlogCommand> {
+export class BloggerUploadWallpaperForBlogUseCase
+  implements ICommandHandler<BloggerUploadWallpaperForBlogCommand>
+{
   constructor(
     private readonly blogsRepository: BlogsRepository,
     private readonly usersRepository: UsersRepository,
   ) {}
-  async execute(command: BloggerUploadWallpaperForBlogCommand): Promise<string> {
-    return 'result'
-
+  async execute(
+    command: BloggerUploadWallpaperForBlogCommand,
+  ): Promise<string> {
+    return 'result';
   }
 }
