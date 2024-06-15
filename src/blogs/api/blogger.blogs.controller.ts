@@ -9,7 +9,9 @@ import {
   Put,
   Query,
   Req,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { BlogsQueryRepository } from '../infrostracture/blogs.query.repository';
 import {
@@ -41,6 +43,8 @@ import {
   ActionResult,
   handleActionResult,
 } from '../../helpers/enum.action.result.helper';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { BloggerUploadWallpaperForBlogCommand } from '../application/use-cases/blogger-upload-wallpaper-for-blog-use-case';
 
 export class CreateBlogInputModelType {
   @StringTrimNotEmpty()
@@ -247,4 +251,21 @@ export class BloggerBlogsController {
     );
     return comments;
   }
+
+  @Post(':blogId/images/wallpapers')
+  @UseInterceptors(FileInterceptor('blogWallpaper'))
+  @HttpCode(201)
+  async setWallpapersForBlog(
+    @Req() request,
+    @Param('blogId') blogId,
+    @UploadedFile() blogWallpaper: Express.Multer.File,
+  ){
+  const result = await this.commandBus.execute(
+    new BloggerUploadWallpaperForBlogCommand(
+      request.user.userId,
+      blogId,
+    blogWallpaper))
+    return result
+  }
+
 }

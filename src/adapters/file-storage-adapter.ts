@@ -2,6 +2,7 @@ import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { CustomisableException } from '../exceptions/custom.exceptions';
+import { Upload } from "@aws-sdk/lib-storage";
 dotenv.config();
 const accessKey = process.env.YANDEX_CLOUD_KEY;
 const kyeId = process.env.YANDEX_CLOUD_KEY_ID;
@@ -30,13 +31,17 @@ export class S3StorageAdapter {
         Bucket: bucketName,
         Key: key,
         Body: buffer,
-        ContentType: 'images/png'
+        ContentType: 'image/png'
     }
 
-    const command = new PutObjectCommand(bucketParams)
+    //const command = new PutObjectCommand(bucketParams)
     try {
-        const uploadResult = await this.s3Client.send(command)
-        return uploadResult
+        // const uploadResult = await this.s3Client.send(command)
+        // return uploadResult
+        const upload = new Upload({
+            client: this.s3Client,
+            params: bucketParams
+        });
     } catch (error) {
         console.log(error);
         throw new CustomisableException('uploadFile', 'unable upload this file', 418)
