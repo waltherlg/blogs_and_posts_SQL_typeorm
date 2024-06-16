@@ -27,12 +27,15 @@ export class BloggerUploadWallpaperForBlogUseCase
   async execute(
     command: BloggerUploadWallpaperForBlogCommand,
   ) {
-    const uploadResult = await this.s3StorageAdapter.saveBlogWallpaper(
+    const uploadResultKey = await this.s3StorageAdapter.saveBlogWallpaper(
       command.userId, 
       command.blogId, 
       command.blogWallpaperFile.buffer)
-    console.log("uploadResult ", uploadResult);
+
+    const imageMetadata = await this.s3StorageAdapter.getObjectMetadata(uploadResultKey)
+    console.log('imageMetadata ', imageMetadata);
     
-    return uploadResult;
+    
+    return uploadResultKey;
   }
 }

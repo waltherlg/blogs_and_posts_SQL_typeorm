@@ -1,4 +1,4 @@
-import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { HeadObjectCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import { CustomisableException } from '../exceptions/custom.exceptions';
@@ -57,6 +57,25 @@ export class S3StorageAdapter {
 
 }
 
+async getObjectMetadata(key: string) {
+    const headParams = {
+        Bucket: bucketName,
+        Key: key
+    };
+
+    try {
+        const command = new HeadObjectCommand(headParams);
+        const metadata = await this.s3Client.send(command);
+        console.log("getObjectMetadata ", metadata);
+        return metadata;
+        
+        
+    } catch (error) {
+        console.log(error);
+        throw new CustomisableException('Metadata', 'unable to get object metadata', 418);
+    }
+}
+
 async saveBlogWallpaper(
     userId: string,
     blogId: string,
@@ -65,7 +84,8 @@ async saveBlogWallpaper(
     console.log("bufer ", bufer);
     
     const uploadKey = `content/images/${userId}/blogs/${blogId}_wallpaper.png`
-    const uploadResult = await this.saveImageFile(uploadKey, bufer)
-    return uploadResult
+    const uploadResult = await this.saveImageFile(uploadKey, bufer)    
+    return uploadResult.Key
 }
+
 }
