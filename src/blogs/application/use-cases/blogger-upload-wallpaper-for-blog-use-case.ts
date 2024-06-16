@@ -6,7 +6,9 @@ import { ICommandHandler } from '@nestjs/cqrs/dist/interfaces';
 import { UsersRepository } from '../../../users/users.repository';
 import { v4 as uuidv4 } from 'uuid';
 import { S3StorageAdapter } from '../../../adapters/file-storage-adapter';
-import sharp from 'sharp';
+import { CheckService } from '../../../other.services/check.service';
+import { ActionResult } from '../../../helpers/enum.action.result.helper';
+const sharp = require('sharp');
 
 //TODO: in progress
 export class BloggerUploadWallpaperForBlogCommand {
@@ -23,11 +25,17 @@ export class BloggerUploadWallpaperForBlogUseCase
   constructor(
     private readonly blogsRepository: BlogsRepository,
     private readonly usersRepository: UsersRepository,
-    private readonly s3StorageAdapter: S3StorageAdapter
+    private readonly s3StorageAdapter: S3StorageAdapter,
+    private readonly checkService: CheckService
   ) {}
   async execute(
     command: BloggerUploadWallpaperForBlogCommand,
   ) {
+
+    if(!await this.checkService.isUserOwnerOfBlog(command.userId, command.blogId)){
+      return ActionResult.NotOwner
+    }
+
     const uploadResultKey = await this.s3StorageAdapter.saveBlogWallpaper(
       command.userId, 
       command.blogId, 
