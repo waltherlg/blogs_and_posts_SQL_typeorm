@@ -34,14 +34,22 @@ export class S3StorageAdapter {
         ContentType: 'image/png'
     }
 
-    //const command = new PutObjectCommand(bucketParams)
+    // const command = new PutObjectCommand(bucketParams)
     try {
         // const uploadResult = await this.s3Client.send(command)
         // return uploadResult
+
         const upload = new Upload({
             client: this.s3Client,
             params: bucketParams
         });
+
+        upload.on("httpUploadProgress", (progress) => {
+            console.log(progress);
+        });
+
+        const uploadResult = await upload.done();
+        return uploadResult;
     } catch (error) {
         console.log(error);
         throw new CustomisableException('uploadFile', 'unable upload this file', 418)
@@ -54,6 +62,8 @@ async saveBlogWallpaper(
     blogId: string,
     bufer: Buffer,
 ){
+    console.log("bufer ", bufer);
+    
     const uploadKey = `content/images/${userId}/blogs/${blogId}_wallpaper.png`
     const uploadResult = await this.saveImageFile(uploadKey, bufer)
     return uploadResult

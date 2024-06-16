@@ -260,11 +260,32 @@ export class BloggerBlogsController {
     @Param('blogId') blogId,
     @UploadedFile() blogWallpaper: Express.Multer.File,
   ){
+    console.log("blogWallpaper: Express.Multer.File ", blogWallpaper);
+    
   const result = await this.commandBus.execute(
     new BloggerUploadWallpaperForBlogCommand(
       request.user.userId,
       blogId,
     blogWallpaper))
+    return result
+  }
+
+  //TODO: remove before prod
+  @Post(':blogId/test/wallpapers')
+  @UseInterceptors(FileInterceptor('blogWallpaper'))
+  @HttpCode(201)
+  async TestSetWallpaper(
+    @Req() request,
+    @Param('blogId') blogId,
+    @UploadedFile() blogWallpaperFile: Express.Multer.File,
+  ){
+    console.log("blogWallpaper: Express.Multer.File ", blogWallpaperFile);
+    
+  const result = await this.commandBus.execute(
+    new BloggerUploadWallpaperForBlogCommand(
+      request.user.userId,
+      blogId,
+    blogWallpaperFile))
     return result
   }
 

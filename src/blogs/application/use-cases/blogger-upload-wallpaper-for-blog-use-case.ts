@@ -12,7 +12,7 @@ export class BloggerUploadWallpaperForBlogCommand {
   constructor(
     public userId,
     public blogId,
-    public blogWallpaper) {}
+    public blogWallpaperFile) {}
 }
 
 @CommandHandler(BloggerUploadWallpaperForBlogCommand)
@@ -26,13 +26,13 @@ export class BloggerUploadWallpaperForBlogUseCase
   ) {}
   async execute(
     command: BloggerUploadWallpaperForBlogCommand,
-  ): Promise<string> {
+  ) {
     const uploadResult = await this.s3StorageAdapter.saveBlogWallpaper(
       command.userId, 
       command.blogId, 
-      command.blogWallpaper)
-    console.log(uploadResult);
+      command.blogWallpaperFile.buffer)
+    console.log("uploadResult ", uploadResult);
     
-    return 'result';
+    return uploadResult;
   }
 }
