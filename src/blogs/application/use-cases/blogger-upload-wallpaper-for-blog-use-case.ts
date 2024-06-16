@@ -6,6 +6,7 @@ import { ICommandHandler } from '@nestjs/cqrs/dist/interfaces';
 import { UsersRepository } from '../../../users/users.repository';
 import { v4 as uuidv4 } from 'uuid';
 import { S3StorageAdapter } from '../../../adapters/file-storage-adapter';
+import sharp from 'sharp';
 
 //TODO: in progress
 export class BloggerUploadWallpaperForBlogCommand {
@@ -31,6 +32,10 @@ export class BloggerUploadWallpaperForBlogUseCase
       command.userId, 
       command.blogId, 
       command.blogWallpaperFile.buffer)
+
+      const metadata = await sharp(command.blogWallpaperFile.buffer).metadata();
+      console.log(" metadata in use case ", metadata);
+      
 
     const imageMetadata = await this.s3StorageAdapter.getObjectMetadata(uploadResultKey)
     console.log('imageMetadata ', imageMetadata);
