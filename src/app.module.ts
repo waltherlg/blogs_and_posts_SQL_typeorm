@@ -117,6 +117,7 @@ import { PlayerStatisticQueryRepository } from './quizGame/quiz.player.statistic
 import { BloggerGetAllPostsByBlogIdUseCase } from './blogs/application/use-cases/blogger-get-all-posts-by-blogid-use-case';
 import { S3StorageAdapter } from './adapters/file-storage-adapter';
 import { BloggerUploadWallpaperForBlogUseCase } from './blogs/application/use-cases/blogger-upload-wallpaper-for-blog-use-case';
+import { BloggerUploadMainForBlogUseCase } from './blogs/application/use-cases/blogger-upload-main-for-blog-use-case';
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
@@ -165,6 +166,7 @@ const useCases = [
   PlayerRequestAllGamesUseCase,
   PlayerRequestOwnStatisticUseCase,
   BloggerUploadWallpaperForBlogUseCase,
+  BloggerUploadMainForBlogUseCase,
 ];
 
 @Module({
