@@ -11,7 +11,6 @@ import { ActionResult } from '../../../helpers/enum.action.result.helper';
 import { url } from 'inspector';
 const sharp = require('sharp');
 
-//TODO: in progress
 export class BloggerUploadWallpaperForBlogCommand {
   constructor(
     public userId,
@@ -59,11 +58,11 @@ export class BloggerUploadWallpaperForBlogUseCase
         fileSize: command.metadata.size
       }
 
-      let main: []
-      const blogsMainImage = await this.s3StorageAdapter.getBlogWallpaperMetadata(userId, blogId)    
+      let main = []
+      let mainObj = {
 
-
-
+      }
+      const blogsMainImage = await this.s3StorageAdapter.getBlogMainMetadata(userId, blogId)
       {
         if(blogsMainImage){
           const mainObj = {
@@ -72,11 +71,12 @@ export class BloggerUploadWallpaperForBlogUseCase
             height: command.metadata.height,
             fileSize: command.metadata.size
           }
-        }
+          main.push(mainObj)
+        } 
+        
       }
       
-//TODO: check meta
-      return wallpaper;
+      return { wallpaper, main };
 
     } catch (error) {
       return ActionResult.NotCreated

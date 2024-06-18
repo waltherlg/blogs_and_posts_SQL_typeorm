@@ -89,18 +89,16 @@ private async getImageFile(key: string) {
     try {
         const command = new GetObjectCommand(bucketParams);
         const data = await this.s3Client.send(command);
-        console.log("как выглядит дата когда достаешь из хранилища ", data);
-        
-
+        // console.log("как выглядит дата когда достаешь из хранилища ", data);
         if (data){
             return data;
-
         } else {
             return null
         }
     } catch (error) {
-        console.log(error);
-        throw new CustomisableException('getImageFile', 'Unable to retrieve the file', 418);
+        return null
+        // console.log(error);
+        // throw new CustomisableException('getImageFile', 'Unable to retrieve the file', 418);
     }
 }
 
@@ -133,7 +131,7 @@ async getBlogWallpaper(
             const key = `content/images/${userId}/blogs/${blogId}_blog_main.png`
             const blogMain = await this.getImageFile(key)
             if(blogMain){
-                return blogMain
+                return blogMain.Metadata
             } else {
                 return null
             }
@@ -145,11 +143,23 @@ async getBlogWallpaper(
                 const key = `content/images/${userId}/blogs/${blogId}_blog_wallpaper.png`
                 const blogWallpaperMetadata = await this.getImageFile(key)
                 if(blogWallpaperMetadata){
-                    return blogWallpaperMetadata
+                    return blogWallpaperMetadata.Metadata
                 } else {
                     return null
                 }
             }
+
+            async getBlogMainMetadata(    
+                userId: string,
+                blogId: string,){
+                    const key = `content/images/${userId}/blogs/${blogId}_blog_main.png`
+                    const blogMainMetadata = await this.getImageFile(key)
+                    if(blogMainMetadata){
+                        return blogMainMetadata.Metadata
+                    } else {
+                        return null
+                    }
+                }
 
         
 
