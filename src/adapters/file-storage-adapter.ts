@@ -56,7 +56,7 @@ export class S3StorageAdapter {
     }
 }
 
-async getImageMetadata(key){
+private async getImageMetadata(key){
     const bucketParams = {
         Bucket: bucketName,
         Key: key
@@ -65,7 +65,6 @@ async getImageMetadata(key){
         const command = new HeadObjectCommand(bucketParams)
         const metadata = await this.s3Client.send(command)
         console.log("------ getImageMetadata ------- ", metadata);
-        
         return metadata
         
     } catch (error) {
@@ -137,6 +136,18 @@ async getBlogWallpaper(
                 return null
             }
         }
+
+        async getBlogWallpaperMetadata(    
+            userId: string,
+            blogId: string,){
+                const key = `content/images/${userId}/blogs/${blogId}_blog_wallpaper.png`
+                const blogWallpaperMetadata = await this.getImageMetadata(key)
+                if(blogWallpaperMetadata){
+                    return blogWallpaperMetadata
+                } else {
+                    return null
+                }
+            }
 
         
 

@@ -48,6 +48,10 @@ export class BloggerUploadWallpaperForBlogUseCase
         blogId, 
         buffer)
 
+        const meta = await this.s3StorageAdapter.getBlogWallpaperMetadata
+        console.log("const meta = await this.s3StorageAdapter.getBlogWallpaperMetadata ", meta);
+        
+
       const wallpaper = {
         url: uploadedWallpaperKey,
         width: command.metadata.width,
@@ -57,6 +61,8 @@ export class BloggerUploadWallpaperForBlogUseCase
 
       let main: []
       const blogsMainImage = await this.s3StorageAdapter.getBlogMain(userId, blogId)
+
+
       {
         if(blogsMainImage){
           const mainObj = {
