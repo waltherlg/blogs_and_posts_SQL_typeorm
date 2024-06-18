@@ -16,7 +16,8 @@ export class BloggerUploadWallpaperForBlogCommand {
     public userId,
     public blogId,
     public blogWallpaperFile,
-    public metadata) {}
+    public metadata,
+  ) {}
 }
 
 @CommandHandler(BloggerUploadWallpaperForBlogCommand)
@@ -27,62 +28,60 @@ export class BloggerUploadWallpaperForBlogUseCase
     private readonly blogsRepository: BlogsRepository,
     private readonly usersRepository: UsersRepository,
     private readonly s3StorageAdapter: S3StorageAdapter,
-    private readonly checkService: CheckService
+    private readonly checkService: CheckService,
   ) {}
-  async execute(
-    command: BloggerUploadWallpaperForBlogCommand,
-  ) {
-
-    if(!await this.checkService.isUserOwnerOfBlog(command.userId, command.blogId)){
-      return ActionResult.NotOwner
+  async execute(command: BloggerUploadWallpaperForBlogCommand) {
+    if (
+      !(await this.checkService.isUserOwnerOfBlog(
+        command.userId,
+        command.blogId,
+      ))
+    ) {
+      return ActionResult.NotOwner;
     }
 
-    const userId = command.userId
-    const blogId = command.blogId 
-    const buffer = command.blogWallpaperFile.buffer
-    const metadata = command.metadata
+    const userId = command.userId;
+    const blogId = command.blogId;
+    const buffer = command.blogWallpaperFile.buffer;
+    const metadata = command.metadata;
 
     try {
-      const uploadedWallpaperKey = await this.s3StorageAdapter.saveBlogWallpaper(
-        userId, 
-        blogId, 
-        buffer,
-        metadata)
-
-      
+      const uploadedWallpaperKey =
+        await this.s3StorageAdapter.saveBlogWallpaper(
+          userId,
+          blogId,
+          buffer,
+          metadata,
+        );
 
       const wallpaper = {
         url: uploadedWallpaperKey,
         width: command.metadata.width,
         height: command.metadata.height,
-        fileSize: command.metadata.size
-      }
+        fileSize: command.metadata.size,
+      };
 
-      let main = []
-      let mainObj = {
-
-      }
-      const blogsMainImage = await this.s3StorageAdapter.getBlogMainMetadata(userId, blogId)
+      const main = [];
+      const mainObj = {};
+      const blogsMainImage = await this.s3StorageAdapter.getBlogMainMetadata(
+        userId,
+        blogId,
+      );
       {
-        if(blogsMainImage){
+        if (blogsMainImage) {
           const mainObj = {
             url: uploadedWallpaperKey,
             width: command.metadata.width,
             height: command.metadata.height,
-            fileSize: command.metadata.size
-          }
-          main.push(mainObj)
-        } 
-        
+            fileSize: command.metadata.size,
+          };
+          main.push(mainObj);
+        }
       }
-      
-      return { wallpaper, main };
 
+      return { wallpaper, main };
     } catch (error) {
-      return ActionResult.NotCreated
-    }  
-    
-    
-    
+      return ActionResult.NotCreated;
+    }
   }
 }

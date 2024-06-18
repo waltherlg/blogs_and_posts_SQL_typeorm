@@ -16,7 +16,8 @@ export class BloggerUploadMainForBlogCommand {
     public userId,
     public blogId,
     public blogMainFile,
-    public metadata) {}
+    public metadata,
+  ) {}
 }
 
 @CommandHandler(BloggerUploadMainForBlogCommand)
@@ -27,20 +28,21 @@ export class BloggerUploadMainForBlogUseCase
     private readonly blogsRepository: BlogsRepository,
     private readonly usersRepository: UsersRepository,
     private readonly s3StorageAdapter: S3StorageAdapter,
-    private readonly checkService: CheckService
+    private readonly checkService: CheckService,
   ) {}
-  async execute(
-    command: BloggerUploadMainForBlogCommand,
-  ) {
-
-    if(!await this.checkService.isUserOwnerOfBlog(command.userId, command.blogId)){
-      return ActionResult.NotOwner
+  async execute(command: BloggerUploadMainForBlogCommand) {
+    if (
+      !(await this.checkService.isUserOwnerOfBlog(
+        command.userId,
+        command.blogId,
+      ))
+    ) {
+      return ActionResult.NotOwner;
     }
 
-    const userId = command.userId
-    const blogId = command.blogId 
-    const buffer = command.blogMainFile.buffer
-    const metadata = command.metadata
-
+    const userId = command.userId;
+    const blogId = command.blogId;
+    const buffer = command.blogMainFile.buffer;
+    const metadata = command.metadata;
   }
 }

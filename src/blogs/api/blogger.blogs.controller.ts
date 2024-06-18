@@ -261,27 +261,30 @@ export class BloggerBlogsController {
     @Req() request,
     @Param('blogId') blogId,
     @UploadedFile() blogWallpaperFile: Express.Multer.File,
-  ){
-    
+  ) {
     const metadata = await sharp(blogWallpaperFile.buffer).metadata();
-    if(metadata.width !== 1028 || metadata.height !== 312 || metadata.size > 102400){
-      throw new CustomisableException('wallpaper', 'file must be 1028x312 and not more than 100KB', 400)      
+    if (
+      metadata.width !== 1028 ||
+      metadata.height !== 312 ||
+      metadata.size > 102400
+    ) {
+      throw new CustomisableException(
+        'wallpaper',
+        'file must be 1028x312 and not more than 100KB',
+        400,
+      );
     }
-    
-  const result = await this.commandBus.execute(
-    new BloggerUploadWallpaperForBlogCommand(
-      request.user.userId,
-      blogId,
-      blogWallpaperFile,
-      metadata))
-    return result
+
+    const result = await this.commandBus.execute(
+      new BloggerUploadWallpaperForBlogCommand(
+        request.user.userId,
+        blogId,
+        blogWallpaperFile,
+        metadata,
+      ),
+    );
+    return result;
   }
-
-
-
-
-
-
 
   // //TODO: remove before prod
   // @Post(':blogId/test/wallpapers')
@@ -294,9 +297,9 @@ export class BloggerBlogsController {
   // ){
   //   const metadata = await sharp(blogWallpaperFile.buffer).metadata();
   //   if(metadata.width !== 1028 || metadata.height !== 312 || metadata.size > 102400){
-  //     throw new CustomisableException('wallpaper', 'file must be 1028x312 and not more than 100KB', 400)      
+  //     throw new CustomisableException('wallpaper', 'file must be 1028x312 and not more than 100KB', 400)
   //   }
-    
+
   // const result = await this.commandBus.execute(
   //   new BloggerUploadWallpaperForBlogCommand(
   //     request.user.userId,
@@ -304,5 +307,4 @@ export class BloggerBlogsController {
   //   blogWallpaperFile))
   //   return result
   // }
-
 }
