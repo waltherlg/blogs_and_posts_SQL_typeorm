@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { S3StorageAdapter } from '../../../adapters/file-storage-adapter';
 import { CheckService } from '../../../other.services/check.service';
 import { ActionResult } from '../../../helpers/enum.action.result.helper';
+import { url } from 'inspector';
 const sharp = require('sharp');
 
 //TODO: in progress
@@ -15,7 +16,8 @@ export class BloggerUploadWallpaperForBlogCommand {
   constructor(
     public userId,
     public blogId,
-    public blogWallpaperFile) {}
+    public blogWallpaperFile,
+    public metadata) {}
 }
 
 @CommandHandler(BloggerUploadWallpaperForBlogCommand)
@@ -36,19 +38,45 @@ export class BloggerUploadWallpaperForBlogUseCase
       return ActionResult.NotOwner
     }
 
-    const uploadResultKey = await this.s3StorageAdapter.saveBlogWallpaper(
-      command.userId, 
-      command.blogId, 
-      command.blogWallpaperFile.buffer)
+    const userId = command.userId
+    const blogId = command.blogId 
+    const buffer = command.blogWallpaperFile.buffer
 
-      const metadata = await sharp(command.blogWallpaperFile.buffer).metadata();
-      console.log(" metadata in use case ", metadata);
+    try {
+      const uploadedWallpaperKey = await this.s3StorageAdapter.saveBlogWallpaper(
+        userId, 
+        blogId, 
+        buffer)
+
+      const wallpaper = {
+        url: uploadedWallpaperKey,
+        width: command.metadata.width,
+        height: command.metadata.height,
+        fileSize: command.metadata.size
+      }
+
+      let main: []
+      const blogsMainImage = await this.s3StorageAdapter.getBlogMain(userId, blogId)
+      {
+        if(blogsMainImage){
+          const mainObj = {
+            url: uploadedWallpaperKey,
+            width: command.metadata.width,
+            height: command.metadata.height,
+            fileSize: command.metadata.size
+          }
+
+        }
+      }
       
+//TODO: check meta
+      return wallpaper;
 
-    const imageMetadata = await this.s3StorageAdapter.getObjectMetadata(uploadResultKey)
-    console.log('imageMetadata ', imageMetadata);
+    } catch (error) {
+      return ActionResult.NotCreated
+    }  
     
     
-    return uploadResultKey;
+    
   }
 }

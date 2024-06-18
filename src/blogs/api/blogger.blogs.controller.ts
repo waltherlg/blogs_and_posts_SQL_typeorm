@@ -26,6 +26,7 @@ import { PostsQueryRepository } from '../../posts/posts.query.repository';
 
 import {
   CustomNotFoundException,
+  CustomisableException,
   UnableException,
 } from '../../exceptions/custom.exceptions';
 import { IsCustomUrl, StringTrimNotEmpty } from '../../middlewares/validators';
@@ -45,6 +46,7 @@ import {
 } from '../../helpers/enum.action.result.helper';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { BloggerUploadWallpaperForBlogCommand } from '../application/use-cases/blogger-upload-wallpaper-for-blog-use-case';
+const sharp = require('sharp');
 
 export class CreateBlogInputModelType {
   @StringTrimNotEmpty()
@@ -258,35 +260,49 @@ export class BloggerBlogsController {
   async setWallpapersForBlog(
     @Req() request,
     @Param('blogId') blogId,
-    @UploadedFile() blogWallpaper: Express.Multer.File,
+    @UploadedFile() blogWallpaperFile: Express.Multer.File,
   ){
-    console.log("blogWallpaper: Express.Multer.File ", blogWallpaper);
+    
+    const metadata = await sharp(blogWallpaperFile.buffer).metadata();
+    if(metadata.width !== 1028 || metadata.height !== 312 || metadata.size > 102400){
+      throw new CustomisableException('wallpaper', 'file must be 1028x312 and not more than 100KB', 400)      
+    }
     
   const result = await this.commandBus.execute(
     new BloggerUploadWallpaperForBlogCommand(
       request.user.userId,
       blogId,
-    blogWallpaper))
+      blogWallpaperFile,
+      metadata))
     return result
   }
 
-  //TODO: remove before prod
-  @Post(':blogId/test/wallpapers')
-  @UseInterceptors(FileInterceptor('blogWallpaper'))
-  @HttpCode(201)
-  async TestSetWallpaper(
-    @Req() request,
-    @Param('blogId') blogId,
-    @UploadedFile() blogWallpaperFile: Express.Multer.File,
-  ){
-    console.log("blogWallpaper: Express.Multer.File ", blogWallpaperFile);
+
+
+
+
+
+
+  // //TODO: remove before prod
+  // @Post(':blogId/test/wallpapers')
+  // @UseInterceptors(FileInterceptor('blogWallpaper'))
+  // @HttpCode(201)
+  // async TestSetWallpaper(
+  //   @Req() request,
+  //   @Param('blogId') blogId,
+  //   @UploadedFile() blogWallpaperFile: Express.Multer.File,
+  // ){
+  //   const metadata = await sharp(blogWallpaperFile.buffer).metadata();
+  //   if(metadata.width !== 1028 || metadata.height !== 312 || metadata.size > 102400){
+  //     throw new CustomisableException('wallpaper', 'file must be 1028x312 and not more than 100KB', 400)      
+  //   }
     
-  const result = await this.commandBus.execute(
-    new BloggerUploadWallpaperForBlogCommand(
-      request.user.userId,
-      blogId,
-    blogWallpaperFile))
-    return result
-  }
+  // const result = await this.commandBus.execute(
+  //   new BloggerUploadWallpaperForBlogCommand(
+  //     request.user.userId,
+  //     blogId,
+  //   blogWallpaperFile))
+  //   return result
+  // }
 
 }
