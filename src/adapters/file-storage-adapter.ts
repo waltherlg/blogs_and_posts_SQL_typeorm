@@ -25,19 +25,28 @@ export class S3StorageAdapter {
 
   private async saveImageFile(
     key,
-    buffer: Buffer
+    buffer: Buffer,
+    metadata
 ){
+    
     const bucketParams = {
         Bucket: bucketName,
         Key: key,
         Body: buffer,
-        ContentType: 'image/png'
+        ContentType: 'image/png',
+        Metadata: {
+            format: metadata.format,
+            size: metadata.size.toString(),
+            width: metadata.width.toString(),
+            height: metadata.height.toString()
+        }
     }
 
-    // const command = new PutObjectCommand(bucketParams)
     try {
-        // const uploadResult = await this.s3Client.send(command)
-        // return uploadResult
+
+        // const command = new PutObjectCommand(bucketParams);
+        // const response = await this.s3Client.send(command);
+        // return response
 
         const upload = new Upload({
             client: this.s3Client,
@@ -47,7 +56,6 @@ export class S3StorageAdapter {
         upload.on("httpUploadProgress", (progress) => {
             console.log(progress);
         });
-
         const uploadResult = await upload.done();
         return uploadResult;
     } catch (error) {
@@ -64,7 +72,6 @@ private async getImageMetadata(key){
     try {
         const command = new HeadObjectCommand(bucketParams)
         const metadata = await this.s3Client.send(command)
-        console.log("------ getImageMetadata ------- ", metadata);
         return metadata
         
     } catch (error) {
@@ -73,7 +80,7 @@ private async getImageMetadata(key){
 
 }
 
-private async getImageFile(key: string): Promise<Buffer | null> {
+private async getImageFile(key: string) {
     const bucketParams = {
         Bucket: bucketName,
         Key: key
@@ -82,17 +89,11 @@ private async getImageFile(key: string): Promise<Buffer | null> {
     try {
         const command = new GetObjectCommand(bucketParams);
         const data = await this.s3Client.send(command);
+        console.log("как выглядит дата когда достаешь из хранилища ", data);
+        
 
-        if (data.Body) {
-            const streamToBuffer = (stream): Promise<Buffer> => {
-                return new Promise((resolve, reject) => {
-                    const chunks = [];
-                    stream.on('data', (chunk) => chunks.push(chunk));
-                    stream.on('end', () => resolve(Buffer.concat(chunks)));
-                    stream.on('error', reject);
-                });
-            };
-            return await streamToBuffer(data.Body);
+        if (data){
+            return data;
 
         } else {
             return null
@@ -107,9 +108,10 @@ async saveBlogWallpaper(
     userId: string,
     blogId: string,
     bufer: Buffer,
+    metadata
 ){
     const uploadKey = `content/images/${userId}/blogs/${blogId}_blog_wallpaper.png`
-    const uploadResult = await this.saveImageFile(uploadKey, bufer)    
+    const uploadResult = await this.saveImageFile(uploadKey, bufer, metadata)    
     return uploadResult.Key
 }
 
@@ -141,7 +143,7 @@ async getBlogWallpaper(
             userId: string,
             blogId: string,){
                 const key = `content/images/${userId}/blogs/${blogId}_blog_wallpaper.png`
-                const blogWallpaperMetadata = await this.getImageMetadata(key)
+                const blogWallpaperMetadata = await this.getImageFile(key)
                 if(blogWallpaperMetadata){
                     return blogWallpaperMetadata
                 } else {
@@ -155,9 +157,10 @@ async saveBlogMain(
     userId: string,
     blogId: string,
     bufer: Buffer,
+    metadata
 ){    
     const uploadKey = `content/images/${userId}/blogs/${blogId}_blog_main.png`
-    const uploadResult = await this.saveImageFile(uploadKey, bufer)    
+    const uploadResult = await this.saveImageFile(uploadKey, bufer, metadata)    
     return uploadResult.Key
 }
 
