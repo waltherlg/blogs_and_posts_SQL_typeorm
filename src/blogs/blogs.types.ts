@@ -26,6 +26,7 @@ export type BlogTypeOutput = {
   websiteUrl: string;
   createdAt: string;
   isMembership: boolean;
+  images: blogImageOutputType;
 };
 
 export type blogSaTypeOutput = {
@@ -47,3 +48,21 @@ type blogBanInfoType = {
   isBanned: string;
   banDate: string;
 };
+
+type blogImageOutputType = {
+  wallpaper: blogWallpaperOutputType,
+  main: blogMainOutputType
+}
+
+type blogWallpaperOutputType = {
+  url: string,
+  width: number,
+  height: number,
+  fileSize: number,
+} | null
+
+type blogMainOutputType = [{   
+    url: string,
+    width: number,
+    height: number,
+    fileSize: number, }] | []

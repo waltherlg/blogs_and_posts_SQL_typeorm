@@ -134,21 +134,25 @@ export class S3StorageAdapter {
     }
   }
 
-  async getBlogWallpaperMetadata(userId: string, blogId: string) {
+  async getBlogWallpaperKeyAndMetadata(userId: string, blogId: string) {
     const key = `content/images/${userId}/blogs/${blogId}_blog_wallpaper.png`;
-    const blogWallpaperMetadata = await this.getImageFile(key);
+    let blogWallpaperMetadata = await this.getImageFile(key);
+    
     if (blogWallpaperMetadata) {
+      blogWallpaperMetadata.Metadata.key = key
       return blogWallpaperMetadata.Metadata;
     } else {
       return null;
     }
   }
 
-  async getBlogMainMetadata(userId: string, blogId: string) {
+  async getBlogMainKeyAndMetadata(userId: string, blogId: string) {
     const key = `content/images/${userId}/blogs/${blogId}_blog_main.png`;
-    const blogMainMetadata = await this.getImageFile(key);
-    if (blogMainMetadata) {
-      return blogMainMetadata.Metadata;
+    const blogMain = await this.getImageFile(key);
+    
+    if (blogMain) {
+      blogMain.Metadata.key = key
+      return blogMain.Metadata;
     } else {
       return null;
     }
