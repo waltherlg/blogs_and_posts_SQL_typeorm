@@ -38,6 +38,11 @@ export class BlogsQueryRepository {
         websiteUrl: blog.websiteUrl,
         createdAt: blog.createdAt,
         isMembership: blog.isMembership,
+        //TODO: заглушка
+        images: {
+          wallpaper: null,
+          main: []
+        }
       };
     }
     return null;

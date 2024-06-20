@@ -71,10 +71,10 @@ export class BloggerUploadWallpaperForBlogUseCase
       {
         if (blogsMainImage) {
           const mainObj = {
-            url: blogsMainImage.Key,
-            width: blogsMainImage.width,
-            height: blogsMainImage.height,
-            fileSize: blogsMainImage.size,
+            url: blogsMainImage.key,
+            width: +blogsMainImage.width,
+            height: +blogsMainImage.height,
+            fileSize: +blogsMainImage.size,
           };
           main.push(mainObj);
         }

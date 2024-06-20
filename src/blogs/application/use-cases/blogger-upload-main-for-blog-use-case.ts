@@ -57,10 +57,10 @@ export class BloggerUploadMainForBlogUseCase
       }]
 
       let wallpaper = null
-      const blogWallpaperMetadata = await this.s3StorageAdapter.getBlogWallpaperMetadata(userId, blogId)
+      const blogWallpaperMetadata = await this.s3StorageAdapter.getBlogWallpaperKeyAndMetadata(userId, blogId)
       if(blogWallpaperMetadata){
         wallpaper = {
-          url: blogWallpaperMetadata.Key,
+          url: blogWallpaperMetadata.key,
           width: blogWallpaperMetadata.width,
           height: blogWallpaperMetadata.height,
           fileSize: blogWallpaperMetadata.size,
