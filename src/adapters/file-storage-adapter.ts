@@ -163,4 +163,10 @@ export class S3StorageAdapter {
     const uploadResult = await this.saveImageFile(uploadKey, bufer, metadata);
     return uploadResult.Key;
   }
+
+  async savePostMain(userId: string, blogId: string, postId: string, bufer: Buffer, metadata) {
+    const uploadKey = `content/images/${userId}/blogs/${blogId}/posts/${postId}_post_main.png`;
+    const uploadResult = await this.saveImageFile(uploadKey, bufer, metadata);
+    return uploadResult.Key;
+  }
 }
