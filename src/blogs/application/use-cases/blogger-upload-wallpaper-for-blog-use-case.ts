@@ -63,7 +63,7 @@ export class BloggerUploadWallpaperForBlogUseCase
 
       const main = [];
       const mainObj = {};
-      const blogsMainImage = await this.s3StorageAdapter.getBlogMainMetadata(
+      const blogsMainImage = await this.s3StorageAdapter.getBlogMainKeyAndMetadata(
         userId,
         blogId,
       );
