@@ -67,18 +67,18 @@ export class BloggerUploadWallpaperForBlogUseCase
         userId,
         blogId,
       );
+      
       {
         if (blogsMainImage) {
           const mainObj = {
-            url: uploadedWallpaperKey,
-            width: command.metadata.width,
-            height: command.metadata.height,
-            fileSize: command.metadata.size,
+            url: blogsMainImage.Key,
+            width: blogsMainImage.width,
+            height: blogsMainImage.height,
+            fileSize: blogsMainImage.size,
           };
           main.push(mainObj);
         }
       }
-
       return { wallpaper, main };
     } catch (error) {
       return ActionResult.NotCreated;

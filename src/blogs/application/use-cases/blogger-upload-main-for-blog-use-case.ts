@@ -44,5 +44,33 @@ export class BloggerUploadMainForBlogUseCase
     const blogId = command.blogId;
     const buffer = command.blogMainFile.buffer;
     const metadata = command.metadata;
+
+    
+
+    try {
+      const uploadedMainKey = await this.s3StorageAdapter.saveBlogMain(userId, blogId, buffer, metadata)
+      const main = [{
+        url: uploadedMainKey,
+        width: command.metadata.width,
+        height: command.metadata.height,
+        fileSize: command.metadata.size,
+      }]
+
+      let wallpaper = null
+      const blogWallpaperMetadata = await this.s3StorageAdapter.getBlogWallpaperMetadata(userId, blogId)
+      if(blogWallpaperMetadata){
+        wallpaper = {
+          url: blogWallpaperMetadata.Key,
+          width: blogWallpaperMetadata.width,
+          height: blogWallpaperMetadata.height,
+          fileSize: blogWallpaperMetadata.size,
+        }
+      }
+      return { wallpaper, main };
+
+
+    } catch (error) {
+      return ActionResult.NotCreated;
+    }
   }
 }

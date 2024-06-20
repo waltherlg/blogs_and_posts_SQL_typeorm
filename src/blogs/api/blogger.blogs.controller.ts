@@ -46,6 +46,7 @@ import {
 } from '../../helpers/enum.action.result.helper';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { BloggerUploadWallpaperForBlogCommand } from '../application/use-cases/blogger-upload-wallpaper-for-blog-use-case';
+import { BloggerUploadMainForBlogCommand } from '../application/use-cases/blogger-upload-main-for-blog-use-case';
 const sharp = require('sharp');
 
 export class CreateBlogInputModelType {
@@ -255,7 +256,7 @@ export class BloggerBlogsController {
   }
 
   @Post(':blogId/images/wallpapers')
-  @UseInterceptors(FileInterceptor('blogWallpaper'))
+  @UseInterceptors(FileInterceptor('file'))
   @HttpCode(201)
   async setWallpapersForBlog(
     @Req() request,
@@ -283,28 +284,41 @@ export class BloggerBlogsController {
         metadata,
       ),
     );
+    handleActionResult(result)
     return result;
   }
 
-  // //TODO: remove before prod
-  // @Post(':blogId/test/wallpapers')
-  // @UseInterceptors(FileInterceptor('blogWallpaper'))
-  // @HttpCode(201)
-  // async TestSetWallpaper(
-  //   @Req() request,
-  //   @Param('blogId') blogId,
-  //   @UploadedFile() blogWallpaperFile: Express.Multer.File,
-  // ){
-  //   const metadata = await sharp(blogWallpaperFile.buffer).metadata();
-  //   if(metadata.width !== 1028 || metadata.height !== 312 || metadata.size > 102400){
-  //     throw new CustomisableException('wallpaper', 'file must be 1028x312 and not more than 100KB', 400)
-  //   }
+  @Post(':blogId/images/main')
+  @UseInterceptors(FileInterceptor('file'))
+  @HttpCode(201)
+  async setMainForBlog(
+    @Req() request,
+    @Param('blogId') blogId,
+    @UploadedFile() blogMainFile: Express.Multer.File,
+  ) {
+    const metadata = await sharp(blogMainFile.buffer).metadata();
+    if (
+      metadata.width !== 156 ||
+      metadata.height !== 156 ||
+      metadata.size > 102400
+    ) {
+      throw new CustomisableException(
+        'main',
+        'file must be 156x156 and not more than 100KB',
+        400,
+      );
+    }
 
-  // const result = await this.commandBus.execute(
-  //   new BloggerUploadWallpaperForBlogCommand(
-  //     request.user.userId,
-  //     blogId,
-  //   blogWallpaperFile))
-  //   return result
-  // }
+    const result = await this.commandBus.execute(
+      new BloggerUploadMainForBlogCommand(
+        request.user.userId,
+        blogId,
+        blogMainFile,
+        metadata,
+      ),
+    );
+    handleActionResult(result)
+    return result;
+  }
+
 }
