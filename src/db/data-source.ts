@@ -10,6 +10,7 @@ import { Questions } from '../quizGame/quiz.questions.types';
 import { QuizAnswers } from '../quizGame/quiz.answers.types';
 import { QuizGames } from '../quizGame/quiz.game.types';
 import { PlayerStatistic } from '../quizGame/quiz.game.statistic.type';
+import { BlogMainImage, BlogWallpaperImage } from '../blogs/blog.image.type';
 
 export default new DataSource({
   type: 'postgres',
@@ -32,6 +33,8 @@ export default new DataSource({
     QuizAnswers,
     QuizGames,
     PlayerStatistic,
+    BlogWallpaperImage,
+    BlogMainImage
   ],
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
   migrationsTableName: 'custom_migration_table',

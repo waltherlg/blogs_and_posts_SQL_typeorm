@@ -119,6 +119,7 @@ import { S3StorageAdapter } from './adapters/file-storage-adapter';
 import { BloggerUploadWallpaperForBlogUseCase } from './blogs/application/use-cases/blogger-upload-wallpaper-for-blog-use-case';
 import { BloggerUploadMainForBlogUseCase } from './blogs/application/use-cases/blogger-upload-main-for-blog-use-case';
 import { BloggerUploadMainForPostUseCase } from './blogs/application/use-cases/blogger-upload-main-for-post-use-case';
+import { BlogMainImage, BlogWallpaperImage } from './blogs/blog.image.type';
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
@@ -187,6 +188,8 @@ const useCases = [
       QuizGames,
       QuizAnswers,
       PlayerStatistic,
+      BlogWallpaperImage,
+      BlogMainImage
     ]),
     CqrsModule,
     ThrottlerModule.forRoot({

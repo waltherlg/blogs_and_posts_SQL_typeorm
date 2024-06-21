@@ -11,6 +11,7 @@ import {
   PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { BlogMainImage, BlogWallpaperImage } from './blog.image.type';
 
 @Entity({ name: 'Blogs' })
 export class Blogs {
@@ -44,6 +45,12 @@ export class Blogs {
   BlogBannedUsers: BlogBannedUsers[];
   @OneToMany(() => Posts, (p) => p.Blogs)
   Posts: Posts[];
+
+  @OneToOne(() => BlogWallpaperImage, (i) => i.Blogs, {eager: true})
+  BlogWallpaperImage: BlogWallpaperImage | null;
+  
+  @OneToOne(() => BlogMainImage, (i) => i.Blogs, {eager: true})
+  BlogMainImage: BlogMainImage | null;
 }
 
 @Entity({ name: 'BlogBannedUsers' })
@@ -68,3 +75,5 @@ export class BlogBannedUsers {
   @Column()
   banReason: string;
 }
+
+
