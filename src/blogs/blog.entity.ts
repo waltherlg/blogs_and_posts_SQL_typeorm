@@ -54,15 +54,28 @@ export class Blogs {
 
   returnForPublic(){
 
-    let images: {
+    let images = {
       wallpaper: null,
       main: []
     }
 
     if(this.BlogWallpaperImage && this.BlogWallpaperImage.url !== null){
-      //images.wallpaper = 
+      images.wallpaper = {
+        url: this.BlogWallpaperImage.url,
+        width: this.BlogWallpaperImage.width,
+        height: this.BlogWallpaperImage.height,
+        fileSize: this.BlogWallpaperImage.fileSize
+      }
     }
 
+    if(this.BlogMainImage && this.BlogMainImage.url !== null){
+      images.main = [{
+        url: this.BlogMainImage.url,
+        width: this.BlogMainImage.width,
+        height: this.BlogMainImage.height,
+        fileSize: this.BlogMainImage.fileSize
+      }]
+    }
 
     return {
     id: this.blogId,
@@ -71,6 +84,7 @@ export class Blogs {
     websiteUrl: this.websiteUrl,
     createdAt: this.createdAt,
     isMembership: this.isMembership,
+    images: images
     }
 
   }

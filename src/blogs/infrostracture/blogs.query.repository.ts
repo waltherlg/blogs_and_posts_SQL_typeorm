@@ -32,19 +32,7 @@ export class BlogsQueryRepository {
     console.log('сущьность блога в репозитории ', blog);
 
     if (blog) {
-      return {
-        id: blog.blogId,
-        name: blog.name,
-        description: blog.description,
-        websiteUrl: blog.websiteUrl,
-        createdAt: blog.createdAt,
-        isMembership: blog.isMembership,
-        //TODO: заглушка
-        images: {
-          wallpaper: null,
-          main: []
-        }
-      };
+      return blog.returnForPublic()
     }
     return null;
   }
