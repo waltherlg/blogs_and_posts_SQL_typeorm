@@ -8,6 +8,7 @@ import { DataSource, Repository } from 'typeorm';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { BlogBannedUsers, Blogs } from '../blog.entity';
+import { BlogMainImage, BlogMainImageDto, BlogWallpaperImage, BlogWallpaperImageDto } from '../blog.image.type';
 
 @Injectable()
 export class BlogsRepository {
@@ -17,6 +18,10 @@ export class BlogsRepository {
     private readonly blogsRepository: Repository<Blogs>,
     @InjectRepository(BlogBannedUsers)
     private readonly blogBannedUsersRepository: Repository<BlogBannedUsers>,
+    @InjectRepository(BlogWallpaperImage)
+    private readonly blogWallpaperImageRepository: Repository<BlogWallpaperImage>,
+    @InjectRepository(BlogMainImage)
+    private readonly blogMainImageRepository: Repository<BlogMainImage>,
   ) {}
 
   async deleteBlogById(blogId: string): Promise<boolean> {
@@ -34,8 +39,17 @@ export class BlogsRepository {
   }
 
   async createBlog(blogDTO: BlogDBType): Promise<string> {
-    const result = await this.blogsRepository.save(blogDTO);
-    return result.blogId;
+    const resultBlogSave = await this.blogsRepository.save(blogDTO);
+
+    const blogWallpaper = new BlogWallpaperImageDto(
+      blogDTO.blogId)
+    const blogWallpaperResult = await this.blogWallpaperImageRepository.save(blogWallpaper)
+
+    const blogMain = new BlogMainImageDto(
+      blogDTO.blogId)
+    const blogMainResult = await this.blogMainImageRepository.save(blogMain)
+
+    return resultBlogSave.blogId;
   }
 
   async getBlogDBTypeById(blogId): Promise<BlogDBType | null> {

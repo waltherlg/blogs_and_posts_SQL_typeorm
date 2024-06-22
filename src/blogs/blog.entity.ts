@@ -51,6 +51,29 @@ export class Blogs {
   
   @OneToOne(() => BlogMainImage, (i) => i.Blogs, {eager: true})
   BlogMainImage: BlogMainImage | null;
+
+  returnForPublic(){
+
+    let images: {
+      wallpaper: null,
+      main: []
+    }
+
+    if(this.BlogWallpaperImage && this.BlogWallpaperImage.url !== null){
+      //images.wallpaper = 
+    }
+
+
+    return {
+    id: this.blogId,
+    name: this.name,
+    description: this.description,
+    websiteUrl: this.websiteUrl,
+    createdAt: this.createdAt,
+    isMembership: this.isMembership,
+    }
+
+  }
 }
 
 @Entity({ name: 'BlogBannedUsers' })

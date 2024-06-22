@@ -8,8 +8,18 @@ import {
   } from 'typeorm';
 import { Blogs } from './blog.entity';
 
+export class BlogWallpaperImageDto{
+  constructor(
+    public blogId: string,
+    public url: string | null = null,
+    public width: number | null = null,
+    public height: number | null = null,
+    public fileSize: number | null = null,
+  ){}
+}
+
 @Entity({name: 'BlogWallpaperImage'})
-export class BlogWallpaperImage{
+export class BlogWallpaperImage extends BlogWallpaperImageDto{
   @PrimaryGeneratedColumn('uuid')
   imageId: string;
   @OneToOne(() => Blogs, (blog) => blog.BlogWallpaperImage, { onDelete: 'CASCADE' })
@@ -17,18 +27,28 @@ export class BlogWallpaperImage{
   Blogs: Blogs
   @Column({ type: 'uuid' })
   blogId: string
-  @Column()
+  @Column({ nullable: true })
   url: string | null;
-  @Column()
+  @Column({ nullable: true })
   width: number | null
-  @Column()
+  @Column({ nullable: true })
   height: number | null
-  @Column()
+  @Column({ nullable: true })
   fileSize: number | null
 }
 
+export class BlogMainImageDto{
+  constructor(
+    public blogId: string,
+    public url: string | null = null,
+    public width: number | null = null,
+    public height: number | null = null,
+    public fileSize: number | null = null,
+  ){}
+}
+
 @Entity({name: 'BlogMainImage'})
-export class BlogMainImage{
+export class BlogMainImage extends BlogMainImageDto{
   @PrimaryGeneratedColumn('uuid')
   imageId: string;
   @OneToOne(() => Blogs, (blog) => blog.BlogMainImage, { onDelete: 'CASCADE' })
@@ -36,12 +56,12 @@ export class BlogMainImage{
   Blogs: Blogs
   @Column({ type: 'uuid' })
   blogId: string
-  @Column()
+  @Column({ nullable: true })
   url: string | null;
-  @Column()
+  @Column({ nullable: true })
   width: number | null
-  @Column()
+  @Column({ nullable: true })
   height: number | null
-  @Column()
+  @Column({ nullable: true })
   fileSize: number | null
 }

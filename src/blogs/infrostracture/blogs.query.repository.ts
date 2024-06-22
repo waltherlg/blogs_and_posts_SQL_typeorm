@@ -18,7 +18,7 @@ export class BlogsQueryRepository {
     if (!isValidUUID(blogId)) {
       return null;
     }
-    const result = await this.blogsRepository.find({
+    const blog: Blogs = await this.blogsRepository.findOne({
       select: {
         blogId: true,
         name: true,
@@ -29,8 +29,9 @@ export class BlogsQueryRepository {
       },
       where: { blogId, isBlogBanned: false },
     });
-    if (result.length > 0) {
-      const blog = result[0];
+    console.log('сущьность блога в репозитории ', blog);
+
+    if (blog) {
       return {
         id: blog.blogId,
         name: blog.name,
