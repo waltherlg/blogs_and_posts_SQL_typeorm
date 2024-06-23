@@ -24,6 +24,15 @@ export class BlogsRepository {
     private readonly blogMainImageRepository: Repository<BlogMainImage>,
   ) {}
 
+  async saveBlog(blog: Blogs){
+    try {
+    await this.blogsRepository.save(blog)    
+    return true
+    } catch (error) {
+      return false      
+    }
+  }
+
   async deleteBlogById(blogId: string): Promise<boolean> {
     if (!isValidUUID(blogId)) {
       return false;
@@ -52,7 +61,7 @@ export class BlogsRepository {
     return resultBlogSave.blogId;
   }
 
-  async getBlogDBTypeById(blogId): Promise<BlogDBType | null> {
+  async getBlogDBTypeById(blogId): Promise<Blogs | null> {
     if (!isValidUUID(blogId)) {
       return null;
     }

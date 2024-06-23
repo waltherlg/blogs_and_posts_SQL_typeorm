@@ -12,6 +12,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BlogMainImage, BlogWallpaperImage } from './blog.image.type';
+import { blogMainOutputType, blogWallpaperOutputType } from './blogs.types';
 
 @Entity({ name: 'Blogs' })
 export class Blogs {
@@ -54,7 +55,10 @@ export class Blogs {
 
   returnForPublic(){
 
-    let images = {
+    let images: {
+      wallpaper: blogWallpaperOutputType | null;
+      main: blogMainOutputType[];
+    } = {
       wallpaper: null,
       main: []
     }
