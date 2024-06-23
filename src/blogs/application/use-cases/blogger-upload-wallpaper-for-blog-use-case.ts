@@ -53,7 +53,7 @@ export class BloggerUploadWallpaperForBlogUseCase
         blog.BlogWallpaperImage.url = uploadedWallpaperKey
         blog.BlogWallpaperImage.width = command.metadata.width
         blog.BlogWallpaperImage.height = command.metadata.height
-        blog.BlogWallpaperImage.fileSize = command.metadata.fileSize
+        blog.BlogWallpaperImage.fileSize = command.metadata.size
 
         const saveBlogResult = await this.blogsRepository.saveBlog(blog)
         if(saveBlogResult){

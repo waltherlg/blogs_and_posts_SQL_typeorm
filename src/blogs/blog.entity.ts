@@ -47,10 +47,10 @@ export class Blogs {
   @OneToMany(() => Posts, (p) => p.Blogs)
   Posts: Posts[];
 
-  @OneToOne(() => BlogWallpaperImage, (i) => i.Blogs, {eager: true})
+  @OneToOne(() => BlogWallpaperImage, (i) => i.Blogs, {eager: true, cascade: true})
   BlogWallpaperImage: BlogWallpaperImage | null;
   
-  @OneToOne(() => BlogMainImage, (i) => i.Blogs, {eager: true})
+  @OneToOne(() => BlogMainImage, (i) => i.Blogs, {eager: true, cascade: true})
   BlogMainImage: BlogMainImage | null;
 
   returnForPublic(){

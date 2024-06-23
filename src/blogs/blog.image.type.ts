@@ -22,7 +22,7 @@ export class BlogWallpaperImageDto{
 export class BlogWallpaperImage extends BlogWallpaperImageDto{
   @PrimaryGeneratedColumn('uuid')
   imageId: string;
-  @OneToOne(() => Blogs, (blog) => blog.BlogWallpaperImage, { onDelete: 'CASCADE' })
+  @OneToOne(() => Blogs, (blog) => blog.BlogWallpaperImage, { onDelete: 'CASCADE'})
   @JoinColumn({name: 'blogId'})
   Blogs: Blogs
   @Column({ type: 'uuid' })
@@ -51,7 +51,7 @@ export class BlogMainImageDto{
 export class BlogMainImage extends BlogMainImageDto{
   @PrimaryGeneratedColumn('uuid')
   imageId: string;
-  @OneToOne(() => Blogs, (blog) => blog.BlogMainImage, { onDelete: 'CASCADE' })
+  @OneToOne(() => Blogs, (blog) => blog.BlogMainImage, { onDelete: 'CASCADE'})
   @JoinColumn({name: 'blogId'})
   Blogs: Blogs
   @Column({ type: 'uuid' })

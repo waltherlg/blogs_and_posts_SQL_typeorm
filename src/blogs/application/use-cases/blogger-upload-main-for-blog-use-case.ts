@@ -9,6 +9,7 @@ import { S3StorageAdapter } from '../../../adapters/file-storage-adapter';
 import { CheckService } from '../../../other.services/check.service';
 import { ActionResult } from '../../../helpers/enum.action.result.helper';
 import { url } from 'inspector';
+import { Blogs } from '../../blog.entity';
 const sharp = require('sharp');
 
 export class BloggerUploadMainForBlogCommand {
@@ -31,46 +32,43 @@ export class BloggerUploadMainForBlogUseCase
     private readonly checkService: CheckService,
   ) {}
   async execute(command: BloggerUploadMainForBlogCommand) {
-    if (
-      !(await this.checkService.isUserOwnerOfBlog(
-        command.userId,
-        command.blogId,
-      ))
-    ) {
-      return ActionResult.NotOwner;
-    }
-
     const userId = command.userId;
     const blogId = command.blogId;
     const buffer = command.blogMainFile.buffer;
     const metadata = command.metadata;
 
-    
-
+    const blog: Blogs = await this.blogsRepository.getBlogDBTypeById(blogId)
+    if(!blog) return ActionResult.BlogNotFound
+    if(blog.userId !== userId) return ActionResult.NotOwner;
+console.log(blog);
     try {
-      const uploadedMainKey = await this.s3StorageAdapter.saveBlogMain(userId, blogId, buffer, metadata)
-      const main = [{
-        url: uploadedMainKey,
-        width: command.metadata.width,
-        height: command.metadata.height,
-        fileSize: command.metadata.size,
-      }]
+      const uploadedMainKey = await this.s3StorageAdapter.saveBlogMain(
+        userId, 
+        blogId, 
+        buffer, 
+        metadata)
 
-      let wallpaper = null
-      const blogWallpaperMetadata = await this.s3StorageAdapter.getBlogWallpaperKeyAndMetadata(userId, blogId)
-      if(blogWallpaperMetadata){
-        wallpaper = {
-          url: blogWallpaperMetadata.key,
-          width: blogWallpaperMetadata.width,
-          height: blogWallpaperMetadata.height,
-          fileSize: blogWallpaperMetadata.size,
+        blog.BlogMainImage.url = uploadedMainKey
+        blog.BlogMainImage.width = command.metadata.width
+        blog.BlogMainImage.height = command.metadata.height
+        blog.BlogMainImage.fileSize = command.metadata.size
+
+        
+        
+
+        const saveBlogResult = await this.blogsRepository.saveBlog(blog)
+        if(saveBlogResult){
+          const images = blog.returnForPublic().images
+          return images
+        } else {
+          return ActionResult.NotCreated
         }
-      }
-      return { wallpaper, main };
 
 
     } catch (error) {
-      return ActionResult.NotCreated;
+      console.log(error);
+      
+      return ActionResult.NotCreated;3
     }
   }
 }
