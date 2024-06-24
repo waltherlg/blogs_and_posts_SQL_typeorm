@@ -100,7 +100,7 @@ export function testBloggerImageOperation18() {
       });
     });
 
-    it('01-09 blogger/blogs/:blogId/image/wallpaper POST = 201 user1 create new blog', async () => {
+    it('01-09 blogger/blogs/:blogId/image/wallpaper POST = 201 user1 upload wallpaper for blog', async () => {
       const imagePath = path.join(__dirname, 'helpers', 'uploadFiles', 'blog_wallpaper.png')
       const testsResponse = await request(app.getHttpServer())
         .post(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/images/wallpapers`)
@@ -111,6 +111,19 @@ export function testBloggerImageOperation18() {
       const createdResponse = testsResponse.body;
 
       expect(createdResponse).toEqual(testOutputImage.afterWallpaperLoad);
+    });
+
+    it('01-09 blogger/blogs/:blogId/image/main POST = 201 user1 upload main for blog', async () => {
+      const imagePath = path.join(__dirname, 'helpers', 'uploadFiles', 'blog_main.png')
+      const testsResponse = await request(app.getHttpServer())
+        .post(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/images/main`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .attach('file', imagePath)
+        .expect(201);
+
+      const createdResponse = testsResponse.body;
+
+      expect(createdResponse).toEqual(testOutputImage.afterWallpaperAndMainLoad);
     });
   });
 }
