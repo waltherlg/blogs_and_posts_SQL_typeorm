@@ -49,6 +49,10 @@ export const testOutputBlogBody = {
     websiteUrl: 'https://www.someweb.com',
     createdAt: expect.any(String),
     isMembership: false,
+    images: {
+      wallpaper: null,
+      main: []
+    }
   },
   blog2: {
     id: expect.any(String),
@@ -57,6 +61,10 @@ export const testOutputBlogBody = {
     websiteUrl: 'https://www.someweb.com',
     createdAt: expect.any(String),
     isMembership: false,
+    images: {
+      wallpaper: null,
+      main: []
+    }
   },
   blog3: {
     id: expect.any(String),
@@ -65,6 +73,10 @@ export const testOutputBlogBody = {
     websiteUrl: 'https://www.someweb.com',
     createdAt: expect.any(String),
     isMembership: false,
+    images: {
+      wallpaper: null,
+      main: []
+    }
   },
   blog4: {
     id: expect.any(String),
@@ -73,6 +85,10 @@ export const testOutputBlogBody = {
     websiteUrl: 'https://www.someweb.com',
     createdAt: expect.any(String),
     isMembership: false,
+    images: {
+      wallpaper: null,
+      main: []
+    }
   },
   Tim: {
     id: expect.any(String),
@@ -81,6 +97,10 @@ export const testOutputBlogBody = {
     websiteUrl: 'https://someurl.com',
     createdAt: expect.any(String),
     isMembership: false,
+    images: {
+      wallpaper: null,
+      main: []
+    }
   },
   Tima: {
     id: expect.any(String),
@@ -89,6 +109,10 @@ export const testOutputBlogBody = {
     websiteUrl: 'https://someurl.com',
     createdAt: expect.any(String),
     isMembership: false,
+    images: {
+      wallpaper: null,
+      main: []
+    }
   },
   Timma: {
     id: expect.any(String),
@@ -97,6 +121,10 @@ export const testOutputBlogBody = {
     websiteUrl: 'https://someurl.com',
     createdAt: expect.any(String),
     isMembership: false,
+    images: {
+      wallpaper: null,
+      main: []
+    }
   },
   timm: {
     id: expect.any(String),
@@ -105,5 +133,9 @@ export const testOutputBlogBody = {
     websiteUrl: 'https://someurl.com',
     createdAt: expect.any(String),
     isMembership: false,
+    images: {
+      wallpaper: null,
+      main: []
+    }
   },
 };

@@ -22,6 +22,7 @@ import { quizGameStatisticOperations17 } from './17-00-quiz.game.statistic.opera
 import { onlyQuizGameCreateSa1602 } from './16-02-only.quiz.game.create.e2e-spec copy';
 import { testBloggerPaginationTest0502 } from './05-02-blogger.blogs.pagination.check-e2e-spec';
 import { banCheckOperation } from './10-ban.check.operation.e2e-spec';
+import { testBloggerImageOperation18 } from './18-00-blogger.image.operations-e2e-spec';
 
 describe('End-to-End Tests', () => {
   // testSaUsersCrud();
@@ -38,7 +39,7 @@ describe('End-to-End Tests', () => {
   // commentCrudOperations(); // this comment CRUD if blog create blogger
   // saCommentCrudOperations();
   // testCommentLikesCrud();
-  banCheckOperation(); //like check
+  // banCheckOperation(); //like check
   // commentPaginationTest14()
   // onlyCommentLikesCrud13(); // только для проверки создания лайка для комментария
   // commentLikesWithUserBanCrud1301();
@@ -49,4 +50,5 @@ describe('End-to-End Tests', () => {
   // quizGameCrudOperationsSa1601()
   // onlyQuizGameCreateSa1602();
   // quizGameStatisticOperations17();
+  testBloggerImageOperation18()
 });
