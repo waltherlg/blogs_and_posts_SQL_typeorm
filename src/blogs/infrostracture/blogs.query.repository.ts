@@ -190,14 +190,7 @@ export class BlogsQueryRepository {
     const pageCount = Math.ceil(blogsCount / pageSize);
 
     const blogsForOutput = blogs.map((blog) => {
-      return {
-        id: blog.blogId,
-        name: blog.name,
-        description: blog.description,
-        websiteUrl: blog.websiteUrl,
-        createdAt: blog.createdAt,
-        isMembership: blog.isMembership,
-      };
+      return blog.returnForPublic();
     });
     const outputBlogs = {
       pagesCount: pageCount,

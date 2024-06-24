@@ -6,6 +6,9 @@ import { endpoints } from './helpers/routing';
 import { testUser } from './helpers/inputAndOutputObjects/usersObjects';
 import { addAppSettings } from '../src/helpers/settings';
 import { testInputBlogBody, testOutputBlogBody } from './helpers/inputAndOutputObjects/blogsObjects';
+import * as path from 'path';
+import { testOutputImage } from './helpers/inputAndOutputObjects/imageObject';
+
 export function testBloggerImageOperation18() {
   describe('Blogger image operation "if all is ok" (e2e). ', () => {
     let app: INestApplication;
@@ -95,6 +98,19 @@ export function testBloggerImageOperation18() {
           testOutputBlogBody.blog1
         ],
       });
+    });
+
+    it('01-09 blogger/blogs/:blogId/image/wallpaper POST = 201 user1 create new blog', async () => {
+      const imagePath = path.join(__dirname, 'helpers', 'uploadFiles', 'blog_wallpaper.png')
+      const testsResponse = await request(app.getHttpServer())
+        .post(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/images/wallpapers`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .attach('file', imagePath)
+        .expect(201);
+
+      const createdResponse = testsResponse.body;
+
+      expect(createdResponse).toEqual(testOutputImage.afterWallpaperLoad);
     });
   });
 }
