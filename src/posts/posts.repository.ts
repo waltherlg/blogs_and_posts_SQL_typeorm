@@ -20,8 +20,10 @@ export class PostsRepository {
   //TODO: add transaction
   async createPost(postDTO: PostDBType): Promise<string> {
     const result = await this.postsRepository.save(postDTO);
-    const emptyPostMainImage = new PostMainImage(postDTO.postId)
-    const saveImageResult = await this.postsMainImageRepository.save(emptyPostMainImage)
+    const emptyPostMainImage = new PostMainImage(postDTO.postId);
+    const saveImageResult = await this.postsMainImageRepository.save(
+      emptyPostMainImage,
+    );
     return result.postId;
   }
 

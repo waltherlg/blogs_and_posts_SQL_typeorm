@@ -136,10 +136,10 @@ export class S3StorageAdapter {
 
   async getBlogWallpaperKeyAndMetadata(userId: string, blogId: string) {
     const key = `content/images/${userId}/blogs/${blogId}_blog_wallpaper.png`;
-    let blogWallpaperMetadata = await this.getImageFile(key);
-    
+    const blogWallpaperMetadata = await this.getImageFile(key);
+
     if (blogWallpaperMetadata) {
-      blogWallpaperMetadata.Metadata.key = key
+      blogWallpaperMetadata.Metadata.key = key;
       return blogWallpaperMetadata.Metadata;
     } else {
       return null;
@@ -149,9 +149,9 @@ export class S3StorageAdapter {
   async getBlogMainKeyAndMetadata(userId: string, blogId: string) {
     const key = `content/images/${userId}/blogs/${blogId}_blog_main.png`;
     const blogMain = await this.getImageFile(key);
-    
+
     if (blogMain) {
-      blogMain.Metadata.key = key
+      blogMain.Metadata.key = key;
       return blogMain.Metadata;
     } else {
       return null;
@@ -164,7 +164,13 @@ export class S3StorageAdapter {
     return uploadResult.Key;
   }
 
-  async savePostMain(userId: string, blogId: string, postId: string, bufer: Buffer, metadata) {
+  async savePostMain(
+    userId: string,
+    blogId: string,
+    postId: string,
+    bufer: Buffer,
+    metadata,
+  ) {
     const uploadKey = `content/images/${userId}/blogs/${blogId}/posts/${postId}_post_main.png`;
     const uploadResult = await this.saveImageFile(uploadKey, bufer, metadata);
     return uploadResult.Key;

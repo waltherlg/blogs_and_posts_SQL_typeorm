@@ -47,50 +47,53 @@ export class Blogs {
   @OneToMany(() => Posts, (p) => p.Blogs)
   Posts: Posts[];
 
-  @OneToOne(() => BlogWallpaperImage, (i) => i.Blogs, {eager: true, cascade: true})
+  @OneToOne(() => BlogWallpaperImage, (i) => i.Blogs, {
+    eager: true,
+    cascade: true,
+  })
   BlogWallpaperImage: BlogWallpaperImage | null;
-  
-  @OneToOne(() => BlogMainImage, (i) => i.Blogs, {eager: true, cascade: true})
+
+  @OneToOne(() => BlogMainImage, (i) => i.Blogs, { eager: true, cascade: true })
   BlogMainImage: BlogMainImage | null;
 
-  returnForPublic(){
-
-    let images: {
+  returnForPublic() {
+    const images: {
       wallpaper: blogWallpaperOutputType | null;
       main: blogMainOutputType[];
     } = {
       wallpaper: null,
-      main: []
-    }
+      main: [],
+    };
 
-    if(this.BlogWallpaperImage && this.BlogWallpaperImage.url !== null){
+    if (this.BlogWallpaperImage && this.BlogWallpaperImage.url !== null) {
       images.wallpaper = {
         url: this.BlogWallpaperImage.url,
         width: this.BlogWallpaperImage.width,
         height: this.BlogWallpaperImage.height,
-        fileSize: this.BlogWallpaperImage.fileSize
-      }
+        fileSize: this.BlogWallpaperImage.fileSize,
+      };
     }
 
-    if(this.BlogMainImage && this.BlogMainImage.url !== null){
-      images.main = [{
-        url: this.BlogMainImage.url,
-        width: this.BlogMainImage.width,
-        height: this.BlogMainImage.height,
-        fileSize: this.BlogMainImage.fileSize
-      }]
+    if (this.BlogMainImage && this.BlogMainImage.url !== null) {
+      images.main = [
+        {
+          url: this.BlogMainImage.url,
+          width: this.BlogMainImage.width,
+          height: this.BlogMainImage.height,
+          fileSize: this.BlogMainImage.fileSize,
+        },
+      ];
     }
 
     return {
-    id: this.blogId,
-    name: this.name,
-    description: this.description,
-    websiteUrl: this.websiteUrl,
-    createdAt: this.createdAt,
-    isMembership: this.isMembership,
-    images: images
-    }
-
+      id: this.blogId,
+      name: this.name,
+      description: this.description,
+      websiteUrl: this.websiteUrl,
+      createdAt: this.createdAt,
+      isMembership: this.isMembership,
+      images: images,
+    };
   }
 }
 
@@ -116,5 +119,3 @@ export class BlogBannedUsers {
   @Column()
   banReason: string;
 }
-
-

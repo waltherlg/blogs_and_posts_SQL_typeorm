@@ -32,7 +32,7 @@ export class BlogsQueryRepository {
     console.log('сущьность блога в репозитории ', blog);
 
     if (blog) {
-      return blog.returnForPublic()
+      return blog.returnForPublic();
     }
     return null;
   }

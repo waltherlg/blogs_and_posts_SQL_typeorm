@@ -51,8 +51,8 @@ export const testOutputBlogBody = {
     isMembership: false,
     images: {
       wallpaper: null,
-      main: []
-    }
+      main: [],
+    },
   },
   blog2: {
     id: expect.any(String),
@@ -63,8 +63,8 @@ export const testOutputBlogBody = {
     isMembership: false,
     images: {
       wallpaper: null,
-      main: []
-    }
+      main: [],
+    },
   },
   blog3: {
     id: expect.any(String),
@@ -75,8 +75,8 @@ export const testOutputBlogBody = {
     isMembership: false,
     images: {
       wallpaper: null,
-      main: []
-    }
+      main: [],
+    },
   },
   blog4: {
     id: expect.any(String),
@@ -87,8 +87,8 @@ export const testOutputBlogBody = {
     isMembership: false,
     images: {
       wallpaper: null,
-      main: []
-    }
+      main: [],
+    },
   },
   Tim: {
     id: expect.any(String),
@@ -99,8 +99,8 @@ export const testOutputBlogBody = {
     isMembership: false,
     images: {
       wallpaper: null,
-      main: []
-    }
+      main: [],
+    },
   },
   Tima: {
     id: expect.any(String),
@@ -111,8 +111,8 @@ export const testOutputBlogBody = {
     isMembership: false,
     images: {
       wallpaper: null,
-      main: []
-    }
+      main: [],
+    },
   },
   Timma: {
     id: expect.any(String),
@@ -123,8 +123,8 @@ export const testOutputBlogBody = {
     isMembership: false,
     images: {
       wallpaper: null,
-      main: []
-    }
+      main: [],
+    },
   },
   timm: {
     id: expect.any(String),
@@ -135,7 +135,7 @@ export const testOutputBlogBody = {
     isMembership: false,
     images: {
       wallpaper: null,
-      main: []
-    }
+      main: [],
+    },
   },
 };

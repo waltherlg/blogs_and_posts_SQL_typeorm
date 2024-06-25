@@ -284,7 +284,7 @@ export class BloggerBlogsController {
         metadata,
       ),
     );
-    handleActionResult(result)
+    handleActionResult(result);
     return result;
   }
 
@@ -317,8 +317,7 @@ export class BloggerBlogsController {
         metadata,
       ),
     );
-    handleActionResult(result)
+    handleActionResult(result);
     return result;
   }
-
 }

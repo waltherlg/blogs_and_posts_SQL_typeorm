@@ -169,7 +169,7 @@ const useCases = [
   PlayerRequestOwnStatisticUseCase,
   BloggerUploadWallpaperForBlogUseCase,
   BloggerUploadMainForBlogUseCase,
-  BloggerUploadMainForPostUseCase
+  BloggerUploadMainForPostUseCase,
 ];
 
 @Module({
@@ -189,7 +189,7 @@ const useCases = [
       QuizAnswers,
       PlayerStatistic,
       BlogWallpaperImage,
-      BlogMainImage
+      BlogMainImage,
     ]),
     CqrsModule,
     ThrottlerModule.forRoot({

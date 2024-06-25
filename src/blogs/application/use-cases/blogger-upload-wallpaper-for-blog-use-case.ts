@@ -37,9 +37,9 @@ export class BloggerUploadWallpaperForBlogUseCase
     const buffer = command.blogWallpaperFile.buffer;
     const metadata = command.metadata;
 
-    const blog: Blogs = await this.blogsRepository.getBlogDBTypeById(blogId)
-    if(!blog) return ActionResult.BlogNotFound
-    if(blog.userId !== userId) return ActionResult.NotOwner;
+    const blog: Blogs = await this.blogsRepository.getBlogDBTypeById(blogId);
+    if (!blog) return ActionResult.BlogNotFound;
+    if (blog.userId !== userId) return ActionResult.NotOwner;
 
     try {
       const uploadedWallpaperKey =
@@ -50,18 +50,18 @@ export class BloggerUploadWallpaperForBlogUseCase
           metadata,
         );
 
-        blog.BlogWallpaperImage.url = uploadedWallpaperKey
-        blog.BlogWallpaperImage.width = command.metadata.width
-        blog.BlogWallpaperImage.height = command.metadata.height
-        blog.BlogWallpaperImage.fileSize = command.metadata.size
+      blog.BlogWallpaperImage.url = uploadedWallpaperKey;
+      blog.BlogWallpaperImage.width = command.metadata.width;
+      blog.BlogWallpaperImage.height = command.metadata.height;
+      blog.BlogWallpaperImage.fileSize = command.metadata.size;
 
-        const saveBlogResult = await this.blogsRepository.saveBlog(blog)
-        if(saveBlogResult){
-          const images = blog.returnForPublic().images
-          return images
-        } else {
-          return ActionResult.NotCreated
-        }
+      const saveBlogResult = await this.blogsRepository.saveBlog(blog);
+      if (saveBlogResult) {
+        const images = blog.returnForPublic().images;
+        return images;
+      } else {
+        return ActionResult.NotCreated;
+      }
     } catch (error) {
       return ActionResult.NotCreated;
     }

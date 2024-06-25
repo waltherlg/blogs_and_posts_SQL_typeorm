@@ -29,7 +29,7 @@ export type BlogTypeOutput = {
   images: {
     wallpaper: blogWallpaperOutputType | null;
     main: blogMainOutputType[];
-  }
+  };
 };
 
 export type blogSaTypeOutput = {
@@ -53,14 +53,17 @@ type blogBanInfoType = {
 };
 
 export type blogWallpaperOutputType = {
-  url: string,
-  width: number,
-  height: number,
-  fileSize: number,
-} | null
+  url: string;
+  width: number;
+  height: number;
+  fileSize: number;
+} | null;
 
-export type blogMainOutputType = {   
-    url: string,
-    width: number,
-    height: number,
-    fileSize: number, } | []
+export type blogMainOutputType =
+  | {
+      url: string;
+      width: number;
+      height: number;
+      fileSize: number;
+    }
+  | [];

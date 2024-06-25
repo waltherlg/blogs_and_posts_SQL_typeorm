@@ -8,7 +8,12 @@ import { DataSource, Repository } from 'typeorm';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { BlogBannedUsers, Blogs } from '../blog.entity';
-import { BlogMainImage, BlogMainImageDto, BlogWallpaperImage, BlogWallpaperImageDto } from '../blog.image.type';
+import {
+  BlogMainImage,
+  BlogMainImageDto,
+  BlogWallpaperImage,
+  BlogWallpaperImageDto,
+} from '../blog.image.type';
 
 @Injectable()
 export class BlogsRepository {
@@ -24,12 +29,12 @@ export class BlogsRepository {
     private readonly blogMainImageRepository: Repository<BlogMainImage>,
   ) {}
 
-  async saveBlog(blog: Blogs){
+  async saveBlog(blog: Blogs) {
     try {
-    await this.blogsRepository.save(blog)    
-    return true
+      await this.blogsRepository.save(blog);
+      return true;
     } catch (error) {
-      return false      
+      return false;
     }
   }
 
@@ -50,13 +55,13 @@ export class BlogsRepository {
   async createBlog(blogDTO: BlogDBType): Promise<string> {
     const resultBlogSave = await this.blogsRepository.save(blogDTO);
 
-    const blogWallpaper = new BlogWallpaperImageDto(
-      blogDTO.blogId)
-    const blogWallpaperResult = await this.blogWallpaperImageRepository.save(blogWallpaper)
+    const blogWallpaper = new BlogWallpaperImageDto(blogDTO.blogId);
+    const blogWallpaperResult = await this.blogWallpaperImageRepository.save(
+      blogWallpaper,
+    );
 
-    const blogMain = new BlogMainImageDto(
-      blogDTO.blogId)
-    const blogMainResult = await this.blogMainImageRepository.save(blogMain)
+    const blogMain = new BlogMainImageDto(blogDTO.blogId);
+    const blogMainResult = await this.blogMainImageRepository.save(blogMain);
 
     return resultBlogSave.blogId;
   }

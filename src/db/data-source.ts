@@ -34,7 +34,7 @@ export default new DataSource({
     QuizGames,
     PlayerStatistic,
     BlogWallpaperImage,
-    BlogMainImage
+    BlogMainImage,
   ],
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
   migrationsTableName: 'custom_migration_table',

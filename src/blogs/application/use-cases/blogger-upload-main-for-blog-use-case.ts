@@ -37,38 +37,35 @@ export class BloggerUploadMainForBlogUseCase
     const buffer = command.blogMainFile.buffer;
     const metadata = command.metadata;
 
-    const blog: Blogs = await this.blogsRepository.getBlogDBTypeById(blogId)
-    if(!blog) return ActionResult.BlogNotFound
-    if(blog.userId !== userId) return ActionResult.NotOwner;
-console.log(blog);
+    const blog: Blogs = await this.blogsRepository.getBlogDBTypeById(blogId);
+    if (!blog) return ActionResult.BlogNotFound;
+    if (blog.userId !== userId) return ActionResult.NotOwner;
+    console.log(blog);
     try {
       const uploadedMainKey = await this.s3StorageAdapter.saveBlogMain(
-        userId, 
-        blogId, 
-        buffer, 
-        metadata)
+        userId,
+        blogId,
+        buffer,
+        metadata,
+      );
 
-        blog.BlogMainImage.url = uploadedMainKey
-        blog.BlogMainImage.width = command.metadata.width
-        blog.BlogMainImage.height = command.metadata.height
-        blog.BlogMainImage.fileSize = command.metadata.size
+      blog.BlogMainImage.url = uploadedMainKey;
+      blog.BlogMainImage.width = command.metadata.width;
+      blog.BlogMainImage.height = command.metadata.height;
+      blog.BlogMainImage.fileSize = command.metadata.size;
 
-        
-        
-
-        const saveBlogResult = await this.blogsRepository.saveBlog(blog)
-        if(saveBlogResult){
-          const images = blog.returnForPublic().images
-          return images
-        } else {
-          return ActionResult.NotCreated
-        }
-
-
+      const saveBlogResult = await this.blogsRepository.saveBlog(blog);
+      if (saveBlogResult) {
+        const images = blog.returnForPublic().images;
+        return images;
+      } else {
+        return ActionResult.NotCreated;
+      }
     } catch (error) {
       console.log(error);
-      
-      return ActionResult.NotCreated;3
+
+      return ActionResult.NotCreated;
+      3;
     }
   }
 }

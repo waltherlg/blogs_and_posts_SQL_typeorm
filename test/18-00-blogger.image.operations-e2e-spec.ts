@@ -5,7 +5,10 @@ import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testUser } from './helpers/inputAndOutputObjects/usersObjects';
 import { addAppSettings } from '../src/helpers/settings';
-import { testInputBlogBody, testOutputBlogBody } from './helpers/inputAndOutputObjects/blogsObjects';
+import {
+  testInputBlogBody,
+  testOutputBlogBody,
+} from './helpers/inputAndOutputObjects/blogsObjects';
 import * as path from 'path';
 import { testOutputImage } from './helpers/inputAndOutputObjects/imageObject';
 
@@ -94,16 +97,21 @@ export function testBloggerImageOperation18() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [
-          testOutputBlogBody.blog1
-        ],
+        items: [testOutputBlogBody.blog1],
       });
     });
 
     it('01-09 blogger/blogs/:blogId/image/wallpaper POST = 201 user1 upload wallpaper for blog', async () => {
-      const imagePath = path.join(__dirname, 'helpers', 'uploadFiles', 'blog_wallpaper.png')
+      const imagePath = path.join(
+        __dirname,
+        'helpers',
+        'uploadFiles',
+        'blog_wallpaper.png',
+      );
       const testsResponse = await request(app.getHttpServer())
-        .post(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/images/wallpapers`)
+        .post(
+          `${endpoints.bloggerBlogs}/${firstCreatedBlogId}/images/wallpapers`,
+        )
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .attach('file', imagePath)
         .expect(201);
@@ -114,7 +122,12 @@ export function testBloggerImageOperation18() {
     });
 
     it('01-09 blogger/blogs/:blogId/image/main POST = 201 user1 upload main for blog', async () => {
-      const imagePath = path.join(__dirname, 'helpers', 'uploadFiles', 'blog_main.png')
+      const imagePath = path.join(
+        __dirname,
+        'helpers',
+        'uploadFiles',
+        'blog_main.png',
+      );
       const testsResponse = await request(app.getHttpServer())
         .post(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/images/main`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
@@ -123,7 +136,9 @@ export function testBloggerImageOperation18() {
 
       const createdResponse = testsResponse.body;
 
-      expect(createdResponse).toEqual(testOutputImage.afterWallpaperAndMainLoad);
+      expect(createdResponse).toEqual(
+        testOutputImage.afterWallpaperAndMainLoad,
+      );
     });
   });
 }

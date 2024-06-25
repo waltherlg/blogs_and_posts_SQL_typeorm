@@ -46,6 +46,6 @@ export class Posts {
   @JoinColumn({ name: 'postId' })
   PostLikes: PostLikes[];
 
-  @OneToOne(() => PostMainImage, (i) => i.Posts, {eager: true, cascade: true})
+  @OneToOne(() => PostMainImage, (i) => i.Posts, { eager: true, cascade: true })
   PostMainImage: PostMainImage | null;
 }
