@@ -6,6 +6,7 @@ import { PostsRepository } from '../../../posts/posts.repository';
 import { PostDBType } from '../../../posts/posts.types';
 import { v4 as uuidv4 } from 'uuid';
 import { ActionResult } from '../../../helpers/enum.action.result.helper';
+import { Posts } from '../../../posts/post.entity';
 
 export class CreatePostFromBloggerControllerCommand {
   constructor(
@@ -30,7 +31,7 @@ export class CreatePostFromBloggerControllerUseCase
     const blog = await this.blogsRepository.getBlogDBTypeById(command.blogId);
     if (!blog) return ActionResult.BlogNotFound;
     if (blog.userId !== command.userId) return ActionResult.NotOwner;
-    const postDto = new PostDBType(
+    const postDto = new Posts(
       uuidv4(),
       command.postCreateDto.title,
       command.postCreateDto.shortDescription,

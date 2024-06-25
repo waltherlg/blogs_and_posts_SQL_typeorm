@@ -18,13 +18,24 @@ export class PostsRepository {
   ) {}
 
   //TODO: add transaction
-  async createPost(postDTO: PostDBType): Promise<string> {
-    const result = await this.postsRepository.save(postDTO);
-    const emptyPostMainImage = new PostMainImage(postDTO.postId);
-    const saveImageResult = await this.postsMainImageRepository.save(
-      emptyPostMainImage,
-    );
-    return result.postId;
+  async createPost(postDTO: Posts): Promise<string> {
+    const queryRunner = this.dataSource.createQueryRunner()
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+    try {
+      const result = await queryRunner.manager.save(postDTO);
+      const emptyPostMainImage = new PostMainImage(postDTO.postId);
+      await queryRunner.manager.save(emptyPostMainImage);
+  
+      await queryRunner.commitTransaction();
+      return result.postId;
+    } catch (error) {
+      console.error('Post not created:', error);
+      await queryRunner.rollbackTransaction();
+      return null;
+    } finally {
+      await queryRunner.release();
+    }
   }
 
   async deletePostById(postId: string): Promise<boolean> {

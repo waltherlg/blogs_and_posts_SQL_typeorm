@@ -8,6 +8,7 @@ import { PostLikeDbType } from '../likes/db.likes.types';
 import { sortDirectionFixer } from '../helpers/helpers.functions';
 import { Posts } from './post.entity';
 import { PostLikes } from '../likes/like.entity';
+import { postMainOutputType } from './post.image.type';
 
 @Injectable()
 export class PostsQueryRepository {
@@ -154,6 +155,25 @@ export class PostsQueryRepository {
           myStatus = foundLike.status;
         }
       }
+
+      const images: {
+        main: postMainOutputType[];
+      } = {
+        main: [],
+      };
+  
+      if (post.PostMainImage && post.PostMainImage.url !== null) {
+        images.main = [
+          {
+            url: post.PostMainImage.url,
+            width: post.PostMainImage.width,
+            height: post.PostMainImage.height,
+            fileSize: post.PostMainImage.fileSize,
+          },
+        ];
+      }
+
+
       return {
         id: post.postId,
         title: post.title,
@@ -168,6 +188,7 @@ export class PostsQueryRepository {
           myStatus: myStatus,
           newestLikes: newestLikes,
         },
+        images: images
       };
     });
 

@@ -11,10 +11,11 @@ import {
   PrimaryColumn,
 } from 'typeorm';
 import { PostLikes } from '../likes/like.entity';
-import { PostMainImage } from './post.image.type';
+import { PostMainImage, postMainOutputType } from './post.image.type';
+import { PostDBType } from './posts.types';
 
 @Entity({ name: 'Posts' })
-export class Posts {
+export class Posts extends PostDBType {
   @PrimaryColumn('uuid')
   postId: string;
   @Column()
@@ -48,4 +49,26 @@ export class Posts {
 
   @OneToOne(() => PostMainImage, (i) => i.Posts, { eager: true, cascade: true })
   PostMainImage: PostMainImage | null;
+
+  returnForPublic(){
+    const images: {
+      main: postMainOutputType[];
+    } = {
+      main: [],
+    };
+
+    if (this.PostMainImage && this.PostMainImage.url !== null) {
+      images.main = [
+        {
+          url: this.PostMainImage.url,
+          width: this.PostMainImage.width,
+          height: this.PostMainImage.height,
+          fileSize: this.PostMainImage.fileSize,
+        },
+      ];
+    }
+
+
+
+  }
 }
