@@ -5,6 +5,7 @@ import { DataSource, Repository } from 'typeorm';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { Posts } from './post.entity';
+import { PostMainImage } from './post.image.type';
 
 @Injectable()
 export class PostsRepository {
@@ -12,10 +13,15 @@ export class PostsRepository {
     @InjectDataSource() protected dataSource: DataSource,
     @InjectRepository(Posts)
     private readonly postsRepository: Repository<Posts>,
+    @InjectRepository(PostMainImage)
+    private readonly postsMainImageRepository: Repository<PostMainImage>,
   ) {}
 
+  //TODO: add transaction
   async createPost(postDTO: PostDBType): Promise<string> {
     const result = await this.postsRepository.save(postDTO);
+    const emptyPostMainImage = new PostMainImage(postDTO.postId)
+    const saveImageResult = await this.postsMainImageRepository.save(emptyPostMainImage)
     return result.postId;
   }
 
