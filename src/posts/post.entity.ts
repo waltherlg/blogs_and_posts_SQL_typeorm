@@ -7,9 +7,11 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryColumn,
 } from 'typeorm';
 import { PostLikes } from '../likes/like.entity';
+import { PostMainImage } from './post.image.type';
 
 @Entity({ name: 'Posts' })
 export class Posts {
@@ -43,4 +45,7 @@ export class Posts {
   @OneToMany(() => PostLikes, (pl) => pl.Posts)
   @JoinColumn({ name: 'postId' })
   PostLikes: PostLikes[];
+
+  @OneToOne(() => PostMainImage, (i) => i.Posts, {eager: true, cascade: true})
+  PostMainImage: PostMainImage | null;
 }
