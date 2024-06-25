@@ -17,7 +17,15 @@ export class PostsRepository {
     private readonly postsMainImageRepository: Repository<PostMainImage>,
   ) {}
 
-  //TODO: add transaction
+ 
+  async savePost(post: Posts): Promise<boolean> {
+    try {
+      await this.postsRepository.save(post)
+      return true
+    } catch (error) {
+      return false      
+    }
+  }
   async createPost(postDTO: Posts): Promise<string> {
     const queryRunner = this.dataSource.createQueryRunner()
     await queryRunner.connect();
@@ -46,7 +54,7 @@ export class PostsRepository {
     return result.affected > 0;
   }
 
-  async getPostDBTypeById(postId): Promise<PostDBType | null> {
+  async getPostDBTypeById(postId): Promise<Posts | null> {
     if (!isValidUUID(postId)) {
       return null;
     }

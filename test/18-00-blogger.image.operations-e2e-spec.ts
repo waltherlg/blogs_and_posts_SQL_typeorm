@@ -11,6 +11,7 @@ import {
 } from './helpers/inputAndOutputObjects/blogsObjects';
 import * as path from 'path';
 import { testOutputImage } from './helpers/inputAndOutputObjects/imageObject';
+import { testPosts } from './helpers/inputAndOutputObjects/postsObjects';
 
 export function testBloggerImageOperation18() {
   describe('Blogger image operation "if all is ok" (e2e). ', () => {
@@ -139,6 +140,19 @@ export function testBloggerImageOperation18() {
       expect(createdResponse).toEqual(
         testOutputImage.afterWallpaperAndMainLoad,
       );
+    });
+
+    it('01-02 blogger/blogId/posts POST = 201 user1 create new post', async () => {
+      const testsResponse = await request(app.getHttpServer())
+        .post(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .send(testPosts.inputBodyPost1forBlog1)
+        .expect(201);
+
+      const createdResponse = testsResponse.body;
+      createdPostId = createdResponse.id;
+
+      expect(createdResponse).toEqual(testPosts.outputPost1forBlog1);
     });
   });
 }
