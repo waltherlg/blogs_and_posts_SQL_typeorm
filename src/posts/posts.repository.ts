@@ -61,6 +61,8 @@ export class PostsRepository {
     const result = await this.postsRepository.findOne({
       where: [{ postId: postId }],
     });
+    console.log('post db typebyid ', result);
+    
     return result;
   }
 

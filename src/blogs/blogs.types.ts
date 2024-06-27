@@ -28,7 +28,7 @@ export type BlogTypeOutput = {
   isMembership: boolean;
   images: {
     wallpaper: blogWallpaperOutputType | null;
-    main: blogMainOutputType[];
+    main: blogMainOutputType[] | [];
   };
 };
 
@@ -60,10 +60,9 @@ export type blogWallpaperOutputType = {
 } | null;
 
 export type blogMainOutputType =
-  | {
+    {
       url: string;
       width: number;
       height: number;
       fileSize: number;
-    }
-  | [];
+    };

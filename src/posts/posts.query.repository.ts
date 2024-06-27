@@ -8,7 +8,7 @@ import { PostLikeDbType } from '../likes/db.likes.types';
 import { sortDirectionFixer } from '../helpers/helpers.functions';
 import { Posts } from './post.entity';
 import { PostLikes } from '../likes/like.entity';
-import { postMainOutputType } from './post.image.type';
+import { PostMainImage, postMainOutputType } from './post.image.type';
 
 @Injectable()
 export class PostsQueryRepository {
@@ -23,21 +23,38 @@ export class PostsQueryRepository {
     if (!isValidUUID(postId)) {
       return null;
     }
+    //TODO: remove after check
+    // const postQueryBuilder = this.postsRepository.createQueryBuilder('post');
+    // postQueryBuilder
+    //   .leftJoin('post.Blogs', 'blog')
+    //   .leftJoin('post.PostMainImage', 'main')
+    //   .select('post.*')
+    //   .addSelect('main.*', 'image')
+    //   //.select('post.postId', 'postId')
+    //   // .addSelect('post.title', 'title')
+    //   // .addSelect('post.shortDescription', 'shortDescription')
+    //   // .addSelect('post.content', 'content')
+    //   // .addSelect('post.blogId', 'blogId')
+    //   // .addSelect('blog.name', 'blogName')
+    //   // .addSelect('post.createdAt', 'createdAt')
+    //   // .addSelect('post.likesCount', 'likesCount')
+    //   // .addSelect('post.dislikesCount', 'dislikesCount')
+    //   .where('post.postId = :postId', { postId: postId })
+    //   .andWhere('blog.isBlogBanned = false');
+    // const post = await postQueryBuilder.getRawOne();
+
     const postQueryBuilder = this.postsRepository.createQueryBuilder('post');
-    postQueryBuilder
-      .leftJoin('post.Blogs', 'blog')
-      .select('post.postId', 'postId')
-      .addSelect('post.title', 'title')
-      .addSelect('post.shortDescription', 'shortDescription')
-      .addSelect('post.content', 'content')
-      .addSelect('post.blogId', 'blogId')
-      .addSelect('blog.name', 'blogName')
-      .addSelect('post.createdAt', 'createdAt')
-      .addSelect('post.likesCount', 'likesCount')
-      .addSelect('post.dislikesCount', 'dislikesCount')
-      .where('post.postId = :postId', { postId: postId })
-      .andWhere('blog.isBlogBanned = false');
-    const post = await postQueryBuilder.getRawOne();
+postQueryBuilder
+  .leftJoinAndSelect('post.Blogs', 'blog')
+  .leftJoinAndSelect('post.PostMainImage', 'main')
+  .where('post.postId = :postId', { postId: postId })
+  .andWhere('blog.isBlogBanned = false');
+
+const post = await postQueryBuilder.getOne();
+    
+
+    console.log('get post by id ', post);
+    
 
     if (!post) {
       return null;
@@ -65,24 +82,38 @@ export class PostsQueryRepository {
       }
     }
 
+    let images = {
+      main: []
+    }
+
+    if(post.PostMainImage && post.PostMainImage.url !== null){
+      images.main = [{
+      url: post.PostMainImage.url,
+      width: post.PostMainImage.width,
+      height: post.PostMainImage.height,
+      fileSize: post.PostMainImage.fileSize,        
+      }]
+    }
+
     return {
       id: post.postId,
       title: post.title,
       shortDescription: post.shortDescription,
       content: post.content,
       blogId: post.blogId,
-      blogName: post.blogName,
+      blogName: post.Blogs.name,
       createdAt: post.createdAt,
       extendedLikesInfo: {
-        likesCount: parseInt(post.likesCount),
-        dislikesCount: parseInt(post.dislikesCount),
+        likesCount: post.likesCount,
+        dislikesCount: post.dislikesCount,
         myStatus: myStatus,
         newestLikes: newestLikes,
       },
+      images: images
     };
   }
 
-  async getAllPosts(mergedQueryParams, userId?) {
+  async getAllPosts(mergedQueryParams, userId?): Promise<PaginationOutputModel<PostTypeOutput>> {
     const sortBy = mergedQueryParams.sortBy;
     const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
     const pageNumber = +mergedQueryParams.pageNumber;
@@ -91,17 +122,8 @@ export class PostsQueryRepository {
 
     const queryBuilder = this.postsRepository.createQueryBuilder('post');
     queryBuilder
-      .leftJoin('post.Blogs', 'blog')
-      .leftJoin('blog.Users', 'user')
-      .select('post.postId', 'postId')
-      .addSelect('post.title', 'title')
-      .addSelect('post.shortDescription', 'shortDescription')
-      .addSelect('post.content', 'content')
-      .addSelect('post.blogId', 'blogId')
-      .addSelect('blog.name', 'blogName')
-      .addSelect('post.createdAt', 'createdAt')
-      .addSelect('post.likesCount', 'likesCount')
-      .addSelect('post.dislikesCount', 'dislikesCount')
+    .leftJoinAndSelect('post.Blogs', 'blog')
+    .leftJoinAndSelect('post.PostMainImage', 'main')
       .where('user.isUserBanned = false');
 
     const postCount = await queryBuilder.getCount();
@@ -156,9 +178,7 @@ export class PostsQueryRepository {
         }
       }
 
-      const images: {
-        main: postMainOutputType[];
-      } = {
+      const images = {
         main: [],
       };
   
@@ -217,16 +237,8 @@ export class PostsQueryRepository {
 
     const queryBuilder = this.postsRepository.createQueryBuilder('post');
     queryBuilder
-      .leftJoin('post.Blogs', 'blog')
-      .select('post.postId', 'postId')
-      .addSelect('post.title', 'title')
-      .addSelect('post.shortDescription', 'shortDescription')
-      .addSelect('post.content', 'content')
-      .addSelect('post.blogId', 'blogId')
-      .addSelect('blog.name', 'blogName')
-      .addSelect('post.createdAt', 'createdAt')
-      .addSelect('post.likesCount', 'likesCount')
-      .addSelect('post.dislikesCount', 'dislikesCount')
+    .leftJoinAndSelect('post.Blogs', 'blog')
+    .leftJoinAndSelect('post.PostMainImage', 'main')
       .where('post.blogId = :blogId', { blogId: blogId })
       .andWhere('blog.isBlogBanned = false');
 
@@ -280,6 +292,20 @@ export class PostsQueryRepository {
           myStatus = foundLike.status;
         }
       }
+      const images = {
+        main: [],
+      };
+  
+      if (post.PostMainImage && post.PostMainImage.url !== null) {
+        images.main = [
+          {
+            url: post.PostMainImage.url,
+            width: post.PostMainImage.width,
+            height: post.PostMainImage.height,
+            fileSize: post.PostMainImage.fileSize,
+          },
+        ];
+      }
       return {
         id: post.postId,
         title: post.title,
@@ -294,6 +320,7 @@ export class PostsQueryRepository {
           myStatus: myStatus,
           newestLikes: newestLikes,
         },
+        images: images
       };
     });
 
