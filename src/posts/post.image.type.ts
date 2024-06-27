@@ -7,12 +7,14 @@ import {
 } from 'typeorm';
 import { Posts } from './post.entity';
 
-export type postMainOutputType = {
-  url: string;
-  width: number;
-  height: number;
-  fileSize: number;
-} | [];
+export type postMainOutputType =
+  | {
+      url: string;
+      width: number;
+      height: number;
+      fileSize: number;
+    }
+  | [];
 
 export class PostMainImageDto {
   constructor(

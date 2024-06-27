@@ -182,9 +182,6 @@ export class LikesRepository {
 
       return true;
     } catch (error) {
-      //TODO: remove before prod
-      console.log(error);
-
       return false;
     }
   }

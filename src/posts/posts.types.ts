@@ -22,16 +22,16 @@ export type PostTypeOutput = {
   createdAt: string;
   extendedLikesInfo: extendedLikesInfoType;
   images: {
-    main: imageMainOutputType[] | []
-  }
+    main: imageMainOutputType[] | [];
+  };
 };
 
 type imageMainOutputType = {
-  url: string,
-  width: number,
-  height: number,
-  fileSize: number
-}
+  url: string;
+  width: number;
+  height: number;
+  fileSize: number;
+};
 
 type extendedLikesInfoType = {
   likesCount: number;

@@ -52,13 +52,10 @@ export class S3StorageAdapter {
         params: bucketParams,
       });
 
-      upload.on('httpUploadProgress', (progress) => {
-        console.log(progress);
-      });
+      upload.on('httpUploadProgress', (progress) => {});
       const uploadResult = await upload.done();
       return uploadResult;
     } catch (error) {
-      console.log(error);
       throw new CustomisableException(
         'uploadFile',
         'unable upload this file',
@@ -90,7 +87,6 @@ export class S3StorageAdapter {
     try {
       const command = new GetObjectCommand(bucketParams);
       const data = await this.s3Client.send(command);
-      // console.log("как выглядит дата когда достаешь из хранилища ", data);
       if (data) {
         return data;
       } else {
@@ -98,8 +94,6 @@ export class S3StorageAdapter {
       }
     } catch (error) {
       return null;
-      // console.log(error);
-      // throw new CustomisableException('getImageFile', 'Unable to retrieve the file', 418);
     }
   }
 

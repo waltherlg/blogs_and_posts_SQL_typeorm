@@ -22,7 +22,7 @@ export class BloggerUploadMainForPostUseCase
   constructor(
     private readonly s3StorageAdapter: S3StorageAdapter,
     private readonly checkService: CheckService,
-    private readonly postsRepository: PostsRepository
+    private readonly postsRepository: PostsRepository,
   ) {}
 
   async execute(command: BloggerUploadMainForPostCommand) {
@@ -36,9 +36,9 @@ export class BloggerUploadMainForPostUseCase
       return ActionResult.NotOwner;
     }
 
-    const post: Posts = await this.postsRepository.getPostDBTypeById(postId)
-    if(!post){
-      return ActionResult.PostNotFound
+    const post: Posts = await this.postsRepository.getPostDBTypeById(postId);
+    if (!post) {
+      return ActionResult.PostNotFound;
     }
 
     try {
@@ -53,11 +53,11 @@ export class BloggerUploadMainForPostUseCase
       post.PostMainImage.width = command.metadata.width;
       post.PostMainImage.height = command.metadata.height;
       post.PostMainImage.fileSize = command.metadata.size;
-      const savePostResult = await this.postsRepository.savePost(post)
-      if(savePostResult) {
+      const savePostResult = await this.postsRepository.savePost(post);
+      if (savePostResult) {
         //TODO
       } else {
-        return ActionResult.NotCreated
+        return ActionResult.NotCreated;
       }
     } catch (error) {
       return ActionResult.NotCreated;

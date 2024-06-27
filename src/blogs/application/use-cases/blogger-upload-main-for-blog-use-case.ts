@@ -40,7 +40,6 @@ export class BloggerUploadMainForBlogUseCase
     const blog: Blogs = await this.blogsRepository.getBlogDBTypeById(blogId);
     if (!blog) return ActionResult.BlogNotFound;
     if (blog.userId !== userId) return ActionResult.NotOwner;
-    console.log(blog);
     try {
       const uploadedMainKey = await this.s3StorageAdapter.saveBlogMain(
         userId,
@@ -62,8 +61,6 @@ export class BloggerUploadMainForBlogUseCase
         return ActionResult.NotCreated;
       }
     } catch (error) {
-      console.log(error);
-
       return ActionResult.NotCreated;
       3;
     }

@@ -22,7 +22,6 @@ export class PlayerAnswersQuestionGameUseCase
   async execute(command: PlayerAnswersQuestionGameCommand): Promise<any> {
     const game: QuizGames =
       await this.quizGamesRepository.getActiveGameByUserId(command.userId);
-    //console.log("игра во время ответа игрока ", game);
 
     if (!game) {
       return ActionResult.NotOwner;

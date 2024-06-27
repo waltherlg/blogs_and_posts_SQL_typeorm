@@ -34,7 +34,7 @@ describe('End-to-End Tests', () => {
   // testBanUserForBlogByBlogger();
   // testBloggerPaginationTest0502()
   // saBlogsControllerCrudAndBan();
-  // postCrudOperationsByBlogger07();
+  postCrudOperationsByBlogger07();
   // testPostLikesCrud08();
   // commentCrudOperations(); // this comment CRUD if blog create blogger
   // saCommentCrudOperations();

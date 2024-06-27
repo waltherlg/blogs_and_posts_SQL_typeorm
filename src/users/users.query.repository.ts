@@ -359,8 +359,6 @@ export class UsersQueryRepository {
         .getMany();
     }
 
-    //console.log('bannedUsers ', bannedUsers);
-
     const bannedUsersForOutput = bannedUsers.map((bannedUser) => {
       return {
         id: bannedUser.userId,
@@ -382,7 +380,6 @@ export class UsersQueryRepository {
       totalCount: bannedUsersCount,
       items: bannedUsersForOutput,
     };
-    //console.log('outputBannedUsers ', outputBannedUsers);
 
     return outputBannedUsers;
   }

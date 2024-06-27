@@ -44,17 +44,13 @@ export class PostsQueryRepository {
     // const post = await postQueryBuilder.getRawOne();
 
     const postQueryBuilder = this.postsRepository.createQueryBuilder('post');
-postQueryBuilder
-  .leftJoinAndSelect('post.Blogs', 'blog')
-  .leftJoinAndSelect('post.PostMainImage', 'main')
-  .where('post.postId = :postId', { postId: postId })
-  .andWhere('blog.isBlogBanned = false');
+    postQueryBuilder
+      .leftJoinAndSelect('post.Blogs', 'blog')
+      .leftJoinAndSelect('post.PostMainImage', 'main')
+      .where('post.postId = :postId', { postId: postId })
+      .andWhere('blog.isBlogBanned = false');
 
-const post = await postQueryBuilder.getOne();
-    
-
-    console.log('get post by id ', post);
-    
+    const post = await postQueryBuilder.getOne();
 
     if (!post) {
       return null;
@@ -82,17 +78,19 @@ const post = await postQueryBuilder.getOne();
       }
     }
 
-    let images = {
-      main: []
-    }
+    const images = {
+      main: [],
+    };
 
-    if(post.PostMainImage && post.PostMainImage.url !== null){
-      images.main = [{
-      url: post.PostMainImage.url,
-      width: post.PostMainImage.width,
-      height: post.PostMainImage.height,
-      fileSize: post.PostMainImage.fileSize,        
-      }]
+    if (post.PostMainImage && post.PostMainImage.url !== null) {
+      images.main = [
+        {
+          url: post.PostMainImage.url,
+          width: post.PostMainImage.width,
+          height: post.PostMainImage.height,
+          fileSize: post.PostMainImage.fileSize,
+        },
+      ];
     }
 
     return {
@@ -109,11 +107,14 @@ const post = await postQueryBuilder.getOne();
         myStatus: myStatus,
         newestLikes: newestLikes,
       },
-      images: images
+      images: images,
     };
   }
 
-  async getAllPosts(mergedQueryParams, userId?): Promise<PaginationOutputModel<PostTypeOutput>> {
+  async getAllPosts(
+    mergedQueryParams,
+    userId?,
+  ): Promise<PaginationOutputModel<PostTypeOutput>> {
     const sortBy = mergedQueryParams.sortBy;
     const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
     const pageNumber = +mergedQueryParams.pageNumber;
@@ -122,8 +123,8 @@ const post = await postQueryBuilder.getOne();
 
     const queryBuilder = this.postsRepository.createQueryBuilder('post');
     queryBuilder
-    .leftJoinAndSelect('post.Blogs', 'blog')
-    .leftJoinAndSelect('post.PostMainImage', 'main')
+      .leftJoinAndSelect('post.Blogs', 'blog')
+      .leftJoinAndSelect('post.PostMainImage', 'main')
       .where('user.isUserBanned = false');
 
     const postCount = await queryBuilder.getCount();
@@ -181,7 +182,7 @@ const post = await postQueryBuilder.getOne();
       const images = {
         main: [],
       };
-  
+
       if (post.PostMainImage && post.PostMainImage.url !== null) {
         images.main = [
           {
@@ -192,7 +193,6 @@ const post = await postQueryBuilder.getOne();
           },
         ];
       }
-
 
       return {
         id: post.postId,
@@ -208,7 +208,7 @@ const post = await postQueryBuilder.getOne();
           myStatus: myStatus,
           newestLikes: newestLikes,
         },
-        images: images
+        images: images,
       };
     });
 
@@ -237,8 +237,8 @@ const post = await postQueryBuilder.getOne();
 
     const queryBuilder = this.postsRepository.createQueryBuilder('post');
     queryBuilder
-    .leftJoinAndSelect('post.Blogs', 'blog')
-    .leftJoinAndSelect('post.PostMainImage', 'main')
+      .leftJoinAndSelect('post.Blogs', 'blog')
+      .leftJoinAndSelect('post.PostMainImage', 'main')
       .where('post.blogId = :blogId', { blogId: blogId })
       .andWhere('blog.isBlogBanned = false');
 
@@ -295,7 +295,7 @@ const post = await postQueryBuilder.getOne();
       const images = {
         main: [],
       };
-  
+
       if (post.PostMainImage && post.PostMainImage.url !== null) {
         images.main = [
           {
@@ -320,7 +320,7 @@ const post = await postQueryBuilder.getOne();
           myStatus: myStatus,
           newestLikes: newestLikes,
         },
-        images: images
+        images: images,
       };
     });
 

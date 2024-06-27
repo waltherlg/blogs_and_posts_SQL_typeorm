@@ -17,24 +17,23 @@ export class PostsRepository {
     private readonly postsMainImageRepository: Repository<PostMainImage>,
   ) {}
 
- 
   async savePost(post: Posts): Promise<boolean> {
     try {
-      await this.postsRepository.save(post)
-      return true
+      await this.postsRepository.save(post);
+      return true;
     } catch (error) {
-      return false      
+      return false;
     }
   }
   async createPost(postDTO: Posts): Promise<string> {
-    const queryRunner = this.dataSource.createQueryRunner()
+    const queryRunner = this.dataSource.createQueryRunner();
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
       const result = await queryRunner.manager.save(postDTO);
       const emptyPostMainImage = new PostMainImage(postDTO.postId);
       await queryRunner.manager.save(emptyPostMainImage);
-  
+
       await queryRunner.commitTransaction();
       return result.postId;
     } catch (error) {
@@ -61,8 +60,7 @@ export class PostsRepository {
     const result = await this.postsRepository.findOne({
       where: [{ postId: postId }],
     });
-    console.log('post db typebyid ', result);
-    
+
     return result;
   }
 

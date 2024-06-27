@@ -41,7 +41,7 @@ export const testPosts = {
       myStatus: 'None',
       newestLikes: [],
     },
-    images: {main: []}
+    images: { main: [] },
   },
   outputPost2forBlog1: {
     id: expect.any(String),
@@ -57,6 +57,6 @@ export const testPosts = {
       myStatus: 'None',
       newestLikes: [],
     },
-    images: {main: []}
+    images: { main: [] },
   },
 };

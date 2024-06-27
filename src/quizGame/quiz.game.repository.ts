@@ -478,7 +478,6 @@ export class QuizGamesRepository {
     }
     game.player1.PlayerStatistic.gamesCount++;
     game.player2.PlayerStatistic.gamesCount++;
-    console.log('game change after 10 sec ', game);
 
     const result = await this.saveGameChange(game);
     return result;

@@ -215,8 +215,6 @@ export class UsersRepository {
         .where('postLike.userId = :userId', { userId: userId });
       const postIdArray = await postLikeQueryBuilder.getRawMany();
 
-      //console.log('postIdArray ', postIdArray, ' userId ', userId);
-
       if (postIdArray.length > 0) {
         const postIds = postIdArray.map((obj) => obj.postId);
         //get all likes for posts by postIds array for recount
@@ -261,7 +259,6 @@ export class UsersRepository {
           post.dislikesCount = postStats[post.postId].Dislike;
           return post;
         });
-        //console.log('updatedPosts ', updatedPosts);
 
         const isPostsUpdated = await this.postsRepository.save(updatedPosts);
       }
@@ -283,11 +280,9 @@ export class UsersRepository {
         .select('commentLike.commentId', 'commentId')
         .where('commentLike.userId = :userId', { userId: userId });
       const commentIdArray = await commentLikeQueryBuilder.getRawMany();
-      //console.log('commentIdArray ', commentIdArray);
 
       if (commentIdArray.length > 0) {
         const commentIds = commentIdArray.map((obj) => obj.commentId);
-        //console.log('commentIds ', commentIds);
 
         const commentLikesArrQB = this.commentLikesRepository
           .createQueryBuilder('commentLike')
@@ -304,7 +299,6 @@ export class UsersRepository {
 
         // достаем все лайки к комментам по коментАйди
         const commentLikesArr = await commentLikesArrQB.getMany();
-        //console.log('commentLikesArr ', commentLikesArr);
 
         let commentLikeArrForCount = [];
         if (commentLikesArr.length === 0) {
@@ -327,8 +321,6 @@ export class UsersRepository {
           acc[commentId][status]++;
           return acc;
         }, {});
-        //console.log('commentStats ', commentStats);
-
         // Нужно достать все комменты с коммент айди.
         const commentQueryBuilder = this.commentsRepository
           .createQueryBuilder('comment')
@@ -336,7 +328,6 @@ export class UsersRepository {
             commentIds: commentIds,
           });
         const commentsArr = await commentQueryBuilder.getMany();
-        // console.log('commentsArr ', commentsArr);
 
         const updatedComments = commentsArr.map((comment) => {
           comment.likesCount = commentStats[comment.commentId].Like;

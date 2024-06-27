@@ -29,7 +29,6 @@ export class BlogsQueryRepository {
       },
       where: { blogId, isBlogBanned: false },
     });
-    console.log('сущьность блога в репозитории ', blog);
 
     if (blog) {
       return blog.returnForPublic();

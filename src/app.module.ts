@@ -191,7 +191,7 @@ const useCases = [
       PlayerStatistic,
       BlogWallpaperImage,
       BlogMainImage,
-      PostMainImage
+      PostMainImage,
     ]),
     CqrsModule,
     ThrottlerModule.forRoot({

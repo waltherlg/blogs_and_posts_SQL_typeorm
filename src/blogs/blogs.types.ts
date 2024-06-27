@@ -59,10 +59,9 @@ export type blogWallpaperOutputType = {
   fileSize: number;
 } | null;
 
-export type blogMainOutputType =
-    {
-      url: string;
-      width: number;
-      height: number;
-      fileSize: number;
-    };
+export type blogMainOutputType = {
+  url: string;
+  width: number;
+  height: number;
+  fileSize: number;
+};

@@ -50,7 +50,7 @@ export class Posts extends PostDBType {
   @OneToOne(() => PostMainImage, (i) => i.Posts, { eager: true, cascade: true })
   PostMainImage: PostMainImage | null;
 
-  returnForPublic(){
+  returnForPublic() {
     const images: {
       main: postMainOutputType[];
     } = {
@@ -67,8 +67,5 @@ export class Posts extends PostDBType {
         },
       ];
     }
-
-
-
   }
 }
