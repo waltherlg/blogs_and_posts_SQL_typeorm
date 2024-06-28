@@ -55,7 +55,7 @@ export class BloggerUploadMainForPostUseCase
       post.PostMainImage.fileSize = command.metadata.size;
       const savePostResult = await this.postsRepository.savePost(post);
       if (savePostResult) {
-        //TODO
+        return post.returnImageForPublic()
       } else {
         return ActionResult.NotCreated;
       }

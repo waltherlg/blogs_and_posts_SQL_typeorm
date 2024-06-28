@@ -47,6 +47,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { BloggerUploadWallpaperForBlogCommand } from '../application/use-cases/blogger-upload-wallpaper-for-blog-use-case';
 import { BloggerUploadMainForBlogCommand } from '../application/use-cases/blogger-upload-main-for-blog-use-case';
+import { request } from 'https';
 const sharp = require('sharp');
 
 export class CreateBlogInputModelType {
@@ -320,4 +321,17 @@ export class BloggerBlogsController {
     handleActionResult(result);
     return result;
   }
+@Post(':blogId/posts/:postId/images/main')
+@UseInterceptors(FileInterceptor('file'))
+@HttpCode(201)
+async setMainForPost(
+  @Req() request,
+  @Param('blogId') blogId,
+  @Param('postId') postId,
+  @UploadedFile() postMainFile: Express.Multer.File
+){
+  const metadata = await sharp(postMainFile.buffer).metadata()
+  
+
+}
 }
