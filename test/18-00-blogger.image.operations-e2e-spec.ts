@@ -154,5 +154,26 @@ export function testBloggerImageOperation18() {
 
       expect(createdResponse).toEqual(testPosts.outputPost1forBlog1);
     });
+
+    it('01-02 blogger/blogId/posts/postId/image/main POST = 201 user1 create new post', async () => {
+      const imagePath = path.join(
+        __dirname,
+        'helpers',
+        'uploadFiles',
+        'post_main.png',
+      );
+      const testsResponse = await request(app.getHttpServer())
+        .post(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}/image/main`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .attach('file', imagePath)
+        .expect(201);
+
+      // const createdResponse = testsResponse.body;
+      // createdPostId = createdResponse.id;
+
+      // expect(createdResponse).toEqual(testPosts.outputPost1forBlog1);
+    });
+
+    
   });
 }

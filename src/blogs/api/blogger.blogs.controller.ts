@@ -48,6 +48,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { BloggerUploadWallpaperForBlogCommand } from '../application/use-cases/blogger-upload-wallpaper-for-blog-use-case';
 import { BloggerUploadMainForBlogCommand } from '../application/use-cases/blogger-upload-main-for-blog-use-case';
 import { request } from 'https';
+import { BloggerUploadMainForPostCommand } from '../application/use-cases/blogger-upload-main-for-post-use-case';
 const sharp = require('sharp');
 
 export class CreateBlogInputModelType {
@@ -331,7 +332,28 @@ async setMainForPost(
   @UploadedFile() postMainFile: Express.Multer.File
 ){
   const metadata = await sharp(postMainFile.buffer).metadata()
-  
+  if (
+    metadata.width !== 940 ||
+    metadata.height !== 432 ||
+    metadata.size > 102400
+  ) {
+    throw new CustomisableException(
+      'main',
+      'file must be 940x432 and not more than 100KB',
+      400,
+    );
+  }
 
+  const result = await this.commandBus.execute(
+    new BloggerUploadMainForPostCommand(
+      request.user.userId,
+      blogId,
+      postId,
+      postMainFile,
+      metadata
+    )
+  )
+  handleActionResult(result)
+  return result
 }
 }
