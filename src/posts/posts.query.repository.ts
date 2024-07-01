@@ -125,15 +125,17 @@ export class PostsQueryRepository {
     queryBuilder
       .leftJoinAndSelect('post.Blogs', 'blog')
       .leftJoinAndSelect('post.PostMainImage', 'main')
+      .leftJoinAndSelect('blog.Users', 'user')
       .where('user.isUserBanned = false');
 
     const postCount = await queryBuilder.getCount();
 
     const posts = await queryBuilder
-      .orderBy(`"${sortBy}"`, sortDirection)
+      .orderBy(`post.${sortBy}`, sortDirection)
       .limit(pageSize)
       .offset(skipPage)
-      .getRawMany();
+      //.getRawMany();
+      .getMany();
 
     const postLikeQueryBuilder =
       this.postLikesRepository.createQueryBuilder('postLike');
@@ -200,11 +202,11 @@ export class PostsQueryRepository {
         shortDescription: post.shortDescription,
         content: post.content,
         blogId: post.blogId,
-        blogName: post.blogName,
+        blogName: post.Blogs.name,
         createdAt: post.createdAt,
         extendedLikesInfo: {
-          likesCount: parseInt(post.likesCount),
-          dislikesCount: parseInt(post.dislikesCount),
+          likesCount: post.likesCount,
+          dislikesCount: post.dislikesCount,
           myStatus: myStatus,
           newestLikes: newestLikes,
         },
@@ -245,10 +247,10 @@ export class PostsQueryRepository {
     const postCount = await queryBuilder.getCount();
 
     const posts = await queryBuilder
-      .orderBy(`"${sortBy}"`, sortDirection)
+      .orderBy(`post.${sortBy}`, sortDirection)
       .limit(pageSize)
       .offset(skipPage)
-      .getRawMany();
+      .getMany();
 
     const postLikeQueryBuilder =
       this.postLikesRepository.createQueryBuilder('postLike');
@@ -312,11 +314,11 @@ export class PostsQueryRepository {
         shortDescription: post.shortDescription,
         content: post.content,
         blogId: post.blogId,
-        blogName: post.blogName,
+        blogName: post.Blogs.name,
         createdAt: post.createdAt,
         extendedLikesInfo: {
-          likesCount: parseInt(post.likesCount),
-          dislikesCount: parseInt(post.dislikesCount),
+          likesCount: post.likesCount,
+          dislikesCount: post.dislikesCount,
           myStatus: myStatus,
           newestLikes: newestLikes,
         },

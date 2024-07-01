@@ -11,7 +11,7 @@ import {
 import { testPosts } from './helpers/inputAndOutputObjects/postsObjects';
 import { addAppSettings } from '../src/helpers/settings';
 export function postCrudOperationsByBlogger07() {
-  describe('post CRUD operation (e2e)', () => {
+  describe('postCrudOperationsByBlogger07 (e2e)', () => {
     let accessTokenUser1;
     let accessTokenUser2;
     let blogId1;

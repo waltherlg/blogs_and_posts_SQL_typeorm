@@ -11,6 +11,10 @@ export const testPosts = {
     websiteUrl: 'https://www.someweb.com',
     createdAt: expect.any(String),
     isMembership: false,
+    images: {
+      wallpaper: null,
+      main: [],
+    },
   },
   inputBodyPost1forBlog1: {
     title: 'title1forBlog1',

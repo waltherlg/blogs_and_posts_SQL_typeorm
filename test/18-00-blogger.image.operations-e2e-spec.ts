@@ -155,7 +155,7 @@ export function testBloggerImageOperation18() {
       expect(createdResponse).toEqual(testPosts.outputPost1forBlog1);
     });
 
-    it('01-02 blogger/blogId/posts/postId/image/main POST = 201 user1 create new post', async () => {
+    it('01-02 blogger/blogId/posts/postId/images/main POST = 201 user1 create new post', async () => {
       const imagePath = path.join(
         __dirname,
         'helpers',
@@ -163,7 +163,7 @@ export function testBloggerImageOperation18() {
         'post_main.png',
       );
       const testsResponse = await request(app.getHttpServer())
-        .post(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}/image/main`)
+        .post(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}/images/main`)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .attach('file', imagePath)
         .expect(201);
