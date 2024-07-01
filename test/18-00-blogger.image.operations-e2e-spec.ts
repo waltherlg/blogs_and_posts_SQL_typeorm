@@ -155,7 +155,7 @@ export function testBloggerImageOperation18() {
       expect(createdResponse).toEqual(testPosts.outputPost1forBlog1);
     });
 
-    it('01-02 blogger/blogId/posts/postId/images/main POST = 201 user1 create new post', async () => {
+    it('01-02 blogger/blogId/posts/postId/images/main POST = 201 user1 upload main for post', async () => {
       const imagePath = path.join(
         __dirname,
         'helpers',
