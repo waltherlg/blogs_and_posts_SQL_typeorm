@@ -266,10 +266,13 @@ export class BloggerBlogsController {
     @UploadedFile() blogWallpaperFile: Express.Multer.File,
   ) {
     const metadata = await sharp(blogWallpaperFile.buffer).metadata();
+    console.log('metadata ', metadata);
+    
     if (
       metadata.width !== 1028 ||
       metadata.height !== 312 ||
-      metadata.size > 102400
+      metadata.size > 102400 ||
+      (metadata.format !== 'jpeg' || metadata.format !== 'png')
     ) {
       throw new CustomisableException(
         'wallpaper',

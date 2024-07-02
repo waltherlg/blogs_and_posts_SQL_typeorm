@@ -10,6 +10,7 @@ import { CheckService } from '../../../other.services/check.service';
 import { ActionResult } from '../../../helpers/enum.action.result.helper';
 import { url } from 'inspector';
 import { Blogs } from '../../blog.entity';
+import { fullImageUrl } from '../../../helpers/helpers.functions';
 const sharp = require('sharp');
 
 export class BloggerUploadMainForBlogCommand {
@@ -48,7 +49,9 @@ export class BloggerUploadMainForBlogUseCase
         metadata,
       );
 
-      blog.BlogMainImage.url = uploadedMainKey;
+      const mainUrl = fullImageUrl(uploadedMainKey)
+
+      blog.BlogMainImage.url = mainUrl;
       blog.BlogMainImage.width = command.metadata.width;
       blog.BlogMainImage.height = command.metadata.height;
       blog.BlogMainImage.fileSize = command.metadata.size;

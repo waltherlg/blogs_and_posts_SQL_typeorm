@@ -4,6 +4,7 @@ import { CheckService } from '../../../other.services/check.service';
 import { ActionResult } from '../../../helpers/enum.action.result.helper';
 import { PostsRepository } from '../../../posts/posts.repository';
 import { Posts } from '../../../posts/post.entity';
+import { fullImageUrl } from '../../../helpers/helpers.functions';
 
 export class BloggerUploadMainForPostCommand {
   constructor(
@@ -49,7 +50,8 @@ export class BloggerUploadMainForPostUseCase
         buffer,
         metadata,
       );
-      post.PostMainImage.url = uploadedMainKey;
+      const mainUrl = fullImageUrl(uploadedMainKey)
+      post.PostMainImage.url = mainUrl;
       post.PostMainImage.width = command.metadata.width;
       post.PostMainImage.height = command.metadata.height;
       post.PostMainImage.fileSize = command.metadata.size;

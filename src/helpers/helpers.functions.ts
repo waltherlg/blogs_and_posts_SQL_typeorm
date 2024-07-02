@@ -69,3 +69,7 @@ export const delayFunction = async (ms: number) => {
     }, ms);
   });
 };
+
+export const fullImageUrl = (imageKey) => {
+  return `https://storage.yandexcloud.net/yandexcloudformyapi/`+imageKey
+}

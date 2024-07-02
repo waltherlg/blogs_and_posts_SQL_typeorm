@@ -1,16 +1,12 @@
-import { BlogDBType } from '../../blogs.types';
 import { BlogsRepository } from '../../infrostracture/blogs.repository';
-import { CreateBlogInputModelType } from '../../api/public.blogs.controller';
 import { CommandHandler } from '@nestjs/cqrs/dist';
 import { ICommandHandler } from '@nestjs/cqrs/dist/interfaces';
 import { UsersRepository } from '../../../users/users.repository';
-import { v4 as uuidv4 } from 'uuid';
 import { S3StorageAdapter } from '../../../adapters/file-storage-adapter';
 import { CheckService } from '../../../other.services/check.service';
 import { ActionResult } from '../../../helpers/enum.action.result.helper';
-import { url } from 'inspector';
 import { Blogs } from '../../blog.entity';
-const sharp = require('sharp');
+import { fullImageUrl } from '../../../helpers/helpers.functions';
 
 export class BloggerUploadWallpaperForBlogCommand {
   constructor(
@@ -50,7 +46,9 @@ export class BloggerUploadWallpaperForBlogUseCase
           metadata,
         );
 
-      blog.BlogWallpaperImage.url = uploadedWallpaperKey;
+      const wallpaperUrl = fullImageUrl(uploadedWallpaperKey)
+
+      blog.BlogWallpaperImage.url = wallpaperUrl;
       blog.BlogWallpaperImage.width = command.metadata.width;
       blog.BlogWallpaperImage.height = command.metadata.height;
       blog.BlogWallpaperImage.fileSize = command.metadata.size;
