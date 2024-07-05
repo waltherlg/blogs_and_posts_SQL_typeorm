@@ -111,7 +111,7 @@ export function testBloggerImageOperation18() {
       );
       const testsResponse = await request(app.getHttpServer())
         .post(
-          `${endpoints.bloggerBlogs}/${firstCreatedBlogId}/images/wallpapers`,
+          `${endpoints.bloggerBlogs}/${firstCreatedBlogId}/images/wallpaper`,
         )
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .attach('file', imagePath)
@@ -172,6 +172,20 @@ export function testBloggerImageOperation18() {
       // createdPostId = createdResponse.id;
 
       // expect(createdResponse).toEqual(testPosts.outputPost1forBlog1);
+    });
+
+    it('01-02 blogger/blogId/posts/postId/images/main POST = 400 user1 trying upload wrong file type', async () => {
+      const imagePath = path.join(
+        __dirname,
+        'helpers',
+        'uploadFiles',
+        'textFile.txt',
+      );
+      const testsResponse = await request(app.getHttpServer())
+        .post(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}/images/main`)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .attach('file', imagePath)
+        .expect(400);
     });
 
     

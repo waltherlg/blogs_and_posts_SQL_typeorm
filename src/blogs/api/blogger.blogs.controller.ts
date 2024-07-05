@@ -257,7 +257,7 @@ export class BloggerBlogsController {
     return comments;
   }
 
-  @Post(':blogId/images/wallpapers')
+  @Post(':blogId/images/wallpaper')
   @UseInterceptors(FileInterceptor('file'))
   @HttpCode(201)
   async setWallpapersForBlog(
@@ -266,13 +266,12 @@ export class BloggerBlogsController {
     @UploadedFile() blogWallpaperFile: Express.Multer.File,
   ) {
     const metadata = await sharp(blogWallpaperFile.buffer).metadata();
-    console.log('metadata ', metadata);
     
     if (
       metadata.width !== 1028 ||
       metadata.height !== 312 ||
       metadata.size > 102400 ||
-      (metadata.format !== 'jpeg' || metadata.format !== 'png')
+      (metadata.format !== 'jpeg' && metadata.format !== 'png')
     ) {
       throw new CustomisableException(
         'wallpaper',
@@ -301,11 +300,13 @@ export class BloggerBlogsController {
     @Param('blogId') blogId,
     @UploadedFile() blogMainFile: Express.Multer.File,
   ) {
+    
     const metadata = await sharp(blogMainFile.buffer).metadata();
     if (
       metadata.width !== 156 ||
       metadata.height !== 156 ||
-      metadata.size > 102400
+      metadata.size > 102400 ||
+      (metadata.format !== 'jpeg' && metadata.format !== 'png')
     ) {
       throw new CustomisableException(
         'main',
@@ -334,11 +335,14 @@ async setMainForPost(
   @Param('postId') postId,
   @UploadedFile() postMainFile: Express.Multer.File
 ){
+  
   const metadata = await sharp(postMainFile.buffer).metadata()
+  
   if (
     metadata.width !== 940 ||
     metadata.height !== 432 ||
-    metadata.size > 102400
+    metadata.size > 102400 ||
+    (metadata.format !== 'jpeg' && metadata.format !== 'png')
   ) {
     throw new CustomisableException(
       'main',
