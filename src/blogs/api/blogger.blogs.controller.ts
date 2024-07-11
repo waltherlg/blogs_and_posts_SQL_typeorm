@@ -265,13 +265,21 @@ export class BloggerBlogsController {
     @Param('blogId') blogId,
     @UploadedFile() blogWallpaperFile: Express.Multer.File,
   ) {
-    const metadata = await sharp(blogWallpaperFile.buffer).metadata();
+    if(blogWallpaperFile.mimetype !== 'image/png' && 
+      blogWallpaperFile.mimetype !== 'image/jpeg'){
+        throw new CustomisableException(
+          'wallpaper',
+          'file must be png or jpeg',
+          400,
+        );
+      }
+    
+    const metadata = await sharp(blogWallpaperFile.buffer).metadata();    
     
     if (
       metadata.width !== 1028 ||
       metadata.height !== 312 ||
-      metadata.size > 102400 ||
-      (metadata.format !== 'jpeg' && metadata.format !== 'png')
+      metadata.size > 102400
     ) {
       throw new CustomisableException(
         'wallpaper',
@@ -300,13 +308,21 @@ export class BloggerBlogsController {
     @Param('blogId') blogId,
     @UploadedFile() blogMainFile: Express.Multer.File,
   ) {
+
+    if(blogMainFile.mimetype !== 'image/png' && 
+      blogMainFile.mimetype !== 'image/jpeg'){
+        throw new CustomisableException(
+          'main',
+          'file must be png or jpeg',
+          400,
+        );
+      }
     
     const metadata = await sharp(blogMainFile.buffer).metadata();
     if (
       metadata.width !== 156 ||
       metadata.height !== 156 ||
-      metadata.size > 102400 ||
-      (metadata.format !== 'jpeg' && metadata.format !== 'png')
+      metadata.size > 102400
     ) {
       throw new CustomisableException(
         'main',
@@ -335,14 +351,23 @@ async setMainForPost(
   @Param('postId') postId,
   @UploadedFile() postMainFile: Express.Multer.File
 ){
+
+  if(postMainFile.mimetype !== 'image/png' && 
+    postMainFile.mimetype !== 'image/jpeg'){
+      throw new CustomisableException(
+        'wallpaper',
+        'file must be png or jpeg',
+        400,
+      );
+    }
   
   const metadata = await sharp(postMainFile.buffer).metadata()
+  
   
   if (
     metadata.width !== 940 ||
     metadata.height !== 432 ||
-    metadata.size > 102400 ||
-    (metadata.format !== 'jpeg' && metadata.format !== 'png')
+    metadata.size > 102400
   ) {
     throw new CustomisableException(
       'main',
