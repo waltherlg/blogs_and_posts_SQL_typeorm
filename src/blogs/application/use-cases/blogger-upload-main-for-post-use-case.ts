@@ -30,8 +30,8 @@ export class BloggerUploadMainForPostUseCase
     const userId = command.userId;
     const blogId = command.blogId;
     const postId = command.postId;
-    const buffer = command.postMainFile.buffer;
-    const metadata = command.metadata;
+    const bufferOrigin = command.postMainFile.buffer;
+    const metadataOrigin = command.metadata;
 
     if (!(await this.checkService.isUserOwnerOfBlog(userId, blogId))) {
       return ActionResult.NotOwner;
@@ -41,20 +41,23 @@ export class BloggerUploadMainForPostUseCase
     if (!post) {
       return ActionResult.PostNotFound;
     }
-
+//TODO: make diferent sise of image
     try {
       const uploadedMainKey = await this.s3StorageAdapter.savePostMain(
         userId,
         blogId,
         postId,
-        buffer,
-        metadata,
+        bufferOrigin,
+        metadataOrigin,
       );
       const mainUrl = fullImageUrl(uploadedMainKey)
+
       post.PostMainImage.url = mainUrl;
-      post.PostMainImage.width = command.metadata.width;
-      post.PostMainImage.height = command.metadata.height;
-      post.PostMainImage.fileSize = command.metadata.size;
+      post.PostMainImage.width = metadataOrigin.width;
+      post.PostMainImage.height = metadataOrigin.height;
+      post.PostMainImage.fileSize = metadataOrigin.size;
+
+
       const savePostResult = await this.postsRepository.savePost(post);
       if (savePostResult) {
         return post.returnImageForPublic()

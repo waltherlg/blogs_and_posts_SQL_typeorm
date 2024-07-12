@@ -23,6 +23,14 @@ export class PostMainImageDto {
     public width: number | null = null,
     public height: number | null = null,
     public fileSize: number | null = null,
+    public urlMiddle: string | null = null,
+    public widthMiddle: number | null = null,
+    public heightMiddle: number | null = null,
+    public fileSizeMiddle: number | null = null,
+    public urlSmall: string | null = null,
+    public widthSmall: number | null = null,
+    public heightSmall: number | null = null,
+    public fileSizeSmall: number | null = null,
   ) {}
 }
 
@@ -43,4 +51,20 @@ export class PostMainImage extends PostMainImageDto {
   height: number | null;
   @Column({ nullable: true })
   fileSize: number | null;
+  @Column({ nullable: true })
+  urlMiddle: string | null;
+  @Column({ nullable: true })
+  widthMiddle: number | null;
+  @Column({ nullable: true })
+  heightMiddle: number | null;
+  @Column({ nullable: true })
+  fileSizeMiddle: number | null;
+  @Column({ nullable: true })
+  urlSmall: string | null;
+  @Column({ nullable: true })
+  widthSmall: number | null;
+  @Column({ nullable: true })
+  heightSmall: number | null;
+  @Column({ nullable: true })
+  fileSizeSmall: number | null;
 }
