@@ -45,7 +45,19 @@ export class BlogsQueryRepository {
     const skipPage = (pageNumber - 1) * pageSize;
 
     const queryBuilder = this.blogsRepository.createQueryBuilder('blog');
-    queryBuilder.select();
+    queryBuilder
+      .select([
+        'blog.blogId',
+        'blog.name',
+        'blog.description',
+        'blog.websiteUrl',
+        'blog.createdAt',
+        'blog.isMembership',
+        'wallpaper.*',
+        'main.*'
+      ])
+      .leftJoinAndSelect('blog.BlogWallpaperImage', 'wallpaper')
+      .leftJoinAndSelect('blog.BlogMainImage', 'main')
 
     if (searchNameTerm !== '') {
       queryBuilder
@@ -60,6 +72,7 @@ export class BlogsQueryRepository {
     }
 
     const blogsCount = await queryBuilder.getCount();
+    
     const blogs = await queryBuilder
       .orderBy(`blog.${sortBy} COLLATE "C"`, sortDirection)
       .limit(pageSize)
@@ -67,15 +80,10 @@ export class BlogsQueryRepository {
       // .skip(skipPage)
       // .take(pageSize)
       .getMany();
+    console.log('blogs in getAllblogs ', blogs);
+    
     const blogsForOutput = blogs.map((blog) => {
-      return {
-        id: blog.blogId,
-        name: blog.name,
-        description: blog.description,
-        websiteUrl: blog.websiteUrl,
-        createdAt: blog.createdAt,
-        isMembership: blog.isMembership,
-      };
+      return blog.returnForPublic()
     });
 
     const pageCount = Math.ceil(blogsCount / pageSize);
@@ -168,7 +176,12 @@ export class BlogsQueryRepository {
         'blog.websiteUrl',
         'blog.createdAt',
         'blog.isMembership',
+        'wallpaper.*',
+        'main.*'
       ])
+      .leftJoinAndSelect('blog.BlogWallpaperImage', 'wallpaper')
+      .leftJoinAndSelect('blog.BlogMainImage', 'main')
+
       .where('blog.userId = :userId AND blog.isBlogBanned = false', {
         userId: userId,
       });
@@ -185,6 +198,9 @@ export class BlogsQueryRepository {
       // .skip(skipPage)d
       // .take(pageSize)
       .getManyAndCount();
+
+      console.log("blogs in get blog for current user ", blogs);
+      
 
     const pageCount = Math.ceil(blogsCount / pageSize);
 
