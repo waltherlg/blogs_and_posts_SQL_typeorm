@@ -65,6 +65,18 @@ export class Posts extends PostDBType {
           height: this.PostMainImage.height,
           fileSize: this.PostMainImage.fileSize,
         },
+        {
+          url: this.PostMainImage.urlMiddle,
+          width: this.PostMainImage.widthMiddle,
+          height: this.PostMainImage.heightMiddle,
+          fileSize: this.PostMainImage.fileSizeMiddle,
+        },
+        {
+          url: this.PostMainImage.urlSmall,
+          width: this.PostMainImage.widthSmall,
+          height: this.PostMainImage.heightSmall,
+          fileSize: this.PostMainImage.fileSizeSmall,
+        },
       ];
     }
     return images

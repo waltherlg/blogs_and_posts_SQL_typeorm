@@ -42,14 +42,18 @@ export class BloggerUploadMainForBlogUseCase
     if (!blog) return ActionResult.BlogNotFound;
     if (blog.userId !== userId) return ActionResult.NotOwner;
     try {
-      const uploadedMainKey = await this.s3StorageAdapter.saveBlogMain(
+
+
+
+      const uploadedMainKeyOrigin = await this.s3StorageAdapter.saveBlogMain(
         userId,
         blogId,
         buffer,
         metadata,
       );
+      
 
-      const mainUrl = fullImageUrl(uploadedMainKey)
+      const mainUrl = fullImageUrl(uploadedMainKeyOrigin)
 
       blog.BlogMainImage.url = mainUrl;
       blog.BlogMainImage.width = command.metadata.width;

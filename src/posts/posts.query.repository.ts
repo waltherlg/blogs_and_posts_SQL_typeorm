@@ -90,6 +90,18 @@ export class PostsQueryRepository {
           height: post.PostMainImage.height,
           fileSize: post.PostMainImage.fileSize,
         },
+        {
+          url: post.PostMainImage.urlMiddle,
+          width: post.PostMainImage.widthMiddle,
+          height: post.PostMainImage.heightMiddle,
+          fileSize: post.PostMainImage.fileSizeMiddle,
+        },
+        {
+          url: post.PostMainImage.urlSmall,
+          width: post.PostMainImage.widthSmall,
+          height: post.PostMainImage.heightSmall,
+          fileSize: post.PostMainImage.fileSizeSmall,
+        },
       ];
     }
 
@@ -192,6 +204,18 @@ export class PostsQueryRepository {
             width: post.PostMainImage.width,
             height: post.PostMainImage.height,
             fileSize: post.PostMainImage.fileSize,
+          },
+          {
+            url: post.PostMainImage.urlMiddle,
+            width: post.PostMainImage.widthMiddle,
+            height: post.PostMainImage.heightMiddle,
+            fileSize: post.PostMainImage.fileSizeMiddle,
+          },
+          {
+            url: post.PostMainImage.urlSmall,
+            width: post.PostMainImage.widthSmall,
+            height: post.PostMainImage.heightSmall,
+            fileSize: post.PostMainImage.fileSizeSmall,
           },
         ];
       }
@@ -305,6 +329,18 @@ export class PostsQueryRepository {
             width: post.PostMainImage.width,
             height: post.PostMainImage.height,
             fileSize: post.PostMainImage.fileSize,
+          },
+          {
+            url: post.PostMainImage.urlMiddle,
+            width: post.PostMainImage.widthMiddle,
+            height: post.PostMainImage.heightMiddle,
+            fileSize: post.PostMainImage.fileSizeMiddle,
+          },
+          {
+            url: post.PostMainImage.urlSmall,
+            width: post.PostMainImage.widthSmall,
+            height: post.PostMainImage.heightSmall,
+            fileSize: post.PostMainImage.fileSizeSmall,
           },
         ];
       }
