@@ -121,6 +121,7 @@ import { BloggerUploadMainForBlogUseCase } from './blogs/application/use-cases/b
 import { BloggerUploadMainForPostUseCase } from './blogs/application/use-cases/blogger-upload-main-for-post-use-case';
 import { BlogMainImage, BlogWallpaperImage } from './blogs/blog.image.type';
 import { PostMainImage } from './posts/post.image.type';
+import { NotificationController } from './notifications/notifications.controller';
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
@@ -230,6 +231,7 @@ const useCases = [
     SecurityController,
     PublicQuizGameController,
     SaQuizController,
+    NotificationController,
   ],
   providers: [
     AppService,
