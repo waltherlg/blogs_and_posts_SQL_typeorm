@@ -31,11 +31,6 @@ async function sendHookToTelegramm(url:string) {
 async function bootstrap() {
   const rawApp = await NestFactory.create(AppModule);
   const app = addAppSettings(rawApp);
-    // Middleware to add the ngrok header
-    app.use((req, res, next) => {
-      res.setHeader('ngrok-skip-browser-warning', 'true');
-      next();
-    });
   await app.listen(3000);
 
   let baseUrl = await connectNgrok()
