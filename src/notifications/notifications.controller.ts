@@ -1,10 +1,10 @@
-import { Body, Controller, Get } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 
 @Controller('notification')
 export class NotificationController {
     constructor(){}
 
-@Get('telegramm')
+@Post('telegram')
 async forTelegramm(@Body() payload: any){
     console.log(payload);
     return {status: 'success'}
