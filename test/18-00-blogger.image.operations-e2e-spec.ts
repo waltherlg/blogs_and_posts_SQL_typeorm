@@ -163,7 +163,9 @@ export function testBloggerImageOperation18() {
         'post_main.png',
       );
       const testsResponse = await request(app.getHttpServer())
-        .post(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}/images/main`)
+        .post(
+          `${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}/images/main`,
+        )
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .attach('file', imagePath)
         .expect(201);
@@ -182,12 +184,12 @@ export function testBloggerImageOperation18() {
         'textFile.txt',
       );
       const testsResponse = await request(app.getHttpServer())
-        .post(`${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}/images/main`)
+        .post(
+          `${endpoints.bloggerBlogs}/${firstCreatedBlogId}/posts/${createdPostId}/images/main`,
+        )
         .set('Authorization', `Bearer ${accessTokenUser1}`)
         .attach('file', imagePath)
         .expect(400);
     });
-
-    
   });
 }

@@ -1,31 +1,29 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { addAppSettings } from './helpers/settings';
-import * as ngrok from 'ngrok'
+import * as ngrok from 'ngrok';
 import * as dotenv from 'dotenv';
 import { CustomisableException } from './exceptions/custom.exceptions';
 dotenv.config();
-const axios = require('axios')
+const axios = require('axios');
 
 async function connectNgrok() {
   try {
-  const url = await ngrok.connect(3000)
-  console.log('ngrok url ', url);
-  return url
+    const url = await ngrok.connect(3000);
+    console.log('ngrok url ', url);
+    return url;
   } catch (error) {
     console.log(error);
-    
-    throw new CustomisableException('ngrok url', error, 418)
-    
-  }
 
+    throw new CustomisableException('ngrok url', error, 418);
+  }
 }
 
-async function sendHookToTelegramm(url:string) {
-  const token = process.env.TELEGRAM_BOT_TOKEN
+async function sendHookToTelegramm(url: string) {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
   await axios.post(`https://api.telegram.org/bot${token}/setWebhook`, {
-    url
-  }) 
+    url,
+  });
 }
 
 async function bootstrap() {
@@ -33,7 +31,7 @@ async function bootstrap() {
   const app = addAppSettings(rawApp);
   await app.listen(3000);
 
-  let baseUrl = await connectNgrok()
-  await sendHookToTelegramm(baseUrl + '/notification/telegram')
+  const baseUrl = await connectNgrok();
+  await sendHookToTelegramm(baseUrl + '/notification/telegram');
 }
 bootstrap();

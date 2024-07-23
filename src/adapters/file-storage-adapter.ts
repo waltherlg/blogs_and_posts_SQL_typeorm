@@ -164,15 +164,15 @@ export class S3StorageAdapter {
     postId: string,
     bufer: Buffer,
     metadata,
-    size: PostMainSizeEnum
+    size: PostMainSizeEnum,
   ) {
     const uploadKey = `content/images/${userId}/blogs/${blogId}/posts/${postId}_post_main_${size}.png`;
     const uploadResult = await this.saveImageFile(uploadKey, bufer, metadata);
     return uploadResult.Key;
   }
 }
-  export enum PostMainSizeEnum {
-    origin = 'origin',
-    middle = 'middle',
-    small = 'small'
-  }
+export enum PostMainSizeEnum {
+  origin = 'origin',
+  middle = 'middle',
+  small = 'small',
+}

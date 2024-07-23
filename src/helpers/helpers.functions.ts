@@ -71,5 +71,5 @@ export const delayFunction = async (ms: number) => {
 };
 
 export const fullImageUrl = (imageKey) => {
-  return `https://storage.yandexcloud.net/yandexcloudformyapi/`+imageKey
-}
+  return `https://storage.yandexcloud.net/yandexcloudformyapi/` + imageKey;
+};

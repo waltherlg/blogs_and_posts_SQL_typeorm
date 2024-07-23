@@ -54,10 +54,10 @@ export class BlogsQueryRepository {
         'blog.createdAt',
         'blog.isMembership',
         'wallpaper.*',
-        'main.*'
+        'main.*',
       ])
       .leftJoinAndSelect('blog.BlogWallpaperImage', 'wallpaper')
-      .leftJoinAndSelect('blog.BlogMainImage', 'main')
+      .leftJoinAndSelect('blog.BlogMainImage', 'main');
 
     if (searchNameTerm !== '') {
       queryBuilder
@@ -72,7 +72,7 @@ export class BlogsQueryRepository {
     }
 
     const blogsCount = await queryBuilder.getCount();
-    
+
     const blogs = await queryBuilder
       .orderBy(`blog.${sortBy} COLLATE "C"`, sortDirection)
       .limit(pageSize)
@@ -81,9 +81,9 @@ export class BlogsQueryRepository {
       // .take(pageSize)
       .getMany();
     console.log('blogs in getAllblogs ', blogs);
-    
+
     const blogsForOutput = blogs.map((blog) => {
-      return blog.returnForPublic()
+      return blog.returnForPublic();
     });
 
     const pageCount = Math.ceil(blogsCount / pageSize);
@@ -177,7 +177,7 @@ export class BlogsQueryRepository {
         'blog.createdAt',
         'blog.isMembership',
         'wallpaper.*',
-        'main.*'
+        'main.*',
       ])
       .leftJoinAndSelect('blog.BlogWallpaperImage', 'wallpaper')
       .leftJoinAndSelect('blog.BlogMainImage', 'main')
@@ -199,8 +199,7 @@ export class BlogsQueryRepository {
       // .take(pageSize)
       .getManyAndCount();
 
-      console.log("blogs in get blog for current user ", blogs);
-      
+    console.log('blogs in get blog for current user ', blogs);
 
     const pageCount = Math.ceil(blogsCount / pageSize);
 

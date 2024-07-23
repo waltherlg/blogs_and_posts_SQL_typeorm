@@ -1,5 +1,8 @@
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { PostMainSizeEnum, S3StorageAdapter } from '../../../adapters/file-storage-adapter';
+import {
+  PostMainSizeEnum,
+  S3StorageAdapter,
+} from '../../../adapters/file-storage-adapter';
 import { CheckService } from '../../../other.services/check.service';
 import { ActionResult } from '../../../helpers/enum.action.result.helper';
 import { PostsRepository } from '../../../posts/posts.repository';
@@ -33,9 +36,9 @@ export class BloggerUploadMainForPostUseCase
     const postId = command.postId;
     const bufferOrigin = command.postMainFile.buffer;
     const metadataOrigin = command.metadata;
-    
-    if(!(await this.checkService.isBlogExist(blogId))) {
-      return ActionResult.BlogNotFound
+
+    if (!(await this.checkService.isBlogExist(blogId))) {
+      return ActionResult.BlogNotFound;
     }
 
     if (!(await this.checkService.isUserOwnerOfBlog(userId, blogId))) {
@@ -49,25 +52,27 @@ export class BloggerUploadMainForPostUseCase
 
     try {
       const bufferMiddle = await sharp(bufferOrigin)
-      .resize(300, 180)
-      .toBuffer();
+        .resize(300, 180)
+        .toBuffer();
 
-      const metadataMiddle = await sharp(bufferMiddle).metadata()
+      const metadataMiddle = await sharp(bufferMiddle).metadata();
 
-      const bufferSmall = await sharp(bufferOrigin)
-      .resize(149, 96)
-      .toBuffer();
+      const bufferSmall = await sharp(bufferOrigin).resize(149, 96).toBuffer();
 
-      const metadataSmall = await sharp(bufferSmall).metadata()
+      const metadataSmall = await sharp(bufferSmall).metadata();
 
-      const [uploadedMainKeyOrigin, uploadedMainKeyMiddle, uploadedMainKeySmall] = await Promise.all([
+      const [
+        uploadedMainKeyOrigin,
+        uploadedMainKeyMiddle,
+        uploadedMainKeySmall,
+      ] = await Promise.all([
         this.s3StorageAdapter.savePostMain(
           userId,
           blogId,
           postId,
           bufferOrigin,
           metadataOrigin,
-          PostMainSizeEnum.origin
+          PostMainSizeEnum.origin,
         ),
         this.s3StorageAdapter.savePostMain(
           userId,
@@ -75,7 +80,7 @@ export class BloggerUploadMainForPostUseCase
           postId,
           bufferMiddle,
           metadataMiddle,
-          PostMainSizeEnum.middle
+          PostMainSizeEnum.middle,
         ),
         this.s3StorageAdapter.savePostMain(
           userId,
@@ -83,15 +88,15 @@ export class BloggerUploadMainForPostUseCase
           postId,
           bufferSmall,
           metadataSmall,
-          PostMainSizeEnum.small
-        )
+          PostMainSizeEnum.small,
+        ),
       ]);
       // const uploadedMainKeyMiddle = await this.s3StorageAdapter.savePostMain(
 
       // )
-      const mainUrlOrigin = fullImageUrl(uploadedMainKeyOrigin)
-      const mainUrlMiddle = fullImageUrl(uploadedMainKeyMiddle)
-      const mainUrlSmall = fullImageUrl(uploadedMainKeySmall)
+      const mainUrlOrigin = fullImageUrl(uploadedMainKeyOrigin);
+      const mainUrlMiddle = fullImageUrl(uploadedMainKeyMiddle);
+      const mainUrlSmall = fullImageUrl(uploadedMainKeySmall);
 
       post.PostMainImage.url = mainUrlOrigin;
       post.PostMainImage.width = metadataOrigin.width;
@@ -108,10 +113,9 @@ export class BloggerUploadMainForPostUseCase
       post.PostMainImage.heightSmall = metadataSmall.height;
       post.PostMainImage.fileSizeSmall = metadataSmall.size;
 
-
       const savePostResult = await this.postsRepository.savePost(post);
       if (savePostResult) {
-        return post.returnImageForPublic()
+        return post.returnImageForPublic();
       } else {
         return ActionResult.NotCreated;
       }

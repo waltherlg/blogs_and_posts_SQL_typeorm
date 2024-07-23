@@ -79,6 +79,6 @@ export class Posts extends PostDBType {
         },
       ];
     }
-    return images
+    return images;
   }
 }

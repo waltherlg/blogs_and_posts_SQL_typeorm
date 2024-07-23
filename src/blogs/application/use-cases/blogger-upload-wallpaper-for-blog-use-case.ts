@@ -46,7 +46,7 @@ export class BloggerUploadWallpaperForBlogUseCase
           metadata,
         );
 
-      const wallpaperUrl = fullImageUrl(uploadedWallpaperKey)
+      const wallpaperUrl = fullImageUrl(uploadedWallpaperKey);
 
       blog.BlogWallpaperImage.url = wallpaperUrl;
       blog.BlogWallpaperImage.width = command.metadata.width;

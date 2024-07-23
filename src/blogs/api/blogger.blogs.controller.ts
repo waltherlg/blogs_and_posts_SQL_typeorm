@@ -265,17 +265,19 @@ export class BloggerBlogsController {
     @Param('blogId') blogId,
     @UploadedFile() blogWallpaperFile: Express.Multer.File,
   ) {
-    if(blogWallpaperFile.mimetype !== 'image/png' && 
-      blogWallpaperFile.mimetype !== 'image/jpeg'){
-        throw new CustomisableException(
-          'wallpaper',
-          'file must be png or jpeg',
-          400,
-        );
-      }
-    
-    const metadata = await sharp(blogWallpaperFile.buffer).metadata();    
-    
+    if (
+      blogWallpaperFile.mimetype !== 'image/png' &&
+      blogWallpaperFile.mimetype !== 'image/jpeg'
+    ) {
+      throw new CustomisableException(
+        'wallpaper',
+        'file must be png or jpeg',
+        400,
+      );
+    }
+
+    const metadata = await sharp(blogWallpaperFile.buffer).metadata();
+
     if (
       metadata.width !== 1028 ||
       metadata.height !== 312 ||
@@ -308,16 +310,13 @@ export class BloggerBlogsController {
     @Param('blogId') blogId,
     @UploadedFile() blogMainFile: Express.Multer.File,
   ) {
+    if (
+      blogMainFile.mimetype !== 'image/png' &&
+      blogMainFile.mimetype !== 'image/jpeg'
+    ) {
+      throw new CustomisableException('main', 'file must be png or jpeg', 400);
+    }
 
-    if(blogMainFile.mimetype !== 'image/png' && 
-      blogMainFile.mimetype !== 'image/jpeg'){
-        throw new CustomisableException(
-          'main',
-          'file must be png or jpeg',
-          400,
-        );
-      }
-    
     const metadata = await sharp(blogMainFile.buffer).metadata();
     if (
       metadata.width !== 156 ||
@@ -342,50 +341,50 @@ export class BloggerBlogsController {
     handleActionResult(result);
     return result;
   }
-@Post(':blogId/posts/:postId/images/main')
-@UseInterceptors(FileInterceptor('file'))
-@HttpCode(201)
-async setMainForPost(
-  @Req() request,
-  @Param('blogId') blogId,
-  @Param('postId') postId,
-  @UploadedFile() postMainFile: Express.Multer.File
-){
-
-  if(postMainFile.mimetype !== 'image/png' && 
-    postMainFile.mimetype !== 'image/jpeg'){
+  @Post(':blogId/posts/:postId/images/main')
+  @UseInterceptors(FileInterceptor('file'))
+  @HttpCode(201)
+  async setMainForPost(
+    @Req() request,
+    @Param('blogId') blogId,
+    @Param('postId') postId,
+    @UploadedFile() postMainFile: Express.Multer.File,
+  ) {
+    if (
+      postMainFile.mimetype !== 'image/png' &&
+      postMainFile.mimetype !== 'image/jpeg'
+    ) {
       throw new CustomisableException(
         'wallpaper',
         'file must be png or jpeg',
         400,
       );
     }
-  
-  const metadata = await sharp(postMainFile.buffer).metadata()
-  
-  
-  if (
-    metadata.width !== 940 ||
-    metadata.height !== 432 ||
-    metadata.size > 102400
-  ) {
-    throw new CustomisableException(
-      'main',
-      'file must be 940x432 and not more than 100KB',
-      400,
-    );
-  }
 
-  const result = await this.commandBus.execute(
-    new BloggerUploadMainForPostCommand(
-      request.user.userId,
-      blogId,
-      postId,
-      postMainFile,
-      metadata
-    )
-  )
-  handleActionResult(result)
-  return result
-}
+    const metadata = await sharp(postMainFile.buffer).metadata();
+
+    if (
+      metadata.width !== 940 ||
+      metadata.height !== 432 ||
+      metadata.size > 102400
+    ) {
+      throw new CustomisableException(
+        'main',
+        'file must be 940x432 and not more than 100KB',
+        400,
+      );
+    }
+
+    const result = await this.commandBus.execute(
+      new BloggerUploadMainForPostCommand(
+        request.user.userId,
+        blogId,
+        postId,
+        postMainFile,
+        metadata,
+      ),
+    );
+    handleActionResult(result);
+    return result;
+  }
 }
