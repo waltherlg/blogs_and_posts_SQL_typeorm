@@ -122,6 +122,7 @@ import { BloggerUploadMainForPostUseCase } from './blogs/application/use-cases/b
 import { BlogMainImage, BlogWallpaperImage } from './blogs/blog.image.type';
 import { PostMainImage } from './posts/post.image.type';
 import { NotificationController } from './notification/notification.controller';
+import { TelegramAdapter } from './adapters/telegram.adapter';
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
@@ -274,6 +275,7 @@ const useCases = [
     CustomUrlValidator,
     //CustomBlogIdValidator,
     TrimNotEmptyValidator,
+    TelegramAdapter,
     ...useCases,
     {
       provide: APP_GUARD,
