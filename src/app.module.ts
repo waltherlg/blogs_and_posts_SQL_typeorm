@@ -123,6 +123,7 @@ import { BlogMainImage, BlogWallpaperImage } from './blogs/blog.image.type';
 import { PostMainImage } from './posts/post.image.type';
 import { NotificationController } from './notification/notification.controller';
 import { TelegramAdapter } from './adapters/telegram.adapter';
+import { BlogSubscribers } from './blogs/blog.subscriber.types';
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
@@ -194,6 +195,7 @@ const useCases = [
       BlogWallpaperImage,
       BlogMainImage,
       PostMainImage,
+      BlogSubscribers,
     ]),
     CqrsModule,
     ThrottlerModule.forRoot({
