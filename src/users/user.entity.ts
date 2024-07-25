@@ -14,6 +14,7 @@ import {
 } from 'typeorm';
 import { UserDBType } from './users.types';
 import { PlayerStatistic } from '../quizGame/quiz.game.statistic.type';
+import { BlogSubscribers } from '../blogs/blog.subscriber.types';
 
 //TODO: Спросить, можно ли наследовать энтити от класса
 @Entity({ name: 'Users' })
@@ -60,4 +61,7 @@ export class Users extends UserDBType {
     nullable: true,
   })
   PlayerStatistic: PlayerStatistic | null;
+  @OneToMany(()=> BlogSubscribers, (sub) => sub.Users, { cascade: ['remove'] })
+  @JoinColumn({name: 'userId'})
+  BlogSubscribers: BlogSubscribers[]
 }

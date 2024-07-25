@@ -13,6 +13,7 @@ import {
 } from 'typeorm';
 import { BlogMainImage, BlogWallpaperImage } from './blog.image.type';
 import { blogMainOutputType, blogWallpaperOutputType } from './blogs.types';
+import { BlogSubscribers } from './blog.subscriber.types';
 
 @Entity({ name: 'Blogs' })
 export class Blogs {
@@ -55,6 +56,12 @@ export class Blogs {
 
   @OneToOne(() => BlogMainImage, (i) => i.Blogs, { eager: true, cascade: true })
   BlogMainImage: BlogMainImage | null;
+
+  @OneToMany(() => BlogSubscribers, (b)=> b.Blogs, {
+    eager: true,
+    cascade: true,
+  })
+  BlogSubscribers: BlogSubscribers[]
 
   returnForPublic() {
     const images: {
