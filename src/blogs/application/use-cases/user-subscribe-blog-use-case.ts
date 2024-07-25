@@ -4,7 +4,9 @@ import { TelegramAdapter } from '../../../adapters/telegram.adapter';
 import { ActionResult } from '../../../helpers/enum.action.result.helper';
 
 export class UserSubscribeBlogCommand {
-  constructor(public userId: string, public blogId: string) {}
+  constructor(
+    public userId: string, 
+    public blogId: string) {}
 }
 
 @CommandHandler(UserSubscribeBlogCommand)
@@ -17,6 +19,9 @@ export class UserSubscribeBlogCase
   ) {}
   //TODO: UserSubscribeBlogCase
   async execute(command: UserSubscribeBlogCommand): Promise<ActionResult> {
+
+
+
     return ActionResult.Success;
   }
 }

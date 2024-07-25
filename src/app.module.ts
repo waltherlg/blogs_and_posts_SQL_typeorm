@@ -124,6 +124,7 @@ import { PostMainImage } from './posts/post.image.type';
 import { NotificationController } from './notification/notification.controller';
 import { TelegramAdapter } from './adapters/telegram.adapter';
 import { BlogSubscribers } from './blogs/blog.subscriber.types';
+import { UserSubscribeBlogCase } from './blogs/application/use-cases/user-subscribe-blog-use-case';
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
@@ -174,6 +175,7 @@ const useCases = [
   BloggerUploadWallpaperForBlogUseCase,
   BloggerUploadMainForBlogUseCase,
   BloggerUploadMainForPostUseCase,
+  UserSubscribeBlogCase,
 ];
 
 @Module({

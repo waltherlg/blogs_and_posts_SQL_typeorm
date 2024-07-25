@@ -111,6 +111,20 @@ export function userSubscribeBlogTest_19() {
       expect(createdResponseBody).toEqual(testPosts.outputPost1forBlog1);
     });
 
+    it('00-08 blogs/{blogId}/subscription POST = 204 user2 subscribe to blog1', async() => {
+      await request(app.getHttpServer())
+      .post(`${endpoints.blogs}/${blogId1}/subscription`)
+      .set('Authorization', `Bearer ${accessTokenUser2}`)
+      .expect(204)
+    })
+
+    // it('00-08 blogs/{blogId}/subscription POST = 204 user2 unSubscribe from blog1', async() => {
+    //   await request(app.getHttpServer())
+    //   .post(`${endpoints.blogs}/${blogId1}/subscription`)
+    //   .set('Authorization', `Bearer ${accessTokenUser2}`)
+    //   .expect(204)
+    // })
+
 
   });
 }

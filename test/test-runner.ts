@@ -23,6 +23,7 @@ import { onlyQuizGameCreateSa1602 } from './16-02-only.quiz.game.create.e2e-spec
 import { testBloggerPaginationTest0502 } from './05-02-blogger.blogs.pagination.check-e2e-spec';
 import { banCheckOperation } from './10-ban.check.operation.e2e-spec';
 import { testBloggerImageOperation18 } from './18-00-blogger.image.operations-e2e-spec';
+import { userSubscribeBlogTest_19 } from './19-00-user.subscribe.blog.e2e-spec';
 
 describe('End-to-End Tests', () => {
   // testSaUsersCrud();
@@ -34,7 +35,7 @@ describe('End-to-End Tests', () => {
   // testBanUserForBlogByBlogger();
   // testBloggerPaginationTest0502()
   // saBlogsControllerCrudAndBan();
-  postCrudOperationsByBlogger07();
+  // postCrudOperationsByBlogger07();
   // testPostLikesCrud08();
   // commentCrudOperations(); // this comment CRUD if blog create blogger
   // saCommentCrudOperations();
@@ -50,5 +51,6 @@ describe('End-to-End Tests', () => {
   // quizGameCrudOperationsSa1601()
   // onlyQuizGameCreateSa1602();
   // quizGameStatisticOperations17();
-  testBloggerImageOperation18();
+  // testBloggerImageOperation18();
+  userSubscribeBlogTest_19()
 });
