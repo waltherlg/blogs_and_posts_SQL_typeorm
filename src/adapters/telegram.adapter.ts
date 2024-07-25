@@ -5,7 +5,7 @@ import { AxiosInstance } from 'axios';
 
 @Injectable()
 export class TelegramAdapter {
-  private axiosInstance: AxiosInstance
+  private axiosInstance: AxiosInstance;
   constructor() {
     const token = process.env.TELEGRAM_BOT_TOKEN;
     this.axiosInstance = axios.create({

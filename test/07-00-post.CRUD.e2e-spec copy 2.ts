@@ -4,10 +4,6 @@ import request from 'supertest';
 import { AppModule } from '../src/app.module';
 import { endpoints } from './helpers/routing';
 import { testUser } from './helpers/inputAndOutputObjects/usersObjects';
-import {
-  testInputBlogBody,
-  testOutputBlogBody,
-} from './helpers/inputAndOutputObjects/blogsObjects';
 import { testPosts } from './helpers/inputAndOutputObjects/postsObjects';
 import { addAppSettings } from '../src/helpers/settings';
 export function postCrudOperationsByBlogger07() {

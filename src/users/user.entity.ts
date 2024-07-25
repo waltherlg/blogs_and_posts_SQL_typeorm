@@ -61,7 +61,7 @@ export class Users extends UserDBType {
     nullable: true,
   })
   PlayerStatistic: PlayerStatistic | null;
-  @OneToMany(()=> BlogSubscribers, (sub) => sub.Users, { cascade: ['remove'] })
-  @JoinColumn({name: 'userId'})
-  BlogSubscribers: BlogSubscribers[]
+  @OneToMany(() => BlogSubscribers, (sub) => sub.Users, { cascade: ['remove'] })
+  @JoinColumn({ name: 'userId' })
+  BlogSubscribers: BlogSubscribers[];
 }

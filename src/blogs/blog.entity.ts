@@ -57,11 +57,11 @@ export class Blogs {
   @OneToOne(() => BlogMainImage, (i) => i.Blogs, { eager: true, cascade: true })
   BlogMainImage: BlogMainImage | null;
 
-  @OneToMany(() => BlogSubscribers, (b)=> b.Blogs, {
+  @OneToMany(() => BlogSubscribers, (b) => b.Blogs, {
     eager: true,
     cascade: true,
   })
-  BlogSubscribers: BlogSubscribers[]
+  BlogSubscribers: BlogSubscribers[];
 
   returnForPublic() {
     const images: {

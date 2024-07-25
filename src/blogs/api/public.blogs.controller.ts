@@ -1,4 +1,13 @@
-import { Controller, Get, HttpCode, Param, Post, Query, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  Param,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { BlogsQueryRepository } from '../infrostracture/blogs.query.repository';
 import {
   DEFAULT_BLOGS_QUERY_PARAMS,
@@ -63,7 +72,7 @@ export class BlogsController {
     private readonly checkService: CheckService,
     private readonly blogsQueryRepository: BlogsQueryRepository,
     private readonly postsQueryRepository: PostsQueryRepository,
-    private readonly commandBus: CommandBus
+    private readonly commandBus: CommandBus,
   ) {}
   @Get()
   async getAllBlogs(@Query() queryParams: RequestBlogsQueryModel) {
@@ -101,12 +110,10 @@ export class BlogsController {
   @UseGuards(JwtAuthGuard)
   @Post(':blogId/subscription')
   @HttpCode(204)
-  async subscribeUserToBlog(
-    @Req() request,
-    @Param('blogId') blogId ){
-
-      const result = await this.commandBus.execute(new UserSubscribeBlogCommand(request.user.userId, blogId))
-      handleActionResult(result)
-
+  async subscribeUserToBlog(@Req() request, @Param('blogId') blogId) {
+    const result = await this.commandBus.execute(
+      new UserSubscribeBlogCommand(request.user.userId, blogId),
+    );
+    handleActionResult(result);
   }
 }

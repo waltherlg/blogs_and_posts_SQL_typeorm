@@ -38,7 +38,7 @@ export default new DataSource({
     BlogWallpaperImage,
     BlogMainImage,
     PostMainImage,
-    BlogSubscribers
+    BlogSubscribers,
   ],
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
   migrationsTableName: 'custom_migration_table',

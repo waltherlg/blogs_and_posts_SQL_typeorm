@@ -24,7 +24,7 @@ async function bootstrap() {
   const rawApp = await NestFactory.create(AppModule);
   const app = addAppSettings(rawApp);
   await app.listen(3000);
-  const telegramAdapter = await app.resolve(TelegramAdapter)
+  const telegramAdapter = await app.resolve(TelegramAdapter);
 
   const baseUrl = await connectNgrok();
   await telegramAdapter.sendHookToTelegramm(baseUrl + '/notification/telegram');
