@@ -6,8 +6,8 @@ import {
 } from '../adapters/telegram.adapter';
 const axios = require('axios');
 
-@Controller('notification')
-export class NotificationController {
+@Controller('integrations')
+export class IntegrationsController {
   constructor(private readonly telegramAdapter: TelegramAdapter) {}
 
   @Post('telegram')

@@ -121,7 +121,7 @@ import { BloggerUploadMainForBlogUseCase } from './blogs/application/use-cases/b
 import { BloggerUploadMainForPostUseCase } from './blogs/application/use-cases/blogger-upload-main-for-post-use-case';
 import { BlogMainImage, BlogWallpaperImage } from './blogs/blog.image.type';
 import { PostMainImage } from './posts/post.image.type';
-import { NotificationController } from './notification/notification.controller';
+import { IntegrationsController } from './integrations/integrations.controller';
 import { TelegramAdapter } from './adapters/telegram.adapter';
 import { BlogSubscribers } from './blogs/blog.subscriber.types';
 import { UserSubscribeBlogCase } from './blogs/application/use-cases/user-subscribe-blog-use-case';
@@ -236,7 +236,7 @@ const useCases = [
     SecurityController,
     PublicQuizGameController,
     SaQuizController,
-    NotificationController,
+    IntegrationsController,
   ],
   providers: [
     AppService,
