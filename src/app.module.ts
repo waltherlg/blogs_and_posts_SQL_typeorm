@@ -125,6 +125,8 @@ import { IntegrationsController } from './integrations/integrations.controller';
 import { TelegramAdapter } from './adapters/telegram.adapter';
 import { BlogSubscribers } from './blogs/blog.subscriber.types';
 import { UserSubscribeBlogCase } from './blogs/application/use-cases/user-subscribe-blog-use-case';
+import { UserUnsubscribeFromBlogUseCase } from './blogs/application/use-cases/user-unsubscribe-from-blog-use-case';
+import { BlogSubscribersRepository } from './blogs/infrostracture/blog.subscriber.repository';
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
@@ -176,6 +178,8 @@ const useCases = [
   BloggerUploadMainForBlogUseCase,
   BloggerUploadMainForPostUseCase,
   UserSubscribeBlogCase,
+  UserUnsubscribeFromBlogUseCase,
+
 ];
 
 @Module({
@@ -271,6 +275,7 @@ const useCases = [
     QuizAnswersRepository,
     PlayerStatisticRepository,
     PlayerStatisticQueryRepository,
+    BlogSubscribersRepository,
     LocalStrategy,
     JwtStrategy,
     RefreshTokenStrategy,

@@ -1,5 +1,6 @@
 import {
   Controller,
+  Delete,
   Get,
   HttpCode,
   Param,
@@ -30,6 +31,7 @@ import { request } from 'express';
 import { CommandBus } from '@nestjs/cqrs';
 import { UserSubscribeBlogCommand } from '../application/use-cases/user-subscribe-blog-use-case';
 import { handleActionResult } from '../../helpers/enum.action.result.helper';
+import { UserUnsubscribeFromBlogCommand } from '../application/use-cases/user-unsubscribe-from-blog-use-case';
 
 export class CreateBlogInputModelType {
   @StringTrimNotEmpty()
@@ -113,6 +115,16 @@ export class BlogsController {
   async subscribeUserToBlog(@Req() request, @Param('blogId') blogId) {
     const result = await this.commandBus.execute(
       new UserSubscribeBlogCommand(request.user.userId, blogId),
+    );
+    handleActionResult(result);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete(':blogId/subscription')
+  @HttpCode(204)
+  async unsubscribeUserFromBlog(@Req() request, @Param('blogId') blogId) {
+    const result = await this.commandBus.execute(
+      new UserUnsubscribeFromBlogCommand(request.user.userId, blogId),
     );
     handleActionResult(result);
   }
