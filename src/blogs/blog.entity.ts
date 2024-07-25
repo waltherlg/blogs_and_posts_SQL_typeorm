@@ -54,7 +54,9 @@ export class Blogs {
   })
   BlogWallpaperImage: BlogWallpaperImage | null;
 
-  @OneToOne(() => BlogMainImage, (i) => i.Blogs, { eager: true, cascade: true })
+  @OneToOne(() => BlogMainImage, (i) => i.Blogs, { 
+    eager: true, 
+    cascade: true })
   BlogMainImage: BlogMainImage | null;
 
   @OneToMany(() => BlogSubscribers, (b) => b.Blogs, {
