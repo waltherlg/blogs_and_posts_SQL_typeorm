@@ -27,6 +27,6 @@ async function bootstrap() {
   const telegramAdapter = await app.resolve(TelegramAdapter);
 
   const baseUrl = await connectNgrok();
-  await telegramAdapter.sendHookToTelegramm(baseUrl + '/notification/telegram');
+  await telegramAdapter.sendHookToTelegramm(baseUrl + '/integrations/telegram');
 }
 bootstrap();
