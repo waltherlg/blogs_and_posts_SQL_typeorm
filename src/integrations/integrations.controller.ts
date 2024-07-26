@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import {
   TelegramAdapter,
   TelegramUpdateMessage,
 } from '../adapters/telegram.adapter';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 const axios = require('axios');
 
 @Controller('integrations')
@@ -18,5 +19,11 @@ export class IntegrationsController {
       payload.message.from.id,
     );
     return { status: 'success' };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('telegram/auth-bot-link')
+  async getTelegramBotLink(@Req() request){
+
   }
 }

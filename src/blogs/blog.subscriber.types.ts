@@ -13,6 +13,7 @@ export class BlogSubscriberDto {
   constructor(
     public blogId: string,
     public userId: string,
+    public telegramId: string | null = null,
     public subscribeData: Date = new Date(),
   ) {}
 }
@@ -36,6 +37,10 @@ export class BlogSubscribers extends BlogSubscriberDto {
   Users: Users;
   @Column({ type: 'uuid' })
   userId: string;
+
+  @Column({nullable: true})
+  telegramId: string | null
+
 
   @Column({ type: 'timestamptz' })
   subscribeData: Date;
