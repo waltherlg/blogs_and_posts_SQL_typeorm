@@ -1,7 +1,7 @@
 yarn typeorm-ts-node-esm migration:generate ./src/db/migrations/merged_player -d ./src/db/data-source.ts
 
 -- это работает 
-yarn typeorm migration:generate -d ./src/db/data-source.ts ./src/db/migrations/add_telegrammId_in_BlogSubscriber
+yarn typeorm migration:generate -d ./src/db/data-source.ts ./src/db/migrations/add_telegrammId_to_user
 
 yarn typeorm migration:create ./src/db/migrations/PostRefactoring
 

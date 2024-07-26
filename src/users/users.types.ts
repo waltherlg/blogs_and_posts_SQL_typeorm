@@ -28,6 +28,7 @@ export class UserDBType {
     public passwordRecoveryCode: string | null,
     public expirationDateOfRecoveryCode: Date | null,
     public playerStatistic: PlayerStatistic,
+    public telegramId: string | null = null
   ) {}
 }
 

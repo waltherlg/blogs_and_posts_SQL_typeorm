@@ -64,4 +64,7 @@ export class Users extends UserDBType {
   @OneToMany(() => BlogSubscribers, (sub) => sub.Users, { cascade: ['remove'] })
   @JoinColumn({ name: 'userId' })
   BlogSubscribers: BlogSubscribers[];
+
+  @Column({nullable: true})
+  telegramId: string | null
 }
