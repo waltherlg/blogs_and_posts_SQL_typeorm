@@ -33,10 +33,12 @@ export class UsersRepository {
     private readonly playerStatisticRepository: Repository<PlayerStatistic>,
   ) {}
 
-  // async createUser(userDTO: UserDBType) {
-  //   const result = await this.usersRepository.save(userDTO);
-  //   return result.userId;
-  // }
+  async saveUserChanges(user: Users): Promise<boolean>{
+    const result = await this.usersRepository.save(user)
+    return !!result
+  }
+
+
 
   async createUser(userDTO: Users) {
     const queryRunner = this.dataSource.createQueryRunner();

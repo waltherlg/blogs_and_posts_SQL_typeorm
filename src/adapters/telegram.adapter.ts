@@ -35,5 +35,6 @@ export type TelegramUpdateMessage = {
       last_name: string;
     };
     text: string;
+    entities: []
   };
 };

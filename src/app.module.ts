@@ -127,6 +127,7 @@ import { BlogSubscribers } from './blogs/blog.subscriber.types';
 import { UserSubscribeBlogCase } from './blogs/application/use-cases/user-subscribe-blog-use-case';
 import { UserUnsubscribeFromBlogUseCase } from './blogs/application/use-cases/user-unsubscribe-from-blog-use-case';
 import { BlogSubscribersRepository } from './blogs/infrostracture/blog.subscriber.repository';
+import { UserReqAuthBotLinkUseCase } from './integrations/use-cases/user-request-link-for-telegram-bot-use-case';
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
@@ -179,6 +180,7 @@ const useCases = [
   BloggerUploadMainForPostUseCase,
   UserSubscribeBlogCase,
   UserUnsubscribeFromBlogUseCase,
+  UserReqAuthBotLinkUseCase,
 
 ];
 
