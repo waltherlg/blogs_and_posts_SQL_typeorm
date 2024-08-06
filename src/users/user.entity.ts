@@ -67,4 +67,7 @@ export class Users extends UserDBType {
 
   @Column({nullable: true})
   telegramId: string | null
+
+  @Column({nullable: true})
+  telegramActivationCode: string | null
 }
