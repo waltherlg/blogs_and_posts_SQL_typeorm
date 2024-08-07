@@ -87,6 +87,16 @@ export class UsersRepository {
     return result;
   }
 
+  async getUserDBTypeByTelegramCode(telegramActivationCode: string): Promise<Users | null> {
+    if (!isValidUUID(telegramActivationCode)) {
+      return null;
+    }
+    const result = await this.usersRepository.findOne({
+      where: [{ telegramActivationCode: telegramActivationCode }],
+    });
+    return result;
+  }
+
   async addPasswordRecoveryData(
     passwordRecoveryData: PasswordRecoveryModel,
   ): Promise<boolean> {

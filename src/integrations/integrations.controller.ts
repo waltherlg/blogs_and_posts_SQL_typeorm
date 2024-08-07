@@ -9,6 +9,7 @@ import { CommandBus } from '@nestjs/cqrs';
 import { UserReqAuthBotLinkCommand } from './use-cases/user-request-link-for-telegram-bot-use-case';
 import { handleActionResult } from '../helpers/enum.action.result.helper';
 import { log } from 'console';
+import { UserActivateTelegramBotCommand } from './use-cases/user-activate-telegram-bot-use-case';
 const axios = require('axios');
 
 @Controller('integrations')
@@ -18,15 +19,66 @@ export class IntegrationsController {
   ) {}
 
   @Post('telegram')
-  async forTelegramm(@Body() payload: TelegramUpdateMessage, @Query() code) {
+  async forTelegramm(@Body() payload: TelegramUpdateMessage) {
     console.log('payload ', payload);
-    console.log('code ', code);
-    
-    this.telegramAdapter.sendMessageToTelegramm(
-      `Привет, ${payload.message.from.first_name} , ты мне только что написал ${payload.message.text}`,
+
+    if (!payload.message && !payload.message.from.id){
+      console.log('no payload');
+      return      
+    }
+          
+    const messageText = payload.message.text
+    const telegramId = payload.message.from.id.toString()
+
+    if(messageText.startsWith('/start')){
+        const startIndex = messageText.lastIndexOf(' ')
+        if ( startIndex !== -1 ) {
+          const startParam = messageText.substring(startIndex + 1).trim()
+          if(startParam && startParam.startsWith('code=')) {
+            const code = startParam.split('code=')[1]
+            const result = await this.commandBus.execute(new UserActivateTelegramBotCommand(code, telegramId))
+            handleActionResult(result)
+            this.telegramAdapter.sendMessageToTelegramm(
+              `Привет, ${payload.message.from.first_name} , активация бота прошла успешно! `,
+              payload.message.from.id,)
+          }
+        } else {
+          this.telegramAdapter.sendMessageToTelegramm(
+            `Привет, ${payload.message.from.first_name} , ты уже активировал бота, на этом мои полномочия всё `,
+            payload.message.from.id,
+          );
+
+          
+        }
+    }
+ 
+    if(!messageText.startsWith('/start')) {
+      console.log('-- no start --');
+
+      this.telegramAdapter.sendMessageToTelegramm(
+      `Привет, ${payload.message.from.first_name} , ты уже активировал бота, на этом мои полномочия всё `,
       payload.message.from.id,
+
+      // this.telegramAdapter.sendMessageToTelegramm(
+      //   `Привет, ${payload.message.from.first_name} , ты уже активировал бота, на этом мои полномочия всё ${payload.message.text}`,
+      //   payload.message.from.id,
     );
-    return { status: 'success' };
+    //return { status: 'success' };
+    return  
+    } 
+
+
+      
+      
+
+      
+
+
+    
+
+
+    
+
   }
 
   @UseGuards(JwtAuthGuard)
