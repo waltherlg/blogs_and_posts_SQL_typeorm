@@ -33,12 +33,10 @@ export class UsersRepository {
     private readonly playerStatisticRepository: Repository<PlayerStatistic>,
   ) {}
 
-  async saveUserChanges(user: Users): Promise<boolean>{
-    const result = await this.usersRepository.save(user)
-    return !!result
+  async saveUserChanges(user: Users): Promise<boolean> {
+    const result = await this.usersRepository.save(user);
+    return !!result;
   }
-
-
 
   async createUser(userDTO: Users) {
     const queryRunner = this.dataSource.createQueryRunner();
@@ -87,7 +85,9 @@ export class UsersRepository {
     return result;
   }
 
-  async getUserDBTypeByTelegramCode(telegramActivationCode: string): Promise<Users | null> {
+  async getUserDBTypeByTelegramCode(
+    telegramActivationCode: string,
+  ): Promise<Users | null> {
     if (!isValidUUID(telegramActivationCode)) {
       return null;
     }

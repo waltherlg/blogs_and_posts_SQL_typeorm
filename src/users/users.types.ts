@@ -29,7 +29,7 @@ export class UserDBType {
     public expirationDateOfRecoveryCode: Date | null,
     public playerStatistic: PlayerStatistic,
     public telegramId: string | null = null,
-    public telegramActivationCode: string | null = null
+    public telegramActivationCode: string | null = null,
   ) {}
 }
 

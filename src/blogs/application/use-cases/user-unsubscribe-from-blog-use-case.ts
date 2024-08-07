@@ -7,9 +7,7 @@ import { BlogSubscribers } from '../../blog.subscriber.types';
 import { BlogSubscribersRepository } from '../../infrostracture/blog.subscriber.repository';
 
 export class UserUnsubscribeFromBlogCommand {
-  constructor(
-    public userId: string, 
-    public blogId: string) {}
+  constructor(public userId: string, public blogId: string) {}
 }
 
 @CommandHandler(UserUnsubscribeFromBlogCommand)
@@ -18,28 +16,32 @@ export class UserUnsubscribeFromBlogUseCase
 {
   constructor(
     private readonly blogRepository: BlogsRepository,
-    private readonly BlogSubscribersRepository: BlogSubscribersRepository
+    private readonly BlogSubscribersRepository: BlogSubscribersRepository,
   ) {}
 
-  async execute(command: UserUnsubscribeFromBlogCommand): Promise<ActionResult> {
-    const userId = command.userId
-    const blogId = command.blogId
-    const blog: Blogs = await this.blogRepository.getBlogDBTypeById(blogId)
-    if(!blog) return ActionResult.BlogNotFound
+  async execute(
+    command: UserUnsubscribeFromBlogCommand,
+  ): Promise<ActionResult> {
+    const userId = command.userId;
+    const blogId = command.blogId;
+    const blog: Blogs = await this.blogRepository.getBlogDBTypeById(blogId);
+    if (!blog) return ActionResult.BlogNotFound;
     //console.log('blog in subscribe useCase ', blog);
     console.log('current blog subscribers ', blog.BlogSubscribers);
-    if(!blog.BlogSubscribers.some(sub => sub.userId === userId)){
+    if (!blog.BlogSubscribers.some((sub) => sub.userId === userId)) {
       console.log('already no sub ');
-      return ActionResult.NoChangeNeeded
-    } 
+      return ActionResult.NoChangeNeeded;
+    }
 
-    const result = await this.BlogSubscribersRepository.deleteBlogSubscribe(blogId, userId)
+    const result = await this.BlogSubscribersRepository.deleteBlogSubscribe(
+      blogId,
+      userId,
+    );
 
-    if(result) {
+    if (result) {
       return ActionResult.Success;
     } else {
-      return ActionResult.NotSaved
+      return ActionResult.NotSaved;
     }
-    
   }
 }

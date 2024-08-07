@@ -65,9 +65,9 @@ export class Users extends UserDBType {
   @JoinColumn({ name: 'userId' })
   BlogSubscribers: BlogSubscribers[];
 
-  @Column('bigint', {nullable: true})
-  telegramId: string | null
+  @Column('bigint', { nullable: true })
+  telegramId: string | null;
 
-  @Column('uuid', {nullable: true})
-  telegramActivationCode: string | null
+  @Column('uuid', { nullable: true })
+  telegramActivationCode: string | null;
 }

@@ -182,8 +182,7 @@ const useCases = [
   UserSubscribeBlogCase,
   UserUnsubscribeFromBlogUseCase,
   UserReqAuthBotLinkUseCase,
-  UserActivateTelegramBotUseCase
-
+  UserActivateTelegramBotUseCase,
 ];
 
 @Module({
