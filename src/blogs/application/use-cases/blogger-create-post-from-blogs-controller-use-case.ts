@@ -7,6 +7,7 @@ import { PostDBType } from '../../../posts/posts.types';
 import { v4 as uuidv4 } from 'uuid';
 import { ActionResult } from '../../../helpers/enum.action.result.helper';
 import { Posts } from '../../../posts/post.entity';
+import { TelegramAdapter } from '../../../adapters/telegram.adapter';
 
 export class CreatePostFromBloggerControllerCommand {
   constructor(
@@ -23,6 +24,7 @@ export class CreatePostFromBloggerControllerUseCase
   constructor(
     private readonly postsRepository: PostsRepository,
     private readonly blogsRepository: BlogsRepository,
+    private readonly telegramAdapter: TelegramAdapter,
   ) {}
 
   async execute(
@@ -31,6 +33,7 @@ export class CreatePostFromBloggerControllerUseCase
     const blog = await this.blogsRepository.getBlogDBTypeById(command.blogId);
     if (!blog) return ActionResult.BlogNotFound;
     if (blog.userId !== command.userId) return ActionResult.NotOwner;
+
     const postDto = new Posts(
       uuidv4(),
       command.postCreateDto.title,
@@ -44,6 +47,14 @@ export class CreatePostFromBloggerControllerUseCase
     );
     const newPostId = await this.postsRepository.createPost(postDto);
     if (!newPostId) return ActionResult.NotCreated;
+
+    //send notifications to subs
+    const subsTelegramIds = await this.blogsRepository.getSubscribersTelegramIds(command.blogId)
+    await this.telegramAdapter.sendMessagesToMultipleRecipients(
+      `Вы подписаны на блог ${blog.name}, его автор выложил новый пост! `, subsTelegramIds
+    )
+
+
     return newPostId;
   }
 }

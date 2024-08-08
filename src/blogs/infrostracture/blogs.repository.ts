@@ -14,6 +14,8 @@ import {
   BlogWallpaperImage,
   BlogWallpaperImageDto,
 } from '../blog.image.type';
+import { BlogSubscribers } from '../blog.subscriber.types';
+import { Users } from '../../users/user.entity';
 
 @Injectable()
 export class BlogsRepository {
@@ -161,5 +163,34 @@ export class BlogsRepository {
       .andWhere('blogId = :blogId', { blogId: blogId })
       .execute();
     return result.affected > 0;
+  }
+
+  async getSubscribersTelegramIds(blogId): Promise<null | Array<any>>{
+    if (!isValidUUID(blogId)) {
+      return null;
+    }
+    const blog: Blogs = await this.blogsRepository.findOne({
+      where: [{ blogId: blogId }],
+      relations: ['BlogSubscribers.Users']
+    });
+
+    if(!blog) return null
+
+    const subs: BlogSubscribers[] = blog.BlogSubscribers
+
+    const telegramIdArr = subs.reduce(
+      (ids, sub) => {
+        if(sub.Users.telegramId !== null){
+          ids.push(sub.Users.telegramId)
+        }
+        return ids
+    }, [])
+
+    console.log('telegramIdArr ', telegramIdArr);    
+
+    return telegramIdArr
+
+
+    
   }
 }

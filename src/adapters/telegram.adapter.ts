@@ -13,9 +13,9 @@ export class TelegramAdapter {
     });
   }
 
-  async sendMessageToTelegramm(text: string, recipientId: number) {
+  async sendMessageToTelegramm(text: string, recipientId: string) {
     await this.axiosInstance.post(`sendMessage`, {
-      chat_id: recipientId,
+      chat_id: +recipientId,
       text: text,
     });
   }
@@ -25,6 +25,21 @@ export class TelegramAdapter {
       url: url,
     });
   }
+
+  async sendMessagesToMultipleRecipients(text: string, recipientIds: string[]): Promise<boolean> {
+    try {
+      const sendMessagesPromises = recipientIds.map(recipientId =>
+        this.sendMessageToTelegramm(text, recipientId)
+      );
+      await Promise.all(sendMessagesPromises);
+      return true;
+    } catch (error) {
+      console.error('Error sending messages to multiple recipients:', error);
+      return false;
+    }
+  }
+
+
 }
 export type TelegramUpdateMessage = {
   message: {
@@ -37,3 +52,5 @@ export type TelegramUpdateMessage = {
     text: string;
   };
 };
+
+

@@ -129,6 +129,7 @@ import { UserUnsubscribeFromBlogUseCase } from './blogs/application/use-cases/us
 import { BlogSubscribersRepository } from './blogs/infrostracture/blog.subscriber.repository';
 import { UserReqAuthBotLinkUseCase } from './integrations/use-cases/user-request-link-for-telegram-bot-use-case';
 import { UserActivateTelegramBotUseCase } from './integrations/use-cases/user-activate-telegram-bot-use-case';
+import { SendPostNotificationsViaTelegramEventHandler } from './blogs/application/use-cases/event-handlers/send-post-notifications-via-telegram-event-handler';
 const emailUser = process.env.MAIL_USER;
 const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
@@ -184,6 +185,10 @@ const useCases = [
   UserReqAuthBotLinkUseCase,
   UserActivateTelegramBotUseCase,
 ];
+
+const eventHandlers = [
+  SendPostNotificationsViaTelegramEventHandler
+]
 
 @Module({
   imports: [
@@ -289,6 +294,7 @@ const useCases = [
     TrimNotEmptyValidator,
     TelegramAdapter,
     ...useCases,
+    ...eventHandlers,
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,

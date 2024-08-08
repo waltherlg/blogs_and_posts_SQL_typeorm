@@ -52,13 +52,13 @@ export class IntegrationsController {
           handleActionResult(result);
           this.telegramAdapter.sendMessageToTelegramm(
             `Привет, ${payload.message.from.first_name} , активация бота прошла успешно! `,
-            payload.message.from.id,
+            payload.message.from.id.toString(),
           );
         }
       } else {
         this.telegramAdapter.sendMessageToTelegramm(
           `Привет, ${payload.message.from.first_name} , ты уже активировал бота, на этом мои полномочия всё `,
-          payload.message.from.id,
+          payload.message.from.id.toString(),
         );
       }
     }
@@ -68,7 +68,7 @@ export class IntegrationsController {
 
       this.telegramAdapter.sendMessageToTelegramm(
         `Привет, ${payload.message.from.first_name} , ты уже активировал бота, на этом мои полномочия всё `,
-        payload.message.from.id,
+        payload.message.from.id.toString(),
 
         // this.telegramAdapter.sendMessageToTelegramm(
         //   `Привет, ${payload.message.from.first_name} , ты уже активировал бота, на этом мои полномочия всё ${payload.message.text}`,
