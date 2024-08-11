@@ -12,7 +12,11 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BlogMainImage, BlogWallpaperImage } from './blog.image.type';
-import { blogMainOutputType, blogWallpaperOutputType, enumSubscriptionStatus } from './blogs.types';
+import {
+  blogMainOutputType,
+  blogWallpaperOutputType,
+  enumSubscriptionStatus,
+} from './blogs.types';
 import { BlogSubscribers } from './blog.subscriber.types';
 import { Subscriber } from 'rxjs';
 
@@ -96,18 +100,21 @@ export class Blogs {
       ];
     }
 
-
-    let currentUserSubscriptionStatus = enumSubscriptionStatus.None
-    let subscribersCount = 0
-    if(this.BlogSubscribers){
-      subscribersCount = this.BlogSubscribers.length
-      if(userId){
-        if(this.BlogSubscribers.find((subscriber) => subscriber.userId === userId)){
-          currentUserSubscriptionStatus = enumSubscriptionStatus.Subscribed
+    let currentUserSubscriptionStatus = enumSubscriptionStatus.None;
+    let subscribersCount = 0;
+    if (this.BlogSubscribers) {
+      subscribersCount = this.BlogSubscribers.length;
+      if (userId) {
+        if (
+          this.BlogSubscribers.find(
+            (subscriber) => subscriber.userId === userId,
+          )
+        ) {
+          currentUserSubscriptionStatus = enumSubscriptionStatus.Subscribed;
         } else {
-          currentUserSubscriptionStatus = enumSubscriptionStatus.Unsubscribed
+          currentUserSubscriptionStatus = enumSubscriptionStatus.Unsubscribed;
         }
-    }
+      }
     }
 
     return {
@@ -119,7 +126,7 @@ export class Blogs {
       isMembership: this.isMembership,
       images: images,
       currentUserSubscriptionStatus: currentUserSubscriptionStatus,
-      subscribersCount: subscribersCount
+      subscribersCount: subscribersCount,
     };
   }
 }

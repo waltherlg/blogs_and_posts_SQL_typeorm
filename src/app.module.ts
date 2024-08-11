@@ -186,9 +186,7 @@ const useCases = [
   UserActivateTelegramBotUseCase,
 ];
 
-const eventHandlers = [
-  SendPostNotificationsViaTelegramEventHandler
-]
+const eventHandlers = [SendPostNotificationsViaTelegramEventHandler];
 
 @Module({
   imports: [

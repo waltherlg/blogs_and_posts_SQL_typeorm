@@ -6,7 +6,7 @@ import { endpoints } from './helpers/routing';
 import { testUser } from './helpers/inputAndOutputObjects/usersObjects';
 import { testPosts } from './helpers/inputAndOutputObjects/postsObjects';
 import { addAppSettings } from '../src/helpers/settings';
-const lodash = require('lodash')
+const lodash = require('lodash');
 export function userSubscribeBlogTest_19() {
   describe(' ----- userSubscribeBlogTest_19 (e2e) ----- ', () => {
     let accessTokenUser1;
@@ -139,24 +139,24 @@ export function userSubscribeBlogTest_19() {
       expect(createdResponseBody).toEqual(testPosts.outputPost1forBlog1);
     });
 
-    it('00-08 blogs/{blogId}/subscription POST = 204 user2 subscribe to blog1', async() => {
+    it('00-08 blogs/{blogId}/subscription POST = 204 user2 subscribe to blog1', async () => {
       await request(app.getHttpServer())
-      .post(`${endpoints.blogs}/${blogId1}/subscription`)
-      .set('Authorization', `Bearer ${accessTokenUser2}`)
-      .expect(204)
-    })
+        .post(`${endpoints.blogs}/${blogId1}/subscription`)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(204);
+    });
 
-    it('00-08 blogs/{blogId}/subscription POST = 204 user3 subscribe to blog1', async() => {
+    it('00-08 blogs/{blogId}/subscription POST = 204 user3 subscribe to blog1', async () => {
       await request(app.getHttpServer())
-      .post(`${endpoints.blogs}/${blogId1}/subscription`)
-      .set('Authorization', `Bearer ${accessTokenUser3}`)
-      .expect(204)
-    })
+        .post(`${endpoints.blogs}/${blogId1}/subscription`)
+        .set('Authorization', `Bearer ${accessTokenUser3}`)
+        .expect(204);
+    });
 
-    let newoutputPost1forBlog1 = lodash.cloneDeep(testPosts.outputBodyBlog1);
+    const newoutputPost1forBlog1 = lodash.cloneDeep(testPosts.outputBodyBlog1);
     console.log(newoutputPost1forBlog1);
-    
-    newoutputPost1forBlog1.subscribersCount = 2
+
+    newoutputPost1forBlog1.subscribersCount = 2;
 
     it('01-07 blogs GET = 200 return blog1 with pagination', async () => {
       const createResponse = await request(app.getHttpServer())
@@ -170,11 +170,9 @@ export function userSubscribeBlogTest_19() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [
-          newoutputPost1forBlog1
-        ],
+        items: [newoutputPost1forBlog1],
       });
-  })
+    });
 
     // it('00-08 blogs/{blogId}/subscription POST = 204 user2 unSubscribe from blog1', async() => {
     //   await request(app.getHttpServer())
@@ -182,7 +180,5 @@ export function userSubscribeBlogTest_19() {
     //   .set('Authorization', `Bearer ${accessTokenUser2}`)
     //   .expect(204)
     // })
-
-
   });
 }

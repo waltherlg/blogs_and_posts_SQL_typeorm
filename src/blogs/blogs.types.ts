@@ -31,7 +31,7 @@ export type BlogTypeOutput = {
     main: blogMainOutputType[] | [];
   };
   currentUserSubscriptionStatus: enumSubscriptionStatus;
-  subscribersCount: number
+  subscribersCount: number;
 };
 
 export type blogSaTypeOutput = {
@@ -71,5 +71,5 @@ export type blogMainOutputType = {
 export enum enumSubscriptionStatus {
   Subscribed = 'Subscribed',
   Unsubscribed = 'Unsubscribed',
-  None = 'None'
+  None = 'None',
 }

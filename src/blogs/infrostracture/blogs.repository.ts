@@ -165,30 +165,26 @@ export class BlogsRepository {
     return result.affected > 0;
   }
 
-  async getSubscribersTelegramIds(blogId): Promise<null | Array<any>>{
+  async getSubscribersTelegramIds(blogId): Promise<null | Array<any>> {
     if (!isValidUUID(blogId)) {
       return null;
     }
     const blog: Blogs = await this.blogsRepository.findOne({
       where: [{ blogId: blogId }],
-      relations: ['BlogSubscribers.Users']
+      relations: ['BlogSubscribers.Users'],
     });
 
-    if(!blog) return null
+    if (!blog) return null;
 
-    const subs: BlogSubscribers[] = blog.BlogSubscribers
+    const subs: BlogSubscribers[] = blog.BlogSubscribers;
 
-    const telegramIdArr = subs.reduce(
-      (ids, sub) => {
-        if(sub.Users.telegramId !== null){
-          ids.push(sub.Users.telegramId)
-        }
-        return ids
-    }, []) 
+    const telegramIdArr = subs.reduce((ids, sub) => {
+      if (sub.Users.telegramId !== null) {
+        ids.push(sub.Users.telegramId);
+      }
+      return ids;
+    }, []);
 
-    return telegramIdArr
-
-
-    
+    return telegramIdArr;
   }
 }

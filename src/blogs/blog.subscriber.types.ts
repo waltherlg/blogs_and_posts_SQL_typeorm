@@ -39,7 +39,7 @@ export class BlogSubscribers extends BlogSubscriberDto {
   userId: string;
 
   @Column()
-  isSubscribe: boolean
+  isSubscribe: boolean;
 
   @Column({ type: 'timestamptz' })
   subscribeData: Date;

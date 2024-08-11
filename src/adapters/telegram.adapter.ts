@@ -26,10 +26,13 @@ export class TelegramAdapter {
     });
   }
 
-  async sendMessagesToMultipleRecipients(text: string, recipientIds: string[]): Promise<boolean> {
+  async sendMessagesToMultipleRecipients(
+    text: string,
+    recipientIds: string[],
+  ): Promise<boolean> {
     try {
-      const sendMessagesPromises = recipientIds.map(recipientId =>
-        this.sendMessageToTelegramm(text, recipientId)
+      const sendMessagesPromises = recipientIds.map((recipientId) =>
+        this.sendMessageToTelegramm(text, recipientId),
       );
       await Promise.all(sendMessagesPromises);
       return true;
@@ -38,8 +41,6 @@ export class TelegramAdapter {
       return false;
     }
   }
-
-
 }
 export type TelegramUpdateMessage = {
   message: {
@@ -52,5 +53,3 @@ export type TelegramUpdateMessage = {
     text: string;
   };
 };
-
-

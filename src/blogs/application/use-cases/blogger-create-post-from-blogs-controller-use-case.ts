@@ -49,11 +49,12 @@ export class CreatePostFromBloggerControllerUseCase
     if (!newPostId) return ActionResult.NotCreated;
 
     //send notifications to subs
-    const subsTelegramIds = await this.blogsRepository.getSubscribersTelegramIds(command.blogId)
+    const subsTelegramIds =
+      await this.blogsRepository.getSubscribersTelegramIds(command.blogId);
     await this.telegramAdapter.sendMessagesToMultipleRecipients(
-      `Вы подписаны на блог ${blog.name}, его автор выложил новый пост! `, subsTelegramIds
-    )
-
+      `Вы подписаны на блог ${blog.name}, его автор выложил новый пост! `,
+      subsTelegramIds,
+    );
 
     return newPostId;
   }

@@ -54,7 +54,7 @@ export const testOutputBlogBody = {
       main: [],
     },
     currentUserSubscriptionStatus: expect.any(String),
-    subscribersCount: expect.any(Number)
+    subscribersCount: expect.any(Number),
   },
   blog2: {
     id: expect.any(String),
@@ -68,7 +68,7 @@ export const testOutputBlogBody = {
       main: [],
     },
     currentUserSubscriptionStatus: expect.any(String),
-    subscribersCount: expect.any(Number)
+    subscribersCount: expect.any(Number),
   },
   blog3: {
     id: expect.any(String),
@@ -82,7 +82,7 @@ export const testOutputBlogBody = {
       main: [],
     },
     currentUserSubscriptionStatus: expect.any(String),
-    subscribersCount: expect.any(Number)
+    subscribersCount: expect.any(Number),
   },
   blog4: {
     id: expect.any(String),
@@ -96,7 +96,7 @@ export const testOutputBlogBody = {
       main: [],
     },
     currentUserSubscriptionStatus: expect.any(String),
-    subscribersCount: expect.any(Number)
+    subscribersCount: expect.any(Number),
   },
   Tim: {
     id: expect.any(String),
@@ -110,7 +110,7 @@ export const testOutputBlogBody = {
       main: [],
     },
     currentUserSubscriptionStatus: expect.any(String),
-    subscribersCount: expect.any(Number)
+    subscribersCount: expect.any(Number),
   },
   Tima: {
     id: expect.any(String),
@@ -124,7 +124,7 @@ export const testOutputBlogBody = {
       main: [],
     },
     currentUserSubscriptionStatus: expect.any(String),
-    subscribersCount: expect.any(Number)
+    subscribersCount: expect.any(Number),
   },
   Timma: {
     id: expect.any(String),
@@ -138,7 +138,7 @@ export const testOutputBlogBody = {
       main: [],
     },
     currentUserSubscriptionStatus: expect.any(String),
-    subscribersCount: expect.any(Number)
+    subscribersCount: expect.any(Number),
   },
   timm: {
     id: expect.any(String),
@@ -152,6 +152,6 @@ export const testOutputBlogBody = {
       main: [],
     },
     currentUserSubscriptionStatus: expect.any(String),
-    subscribersCount: expect.any(Number)
+    subscribersCount: expect.any(Number),
   },
 };

@@ -32,7 +32,6 @@ export class BlogsQueryRepository {
     });
 
     console.log(blog);
-    
 
     if (blog) {
       return blog.returnForPublic(userId);
@@ -40,7 +39,10 @@ export class BlogsQueryRepository {
     return null;
   }
 
-  async getAllBlogs(mergedQueryParams, userId?): Promise<PaginationOutputModel<BlogTypeOutput>> {
+  async getAllBlogs(
+    mergedQueryParams,
+    userId?,
+  ): Promise<PaginationOutputModel<BlogTypeOutput>> {
     const searchNameTerm = mergedQueryParams.searchNameTerm;
     const sortBy = mergedQueryParams.sortBy;
     const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
@@ -59,7 +61,7 @@ export class BlogsQueryRepository {
         'blog.isMembership',
         'wallpaper.*',
         'main.*',
-        'subscribers.*'
+        'subscribers.*',
       ])
       .leftJoinAndSelect('blog.BlogWallpaperImage', 'wallpaper')
       .leftJoinAndSelect('blog.BlogMainImage', 'main')

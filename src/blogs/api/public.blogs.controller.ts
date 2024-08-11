@@ -80,10 +80,14 @@ export class BlogsController {
   @UseGuards(OptionalJwtAuthGuard)
   @Get()
   async getAllBlogs(
-    @Query() queryParams: RequestBlogsQueryModel, 
-    @Req() request, ) {
+    @Query() queryParams: RequestBlogsQueryModel,
+    @Req() request,
+  ) {
     const mergedQueryParams = { ...DEFAULT_BLOGS_QUERY_PARAMS, ...queryParams };
-    return await this.blogsQueryRepository.getAllBlogs(mergedQueryParams, request.user.userId);
+    return await this.blogsQueryRepository.getAllBlogs(
+      mergedQueryParams,
+      request.user.userId,
+    );
   }
 
   @UseGuards(OptionalJwtAuthGuard)
@@ -106,10 +110,11 @@ export class BlogsController {
 
   @UseGuards(OptionalJwtAuthGuard)
   @Get(':id')
-  async getBlogById(
-    @Param('id') blogId: string,
-    @Req() request,) {
-    const blog = await this.blogsQueryRepository.getBlogById(blogId, request.user.userId);
+  async getBlogById(@Param('id') blogId: string, @Req() request) {
+    const blog = await this.blogsQueryRepository.getBlogById(
+      blogId,
+      request.user.userId,
+    );
     if (!blog) {
       throw new CustomisableException('blog', 'blog not found', 404);
     }
