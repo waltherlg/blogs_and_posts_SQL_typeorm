@@ -5,6 +5,7 @@ import { DataSource, Repository } from 'typeorm';
 import { validate as isValidUUID } from 'uuid';
 import { sortDirectionFixer } from '../../helpers/helpers.functions';
 import { Blogs } from '../blog.entity';
+import { PaginationOutputModel } from '../../models/types';
 
 @Injectable()
 export class BlogsQueryRepository {
@@ -14,29 +15,32 @@ export class BlogsQueryRepository {
     private readonly blogsRepository: Repository<Blogs>,
   ) {}
 
-  async getBlogById(blogId): Promise<BlogTypeOutput | null> {
+  async getBlogById(blogId, userId?): Promise<BlogTypeOutput | null> {
     if (!isValidUUID(blogId)) {
       return null;
     }
     const blog: Blogs = await this.blogsRepository.findOne({
-      select: {
-        blogId: true,
-        name: true,
-        description: true,
-        websiteUrl: true,
-        createdAt: true,
-        isMembership: true,
-      },
+      // select: {
+      //   blogId: true,
+      //   name: true,
+      //   description: true,
+      //   websiteUrl: true,
+      //   createdAt: true,
+      //   isMembership: true,
+      // },
       where: { blogId, isBlogBanned: false },
     });
 
+    console.log(blog);
+    
+
     if (blog) {
-      return blog.returnForPublic();
+      return blog.returnForPublic(userId);
     }
     return null;
   }
 
-  async getAllBlogs(mergedQueryParams) {
+  async getAllBlogs(mergedQueryParams, userId?): Promise<PaginationOutputModel<BlogTypeOutput>> {
     const searchNameTerm = mergedQueryParams.searchNameTerm;
     const sortBy = mergedQueryParams.sortBy;
     const sortDirection = sortDirectionFixer(mergedQueryParams.sortDirection);
@@ -55,9 +59,11 @@ export class BlogsQueryRepository {
         'blog.isMembership',
         'wallpaper.*',
         'main.*',
+        'subscribers.*'
       ])
       .leftJoinAndSelect('blog.BlogWallpaperImage', 'wallpaper')
-      .leftJoinAndSelect('blog.BlogMainImage', 'main');
+      .leftJoinAndSelect('blog.BlogMainImage', 'main')
+      .leftJoinAndSelect('blog.BlogSubscribers', 'subscribers');
 
     if (searchNameTerm !== '') {
       queryBuilder
@@ -83,7 +89,7 @@ export class BlogsQueryRepository {
     console.log('blogs in getAllblogs ', blogs);
 
     const blogsForOutput = blogs.map((blog) => {
-      return blog.returnForPublic();
+      return blog.returnForPublic(userId);
     });
 
     const pageCount = Math.ceil(blogsCount / pageSize);

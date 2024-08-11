@@ -13,6 +13,7 @@ export class BlogSubscriberDto {
   constructor(
     public blogId: string,
     public userId: string,
+    public isSubscribe: boolean = true,
     public subscribeData: Date = new Date(),
   ) {}
 }
@@ -36,6 +37,9 @@ export class BlogSubscribers extends BlogSubscriberDto {
   Users: Users;
   @Column({ type: 'uuid' })
   userId: string;
+
+  @Column()
+  isSubscribe: boolean
 
   @Column({ type: 'timestamptz' })
   subscribeData: Date;

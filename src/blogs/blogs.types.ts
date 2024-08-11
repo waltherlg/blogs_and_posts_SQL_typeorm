@@ -30,6 +30,8 @@ export type BlogTypeOutput = {
     wallpaper: blogWallpaperOutputType | null;
     main: blogMainOutputType[] | [];
   };
+  currentUserSubscriptionStatus: enumSubscriptionStatus;
+  subscribersCount: number
 };
 
 export type blogSaTypeOutput = {
@@ -65,3 +67,9 @@ export type blogMainOutputType = {
   height: number;
   fileSize: number;
 };
+
+export enum enumSubscriptionStatus {
+  Subscribed = 'Subscribed',
+  Unsubscribed = 'Unsubscribed',
+  None = 'None'
+}

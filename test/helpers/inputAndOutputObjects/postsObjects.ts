@@ -15,6 +15,8 @@ export const testPosts = {
       wallpaper: null,
       main: [],
     },
+    currentUserSubscriptionStatus: expect.any(String),
+    subscribersCount: expect.any(Number)
   },
   inputBodyPost1forBlog1: {
     title: 'title1forBlog1',

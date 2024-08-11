@@ -12,8 +12,9 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BlogMainImage, BlogWallpaperImage } from './blog.image.type';
-import { blogMainOutputType, blogWallpaperOutputType } from './blogs.types';
+import { blogMainOutputType, blogWallpaperOutputType, enumSubscriptionStatus } from './blogs.types';
 import { BlogSubscribers } from './blog.subscriber.types';
+import { Subscriber } from 'rxjs';
 
 @Entity({ name: 'Blogs' })
 export class Blogs {
@@ -66,7 +67,7 @@ export class Blogs {
   })
   BlogSubscribers: BlogSubscribers[];
 
-  returnForPublic() {
+  returnForPublic(userId?: string) {
     const images: {
       wallpaper: blogWallpaperOutputType | null;
       main: blogMainOutputType[];
@@ -95,6 +96,20 @@ export class Blogs {
       ];
     }
 
+
+    let currentUserSubscriptionStatus = enumSubscriptionStatus.None
+    let subscribersCount = 0
+    if(this.BlogSubscribers){
+      subscribersCount = this.BlogSubscribers.length
+      if(userId){
+        if(this.BlogSubscribers.find((subscriber) => subscriber.userId === userId)){
+          currentUserSubscriptionStatus = enumSubscriptionStatus.Subscribed
+        } else {
+          currentUserSubscriptionStatus = enumSubscriptionStatus.Unsubscribed
+        }
+    }
+    }
+
     return {
       id: this.blogId,
       name: this.name,
@@ -103,6 +118,8 @@ export class Blogs {
       createdAt: this.createdAt,
       isMembership: this.isMembership,
       images: images,
+      currentUserSubscriptionStatus: currentUserSubscriptionStatus,
+      subscribersCount: subscribersCount
     };
   }
 }

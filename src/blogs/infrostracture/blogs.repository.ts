@@ -184,9 +184,7 @@ export class BlogsRepository {
           ids.push(sub.Users.telegramId)
         }
         return ids
-    }, [])
-
-    console.log('telegramIdArr ', telegramIdArr);    
+    }, []) 
 
     return telegramIdArr
 

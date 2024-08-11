@@ -26,10 +26,7 @@ export class UserUnsubscribeFromBlogUseCase
     const blogId = command.blogId;
     const blog: Blogs = await this.blogRepository.getBlogDBTypeById(blogId);
     if (!blog) return ActionResult.BlogNotFound;
-    //console.log('blog in subscribe useCase ', blog);
-    console.log('current blog subscribers ', blog.BlogSubscribers);
     if (!blog.BlogSubscribers.some((sub) => sub.userId === userId)) {
-      console.log('already no sub ');
       return ActionResult.NoChangeNeeded;
     }
 
