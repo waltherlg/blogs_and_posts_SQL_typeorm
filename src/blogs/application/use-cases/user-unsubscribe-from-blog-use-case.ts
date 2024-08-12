@@ -26,19 +26,34 @@ export class UserUnsubscribeFromBlogUseCase
     const blogId = command.blogId;
     const blog: Blogs = await this.blogRepository.getBlogDBTypeById(blogId);
     if (!blog) return ActionResult.BlogNotFound;
-    if (!blog.BlogSubscribers.some((sub) => sub.userId === userId)) {
+
+    let currentSub: BlogSubscribers = blog.BlogSubscribers.find((sub) => sub.userId === userId)
+    if(!currentSub){
+      return ActionResult.NoChangeNeeded;
+    }
+    if(currentSub.isSubscribe === false){
       return ActionResult.NoChangeNeeded;
     }
 
-    const result = await this.BlogSubscribersRepository.deleteBlogSubscribe(
-      blogId,
-      userId,
-    );
+    currentSub.isSubscribe = false
 
-    if (result) {
+    const isBlogSave = await this.blogRepository.saveBlog(blog);
+    if (isBlogSave) {
       return ActionResult.Success;
     } else {
       return ActionResult.NotSaved;
     }
+
+
+    // const result = await this.BlogSubscribersRepository.deleteBlogSubscribe(
+    //   blogId,
+    //   userId,
+    // );
+
+    // if (result) {
+    //   return ActionResult.Success;
+    // } else {
+    //   return ActionResult.NotSaved;
+    // }
   }
 }

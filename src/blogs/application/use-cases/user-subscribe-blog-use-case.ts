@@ -20,18 +20,30 @@ export class UserSubscribeBlogCase
     const blogId = command.blogId;
     const blog: Blogs = await this.blogRepository.getBlogDBTypeById(blogId);
     if (!blog) return ActionResult.BlogNotFound;
-    if (blog.BlogSubscribers.some((sub) => sub.userId === userId)) {
-      return ActionResult.NoChangeNeeded;
-    }
 
+    let currentSub: BlogSubscribers = blog.BlogSubscribers.find((sub) => sub.userId === userId)
+
+    if(!currentSub){
     const subscriber: BlogSubscribers = new BlogSubscribers(blogId, userId);
     blog.BlogSubscribers.push(subscriber);
-
+    } else {
+      if(currentSub.isSubscribe === true){
+        return ActionResult.NoChangeNeeded
+      } else {
+        currentSub.isSubscribe = true
+      }
+    }
+    // if(currentSub){
+      
+    // }3
     const isBlogSave = await this.blogRepository.saveBlog(blog);
     if (isBlogSave) {
       return ActionResult.Success;
     } else {
       return ActionResult.NotSaved;
     }
+    
+
+
   }
 }

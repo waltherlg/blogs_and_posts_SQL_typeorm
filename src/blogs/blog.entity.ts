@@ -102,17 +102,17 @@ export class Blogs {
 
     let currentUserSubscriptionStatus = enumSubscriptionStatus.None;
     let subscribersCount = 0;
+
     if (this.BlogSubscribers) {
-      subscribersCount = this.BlogSubscribers.length;
+
+      subscribersCount = this.BlogSubscribers.filter(sub => sub.isSubscribe === true).length;
       if (userId) {
-        if (
-          this.BlogSubscribers.find(
-            (subscriber) => subscriber.userId === userId,
-          )
-        ) {
-          currentUserSubscriptionStatus = enumSubscriptionStatus.Subscribed;
-        } else {
-          currentUserSubscriptionStatus = enumSubscriptionStatus.Unsubscribed;
+        const currentSub = this.BlogSubscribers.find((subscriber) => subscriber.userId === userId)
+        if(currentSub && currentSub.isSubscribe === true) {
+          currentUserSubscriptionStatus = enumSubscriptionStatus.Subscribed
+        } 
+        if(currentSub && currentSub.isSubscribe === false){
+          currentUserSubscriptionStatus = enumSubscriptionStatus.Unsubscribed
         }
       }
     }

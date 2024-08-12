@@ -6,6 +6,7 @@ import { endpoints } from './helpers/routing';
 import { testUser } from './helpers/inputAndOutputObjects/usersObjects';
 import { testPosts } from './helpers/inputAndOutputObjects/postsObjects';
 import { addAppSettings } from '../src/helpers/settings';
+import { BlogTypeOutput, enumSubscriptionStatus } from '../src/blogs/blogs.types';
 const lodash = require('lodash');
 export function userSubscribeBlogTest_19() {
   describe(' ----- userSubscribeBlogTest_19 (e2e) ----- ', () => {
@@ -116,6 +117,8 @@ export function userSubscribeBlogTest_19() {
         accessToken: expect.any(String),
       });
     });
+    
+    let newoutputBodyBlog1: BlogTypeOutput = lodash.cloneDeep(testPosts.outputBodyBlog1);
 
     it('00-05 blogger/blogs POST = 201 user1 create blog1', async () => {
       const createResponse = await request(app.getHttpServer())
@@ -126,8 +129,12 @@ export function userSubscribeBlogTest_19() {
       const createdResponseBody = createResponse.body;
       blogId1 = createdResponseBody.id;
       expect(createdResponseBody).toEqual(testPosts.outputBodyBlog1);
+      
+      newoutputBodyBlog1.subscribersCount = 0
+      newoutputBodyBlog1.currentUserSubscriptionStatus = enumSubscriptionStatus.None
     });
 
+    
     it('00-07 blogger/blogs/{blogId}/posts POST = 201 user1 create post1 for blog1', async () => {
       const createResponse = await request(app.getHttpServer())
         .post(`${endpoints.bloggerBlogs}/${blogId1}/posts`)
@@ -139,11 +146,46 @@ export function userSubscribeBlogTest_19() {
       expect(createdResponseBody).toEqual(testPosts.outputPost1forBlog1);
     });
 
+    
+
+    it('01-07 blogs GET = 200 return blog1 with 0 sub and subStatus None', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.blogs)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 1,
+        items: [newoutputBodyBlog1],
+      });
+    });
+    
     it('00-08 blogs/{blogId}/subscription POST = 204 user2 subscribe to blog1', async () => {
       await request(app.getHttpServer())
         .post(`${endpoints.blogs}/${blogId1}/subscription`)
         .set('Authorization', `Bearer ${accessTokenUser2}`)
         .expect(204);
+        newoutputBodyBlog1.subscribersCount = 1;
+    });
+
+
+    it('01-07 blogs GET = 200 return blog1 with 1 sub and stat None', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.blogs)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+      
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 1,
+        items: [newoutputBodyBlog1],
+      });
     });
 
     it('00-08 blogs/{blogId}/subscription POST = 204 user3 subscribe to blog1', async () => {
@@ -151,14 +193,10 @@ export function userSubscribeBlogTest_19() {
         .post(`${endpoints.blogs}/${blogId1}/subscription`)
         .set('Authorization', `Bearer ${accessTokenUser3}`)
         .expect(204);
+        newoutputBodyBlog1.subscribersCount = 2;
     });
 
-    const newoutputPost1forBlog1 = lodash.cloneDeep(testPosts.outputBodyBlog1);
-    console.log(newoutputPost1forBlog1);
-
-    newoutputPost1forBlog1.subscribersCount = 2;
-
-    it('01-07 blogs GET = 200 return blog1 with pagination', async () => {
+    it('01-07 blogs GET = 200 return blog1 with 2 sub', async () => {
       const createResponse = await request(app.getHttpServer())
         .get(endpoints.blogs)
         .set('Authorization', `Bearer ${accessTokenUser1}`)
@@ -170,15 +208,92 @@ export function userSubscribeBlogTest_19() {
         page: 1,
         pageSize: 10,
         totalCount: 1,
-        items: [newoutputPost1forBlog1],
+        items: [newoutputBodyBlog1],
       });
     });
 
-    // it('00-08 blogs/{blogId}/subscription POST = 204 user2 unSubscribe from blog1', async() => {
-    //   await request(app.getHttpServer())
-    //   .post(`${endpoints.blogs}/${blogId1}/subscription`)
-    //   .set('Authorization', `Bearer ${accessTokenUser2}`)
-    //   .expect(204)
-    // })
+    it('00-08 blogs/{blogId}/subscription POST = 204 user2 unSubscribe from blog1', async() => {
+      await request(app.getHttpServer())
+      .delete(`${endpoints.blogs}/${blogId1}/subscription`)
+      .set('Authorization', `Bearer ${accessTokenUser2}`)
+      .expect(204)
+      newoutputBodyBlog1.subscribersCount = 1;
+    })
+
+    it('01-07 blogs GET = 200 return blog1 with 1 sub', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.blogs)
+        .set('Authorization', `Bearer ${accessTokenUser1}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 1,
+        items: [newoutputBodyBlog1],
+      });
+
+      newoutputBodyBlog1.currentUserSubscriptionStatus = enumSubscriptionStatus.Unsubscribed
+    });
+
+    it('01-07 blogs GET = 200 return blog1 for user 2 with 1 sub and stat unsubscribe', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.blogs)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+      
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 1,
+        items: [newoutputBodyBlog1],
+      });
+      newoutputBodyBlog1.currentUserSubscriptionStatus = enumSubscriptionStatus.Subscribed
+    });
+
+    it('01-07 blogs GET = 200 return blog1 for user 3 with 1 sub and stat subscribe', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.blogs)
+        .set('Authorization', `Bearer ${accessTokenUser3}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+      
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 1,
+        items: [newoutputBodyBlog1],
+      });
+    });
+
+    it('00-08 blogs/{blogId}/subscription POST = 204 user2 Subscribe to blog1', async() => {
+      await request(app.getHttpServer())
+      .post(`${endpoints.blogs}/${blogId1}/subscription`)
+      .set('Authorization', `Bearer ${accessTokenUser2}`)
+      .expect(204)
+      newoutputBodyBlog1.subscribersCount = 2;
+    })
+
+    it('01-07 blogs GET = 200 return blog1 for user 2 with 2 sub and stat subscribe', async () => {
+      const createResponse = await request(app.getHttpServer())
+        .get(endpoints.blogs)
+        .set('Authorization', `Bearer ${accessTokenUser2}`)
+        .expect(200);
+      const createdResponse = createResponse.body;
+      
+      expect(createdResponse).toEqual({
+        pagesCount: 1,
+        page: 1,
+        pageSize: 10,
+        totalCount: 1,
+        items: [newoutputBodyBlog1],
+      });
+    });
+
   });
 }
