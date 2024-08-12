@@ -52,7 +52,7 @@ export class CreatePostFromBloggerControllerUseCase
     const subsTelegramIds =
       await this.blogsRepository.getSubscribersTelegramIds(command.blogId);
     await this.telegramAdapter.sendMessagesToMultipleRecipients(
-      `Вы подписаны на блог ${blog.name}, его автор выложил новый пост! `,
+      `Вы подписаны на блог "${blog.name}", его автор выложил новый пост! `,
       subsTelegramIds,
     );
 

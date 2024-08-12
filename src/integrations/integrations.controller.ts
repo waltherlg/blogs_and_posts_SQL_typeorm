@@ -29,55 +29,96 @@ export class IntegrationsController {
   ) {}
 
   @Post('telegram')
-  async forTelegramm(@Body() payload: TelegramUpdateMessage) {
-    console.log('payload ', payload);
+async forTelegram(@Body() payload: TelegramUpdateMessage) {
+  console.log('payload ', payload);
 
-    if (!payload.message && !payload.message.from.id) {
-      console.log('no payload');
-      return;
-    }
+  if (!payload.message || !payload.message.from.id) {
+    console.log('no payload');
+    return;
+  }
 
-    const messageText = payload.message.text;
-    const telegramId = payload.message.from.id.toString();
+  const messageText = payload.message.text;
+  const telegramId = payload.message.from.id.toString();
 
-    if (messageText.startsWith('/start')) {
-      const startIndex = messageText.lastIndexOf(' ');
-      if (startIndex !== -1) {
-        const startParam = messageText.substring(startIndex + 1).trim();
-        if (startParam && startParam.startsWith('code=')) {
-          const code = startParam.split('code=')[1];
-          const result = await this.commandBus.execute(
-            new UserActivateTelegramBotCommand(code, telegramId),
-          );
-          handleActionResult(result);
-          this.telegramAdapter.sendMessageToTelegramm(
-            `Привет, ${payload.message.from.first_name} , активация бота прошла успешно! `,
-            payload.message.from.id.toString(),
-          );
-        }
-      } else {
-        this.telegramAdapter.sendMessageToTelegramm(
-          `Привет, ${payload.message.from.first_name} , ты уже активировал бота, на этом мои полномочия всё `,
-          payload.message.from.id.toString(),
+  if (messageText.startsWith('/start')) {
+    const startIndex = messageText.lastIndexOf(' ');
+    if (startIndex !== -1) {
+      const startParam = messageText.substring(startIndex + 1).trim();
+      if (startParam) {
+        const result = await this.commandBus.execute(
+          new UserActivateTelegramBotCommand(startParam, telegramId),
+        );
+        handleActionResult(result);
+        this.telegramAdapter.sendMessageToTelegram(
+          `Привет, ${payload.message.from.first_name}, активация бота прошла успешно!`,
+          telegramId,
         );
       }
-    }
-
-    if (!messageText.startsWith('/start')) {
-      console.log('-- no start --');
-
-      this.telegramAdapter.sendMessageToTelegramm(
-        `Привет, ${payload.message.from.first_name} , ты уже активировал бота, на этом мои полномочия всё `,
-        payload.message.from.id.toString(),
-
-        // this.telegramAdapter.sendMessageToTelegramm(
-        //   `Привет, ${payload.message.from.first_name} , ты уже активировал бота, на этом мои полномочия всё ${payload.message.text}`,
-        //   payload.message.from.id,
+    } else {
+      this.telegramAdapter.sendMessageToTelegram(
+        `Привет, ${payload.message.from.first_name}, ты уже активировал бота, на этом мои полномочия всё`,
+        telegramId,
       );
-      //return { status: 'success' };
-      return;
     }
+  } else {
+    console.log('-- no start --');
+    this.telegramAdapter.sendMessageToTelegram(
+      `Привет, ${payload.message.from.first_name}, ты уже активировал бота, на этом мои полномочия всё`,
+      telegramId,
+    );
   }
+}
+
+  // @Post('telegram')
+  // async forTelegramm(@Body() payload: TelegramUpdateMessage) {
+  //   console.log('payload ', payload);
+
+  //   if (!payload.message && !payload.message.from.id) {
+  //     console.log('no payload');
+  //     return;
+  //   }
+
+  //   const messageText = payload.message.text;
+  //   const telegramId = payload.message.from.id.toString();
+
+  //   if (messageText.startsWith('/start')) {
+  //     const startIndex = messageText.lastIndexOf(' ');
+  //     if (startIndex !== -1) {
+  //       const startParam = messageText.substring(startIndex + 1).trim();
+  //       if (startParam && startParam.startsWith('code=')) {
+  //         const code = startParam.split('code=')[1];
+  //         const result = await this.commandBus.execute(
+  //           new UserActivateTelegramBotCommand(code, telegramId),
+  //         );
+  //         handleActionResult(result);
+  //         this.telegramAdapter.sendMessageToTelegramm(
+  //           `Привет, ${payload.message.from.first_name} , активация бота прошла успешно! `,
+  //           payload.message.from.id.toString(),
+  //         );
+  //       }
+  //     } else {
+  //       this.telegramAdapter.sendMessageToTelegramm(
+  //         `Привет, ${payload.message.from.first_name} , ты уже активировал бота, на этом мои полномочия всё `,
+  //         payload.message.from.id.toString(),
+  //       );
+  //     }
+  //   }
+
+  //   if (!messageText.startsWith('/start')) {
+  //     console.log('-- no start --');
+
+  //     this.telegramAdapter.sendMessageToTelegramm(
+  //       `Привет, ${payload.message.from.first_name} , ты уже активировал бота, на этом мои полномочия всё `,
+  //       payload.message.from.id.toString(),
+
+  //       // this.telegramAdapter.sendMessageToTelegramm(
+  //       //   `Привет, ${payload.message.from.first_name} , ты уже активировал бота, на этом мои полномочия всё ${payload.message.text}`,
+  //       //   payload.message.from.id,
+  //     );
+  //     //return { status: 'success' };
+  //     return;
+  //   }
+  // }
 
   @UseGuards(JwtAuthGuard)
   @Get('telegram/auth-bot-link')

@@ -34,7 +34,8 @@ export class UserReqAuthBotLinkUseCase
     if (!saveResult) return ActionResult.NotSaved;
 
     const telegramAuthLink = {
-      link: `https://t.me/${telegramBotName}?start=code=${telegramActivationCode}`,
+      // link: `https://t.me/${telegramBotName}?start=code=${telegramActivationCode}`,
+      link: `https://t.me/${telegramBotName}?start=${telegramActivationCode}`,
     };
     return telegramAuthLink;
   }

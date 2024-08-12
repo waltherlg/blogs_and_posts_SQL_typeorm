@@ -13,14 +13,14 @@ export class TelegramAdapter {
     });
   }
 
-  async sendMessageToTelegramm(text: string, recipientId: string) {
+  async sendMessageToTelegram(text: string, recipientId: string) {
     await this.axiosInstance.post(`sendMessage`, {
       chat_id: +recipientId,
       text: text,
     });
   }
 
-  async sendHookToTelegramm(url: string) {
+  async sendHookToTelegram(url: string) {
     await this.axiosInstance.post(`setWebhook`, {
       url: url,
     });
@@ -32,7 +32,7 @@ export class TelegramAdapter {
   ): Promise<boolean> {
     try {
       const sendMessagesPromises = recipientIds.map((recipientId) =>
-        this.sendMessageToTelegramm(text, recipientId),
+        this.sendMessageToTelegram(text, recipientId),
       );
       await Promise.all(sendMessagesPromises);
       return true;

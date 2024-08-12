@@ -176,7 +176,7 @@ export class BlogsRepository {
 
     if (!blog) return null;
 
-    const subs: BlogSubscribers[] = blog.BlogSubscribers;
+    const subs: BlogSubscribers[] = blog.BlogSubscribers.filter((sub) => sub.isSubscribe === true);
 
     const telegramIdArr = subs.reduce((ids, sub) => {
       if (sub.Users.telegramId !== null) {
