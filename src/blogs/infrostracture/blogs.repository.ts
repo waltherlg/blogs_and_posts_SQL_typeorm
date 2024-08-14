@@ -165,7 +165,7 @@ export class BlogsRepository {
     return result.affected > 0;
   }
 
-  async getSubscribersTelegramIds(blogId): Promise<null | Array<any>> {
+  async getSubscribersTelegramIds(blogId): Promise<{ blogName: string, telegramIds: string[] } | null> {
     if (!isValidUUID(blogId)) {
       return null;
     }
@@ -185,6 +185,6 @@ export class BlogsRepository {
       return ids;
     }, []);
 
-    return telegramIdArr;
+    return { blogName: blog.name, telegramIds: telegramIdArr };
   }
 }

@@ -8,6 +8,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { ActionResult } from '../../../helpers/enum.action.result.helper';
 import { Posts } from '../../../posts/post.entity';
 import { TelegramAdapter } from '../../../adapters/telegram.adapter';
+import { SendPostNotificationsViaTelegramEvent } from './event-handlers/send-post-notifications-via-telegram-event-handler';
+import { EventBus } from '@nestjs/cqrs';
 
 export class CreatePostFromBloggerControllerCommand {
   constructor(
@@ -25,6 +27,7 @@ export class CreatePostFromBloggerControllerUseCase
     private readonly postsRepository: PostsRepository,
     private readonly blogsRepository: BlogsRepository,
     private readonly telegramAdapter: TelegramAdapter,
+    private readonly eventBus: EventBus
   ) {}
 
   async execute(
@@ -48,12 +51,8 @@ export class CreatePostFromBloggerControllerUseCase
     const newPostId = await this.postsRepository.createPost(postDto);
     if (!newPostId) return ActionResult.NotCreated;
 
-    //send notifications to subs
-    const subsTelegramIds =
-      await this.blogsRepository.getSubscribersTelegramIds(command.blogId);
-    await this.telegramAdapter.sendMessagesToMultipleRecipients(
-      `Вы подписаны на блог "${blog.name}", его автор выложил новый пост! `,
-      subsTelegramIds,
+    this.eventBus.publish(
+      new SendPostNotificationsViaTelegramEvent(blog.blogId)
     );
 
     return newPostId;
