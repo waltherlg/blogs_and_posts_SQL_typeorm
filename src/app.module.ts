@@ -135,6 +135,8 @@ const emailPassword = process.env.MAIL_PASSWORD;
 if (!emailUser || !emailPassword) {
   throw new Error('password or user for emailAdapter not found');
 }
+import { join } from 'path';
+import { RecaptchaAdapter } from './adapters/recaptcha-adapter';
 
 const useCases = [
   CreateBlogUseCase,
@@ -231,6 +233,7 @@ const eventHandlers = [SendPostNotificationsViaTelegramEventHandler];
       },
     }),
     ConfigModule.forRoot(),
+    
   ],
   controllers: [
     AppController,
@@ -291,6 +294,7 @@ const eventHandlers = [SendPostNotificationsViaTelegramEventHandler];
     //CustomBlogIdValidator,
     TrimNotEmptyValidator,
     TelegramAdapter,
+    RecaptchaAdapter,
     ...useCases,
     ...eventHandlers,
     {

@@ -21,7 +21,7 @@ import {
   LoginAlreadyExistException,
   UnableException,
 } from '../exceptions/custom.exceptions';
-import { IsEmail, IsString, Length, Matches, MaxLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsString, Length, Matches, MaxLength } from 'class-validator';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { RefreshTokenGuard } from './guards/refreshToken.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
@@ -36,6 +36,8 @@ import { NewPasswordSetCommand } from './application/use-cases/new-password-set-
 import { RefreshTokenCommand } from './application/use-cases/refresh-token-use-case';
 import { LogoutCommand } from './application/use-cases/logout-use-case';
 import { Request, Response } from 'express';
+import { join } from 'path';
+import { RecaptchaAdapter } from '../adapters/recaptcha-adapter';
 export class RegistrationEmailResendingInput {
   @StringTrimNotEmpty()
   @MaxLength(100)
@@ -50,6 +52,9 @@ export class PasswordRecoveryEmailInput {
   @IsEmail()
   @Matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
   email: string;
+  @IsNotEmpty()
+  @IsString()
+  recaptchaValue: string;
 }
 
 export class RegistrationConfirmationCodeInput {
@@ -70,8 +75,7 @@ export class newPasswordSetInput {
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: AuthService,
-    private readonly usersService: UsersService,
+    private readonly recaptchaAdapter: RecaptchaAdapter,
     private readonly checkService: CheckService,
     private readonly usersQueryRepository: UsersQueryRepository,
     private readonly commandBus: CommandBus,
@@ -120,6 +124,7 @@ export class AuthController {
       );
     }
   }
+
   @Post('registration-confirmation')
   @HttpCode(204)
   async registrationConfirmation(
@@ -197,6 +202,16 @@ export class AuthController {
   async passwordRecovery(
     @Body() passwordRecoveryDto: PasswordRecoveryEmailInput,
   ) {
+    //console.log('password-recovery');
+    
+    const recaptchaResponse = passwordRecoveryDto.recaptchaValue;
+    //console.log(recaptchaResponse);
+    
+
+    const isValidCaptcha = await this.recaptchaAdapter.validateRecaptcha(recaptchaResponse);
+    if (!isValidCaptcha) {
+        throw new CustomisableException('recaptcha', 'Invalid reCAPTCHA', 400);
+    }
     if (!(await this.checkService.isEmailExist(passwordRecoveryDto.email))) {
       throw new CustomNotFoundException('email');
     }
@@ -206,6 +221,13 @@ export class AuthController {
     if (!result) {
       throw new UnableException('password recovery');
     }
+  }
+
+  @Get('password-recovery-recaptcha')
+  getPasswordRecoveryPage(@Res() res: Response) {
+    // Абсолютный путь к HTML файлу в проекте
+    const filePath = join(process.cwd(), 'src', 'assets', 'recaptcha-password-recovery-page.html');
+    return res.sendFile(filePath);
   }
 
   @Post('new-password')

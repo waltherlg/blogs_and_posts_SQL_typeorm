@@ -12,18 +12,17 @@ export class BanUserForSpecificBlogCommand {
     public bloggerId: string,
     public userId: string,
     public banUserDto: BanUserForBlogInputModelType,
-  ) {}
+  ) { }
 }
 
 @CommandHandler(BanUserForSpecificBlogCommand)
 export class BanUserForSpecificBlogUseCase
-  implements ICommandHandler<BanUserForSpecificBlogCommand>
-{
+  implements ICommandHandler<BanUserForSpecificBlogCommand> {
   constructor(
     private readonly blogsRepository: BlogsRepository,
     private readonly usersRepository: UsersRepository,
     private readonly checkService: CheckService,
-  ) {}
+  ) { }
 
   async execute(command: BanUserForSpecificBlogCommand): Promise<ActionResult> {
     const bloggerId = command.bloggerId;

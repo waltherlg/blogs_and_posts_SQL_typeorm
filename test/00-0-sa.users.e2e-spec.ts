@@ -31,6 +31,7 @@ export function testSaUsersCrud() {
       app = addAppSettings(rawApp);
       await app.init();
     });
+    
     afterAll(async () => {
       await app.close();
     });

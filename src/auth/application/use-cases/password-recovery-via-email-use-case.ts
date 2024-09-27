@@ -18,6 +18,7 @@ export class PasswordRecoveryEmailUseCase
     private readonly emailManager: EmailManager,
   ) {}
   async execute(command: PasswordRecoveryViaEmailCommand): Promise<boolean> {
+    
     const passwordRecoveryData = {
       email: command.PasswordRecoveryDto.email,
       passwordRecoveryCode: uuidv4(),
