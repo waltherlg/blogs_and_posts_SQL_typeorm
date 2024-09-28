@@ -12,7 +12,7 @@ export class RecaptchaAdapter {
             const response = await axios.post(url);
             const data = response.data;
 
-            //console.log(data); // Выводим данные для отладки
+            console.log(data); // Выводим данные для отладки
 
             if (data.success && data.score > 0.5) { // Убедись, что score выше 0.5
                 return true;

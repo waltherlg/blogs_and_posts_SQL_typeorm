@@ -16,7 +16,7 @@ async function connectNgrok() {
   } catch (error) {
     console.log(error);
 
-    throw new CustomisableException('ngrok url', error, 418);
+    //throw new CustomisableException('ngrok url', error, 418);
   }
 }
 

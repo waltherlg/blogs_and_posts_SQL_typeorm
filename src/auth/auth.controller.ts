@@ -202,7 +202,7 @@ export class AuthController {
   async passwordRecovery(
     @Body() passwordRecoveryDto: PasswordRecoveryEmailInput,
   ) {
-    //console.log('password-recovery');
+    console.log('password-recovery');
     
     const recaptchaResponse = passwordRecoveryDto.recaptchaValue;
     //console.log(recaptchaResponse);
