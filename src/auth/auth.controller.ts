@@ -52,9 +52,9 @@ export class PasswordRecoveryEmailInput {
   @IsEmail()
   @Matches(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
   email: string;
-  @IsNotEmpty()
-  @IsString()
-  recaptchaValue: string;
+  // @IsNotEmpty()
+  // @IsString()
+  // recaptchaValue: string;
 }
 
 export class RegistrationConfirmationCodeInput {
@@ -163,7 +163,7 @@ export class AuthController {
         request.headers['user-agent'] || 'nestApi',
       ),
     );
-    if (!{ accessToken, refreshToken }) {
+    if (!accessToken || !refreshToken ) {
       throw new UnableException('login', 'Unable login');
     }
     response
@@ -202,16 +202,16 @@ export class AuthController {
   async passwordRecovery(
     @Body() passwordRecoveryDto: PasswordRecoveryEmailInput,
   ) {
-    console.log('password-recovery');
+    //console.log('password-recovery');
     
-    const recaptchaResponse = passwordRecoveryDto.recaptchaValue;
+    //const recaptchaResponse = passwordRecoveryDto.recaptchaValue;
     //console.log(recaptchaResponse);
     
 
-    const isValidCaptcha = await this.recaptchaAdapter.validateRecaptcha(recaptchaResponse);
-    if (!isValidCaptcha) {
-        throw new CustomisableException('recaptcha', 'Invalid reCAPTCHA', 400);
-    }
+    // const isValidCaptcha = await this.recaptchaAdapter.validateRecaptcha(recaptchaResponse);
+    // if (!isValidCaptcha) {
+    //     throw new CustomisableException('recaptcha', 'Invalid reCAPTCHA', 400);
+    // }
     if (!(await this.checkService.isEmailExist(passwordRecoveryDto.email))) {
       throw new CustomNotFoundException('email');
     }

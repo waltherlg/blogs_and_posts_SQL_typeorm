@@ -29,7 +29,7 @@ describe('End-to-End Tests', () => {
   // testSaUsersCrud();
   // testSaUsersGetWithPagination();
   // testSecurityDevices();
-  // testAuthOperations();
+  testAuthOperations();
   // testAuthValidations();
   // testBloggerCrudOnlyBlogs();
   // testBanUserForBlogByBlogger();
@@ -52,5 +52,5 @@ describe('End-to-End Tests', () => {
   // onlyQuizGameCreateSa1602();
   // quizGameStatisticOperations17();
   // testBloggerImageOperation18();
-  userSubscribeBlogTest_19();
+  // userSubscribeBlogTest_19();
 });
