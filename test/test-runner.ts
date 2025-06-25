@@ -26,31 +26,30 @@ import { testBloggerImageOperation18 } from './18-00-blogger.image.operations-e2
 import { userSubscribeBlogTest_19 } from './19-00-user.subscribe.blog.e2e-spec';
 
 describe('End-to-End Tests', () => {
-  // testSaUsersCrud();
-  // testSaUsersGetWithPagination();
-  // testSecurityDevices();
+  testSaUsersCrud();
+  testSaUsersGetWithPagination();
+  testSecurityDevices();
   testAuthOperations();
-  // testAuthValidations();
-  // testBloggerCrudOnlyBlogs();
-  // testBanUserForBlogByBlogger();
-  // testBloggerPaginationTest0502()
-  // saBlogsControllerCrudAndBan();
-  // postCrudOperationsByBlogger07();
-  // testPostLikesCrud08();
-  // commentCrudOperations(); // this comment CRUD if blog create blogger
-  // saCommentCrudOperations();
-  // testCommentLikesCrud();
-  // banCheckOperation(); //like check
-  // commentPaginationTest14()
-  // onlyCommentLikesCrud13(); // только для проверки создания лайка для комментария
-  // commentLikesWithUserBanCrud1301();
-  // bloggerUsersControllers()
-  // questionCrudOperationsSa15();
-
-  // quizGameCrudOperationsSa16();
-  // quizGameCrudOperationsSa1601()
-  // onlyQuizGameCreateSa1602();
-  // quizGameStatisticOperations17();
-  // testBloggerImageOperation18();
-  // userSubscribeBlogTest_19();
+  testAuthValidations();
+  testBloggerCrudOnlyBlogs();
+  testBanUserForBlogByBlogger();
+  testBloggerPaginationTest0502();
+  saBlogsControllerCrudAndBan();
+  postCrudOperationsByBlogger07();
+  testPostLikesCrud08();
+  commentCrudOperations(); // this comment CRUD if blog create blogger
+  saCommentCrudOperations();
+  testCommentLikesCrud();
+  banCheckOperation(); //like check
+  commentPaginationTest14();
+  onlyCommentLikesCrud13(); // только для проверки создания лайка для комментария
+  commentLikesWithUserBanCrud1301();
+  bloggerUsersControllers();
+  questionCrudOperationsSa15();
+  quizGameCrudOperationsSa16();
+  quizGameCrudOperationsSa1601();
+  onlyQuizGameCreateSa1602();
+  quizGameStatisticOperations17();
+  testBloggerImageOperation18();
+  userSubscribeBlogTest_19();
 });
