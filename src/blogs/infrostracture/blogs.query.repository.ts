@@ -31,8 +31,6 @@ export class BlogsQueryRepository {
       where: { blogId, isBlogBanned: false },
     });
 
-    console.log(blog);
-
     if (blog) {
       return blog.returnForPublic(userId);
     }
@@ -88,7 +86,6 @@ export class BlogsQueryRepository {
       // .skip(skipPage)
       // .take(pageSize)
       .getMany();
-    console.log('blogs in getAllblogs ', blogs);
 
     const blogsForOutput = blogs.map((blog) => {
       return blog.returnForPublic(userId);
@@ -206,8 +203,6 @@ export class BlogsQueryRepository {
       // .skip(skipPage)d
       // .take(pageSize)
       .getManyAndCount();
-
-    console.log('blogs in get blog for current user ', blogs);
 
     const pageCount = Math.ceil(blogsCount / pageSize);
 

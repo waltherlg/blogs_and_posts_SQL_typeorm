@@ -29,45 +29,42 @@ export class IntegrationsController {
   ) {}
 
   @Post('telegram')
-async forTelegram(@Body() payload: TelegramUpdateMessage) {
-  console.log('payload ', payload);
+  async forTelegram(@Body() payload: TelegramUpdateMessage) {
+    if (!payload.message || !payload.message.from.id) {
+      return;
+    }
 
-  if (!payload.message || !payload.message.from.id) {
-    console.log('no payload');
-    return;
-  }
+    const messageText = payload.message.text;
+    const telegramId = payload.message.from.id.toString();
 
-  const messageText = payload.message.text;
-  const telegramId = payload.message.from.id.toString();
-
-  if (messageText.startsWith('/start')) {
-    const startIndex = messageText.lastIndexOf(' ');
-    if (startIndex !== -1) {
-      const startParam = messageText.substring(startIndex + 1).trim();
-      if (startParam) {
-        const result = await this.commandBus.execute(
-          new UserActivateTelegramBotCommand(startParam, telegramId),
-        );
-        handleActionResult(result);
+    if (messageText.startsWith('/start')) {
+      const startIndex = messageText.lastIndexOf(' ');
+      if (startIndex !== -1) {
+        const startParam = messageText.substring(startIndex + 1).trim();
+        if (startParam) {
+          const result = await this.commandBus.execute(
+            new UserActivateTelegramBotCommand(startParam, telegramId),
+          );
+          handleActionResult(result);
+          this.telegramAdapter.sendMessageToTelegram(
+            `Привет, ${payload.message.from.first_name}, активация бота прошла успешно!`,
+            telegramId,
+          );
+        }
+      } else {
         this.telegramAdapter.sendMessageToTelegram(
-          `Привет, ${payload.message.from.first_name}, активация бота прошла успешно!`,
+          `Привет, ${payload.message.from.first_name}, ты уже активировал бота, на этом мои полномочия всё`,
           telegramId,
         );
       }
     } else {
+      console.log('-- no start --');
       this.telegramAdapter.sendMessageToTelegram(
         `Привет, ${payload.message.from.first_name}, ты уже активировал бота, на этом мои полномочия всё`,
         telegramId,
       );
     }
-  } else {
-    console.log('-- no start --');
-    this.telegramAdapter.sendMessageToTelegram(
-      `Привет, ${payload.message.from.first_name}, ты уже активировал бота, на этом мои полномочия всё`,
-      telegramId,
-    );
   }
-}
 
   // @Post('telegram')
   // async forTelegramm(@Body() payload: TelegramUpdateMessage) {

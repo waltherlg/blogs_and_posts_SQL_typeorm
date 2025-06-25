@@ -355,8 +355,6 @@ export class UsersRepository {
       return true;
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      //TODO: remove before prod
-      console.log(error);
       return false;
     } finally {
       await queryRunner.release();
